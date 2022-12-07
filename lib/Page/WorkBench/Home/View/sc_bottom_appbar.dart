@@ -9,6 +9,7 @@ class SCBottomAppBar extends StatefulWidget {
       required this.tabBarTitleList,
       required this.tabBarNormalImageList,
       required this.tabBarSelectImageList,
+      required this.defaultIndex,
       this.onTap})
       : super(key: key);
 
@@ -24,12 +25,22 @@ class SCBottomAppBar extends StatefulWidget {
   /// tabBar点击
   final Function(int index)? onTap;
 
+  /// 默认index
+  final int defaultIndex;
+
   @override
   SCBottomAppBarState createState() => SCBottomAppBarState();
 }
 
 class SCBottomAppBarState extends State<SCBottomAppBar> {
+
   int currentIndex = 0;
+
+  @override
+  initState() {
+    super.initState();
+    currentIndex = widget.defaultIndex;
+  }
 
   @override
   Widget build(BuildContext context) {

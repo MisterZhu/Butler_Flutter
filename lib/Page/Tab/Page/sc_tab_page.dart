@@ -92,6 +92,7 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
         tabBarTitleList: tabBarTitleList,
         tabBarNormalImageList: tabBarNormalImageList,
         tabBarSelectImageList: tabBarSelectImageList,
+        defaultIndex: currentIndex,
         onTap: (int index){
           currentIndex = index;
           pageController.jumpToPage(index);
