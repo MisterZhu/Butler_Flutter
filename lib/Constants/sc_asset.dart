@@ -34,5 +34,5 @@ class SCAsset {
   /// 扫码-闪光灯-打开
   static const String iconScanFlashOn= 'images/scan/icon_scan_flash_on.png';
   /// 用户-默认头像
-  static const String iconUserDefault = "";
+  static const String iconUserDefault = "images/common/icon_user_default.png";
 }
