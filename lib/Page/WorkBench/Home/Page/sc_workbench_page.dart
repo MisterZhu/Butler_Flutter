@@ -11,9 +11,20 @@ class SCWorkBenchPage extends StatefulWidget {
 
 class SCWorkBenchPageState extends State<SCWorkBenchPage> with SingleTickerProviderStateMixin {
 
+  /// tab-title
+  List<String> tabTitleList = ['待办', '处理中'];
+
+  /// 分类
+  List<String> classificationList = [''];
+
+  /// tabController
+  late TabController tabController;
+
   @override
   initState() {
     super.initState();
+    tabController =
+        TabController(length: tabTitleList.length, vsync: this);
   }
 
   @override
@@ -29,10 +40,13 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage> with SingleTickerProvi
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: Colors.white,
+      color: SCColors.color_F2F3F5,
       child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints){
         return SCWorkBenchView(
           height: constraints.maxHeight,
+          tabTitleList: tabTitleList,
+          classificationList: classificationList,
+          tabController: tabController,
         );
       }),
     );

@@ -37,6 +37,21 @@ class SCAsset {
   static const String iconUserDefault = "images/common/icon_user_default.png";
 
 
+  /// 用户-详情
+  static const String iconArrowRight = "images/common/icon_arrow_right.png";
+  /// 灰色搜索框
+  static const String iconGreySearch = "images/common/icon_search_grey.png";
+  /// 灰色扫码
+  static const String iconGreyScan = "images/common/icon_scan_grey.png";
+  /// 灰色铃铛
+  static const String iconGreyBell = "images/common/icon_bell_grey.png";
+  /// 今日新增
+  static const String iconTodayAdd = "images/common/icon_today_add.png";
+  /// 进行中
+  static const String iconDoing= "images/common/icon_doing.png";
+  /// 我的关注
+  static const String iconLike = "images/common/icon_like.png";
+
 
 
   /***********************  登录  ************************/
@@ -44,7 +59,6 @@ class SCAsset {
   static const String iconLoginClear = "images/login/icon_login_clear.png";
   /// 底部icon
   static const String iconLoginBottomImage = "images/login/icon_login_bottom_image.png";
-
 
 
 }
