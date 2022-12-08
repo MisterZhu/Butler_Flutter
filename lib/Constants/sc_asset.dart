@@ -35,4 +35,16 @@ class SCAsset {
   static const String iconScanFlashOn= 'images/scan/icon_scan_flash_on.png';
   /// 用户-默认头像
   static const String iconUserDefault = "images/common/icon_user_default.png";
+
+
+
+
+  /***********************  登录  ************************/
+  /// 清除icon
+  static const String iconLoginClear = "images/login/icon_login_clear.png";
+  /// 底部icon
+  static const String iconLoginBottomImage = "images/login/icon_login_bottom_image.png";
+
+
+
 }
