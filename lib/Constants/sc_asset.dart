@@ -61,4 +61,31 @@ class SCAsset {
   static const String iconLoginBottomImage = "images/login/icon_login_bottom_image.png";
 
 
+  /***********************  全部应用  ************************/
+  /// 添加
+  static const String iconEditAppAdd = "images/application/icon_application_add.png";
+
+  /// 删除
+  static const String iconEditAppDelete = "images/application/icon_application_delete.png";
+
+  /// 工单调度
+  static const String iconApplicationWorkOrder = "images/application/icon_application_work_order.png";
+
+  /// 车访登记
+  static const String iconApplicationVehicleRegistration = "images/application/icon_application_vehicle_registration.png";
+
+  /// 寄存登记
+  static const String iconApplicationDepositRegistration = "images/application/icon_application_deposit_registration.png";
+
+  /// 报事报修
+  static const String iconApplicationReportRepair = "images/application/icon_application_report_repair.png";
+
+  /// 访客登记
+  static const String iconApplicationVisitorRegistration = "images/application/icon_application_visitor_registration.png";
+
+  /// 装修登记
+  static const String iconApplicationDecorationRegistration = "images/application/icon_application_decoration_registration.png";
+
+
+
 }

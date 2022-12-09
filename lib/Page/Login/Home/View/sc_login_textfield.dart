@@ -272,6 +272,14 @@ class SCLoginTextFieldState extends State<SCLoginTextField> {
 
   /// 获取验证码按钮item
   Widget sendCodeItem() {
+    Color color = SCColors.color_B0B1B8;
+    if (state.codeBtnEnable) {
+      color = SCColors.color_4285F4;
+    } else {
+      if (state.codeText == '获取验证码') {
+        color = SCColors.color_8EB6F8;
+      }
+    }
     return GestureDetector(
       onTap: (){
         if (state.codeBtnEnable == true) {
@@ -285,7 +293,7 @@ class SCLoginTextFieldState extends State<SCLoginTextField> {
         style: TextStyle(
             fontSize: SCFonts.f14,
             fontWeight: FontWeight.w400,
-            color: state.codeBtnEnable ? SCColors.color_4285F4 : SCColors.color_B0B1B8),
+            color: color),
       ),
     );
   }

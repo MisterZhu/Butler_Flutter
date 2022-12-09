@@ -57,10 +57,10 @@ class SCLoginController extends GetxController {
       if (codeTime <= 0) {
         codeTime = 60;
         codeBtnEnable = true;
-        codeText = "重新发送";
+        codeText = "重新获取";
         disposeTimer();
       } else {
-        codeText = '重新发送(${codeTime}s)';
+        codeText = '重新获取(${codeTime}s)';
       }
       update();
     });
