@@ -184,7 +184,6 @@ class SCMineHeaderItem extends StatelessWidget {
   /// 名字、身份
   Widget identityItem() {
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints){
-      print("大小:$constraints");
       return Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
