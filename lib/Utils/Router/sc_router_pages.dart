@@ -6,6 +6,7 @@ import 'package:smartcommunity/Page/Login/Home/Page/sc_login_page.dart';
 import 'package:smartcommunity/Page/Mine/Home/Page/sc_mine_page.dart';
 import 'package:smartcommunity/Page/Tab/Page/sc_tab_page.dart';
 import 'package:smartcommunity/Page/Webview/Page/sc_webview_page.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_detail_page.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_page.dart';
 import 'sc_router_path.dart';
 
@@ -29,6 +30,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.scanPath, page: () => SCScanPage()),
     /*webView*/
     GetPage(name: SCRouterPath.webViewPath, page: () => SCWebViewPage()),
+    /*工作台详情*/
+    GetPage(name: SCRouterPath.workBenchDetailPath, page: () => SCWorkBenchDetailPage()),
   ];
 
   /*根据code使用路由*/
@@ -47,6 +50,8 @@ class SCRouterPages {
     20000 : SCRouterPath.workBenchPath,
     /// 扫一扫
     20001 : SCRouterPath.scanPath,
+    /// 详情
+    20002 : SCRouterPath.workBenchDetailPath,
     /******************** 通讯录 ********************/
     /// 通讯录
     30000 : SCRouterPath.addressBookPath,

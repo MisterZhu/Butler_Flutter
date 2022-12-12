@@ -49,4 +49,14 @@ class SCAsset {
   static const String iconDoing= "images/common/icon_doing.png";
   /// 我的关注
   static const String iconLike = "images/common/icon_like.png";
+  /// 灰色菜单
+  static const String iconGreyMenu = "images/common/icon_menu_grey.png";
+  /// 收藏-选中
+  static const String iconLikeSelect = "images/common/icon_like_select.png";
+  /// 灰色更多
+  static const String iconGreyMore = "images/common/icon_more_grey.png";
+  /// 位置
+  static const String iconAddress = "images/common/icon_address.png";
+  /// 电话
+  static const String iconPhone = "images/common/icon_phone.png";
 }

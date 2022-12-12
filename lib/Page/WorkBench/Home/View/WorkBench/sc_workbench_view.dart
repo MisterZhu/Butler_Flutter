@@ -2,20 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_listview.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
 
-import 'sc_workbench_header.dart';
+import '../AppBar/sc_workbench_header.dart';
 
 /// 工作台-view
 
 class SCWorkBenchView extends StatelessWidget {
-  SCWorkBenchView({
-    Key? key,
-    required this.height,
-    required this.tabController,
-    required this.tabTitleList,
-    required this.classificationList
-  }) : super(key: key);
+  SCWorkBenchView(
+      {Key? key,
+      required this.height,
+      required this.tabController,
+      required this.tabTitleList,
+      required this.classificationList})
+      : super(key: key);
 
   /// 组件高度
   final double height;
@@ -49,26 +50,43 @@ class SCWorkBenchView extends StatelessWidget {
   /// listView
   Widget listView() {
     double headerHeight = 305.0 + SCUtils().getTopSafeArea();
+    double contentHeight = height - headerHeight;
     return ListView.separated(
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         itemBuilder: (BuildContext context, int index) {
           return SCStickyHeader(
-              header: SCWorkBenchHeader(
-                height: headerHeight,
-                tabTitleList: tabTitleList,
-                classificationList: classificationList,
-                tabController: tabController,
-              ),
-              content: Container(
-                height: height - headerHeight,
-                color: Colors.cyan,
-              ));
+              header: headerView(headerHeight),
+              content: pageView(contentHeight));
         },
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox();
         },
         itemCount: 1);
+  }
+
+  /// header
+  Widget headerView(double height) {
+    return SCWorkBenchHeader(
+      height: height,
+      tabTitleList: tabTitleList,
+      classificationList: classificationList,
+      tabController: tabController,
+    );
+  }
+
+  /// pageView
+  Widget pageView(double height) {
+    Widget tabBarView = SizedBox(
+      height: height,
+      child: TabBarView(controller: tabController, children: [
+        const SCWorkBenchListView(),
+        Container(
+          color: Colors.white,
+        )
+      ]),
+    );
+    return tabBarView;
   }
 
   /// 下拉刷新

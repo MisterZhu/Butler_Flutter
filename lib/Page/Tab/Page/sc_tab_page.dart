@@ -8,7 +8,7 @@ import 'package:smartcommunity/Page/Application/Home/Page/sc_application_page.da
 import 'package:smartcommunity/Page/Mine/Home/Page/sc_mine_page.dart';
 import 'package:smartcommunity/Page/Tab/View/sc_tab_floating_button.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_page.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/View/sc_bottom_appbar.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/View/AppBar/sc_bottom_appbar.dart';
 import '../../../Utils/sc_utils.dart';
 
 /// tab-page

@@ -6,6 +6,11 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 /// 卡片
 
 class SCWorkBenchCard extends StatelessWidget {
+
+  SCWorkBenchCard({Key? key, this.onTap}) : super(key: key);
+
+  final Function(int index)? onTap;
+
   final List data = [
     {'number': 100, 'description': '今日新增', 'iconUrl': SCAsset.iconTodayAdd},
     {'number': 240, 'description': '进行中', 'iconUrl': SCAsset.iconDoing},
@@ -42,23 +47,26 @@ class SCWorkBenchCard extends StatelessWidget {
     int num = map['number'];
     String iconUrl = map['iconUrl'];
     String description = map['description'];
-    return Container(
-      height: 84.0,
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-          color: SCColors.color_FFFFFF,
-          borderRadius: BorderRadius.circular(2.0)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          numberItem(num),
-          const SizedBox(
-            height: 8.0,
-          ),
-          descriptionItem(description, iconUrl),
-        ],
+    return GestureDetector(
+      onTap: (){onTap?.call(index);},
+      child: Container(
+        height: 84.0,
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: SCColors.color_FFFFFF,
+            borderRadius: BorderRadius.circular(4.0)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            numberItem(num),
+            const SizedBox(
+              height: 8.0,
+            ),
+            descriptionItem(description, iconUrl),
+          ],
+        ),
       ),
     );
   }

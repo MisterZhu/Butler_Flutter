@@ -5,6 +5,15 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 /// 工作台-切换空间
 
 class SCWorkBenchSwitchSpaceView extends StatelessWidget {
+
+  const SCWorkBenchSwitchSpaceView({Key? key, this.onTap, this.headerTap}) : super(key: key);
+
+  /// 切换空间
+  final Function? onTap;
+
+  /// 点击头像
+  final Function? headerTap;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -28,10 +37,15 @@ class SCWorkBenchSwitchSpaceView extends StatelessWidget {
 
   /// 头像
   Widget userImage() {
-    return Image.asset(
-      SCAsset.iconUserDefault,
-      width: 32.0,
-      height: 32.0,
+    return GestureDetector(
+      onTap: (){
+        headerTap?.call();
+      },
+      child: Image.asset(
+        SCAsset.iconUserDefault,
+        width: 32.0,
+        height: 32.0,
+      ),
     );
   }
 
@@ -43,23 +57,33 @@ class SCWorkBenchSwitchSpaceView extends StatelessWidget {
       /// 最多展示10个字
       title = '${title.substring(0, maxLength)}...';
     }
-    return Text(
-      title,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: const TextStyle(
-          fontSize: SCFonts.f16,
-          fontWeight: FontWeight.w500,
-          color: SCColors.color_1B1D33),
+    return GestureDetector(
+      onTap: (){
+        onTap?.call();
+      },
+      child: Text(
+        title,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(
+            fontSize: SCFonts.f16,
+            fontWeight: FontWeight.w500,
+            color: SCColors.color_1B1D33),
+      ),
     );
   }
 
   /// 切换icon
   Widget arrowIcon() {
-    return Image.asset(
-      SCAsset.iconArrowRight,
-      width: 16.0,
-      height: 16.0,
+    return GestureDetector(
+      onTap: (){
+        onTap?.call();
+      },
+      child: Image.asset(
+        SCAsset.iconArrowRight,
+        width: 16.0,
+        height: 16.0,
+      ),
     );
   }
 }

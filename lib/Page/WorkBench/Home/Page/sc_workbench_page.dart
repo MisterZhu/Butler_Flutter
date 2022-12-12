@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/View/sc_workbench_view.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/View/WorkBench/sc_workbench_view.dart';
 
 /// 工作台-page
 
@@ -15,7 +15,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage> with SingleTickerProvi
   List<String> tabTitleList = ['待办', '处理中'];
 
   /// 分类
-  List<String> classificationList = [''];
+  List<String> classificationList = ['工单处理', '订单处理', '居民审核', '维保维修', '三巡一保', '报事报修', '工单处理'];
 
   /// tabController
   late TabController tabController;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 
 /// tab-floating
@@ -19,7 +20,7 @@ class SCTabFloatingButton extends StatelessWidget {
       onPressed: () {
         onPressed?.call();
       },
-      backgroundColor: Colors.transparent,
+      backgroundColor: SCColors.color_F2F3F5,
       elevation: 0,
       child: Container(
         padding: const EdgeInsets.only(top: 2.0),
