@@ -183,18 +183,21 @@ class SCMineHeaderItem extends StatelessWidget {
 
   /// 名字、身份
   Widget identityItem() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        nameItem(),
-        const SizedBox(
-          height: 2.0,
-        ),
-        switchItem(),
-      ],
-    );
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints){
+      print("大小:$constraints");
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          nameItem(),
+          const SizedBox(
+            height: 2.0,
+          ),
+          switchItem(constraints.maxWidth),
+        ],
+      );
+    });
   }
 
   /// 昵称
@@ -217,7 +220,7 @@ class SCMineHeaderItem extends StatelessWidget {
   }
 
   /// 切换
-  Widget switchItem() {
+  Widget switchItem(double maxWidth) {
     return GestureDetector(
       onTap: () {
         switchTapAction?.call();
@@ -234,15 +237,18 @@ class SCMineHeaderItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              identity,
-              textAlign: TextAlign.left,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: SCFonts.f14,
-                fontWeight: FontWeight.w400,
-                color: SCColors.color_FFFFFF,
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: maxWidth - 60),
+              child: Text(
+                identity,
+                textAlign: TextAlign.left,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: SCFonts.f14,
+                  fontWeight: FontWeight.w400,
+                  color: SCColors.color_FFFFFF,
+                ),
               ),
             ),
             const SizedBox(

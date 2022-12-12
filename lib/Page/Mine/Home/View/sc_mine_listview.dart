@@ -44,7 +44,7 @@ class SCMineListView extends StatelessWidget {
       children: [
         SCMineHeaderItem(
           nickname: '李大明',
-          identity: '慧享科技公司',
+          identity: '慧享科技公司慧享科技公司慧享科技公司慧享科技公司慧享科技公司慧享科技公司慧享科技公司',
           avatarTapAction: () {
           avatarTapAction?.call();
         }, qrCodeTapAction: () {
