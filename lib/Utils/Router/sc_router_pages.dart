@@ -4,6 +4,8 @@ import 'package:smartcommunity/Page/Application/Home/Page/sc_application_page.da
 import 'package:smartcommunity/Page/Base/Scan/Page/sc_scan_page.dart';
 import 'package:smartcommunity/Page/Login/Home/Page/sc_login_page.dart';
 import 'package:smartcommunity/Page/Mine/Home/Page/sc_mine_page.dart';
+import 'package:smartcommunity/Page/Mine/Home/Page/sc_setting_page.dart';
+import 'package:smartcommunity/Page/Mine/Home/Page/sc_switch_identity_page.dart';
 import 'package:smartcommunity/Page/Tab/Page/sc_tab_page.dart';
 import 'package:smartcommunity/Page/Webview/Page/sc_webview_page.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_page.dart';
@@ -29,6 +31,10 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.scanPath, page: () => SCScanPage()),
     /*webView*/
     GetPage(name: SCRouterPath.webViewPath, page: () => SCWebViewPage()),
+    /*设置*/
+    GetPage(name: SCRouterPath.settingPath, page: () => SCSettingPage()),
+    /*切换身份*/
+    GetPage(name: SCRouterPath.switchIdentityPath, page: () => SCSwitchIdentityPage()),
   ];
 
   /*根据code使用路由*/

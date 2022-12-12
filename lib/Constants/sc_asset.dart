@@ -87,5 +87,30 @@ class SCAsset {
   static const String iconApplicationDecorationRegistration = "images/application/icon_application_decoration_registration.png";
 
 
+  /// ****************  我的 ****************/
+  /// 背景图片
+  static const String iconMineBgImage = "images/mine/icon_mine_bg_image.png";
+  /// 默认头像
+  static const String iconMineUserAvatarDefault = "images/mine/icon_user_avatar_default.png";
+  /// 设置
+  static const String iconMineSetting = "images/mine/icon_mine_setting.png";
+  /// 二维码
+  static const String iconMineQRCode = "images/mine/icon_mine_qrcode.png";
+  /// 设置>
+  static const String iconMineSettingArrow = "images/mine/icon_mine_setting_arrow.png";
+  /// 个人资料>
+  static const String iconMineUserInfoArrow = "images/mine/icon_mine_user_info_arrow.png";
+  /// 切换身份
+  static const String iconMineUserSwitch = "images/mine/icon_mine_user_switch.png";
+  /// 关怀模式
+  static const String iconMineCareModel = "images/mine/icon_mine_care_model.png";
+  /// 我的服务
+  static const String iconMineService = "images/mine/icon_mine_service.png";
+
+  /// 切换身份-企业icon
+  static const String iconSwitchIdentityProjectIcon = "images/mine/icon_switch_identity_project_icon.png";
+  /// 切换身份-箭头icon
+  static const String iconSwitchIdentityArrow = "images/mine/icon_switch_identity_arrow.png";
+
 
 }

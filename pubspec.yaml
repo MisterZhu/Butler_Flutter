@@ -129,6 +129,7 @@ flutter:
     - images/login/
     - images/loading/
     - images/application/
+    - images/mine/
     - json/
 
   # To add assets to your application, add an assets section, like this:
