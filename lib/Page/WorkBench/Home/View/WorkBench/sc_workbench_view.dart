@@ -35,7 +35,9 @@ class SCWorkBenchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
+    return RefreshConfiguration(
+      enableScrollWhenRefreshCompleted: true,
+        child: SmartRefresher(
       controller: refreshController,
       enablePullUp: false,
       enablePullDown: true,
@@ -44,7 +46,7 @@ class SCWorkBenchView extends StatelessWidget {
       ),
       onRefresh: onRefresh,
       child: listView(),
-    );
+    ));
   }
 
   /// listView
