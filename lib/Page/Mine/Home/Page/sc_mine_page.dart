@@ -1,8 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:smartcommunity/Skin/View/sc_custom_scaffold.dart';
+import 'package:flutter/services.dart';
+import 'package:sc_uikit/sc_uikit.dart';
+import '../../../../Utils/Router/sc_router_helper.dart';
+import '../../../../Utils/Router/sc_router_path.dart';
+import '../../../../utils/sc_utils.dart';
+import '../View/sc_mine_listview.dart';
 
-/// 我的-page
-
+/// 我的page
 class SCMinePage extends StatefulWidget {
   @override
   SCMinePageState createState() => SCMinePageState();
@@ -11,15 +16,38 @@ class SCMinePage extends StatefulWidget {
 class SCMinePageState extends State<SCMinePage> {
   @override
   Widget build(BuildContext context) {
-    return SCCustomScaffold(body: body());
+    return body();
+  }
+
+  @override
+  initState() {
+    super.initState();
+    SCUtils().changeStatusBarStyle(style: SystemUiOverlayStyle.light);
   }
 
   /// body
   Widget body() {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: Colors.white,
+    return Scaffold(
+      body: Container(
+        color: SCColors.color_F2F3F5,
+        width: double.infinity,
+        height: double.infinity,
+        child: SCMineListView(
+          qrCodeTapAction: () {
+            SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
+          },
+          settingTapAction: () {
+            SCRouterHelper.pathPage(SCRouterPath.settingPath, null);
+          },
+          avatarTapAction: () {
+            SCRouterHelper.pathPage(SCRouterPath.loginPath, null);
+          },
+          switchTapAction: () {
+            SCRouterHelper.pathPage(SCRouterPath.switchIdentityPath, null);
+          },
+          userInfoTapAction: () {},
+        ),
+      ),
     );
   }
 }

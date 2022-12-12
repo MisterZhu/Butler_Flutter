@@ -35,6 +35,8 @@ class SCAsset {
   static const String iconScanFlashOn= 'images/scan/icon_scan_flash_on.png';
   /// 用户-默认头像
   static const String iconUserDefault = "images/common/icon_user_default.png";
+
+
   /// 用户-详情
   static const String iconArrowRight = "images/common/icon_arrow_right.png";
   /// 灰色搜索框
@@ -59,4 +61,64 @@ class SCAsset {
   static const String iconAddress = "images/common/icon_address.png";
   /// 电话
   static const String iconPhone = "images/common/icon_phone.png";
+
+
+  /***********************  登录  ************************/
+  /// 清除icon
+  static const String iconLoginClear = "images/login/icon_login_clear.png";
+  /// 底部icon
+  static const String iconLoginBottomImage = "images/login/icon_login_bottom_image.png";
+
+
+  /***********************  全部应用  ************************/
+  /// 添加
+  static const String iconEditAppAdd = "images/application/icon_application_add.png";
+
+  /// 删除
+  static const String iconEditAppDelete = "images/application/icon_application_delete.png";
+
+  /// 工单调度
+  static const String iconApplicationWorkOrder = "images/application/icon_application_work_order.png";
+
+  /// 车访登记
+  static const String iconApplicationVehicleRegistration = "images/application/icon_application_vehicle_registration.png";
+
+  /// 寄存登记
+  static const String iconApplicationDepositRegistration = "images/application/icon_application_deposit_registration.png";
+
+  /// 报事报修
+  static const String iconApplicationReportRepair = "images/application/icon_application_report_repair.png";
+
+  /// 访客登记
+  static const String iconApplicationVisitorRegistration = "images/application/icon_application_visitor_registration.png";
+
+  /// 装修登记
+  static const String iconApplicationDecorationRegistration = "images/application/icon_application_decoration_registration.png";
+
+
+  /// ****************  我的 ****************/
+  /// 背景图片
+  static const String iconMineBgImage = "images/mine/icon_mine_bg_image.png";
+  /// 默认头像
+  static const String iconMineUserAvatarDefault = "images/mine/icon_user_avatar_default.png";
+  /// 设置
+  static const String iconMineSetting = "images/mine/icon_mine_setting.png";
+  /// 二维码
+  static const String iconMineQRCode = "images/mine/icon_mine_qrcode.png";
+  /// 设置>
+  static const String iconMineSettingArrow = "images/mine/icon_mine_setting_arrow.png";
+  /// 个人资料>
+  static const String iconMineUserInfoArrow = "images/mine/icon_mine_user_info_arrow.png";
+  /// 切换身份
+  static const String iconMineUserSwitch = "images/mine/icon_mine_user_switch.png";
+  /// 关怀模式
+  static const String iconMineCareModel = "images/mine/icon_mine_care_model.png";
+  /// 我的服务
+  static const String iconMineService = "images/mine/icon_mine_service.png";
+
+  /// 切换身份-企业icon
+  static const String iconSwitchIdentityProjectIcon = "images/mine/icon_switch_identity_project_icon.png";
+  /// 切换身份-箭头icon
+  static const String iconSwitchIdentityArrow = "images/mine/icon_switch_identity_arrow.png";
+
 }

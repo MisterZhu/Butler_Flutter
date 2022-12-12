@@ -56,8 +56,8 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
     tabBarTitleList = ['工作台', '通讯录', '应用', '我的', ''];
     pageList = [
       SCWorkBenchPage(),
-      SCApplicationPage(),
       SCAddressBookPage(),
+      SCApplicationPage(),
       SCMinePage(),
       emptyPage()
     ];

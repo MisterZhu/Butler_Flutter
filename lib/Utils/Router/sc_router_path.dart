@@ -35,5 +35,7 @@ class SCRouterPath {
   static String minePath = "/lib/Page/Mine/Home/Page/sc_mine_page";
   /// 设置
   static String settingPath = "/lib/Page/Mine/Setting/Page/sc_setting_page";
+  /// 切换身份
+  static String switchIdentityPath = "/lib/Page/Mine/Setting/Page/sc_switch_identity_page";
 
 }
