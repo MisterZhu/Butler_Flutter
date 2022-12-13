@@ -9,13 +9,21 @@ class SCWorkBenchPage extends StatefulWidget {
   SCWorkBenchPageState createState() => SCWorkBenchPageState();
 }
 
-class SCWorkBenchPageState extends State<SCWorkBenchPage> with SingleTickerProviderStateMixin {
-
+class SCWorkBenchPageState extends State<SCWorkBenchPage>
+    with SingleTickerProviderStateMixin {
   /// tab-title
   List<String> tabTitleList = ['待办', '处理中'];
 
   /// 分类
-  List<String> classificationList = ['工单处理', '订单处理', '居民审核', '维保维修', '三巡一保', '报事报修', '工单处理'];
+  List<String> classificationList = [
+    '工单处理',
+    '订单处理',
+    '居民审核',
+    '维保维修',
+    '三巡一保',
+    '报事报修',
+    '工单处理'
+  ];
 
   /// tabController
   late TabController tabController;
@@ -23,8 +31,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage> with SingleTickerProvi
   @override
   initState() {
     super.initState();
-    tabController =
-        TabController(length: tabTitleList.length, vsync: this);
+    tabController = TabController(length: tabTitleList.length, vsync: this);
   }
 
   @override
@@ -41,7 +48,8 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage> with SingleTickerProvi
       width: double.infinity,
       height: double.infinity,
       color: SCColors.color_F2F3F5,
-      child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints){
+      child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
         return SCWorkBenchView(
           height: constraints.maxHeight,
           tabTitleList: tabTitleList,
@@ -51,5 +59,4 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage> with SingleTickerProvi
       }),
     );
   }
-
 }

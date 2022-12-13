@@ -7,8 +7,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 
 /// 倒计时
 
-class SCWorkBenchTimeView extends StatelessWidget{
-
+class SCWorkBenchTimeView extends StatelessWidget {
   SCWorkBenchTimeView({Key? key, required this.time}) : super(key: key);
 
   final int time;
@@ -32,46 +31,42 @@ class SCWorkBenchTimeView extends StatelessWidget{
 
     /// 秒
     String secondString = '00';
-      if (time <= 0) {
-        hour = 0;
-        minute = 0;
-        second = 0;
+    if (time <= 0) {
+      hour = 0;
+      minute = 0;
+      second = 0;
+      hourString = '00';
+      minuteString = '00';
+      secondString = '00';
+    } else {
+      hour = time ~/ 3600;
+      minute = (time - hour * 3600) ~/ 60;
+      second = time - hour * 3600 - minute * 60;
+      if (hour == 0) {
         hourString = '00';
-        minuteString = '00';
-        secondString = '00';
+      } else if (hour < 10) {
+        hourString = '0$hour';
       } else {
-        hour = time ~/ 3600;
-        minute = (time - hour * 3600) ~/ 60;
-        second = time - hour * 3600 - minute * 60;
-        if (hour == 0) {
-          hourString = '00';
-        } else if (hour < 10) {
-          hourString = '0$hour';
-        } else {
-          hourString = '$hour';
-        }
-
-        if (minute == 0) {
-          minuteString = '00';
-        } else if (minute < 10) {
-          minuteString = '0$minute';
-        } else {
-          minuteString = '$minute';
-        }
-
-        if (second == 0) {
-          secondString = '00';
-        } else if (second < 10) {
-          secondString = '0$second';
-        } else {
-          secondString = '$second';
-        }
+        hourString = '$hour';
       }
-      return {
-        'hour' : hourString,
-        'minute' : minuteString,
-        'second' : secondString
-      };
+
+      if (minute == 0) {
+        minuteString = '00';
+      } else if (minute < 10) {
+        minuteString = '0$minute';
+      } else {
+        minuteString = '$minute';
+      }
+
+      if (second == 0) {
+        secondString = '00';
+      } else if (second < 10) {
+        secondString = '0$second';
+      } else {
+        secondString = '$second';
+      }
+    }
+    return {'hour': hourString, 'minute': minuteString, 'second': secondString};
   }
 
   @override
@@ -129,5 +124,4 @@ class SCWorkBenchTimeView extends StatelessWidget{
       ),
     );
   }
-
 }

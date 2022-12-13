@@ -5,8 +5,8 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 /// 工作台-切换空间
 
 class SCWorkBenchSwitchSpaceView extends StatelessWidget {
-
-  const SCWorkBenchSwitchSpaceView({Key? key, this.onTap, this.headerTap}) : super(key: key);
+  const SCWorkBenchSwitchSpaceView({Key? key, this.onTap, this.headerTap})
+      : super(key: key);
 
   /// 切换空间
   final Function? onTap;
@@ -38,7 +38,7 @@ class SCWorkBenchSwitchSpaceView extends StatelessWidget {
   /// 头像
   Widget userImage() {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         headerTap?.call();
       },
       child: Image.asset(
@@ -58,7 +58,7 @@ class SCWorkBenchSwitchSpaceView extends StatelessWidget {
       title = '${title.substring(0, maxLength)}...';
     }
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         onTap?.call();
       },
       child: Text(
@@ -76,7 +76,7 @@ class SCWorkBenchSwitchSpaceView extends StatelessWidget {
   /// 切换icon
   Widget arrowIcon() {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         onTap?.call();
       },
       child: Image.asset(

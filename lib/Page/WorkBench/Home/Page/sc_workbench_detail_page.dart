@@ -12,7 +12,8 @@ class SCWorkBenchDetailPage extends StatefulWidget {
 class SCWorkBenchDetailPageState extends State<SCWorkBenchDetailPage> {
   @override
   Widget build(BuildContext context) {
-    return SCCustomScaffold(body: Container(
+    return SCCustomScaffold(
+        body: Container(
       width: double.infinity,
       height: double.infinity,
       child: const SCWorkBenchListView(),

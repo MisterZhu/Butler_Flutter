@@ -6,7 +6,6 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 /// 卡片
 
 class SCWorkBenchCard extends StatelessWidget {
-
   SCWorkBenchCard({Key? key, this.onTap}) : super(key: key);
 
   final Function(int index)? onTap;
@@ -48,7 +47,9 @@ class SCWorkBenchCard extends StatelessWidget {
     String iconUrl = map['iconUrl'];
     String description = map['description'];
     return GestureDetector(
-      onTap: (){onTap?.call(index);},
+      onTap: () {
+        onTap?.call(index);
+      },
       child: Container(
         height: 84.0,
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -88,7 +89,11 @@ class SCWorkBenchCard extends StatelessWidget {
   Widget descriptionItem(String value, String url) {
     return Row(
       children: [
-        Image.asset(url, width: 20.0, height: 20.0,),
+        Image.asset(
+          url,
+          width: 20.0,
+          height: 20.0,
+        ),
         const SizedBox(
           width: 6.0,
         ),
