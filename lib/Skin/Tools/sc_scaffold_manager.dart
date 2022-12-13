@@ -115,10 +115,10 @@ class SCScaffoldManager {
     bool isShowPrivacy = preferences.getBool(SCKey.isShowPrivacyAlert) ?? true;
     String basePath = SCRouterPath.tabPath;
 
-    // bool contains = SCSpUtil.containsKey(SCKey.kIsLogin);
-    // if (contains == true) {
-    //   _isLogin = SCSpUtil.getBool(SCKey.kIsLogin);
-    // }
+    bool contains = SCSpUtil.containsKey(SCKey.kIsLogin);
+    if (contains == true) {
+      _isLogin = SCSpUtil.getBool(SCKey.kIsLogin);
+    }
     //
     // if (isShowPrivacy == true) {
     //   basePath = SCRouterPath.basePrivacyPath;

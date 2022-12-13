@@ -13,8 +13,7 @@ class SCWorkBenchTabBar extends StatelessWidget {
       required this.currentTabIndex,
       required this.currentClassificationIndex,
       this.menuTap,
-      this.tagTap
-      })
+      this.tagTap})
       : super(key: key);
 
   /// tabController
@@ -188,7 +187,7 @@ class SCWorkBenchTabBar extends StatelessWidget {
           color: backgroundColor, borderRadius: BorderRadius.circular(13.0));
     }
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         tagTap?.call(index);
       },
       child: Container(

@@ -15,8 +15,9 @@ class SCWorkBenchHeader extends StatelessWidget {
       required this.height,
       required this.tabController,
       required this.tabTitleList,
-      required this.classificationList})
-      : super(key: key);
+      required this.classificationList,
+      this.menuTap,
+    }) : super(key: key);
 
   /// 组件高度
   final double height;
@@ -29,6 +30,9 @@ class SCWorkBenchHeader extends StatelessWidget {
 
   /// 分类list
   final List classificationList;
+
+  /// 点击菜单
+  final Function? menuTap;
 
   @override
   Widget build(BuildContext context) {
@@ -73,8 +77,12 @@ class SCWorkBenchHeader extends StatelessWidget {
             classificationList: classificationList,
             currentTabIndex: 0,
             currentClassificationIndex: 0,
-            menuTap: (){},
-            tagTap: (int index){},
+            menuTap: (){
+              menuTap?.call();
+            },
+            tagTap: (int index){
+
+            },
           )
         ],
       ),

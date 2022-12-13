@@ -9,7 +9,11 @@ import 'package:smartcommunity/Page/Mine/Home/Page/sc_mine_page.dart';
 import 'package:smartcommunity/Page/Tab/View/sc_tab_floating_button.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_page.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/AppBar/sc_bottom_appbar.dart';
+import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
+import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../Utils/sc_utils.dart';
+import '../../Application/Home/Model/sc_application_module_model.dart';
+import '../../WorkBench/Home/View/Alert/sc_quick_application_alert.dart';
 
 /// tab-page
 
@@ -121,8 +125,26 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
     }
   }
 
-  /// floating点击
+  /// floating点击，弹出
   floatingAction() {
+    List testList = [
+      {'icon':{'name':SCAsset.iconApplicationWorkOrder}, 'name': '报事报修', 'id': '1'},
+      {'icon':{'name':SCAsset.iconApplicationVehicleRegistration}, 'name': '车访登记', 'id': '2'}
+    ];
+    List<Applets> list = testList.map((e) => Applets.fromJson(e)).toList();
 
+    SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+      SCDialogUtils().showCustomBottomDialog(
+          context: context,
+          widget: SCQuickApplicationAlert(
+            list: list,
+            tapAction: (id, text) {
+              Navigator.of(context).pop();
+              if (id == '0') {
+                SCRouterHelper.pathPage(SCRouterPath.applicationPath, null);
+              }
+            },
+          ));
+    });
   }
 }

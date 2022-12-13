@@ -62,6 +62,12 @@ class SCAsset {
   /// 电话
   static const String iconPhone = "images/common/icon_phone.png";
 
+  /***********************  首页  ************************/
+  /// 首页弹窗-关闭icon
+  static const String iconHomeAlertClose = "images/home/icon_alert_close.png";
+
+  /// 首页弹窗-更多应用icon
+  static const String iconHomeMoreApplication = "images/home/icon_more_application.png";
 
   /***********************  登录  ************************/
   /// 清除icon
