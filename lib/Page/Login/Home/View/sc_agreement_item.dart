@@ -69,8 +69,7 @@ class SCAgreementItem extends StatelessWidget {
         alignment: PlaceholderAlignment.middle,
         child: GestureDetector(
           child: Image.asset(
-            '',
-            //isAgree ? SCAsset.iconAgree : SCAsset.iconNotAgree,
+            isAgree ? SCAsset.iconSelectRadio : SCAsset.iconNormalRadio,
             width: 22,
             height: 22,
           ),

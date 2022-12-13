@@ -78,24 +78,20 @@ class SCScaffoldManager {
     _getXTagList = [];
     _preferences = await SharedPreferences.getInstance();
 
-    bool hasScaffoldKey =
-    _preferences.containsKey(SkinDefaultKey.scaffold_key);
+    bool hasScaffoldKey = _preferences.containsKey(SkinDefaultKey.scaffold_key);
 
     /// 引导页key
     bool hasGuideKey = _preferences.containsKey(SCKey.isShowGuide);
 
     if (hasScaffoldKey) {
       String? scaffolfJsonString =
-      _preferences.getString(SkinDefaultKey.scaffold_key);
+          _preferences.getString(SkinDefaultKey.scaffold_key);
       var localJson = jsonDecode(scaffolfJsonString ?? '');
       _scaffoldModel = SCScaffoldModel.fromJson(localJson);
-      // log('皮肤数据:${SCScaffoldManager.instance.scaffoldModel.toJson()}');
-      // log('皮肤已设置完成');
     } else {
       _scaffoldModel = SCScaffoldModel.fromJson(scaffoldJson);
       _preferences.setString(
           SkinDefaultKey.scaffold_key, jsonEncode(scaffoldJson));
-      // log('设置皮肤完成');
     }
 
     final state = Get.find<SCCustomScaffoldController>();
@@ -113,20 +109,20 @@ class SCScaffoldManager {
   Future<String> getRouterBasePath() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     bool isShowPrivacy = preferences.getBool(SCKey.isShowPrivacyAlert) ?? true;
-    String basePath = SCRouterPath.tabPath;
+    String basePath = SCRouterPath.loginPath;
 
-    // bool contains = SCSpUtil.containsKey(SCKey.kIsLogin);
-    // if (contains == true) {
-    //   _isLogin = SCSpUtil.getBool(SCKey.kIsLogin);
-    // }
-    //
-    // if (isShowPrivacy == true) {
-    //   basePath = SCRouterPath.basePrivacyPath;
-    // } else {
-    //   if (_isLogin) {
-    //     basePath = SCRouterPath.tabPath;
-    //   }
-    // }
+    bool contains = SCSpUtil.containsKey(SCKey.kIsLogin);
+    if (contains == true) {
+      _isLogin = SCSpUtil.getBool(SCKey.kIsLogin);
+    }
+
+    if (isShowPrivacy == true) {
+      basePath = SCRouterPath.basePrivacyPath;
+    } else {
+      if (_isLogin) {
+        basePath = SCRouterPath.tabPath;
+      }
+    }
 
     return Future(() => basePath);
   }
@@ -180,7 +176,7 @@ class SCScaffoldManager {
       SCRouterHelper.codeOffAllPage(9001, null);
     } else {
       Duration duration = tipDuration ?? EasyLoading.instance.displayDuration;
-      Future.delayed(duration,() {
+      Future.delayed(duration, () {
         SCRouterHelper.codeOffAllPage(9001, null);
       });
     }
@@ -207,7 +203,7 @@ class SCScaffoldManager {
     bool isContainPage = false;
     int pageIndex = 0;
     String tag = "$pageName$pageIndex";
-    for (int i=0; i<getXTagList.length; i++) {
+    for (int i = 0; i < getXTagList.length; i++) {
       var json = getXTagList[i];
       String subPageName = json['pageName'];
       if (subPageName == pageName) {
@@ -217,21 +213,23 @@ class SCScaffoldManager {
       }
     }
 
-    if (isContainPage) {/// page已存在
+    if (isContainPage) {
+      /// page已存在
       var json = getXTagList[pageIndex];
       int index = json['index'];
       List tagList = json['tagList'];
-      index+=1;
+      index += 1;
       tag = "$pageName$index";
       tagList.add(tag);
       json['index'] = index;
       json['tagList'] = tagList;
       getXTagList[pageIndex] = json;
-    } else {/// page不存在
+    } else {
+      /// page不存在
       var json = {
-        "pageName" : pageName,
-        "index" : 0,
-        "tagList" : [tag]
+        "pageName": pageName,
+        "index": 0,
+        "tagList": [tag]
       };
       getXTagList.add(json);
     }
@@ -243,7 +241,7 @@ class SCScaffoldManager {
     bool success = false;
     bool isContainPage = false;
     int pageIndex = 0;
-    for (int i=0; i<getXTagList.length; i++) {
+    for (int i = 0; i < getXTagList.length; i++) {
       var json = getXTagList[i];
       String subPageName = json['pageName'];
       if (subPageName == pageName) {

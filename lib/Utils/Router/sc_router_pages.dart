@@ -3,6 +3,7 @@ import 'package:smartcommunity/Page/AddressBook/Home/Page/sc_addressbook_page.da
 import 'package:smartcommunity/Page/Application/Home/Page/sc_application_page.dart';
 import 'package:smartcommunity/Page/Base/Scan/Page/sc_scan_page.dart';
 import 'package:smartcommunity/Page/Login/Home/Page/sc_login_page.dart';
+import 'package:smartcommunity/Page/Login/Privacy/Page/sc_privacy_alert_page.dart';
 import 'package:smartcommunity/Page/Mine/Home/Page/sc_mine_page.dart';
 import 'package:smartcommunity/Page/Mine/Home/Page/sc_setting_page.dart';
 import 'package:smartcommunity/Page/Mine/Home/Page/sc_switch_identity_page.dart';
@@ -16,6 +17,8 @@ import 'sc_router_path.dart';
 class SCRouterPages {
   /*根据path使用路由*/
   static final List<GetPage> getPages = [
+    /*用户协议和隐私政策弹窗*/
+    GetPage(name: SCRouterPath.basePrivacyPath, page: () => SCPrivacyAlertPage()),
     /*登录*/
     GetPage(name: SCRouterPath.loginPath, page: () => SCLoginPage()),
     /*tab*/

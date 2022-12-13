@@ -72,7 +72,10 @@ class SCAsset {
   static const String iconLoginClear = "images/login/icon_login_clear.png";
   /// 底部icon
   static const String iconLoginBottomImage = "images/login/icon_login_bottom_image.png";
-
+  /// 协议勾选框-未选中
+  static const String iconNormalRadio = "images/login/icon_radio_normal.png";
+  /// 协议勾选框-选中
+  static const String iconSelectRadio = "images/login/icon_radio_select.png";
 
   /***********************  全部应用  ************************/
   /// 添加
