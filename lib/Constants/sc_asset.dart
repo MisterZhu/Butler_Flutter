@@ -61,6 +61,10 @@ class SCAsset {
   static const String iconAddress = "images/common/icon_address.png";
   /// 电话
   static const String iconPhone = "images/common/icon_phone.png";
+  /// 黑色关闭
+  static const String iconBlackClose = "images/common/icon_close_black.png";
+  /// 清除按钮
+  static const String iconSearchClear =  "images/common/icon_search_clear.png";
 
   /***********************  首页  ************************/
   /// 首页弹窗-关闭icon
@@ -126,5 +130,4 @@ class SCAsset {
   static const String iconSwitchIdentityProjectIcon = "images/mine/icon_switch_identity_project_icon.png";
   /// 切换身份-箭头icon
   static const String iconSwitchIdentityArrow = "images/mine/icon_switch_identity_arrow.png";
-
 }

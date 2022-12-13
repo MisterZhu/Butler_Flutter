@@ -10,14 +10,21 @@ import 'package:smartcommunity/Utils/sc_utils.dart';
 /// 工作台-header
 
 class SCWorkBenchHeader extends StatelessWidget {
-  const SCWorkBenchHeader(
-      {Key? key,
-      required this.height,
-      required this.tabController,
-      required this.tabTitleList,
-      required this.classificationList,
-      this.menuTap,
-    }) : super(key: key);
+  const SCWorkBenchHeader({
+    Key? key,
+    required this.height,
+    required this.tabController,
+    required this.tabTitleList,
+    required this.classificationList,
+    this.switchSpaceAction,
+    this.headerAction,
+    this.searchAction,
+    this.scanAction,
+    this.messageAction,
+    this.cardDetailAction,
+    this.tagMenuAction,
+    this.tagAction,
+  }) : super(key: key);
 
   /// 组件高度
   final double height;
@@ -31,18 +38,40 @@ class SCWorkBenchHeader extends StatelessWidget {
   /// 分类list
   final List classificationList;
 
-  /// 点击菜单
-  final Function? menuTap;
+  /// 切换空间
+  final Function? switchSpaceAction;
+
+  /// 点击头像
+  final Function? headerAction;
+
+  /// 搜索
+  final Function? searchAction;
+
+  /// 扫一扫
+  final Function? scanAction;
+
+  /// 消息详情
+  final Function? messageAction;
+
+  /// 卡片详情
+  final Function(int index)? cardDetailAction;
+
+  /// 标签-菜单点击
+  final Function? tagMenuAction;
+
+  /// 点击标签
+  final Function(int index)? tagAction;
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(decoration: const BoxDecoration(
-      color: SCColors.color_F2F3F5
-    ), child: SizedBox(
-      width: double.infinity,
-      height: height,
-      child: body(context),
-    ),);
+    return DecoratedBox(
+      decoration: const BoxDecoration(color: SCColors.color_F2F3F5),
+      child: SizedBox(
+        width: double.infinity,
+        height: height,
+        child: body(context),
+      ),
+    );
   }
 
   /// body
@@ -53,21 +82,35 @@ class SCWorkBenchHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SCWorkBenchSwitchSpaceView(
-            onTap: (){},
-            headerTap: (){},
+            onTap: () {
+              switchSpaceAction?.call();
+            },
+            headerTap: () {
+              headerAction?.call();
+            },
           ),
           const SizedBox(
             height: 15.0,
           ),
           SCWorkBenchSearch(
-            searchAction: (){},
-            scanAction: (){},
-            messageAction: (){},
+            searchAction: () {
+              searchAction?.call();
+            },
+            scanAction: () {
+              scanAction?.call();
+            },
+            messageAction: () {
+              messageAction?.call();
+            },
           ),
           const SizedBox(
             height: 22.0,
           ),
-          SCWorkBenchCard(),
+          SCWorkBenchCard(
+            onTap: (int index) {
+              cardDetailAction?.call(index);
+            },
+          ),
           const SizedBox(
             height: 4.0,
           ),
@@ -77,11 +120,11 @@ class SCWorkBenchHeader extends StatelessWidget {
             classificationList: classificationList,
             currentTabIndex: 0,
             currentClassificationIndex: 0,
-            menuTap: (){
-              menuTap?.call();
+            menuTap: () {
+              tagMenuAction?.call();
             },
-            tagTap: (int index){
-
+            tagTap: (int index) {
+              tagAction?.call(index);
             },
           )
         ],

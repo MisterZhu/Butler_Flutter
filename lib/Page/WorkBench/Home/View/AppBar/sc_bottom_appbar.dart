@@ -33,7 +33,6 @@ class SCBottomAppBar extends StatefulWidget {
 }
 
 class SCBottomAppBarState extends State<SCBottomAppBar> {
-
   int currentIndex = 0;
 
   @override

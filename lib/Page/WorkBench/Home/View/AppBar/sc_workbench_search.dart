@@ -5,13 +5,9 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 /// 搜索框
 
 class SCWorkBenchSearch extends StatelessWidget {
-
-  const SCWorkBenchSearch({
-    Key? key,
-    this.searchAction,
-    this.scanAction,
-    this.messageAction
-  }) : super(key: key);
+  const SCWorkBenchSearch(
+      {Key? key, this.searchAction, this.scanAction, this.messageAction})
+      : super(key: key);
 
   /// 搜索
   final Function? searchAction;
@@ -51,46 +47,46 @@ class SCWorkBenchSearch extends StatelessWidget {
   Widget searchItem() {
     return Expanded(
         child: GestureDetector(
-          onTap: (){
-            searchAction?.call();
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            height: 36.0,
-            decoration: BoxDecoration(
-                color: SCColors.color_E3E3E6,
-                borderRadius: BorderRadius.circular(18.0)),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                  SCAsset.iconGreySearch,
-                  width: 16.0,
-                  height: 16.0,
-                ),
-                const SizedBox(
-                  width: 10.0,
-                ),
-                const Text(
-                  '搜索',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: SCFonts.f14,
-                      fontWeight: FontWeight.w400,
-                      color: SCColors.color_8D8E99),
-                )
-              ],
+      onTap: () {
+        searchAction?.call();
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        height: 36.0,
+        decoration: BoxDecoration(
+            color: SCColors.color_E3E3E6,
+            borderRadius: BorderRadius.circular(18.0)),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              SCAsset.iconGreySearch,
+              width: 16.0,
+              height: 16.0,
             ),
-          ),
-        ));
+            const SizedBox(
+              width: 10.0,
+            ),
+            const Text(
+              '搜索',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontSize: SCFonts.f14,
+                  fontWeight: FontWeight.w400,
+                  color: SCColors.color_8D8E99),
+            )
+          ],
+        ),
+      ),
+    ));
   }
 
   /// 扫一扫
   Widget scanIcon() {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         scanAction?.call();
       },
       child: Container(
@@ -112,7 +108,7 @@ class SCWorkBenchSearch extends StatelessWidget {
   /// 铃铛
   Widget bellIcon() {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         messageAction?.call();
       },
       child: Container(

@@ -10,14 +10,14 @@ import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_ti
 /// 工作台-listView
 
 class SCWorkBenchListView extends StatefulWidget {
-  const SCWorkBenchListView({
-    Key? key,
-    this.detailAction,
-    this.moreAction,
-    this.likeAction,
-    this.callAction,
-    this.acceptAction
-  }) : super(key: key);
+  const SCWorkBenchListView(
+      {Key? key,
+      this.detailAction,
+      this.moreAction,
+      this.likeAction,
+      this.callAction,
+      this.acceptAction})
+      : super(key: key);
 
   /// 详情
   final Function(int index)? detailAction;
@@ -71,11 +71,17 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
       enablePullDown: false,
       enablePullUp: true,
       onLoading: onLoading,
-      footer: const ClassicFooter(loadingText: '加载中...', idleText: '加载更多', noDataText: '到底了', failedText: '加载失败', canLoadingText: '加载更多',),
+      footer: const ClassicFooter(
+        loadingText: '加载中...',
+        idleText: '加载更多',
+        noDataText: '到底了',
+        failedText: '加载失败',
+        canLoadingText: '加载更多',
+      ),
       child: ListView.separated(
           physics: const ClampingScrollPhysics(),
-          padding: const EdgeInsets.only(
-              left: 16.0, right: 16.0, top: 0, bottom: 0),
+          padding:
+              const EdgeInsets.only(left: 16.0, right: 16.0, top: 0, bottom: 0),
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             return cell(index);
@@ -150,15 +156,16 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
                 WidgetSpan(
                     alignment: PlaceholderAlignment.middle,
                     child: CupertinoButton(
-                      minSize: 22.0,
+                        minSize: 22.0,
                         padding: EdgeInsets.zero,
                         child: Image.asset(
-                      SCAsset.iconLikeSelect,
-                      width: 22.0,
-                      height: 22.0,
-                    ), onPressed: (){
-                      widget.likeAction?.call(index);
-                    }))
+                          SCAsset.iconLikeSelect,
+                          width: 22.0,
+                          height: 22.0,
+                        ),
+                        onPressed: () {
+                          widget.likeAction?.call(index);
+                        }))
               ])),
           CupertinoButton(
               minSize: 20.0,

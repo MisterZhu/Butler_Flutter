@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_alert.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_listview.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
 
@@ -40,17 +41,17 @@ class SCWorkBenchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshConfiguration(
-      enableScrollWhenRefreshCompleted: true,
+        enableScrollWhenRefreshCompleted: true,
         child: SmartRefresher(
-      controller: refreshController,
-      enablePullUp: false,
-      enablePullDown: true,
-      header: const SCCustomHeader(
-        style: SCCustomHeaderStyle.noNavigation,
-      ),
-      onRefresh: onRefresh,
-      child: listView(),
-    ));
+          controller: refreshController,
+          enablePullUp: false,
+          enablePullDown: true,
+          header: const SCCustomHeader(
+            style: SCCustomHeaderStyle.noNavigation,
+          ),
+          onRefresh: onRefresh,
+          child: listView(),
+        ));
   }
 
   /// listView
@@ -62,7 +63,7 @@ class SCWorkBenchView extends StatelessWidget {
         padding: EdgeInsets.zero,
         itemBuilder: (BuildContext context, int index) {
           return SCStickyHeader(
-              header: headerView(headerHeight),
+              header: headerView(headerHeight, context),
               content: pageView(contentHeight));
         },
         separatorBuilder: (BuildContext context, int index) {
@@ -72,14 +73,17 @@ class SCWorkBenchView extends StatelessWidget {
   }
 
   /// header
-  Widget headerView(double height) {
+  Widget headerView(double height, BuildContext context) {
     return SCWorkBenchHeader(
       height: height,
       tabTitleList: tabTitleList,
       classificationList: classificationList,
       tabController: tabController,
-      menuTap: () {
+      tagMenuAction: () {
         menuTap?.call();
+      },
+      switchSpaceAction: () {
+        switchAction(context);
       },
     );
   }
@@ -103,5 +107,13 @@ class SCWorkBenchView extends StatelessWidget {
     Future.delayed(const Duration(milliseconds: 1500), () {
       refreshController.refreshCompleted();
     });
+  }
+
+  /// 切换空间
+  switchAction(BuildContext context) {
+    SCDialogUtils().showCustomBottomDialog(
+        context: context,
+        isDismissible: true,
+        widget: SCWorkBenchChangeSpaceAlert());
   }
 }
