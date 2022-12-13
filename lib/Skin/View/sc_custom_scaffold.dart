@@ -128,7 +128,7 @@ class SCCustomScaffold extends StatelessWidget {
     return customTitleWidget ??
         Text(
           title,
-          style: textStyle ?? TextStyle(color: state.titleColor),
+          style: textStyle ?? TextStyle(color: state.titleColor, fontSize: SCFonts.f18, fontWeight: FontWeight.w500,),
         );
   }
 }

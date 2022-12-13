@@ -10,6 +10,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Constants/sc_default_value.dart';
 import '../../../../Constants/sc_h5.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
+import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../../Utils/Router/sc_router_helper.dart';
 import '../GetXController/sc_application_controller.dart';
 import '../View/sc_application_listView.dart';
@@ -36,25 +37,13 @@ class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeep
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return SCCustomScaffold(
+        title: "全部应用",
         centerTitle: true,
-        title: titleItem(),
-        backgroundColor: SCColors.color_F2F3F5,
+        navBackgroundColor: SCColors.color_F2F3F5,
         elevation: 0,
-        automaticallyImplyLeading: false,
-      ),
-      body: body(),
+        body: body()
     );
-  }
-
-  /// title
-  Widget titleItem() {
-    return const Text('全部应用', style: TextStyle(
-        fontSize: SCFonts.f18,
-        fontWeight: FontWeight.bold,
-        color: SCColors.color_1B1C33
-    ),);
   }
 
   /// body

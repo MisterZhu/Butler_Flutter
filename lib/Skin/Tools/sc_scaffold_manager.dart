@@ -109,6 +109,7 @@ class SCScaffoldManager {
   Future<String> getRouterBasePath() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     bool isShowPrivacy = preferences.getBool(SCKey.isShowPrivacyAlert) ?? true;
+
     String basePath = SCRouterPath.loginPath;
 
     bool contains = SCSpUtil.containsKey(SCKey.kIsLogin);
