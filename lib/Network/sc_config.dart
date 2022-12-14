@@ -11,13 +11,13 @@ class SCConfig {
   static String get BASE_URL {
     switch (env) {
       case SCEnvironment.develop:
-        return "https://jmdev.wisharetec.com";
+        return "https://saasdev.wisharetec.com";
       case SCEnvironment.pretest:
-        return "https://jmdev.wisharetec.com";
+        return "https://saastest.wisharetec.com";
       case SCEnvironment.production:
-        return "https://jm.wisharetec.com";
+        return "https://saas.wisharetec.com";
       default:
-        return "https://jmdev.wisharetec.com";
+        return "https://saasdev.wisharetec.com";
     }
   }
 
@@ -27,11 +27,11 @@ class SCConfig {
       case SCEnvironment.develop:
         return "https://saasdev.wisharetec.com";
       case SCEnvironment.pretest:
-        return "https://saas.wisharetec.com";
+        return "https://saastest.wisharetec.com";
       case SCEnvironment.production:
         return "https://saas.wisharetec.com";
       default:
-        return "https://saas.wisharetec.com";
+        return "https://saasdev.wisharetec.com";
     }
   }
 

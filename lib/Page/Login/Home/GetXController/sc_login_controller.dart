@@ -1,12 +1,10 @@
 
 import 'dart:async';
-import 'dart:developer';
-import 'dart:convert' as convert;
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
-import '../../../../Skin/Model/sc_user.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../Utils/Router/sc_router_path.dart';
@@ -104,28 +102,9 @@ class SCLoginController extends GetxController {
         url: SCUrl.kPhoneCodeLoginUrl,
         params: {'mobileNum' : phone, 'code' : code},
         success: (value) {
-          // SCUser user = SCScaffoldManager.instance.getUserData();
-          // log('登陆成功获取用户token=====${user.token}===用户昵称：${user.userName}');
           var userParams = value['userInfoV'];
-          List defaultConfigList = userParams['defaultConfigList'];
-          SCUser user = SCUser.fromJson(userParams);
-
-          if (defaultConfigList.isNotEmpty) {
-            var defaultParams = defaultConfigList.first;
-            num? defaultConfigId = defaultParams['id'];
-            var jsonValue = defaultParams['jsonValue'];
-            var jsonParams = convert.jsonDecode(jsonValue);
-            user.defaultConfigId = defaultConfigId;
-            user.communityId = jsonParams['communityId'];
-            user.communityName = jsonParams['communityName'];
-            user.spaceId = jsonParams['spaceId'];
-            user.spaceName = jsonParams['spaceName'];
-            user.identityId = jsonParams['identityId'];
-            user.identityName = jsonParams['identityName'];
-            user.housingId = jsonParams['housingId'];
-          }
-
-          SCScaffoldManager.instance.user = user;
+          SCUserModel userModel = SCUserModel.fromJson(userParams);
+          SCScaffoldManager.instance.user = userModel;
           SCScaffoldManager.instance.isLogin = true;
 
           if (showCloseBtn) {
@@ -136,7 +115,6 @@ class SCLoginController extends GetxController {
           }
         },
         failure: (value) {
-          log('登陆失败===$value');
           if (value['message'] != null) {
             String message = value['message'];
             SCToast.showTip(message);

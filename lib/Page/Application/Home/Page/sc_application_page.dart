@@ -70,16 +70,5 @@ class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeep
 
   /// 应用详情
   itemDetail(String title) {
-    if (title.contains('建信')) {// 建信租房
-      String token = SCSpUtil.getString(SCKey.kJianXinRentingToken);
-      String url = "${SCH5.jxRentingHomeUrl}?token=$token";
-      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : title, "url" : url});
-    } else {
-      String defCommunityId = SCScaffoldManager.instance.user.communityId ?? "";
-      String token = SCScaffoldManager.instance.user.token ?? "";
-      String defRoomId = SCScaffoldManager.instance.user.spaceId.toString();
-      String url = "${SCConfig.getH5Url(SCH5.workOrderUrl)}?defCommunityId=$defCommunityId&Authorization=$token&defRoomId=$defRoomId&client=${SCDefaultValue.client}";
-      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : title, "url" : url});
-    }
   }
 }

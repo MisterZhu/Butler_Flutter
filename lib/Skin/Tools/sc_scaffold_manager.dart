@@ -1,14 +1,12 @@
 /*皮肤管理工具*/
 
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
+import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../Constants/sc_default_value.dart';
 import '../../Constants/sc_key.dart';
@@ -19,7 +17,6 @@ import '../../Utils/Router/sc_router_helper.dart';
 import '../../Utils/sc_sp_utils.dart';
 import '../GetXController/sc_scaffold_controller.dart';
 import '../Model/sc_scaffold_model.dart';
-import '../Model/sc_user.dart';
 
 class SCScaffoldManager {
   factory SCScaffoldManager() => _instance;
@@ -30,7 +27,7 @@ class SCScaffoldManager {
 
   static late SCScaffoldModel _scaffoldModel;
 
-  static late SCUser _user;
+  static late SCUserModel _user;
 
   static bool _isLogin = false;
 
@@ -40,12 +37,12 @@ class SCScaffoldManager {
 
   SCScaffoldManager._internal() {
     _scaffoldModel = SCScaffoldModel();
-    _user = SCUser();
+    _user = SCUserModel();
   }
 
   SCScaffoldModel get scaffoldModel => _scaffoldModel;
 
-  SCUser get user => _user;
+  SCUserModel get user => _user;
 
   bool get isLogin => _isLogin;
 
@@ -60,7 +57,7 @@ class SCScaffoldManager {
   }
 
   /// set user
-  set user(SCUser user) {
+  set user(SCUserModel user) {
     // TODO: implement user=
     _user = user;
     cacheUserData(user.toJson());
@@ -162,7 +159,7 @@ class SCScaffoldManager {
 
   /*退出登录*/
   logout({bool? isAfterTip, Duration? tipDuration}) {
-    _user = SCUser();
+    _user = SCUserModel();
     _isLogin = false;
     SCSpUtil.remove(SCKey.kIsLogin);
     SCSpUtil.remove(SCKey.kUserData);
@@ -193,7 +190,7 @@ class SCScaffoldManager {
     bool contains = SCSpUtil.containsKey(SCKey.kUserData);
     if (contains == true) {
       var data = SCSpUtil.getMap(SCKey.kUserData);
-      _user = SCUser.fromJson(data);
+      _user = SCUserModel.fromJson(data);
       // print('本地数据：${_user.toJson()}');
       return _user;
     }
