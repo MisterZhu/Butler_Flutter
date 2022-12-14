@@ -119,6 +119,7 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
         tagAction(model);
       },
       child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
         alignment: Alignment.center,
         height: 26.0,
         decoration: BoxDecoration(

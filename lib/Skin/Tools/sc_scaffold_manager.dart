@@ -177,11 +177,11 @@ class SCScaffoldManager {
     bool isAfterTipStatus = isAfterTip ?? false;
 
     if (isAfterTipStatus == false) {
-      SCRouterHelper.codeOffAllPage(9001, null);
+      SCRouterHelper.pathOffAllPage(SCRouterPath.loginPath, null);
     } else {
       Duration duration = tipDuration ?? EasyLoading.instance.displayDuration;
       Future.delayed(duration,() {
-        SCRouterHelper.codeOffAllPage(9001, null);
+        SCRouterHelper.pathOffAllPage(SCRouterPath.loginPath, null);
       });
     }
   }

@@ -4,14 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:smartcommunity/Page/Application/Home/View/sc_application_cell_item.dart';
 import '../Model/sc_application_module_model.dart';
 
-/// 应用列表-第一套皮肤
+/// 应用列表
 
 class SCApplicationListView extends StatelessWidget {
 
   final List<SCApplicationModuleModel>? appList;
 
   /// 按钮点击事件
-  final Function(String title)? itemTapAction;
+  final Function(String title, String url)? itemTapAction;
 
   SCApplicationListView({Key? key, required this.appList, this.itemTapAction}) : super(key: key);
 
@@ -29,9 +29,9 @@ class SCApplicationListView extends StatelessWidget {
           return SCApplicationCellItem(
             section: index,
             moduleModel: moduleModel,
-            tapAction: (title){
+            tapAction: (title, url){
               if (itemTapAction != null) {
-                itemTapAction?.call(title);
+                itemTapAction?.call(title, url);
               }
             },
           );

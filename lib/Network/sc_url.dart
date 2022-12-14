@@ -28,9 +28,14 @@ class SCUrl {
  /************************* 服务 *************************/
 
   /// 应用列表url
-  static const String kServiceAppListUrl = '/api/applet/user/list';
+  static const String kApplicationListUrl = '/api/auth/menuServer/menuServerTree';
 
   /************************* 我的 *************************/
+
+  /// 租户列表url
+  static const String kSwitchTenantUrl = '/api/user/switchTenant';
+
+
 
   /// 我的房号列表url
   static const String kMyHouseUrl = '/api/space/resident/user/housing/list';

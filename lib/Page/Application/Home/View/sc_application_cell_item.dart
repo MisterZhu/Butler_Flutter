@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/Application/Home/GetXController/sc_application_controller.dart';
 import 'package:smartcommunity/Page/Application/Home/View/sc_application_app_item.dart';
+
 import '../Model/sc_application_module_model.dart';
 
 /// 单个模块应用cell
@@ -17,7 +18,7 @@ class SCApplicationCellItem extends StatelessWidget {
   final SCApplicationModuleModel moduleModel;
 
   /// 按钮点击事件
-  final Function(String title)? tapAction;
+  final Function(String title, String url)? tapAction;
 
   SCApplicationCellItem(
       {
@@ -72,7 +73,7 @@ class SCApplicationCellItem extends StatelessWidget {
   Widget headerLeftItem() {
     return Expanded(
       child: Text(
-        moduleModel.module?.name ?? '',
+        moduleModel.name ?? '',
         textAlign: TextAlign.start,
         style: const TextStyle(
           fontSize: SCFonts.f16,
@@ -86,7 +87,7 @@ class SCApplicationCellItem extends StatelessWidget {
   Widget headerRightItem() {
     return GetBuilder<SCApplicationController>(builder: (state){
       return Offstage(
-        offstage: moduleModel.module?.id == '0' ? false : true, /// 如果是常用应用显示右边的编辑
+        offstage: moduleModel.id == '0' ? false : true, /// 如果是常用应用显示右边的编辑
         child: CupertinoButton(
           minSize: 40.0,
           borderRadius: BorderRadius.circular(0.0),
@@ -111,14 +112,14 @@ class SCApplicationCellItem extends StatelessWidget {
 
   /// cell
   Widget itemsCell() {
-    List<Applets>?list = [];
+    List<MenuServerList>?list = [];
     /// 是否是常用应用，暂定id=0为常用应用，后面根据接口返回的数据再定
-    bool isRegularApp = moduleModel.module?.id == '0' ? true : false;
+    bool isRegularApp = moduleModel.id == '0' ? true : false;
     return GetBuilder<SCApplicationController>(builder: (state) {
       if (isRegularApp) {
-        list = state.regularModuleModel.applets;
+        list = state.regularModuleModel.menuServerList;
       } else {
-        list = moduleModel.applets;
+        list = moduleModel.menuServerList;
       }
       return StaggeredGridView.countBuilder(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -129,14 +130,14 @@ class SCApplicationCellItem extends StatelessWidget {
           itemCount: list?.length ?? 0,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            Applets applets = list![index];
+            MenuServerList serverList = list![index];
             return SCApplicationAppItem(
               isRegularApp: isRegularApp,
               section: section,
-              applets: applets,
-              appTapAction: (title) {
+              serverList: serverList,
+              appTapAction: (title, url) {
                 if (tapAction != null) {
-                  tapAction?.call(title);
+                  tapAction?.call(title, url);
                 }
               },
             );

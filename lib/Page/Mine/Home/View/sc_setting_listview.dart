@@ -1,8 +1,10 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_setting_cell.dart';
+import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 
 /// 设置listview
 
@@ -23,12 +25,12 @@ class SCSettingListView extends StatelessWidget {
         },
         separatorBuilder: (BuildContext context, int index) {
           bool isLine = true;
-          if (index == 6) {
+          if (index == 6 || index == 10) {
             isLine = false;
           }
           return getLine(isLine);
         },
-        itemCount: 11);
+        itemCount: 12);
   }
   
   Widget getCell(int index) {
@@ -79,11 +81,37 @@ class SCSettingListView extends StatelessWidget {
       return SCSettingCell(title: '底部导航栏设置', onTap: (){
 
       },);
+    } else if (index == 11) {
+      return logoutCell();
     } else {
       return const SizedBox(height: 100.0,);
     }
   }
-  
+
+  /// 退出登录
+  Widget logoutCell() {
+    return SizedBox(
+      width: double.infinity,
+      height: 60.0,
+      child: CupertinoButton(
+        padding: EdgeInsets.zero,
+        color: SCColors.color_FFFFFF,
+        borderRadius: BorderRadius.circular(0.0),
+        child: const Text(
+          "退出登录",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: SCFonts.f16,
+            fontWeight: FontWeight.w500,
+            color: SCColors.color_1B1C33),
+        ),
+        onPressed: () {
+          SCScaffoldManager.instance.logout();
+        }),
+    );
+  }
+
+  /// 分隔线
   Widget getLine(bool isLine) {
     if (isLine) {
       return line();

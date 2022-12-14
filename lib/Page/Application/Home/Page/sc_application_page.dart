@@ -54,9 +54,9 @@ class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeep
       color: SCColors.color_F2F3F5,
       child: SCApplicationListView(
           appList: state.moduleList,
-          itemTapAction: (title) {
+          itemTapAction: (title, url) {
             /// 应用icon点击跳转
-            itemDetail(title);
+            itemDetail(title, url);
           }
       ),
     );
@@ -64,12 +64,12 @@ class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeep
 
   /// 获取数据，接口没返回数据，暂时用本地测试数据
   loadData() {
-    //state.loadAppListData();
-    state.loadTestData();
+    state.loadAppListData();
+    //state.loadTestData();
   }
 
   /// 应用详情
-  itemDetail(String title) {
+  itemDetail(String title, String url) {
     if (title.contains('建信')) {// 建信租房
       String token = SCSpUtil.getString(SCKey.kJianXinRentingToken);
       String url = "${SCH5.jxRentingHomeUrl}?token=$token";
@@ -78,8 +78,8 @@ class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeep
       String defCommunityId = SCScaffoldManager.instance.user.communityId ?? "";
       String token = SCScaffoldManager.instance.user.token ?? "";
       String defRoomId = SCScaffoldManager.instance.user.spaceId.toString();
-      String url = "${SCConfig.getH5Url(SCH5.workOrderUrl)}?defCommunityId=$defCommunityId&Authorization=$token&defRoomId=$defRoomId&client=${SCDefaultValue.client}";
-      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : title, "url" : url});
+      String urlStr = "$url?defCommunityId=$defCommunityId&Authorization=$token&defRoomId=$defRoomId&client=${SCDefaultValue.client}";
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : title, "url" : urlStr});
     }
   }
 }

@@ -19,9 +19,9 @@ class SCQuickApplicationAlert extends StatelessWidget {
   }) : super(key: key);
 
   /// 数据源
-  final List<Applets> list;
+  final List<MenuServerList> list;
   /// 按钮点击事件
-  final Function(String id, String title)? tapAction;
+  final Function(int id, String title)? tapAction;
 
   @override
   Widget build(BuildContext context) {
@@ -72,10 +72,10 @@ class SCQuickApplicationAlert extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         if (index == list.length) {
-           return cell(id: '0',icon: SCAsset.iconHomeMoreApplication, name: '更多应用');
+           return cell(id: 0,icon: SCAsset.iconHomeMoreApplication, name: '更多应用');
         } else {
-           Applets applets = list[index];
-           return cell(id: applets.id ?? '', icon: applets.icon?.name ?? '', name: applets.name ?? '');
+          MenuServerList menuServerList = list[index];
+           return cell(id: menuServerList.id!, icon: menuServerList.icon?.name ?? '', name: menuServerList.name ?? '');
         }
       },
       staggeredTileBuilder: (int index) {
@@ -84,7 +84,7 @@ class SCQuickApplicationAlert extends StatelessWidget {
   }
 
   /// cell
-  Widget cell({required String id, required String icon, required String name}) {
+  Widget cell({required int id, required String icon, required String name}) {
     return GestureDetector(
       onTap: () {
         tapAction?.call(id, name);
