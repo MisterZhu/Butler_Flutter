@@ -81,9 +81,9 @@ class SCScaffoldManager {
     bool hasGuideKey = _preferences.containsKey(SCKey.isShowGuide);
 
     if (hasScaffoldKey) {
-      String? scaffolfJsonString =
+      String? scaffoldJsonString =
           _preferences.getString(SkinDefaultKey.scaffold_key);
-      var localJson = jsonDecode(scaffolfJsonString ?? '');
+      var localJson = jsonDecode(scaffoldJsonString ?? '');
       _scaffoldModel = SCScaffoldModel.fromJson(localJson);
     } else {
       _scaffoldModel = SCScaffoldModel.fromJson(scaffoldJson);

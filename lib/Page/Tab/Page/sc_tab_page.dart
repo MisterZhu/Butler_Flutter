@@ -97,7 +97,7 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
         tabBarNormalImageList: tabBarNormalImageList,
         tabBarSelectImageList: tabBarSelectImageList,
         defaultIndex: currentIndex,
-        onTap: (int index){
+        onTap: (int index) {
           currentIndex = index;
           pageController.jumpToPage(index);
         },
@@ -128,13 +128,22 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
   /// floating点击，弹出
   floatingAction() {
     List testList = [
-      {'icon':{'name':SCAsset.iconApplicationWorkOrder}, 'name': '报事报修', 'id': '1'},
-      {'icon':{'name':SCAsset.iconApplicationVehicleRegistration}, 'name': '车访登记', 'id': '2'}
+      {
+        'icon': {'name': SCAsset.iconApplicationWorkOrder},
+        'name': '报事报修',
+        'id': '1'
+      },
+      {
+        'icon': {'name': SCAsset.iconApplicationVehicleRegistration},
+        'name': '车访登记',
+        'id': '2'
+      }
     ];
     List<Applets> list = testList.map((e) => Applets.fromJson(e)).toList();
 
     SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
       SCDialogUtils().showCustomBottomDialog(
+          isDismissible: true,
           context: context,
           widget: SCQuickApplicationAlert(
             list: list,
