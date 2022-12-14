@@ -7,7 +7,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Network/sc_url.dart';
-import 'package:smartcommunity/Skin/Model/sc_user.dart';
+import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 
 class SCHttpManager {
@@ -37,7 +37,7 @@ class SCHttpManager {
         'client': SCDefaultValue.client
       };
       if (SCScaffoldManager.instance.isLogin == true) {
-        SCUser user = SCScaffoldManager.instance.getUserData();
+        SCUserModel user = SCScaffoldManager.instance.getUserData();
         _headers!['Authorization'] = user.token;
       }
 
@@ -59,8 +59,8 @@ class SCHttpManager {
             (X509Certificate cert, String host, int port) => true;
         return null;
       };
-      // _dio?.interceptors
-      //     .add(LogInterceptor(responseBody: true, requestBody: true)); // 日志打印
+      _dio?.interceptors
+          .add(LogInterceptor(responseBody: true, requestBody: true)); // 日志打印
       // print("options.headers-->" + options.headers.toString());
 
     }
@@ -231,6 +231,7 @@ class SCHttpManager {
           token = list[0];
           _headers!['Authorization'] = token;
           SCHttpManager.instance._baseOptions?.headers = _headers;
+          SCScaffoldManager.instance.user.token = token;
         }
       }
 
@@ -258,7 +259,6 @@ doResponse(Response response) {
 
 /// 处理dio请求异常
 doError(e) {
-  print('报错数据:$e');
   SCLoadingUtils.hide();
 
   /// 错误码

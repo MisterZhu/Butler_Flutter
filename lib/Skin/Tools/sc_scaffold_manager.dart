@@ -1,14 +1,12 @@
 /*皮肤管理工具*/
 
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
+import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../Constants/sc_default_value.dart';
 import '../../Constants/sc_key.dart';
@@ -19,7 +17,6 @@ import '../../Utils/Router/sc_router_helper.dart';
 import '../../Utils/sc_sp_utils.dart';
 import '../GetXController/sc_scaffold_controller.dart';
 import '../Model/sc_scaffold_model.dart';
-import '../Model/sc_user.dart';
 
 class SCScaffoldManager {
   factory SCScaffoldManager() => _instance;
@@ -30,7 +27,7 @@ class SCScaffoldManager {
 
   static late SCScaffoldModel _scaffoldModel;
 
-  static late SCUser _user;
+  static late SCUserModel _user;
 
   static bool _isLogin = false;
 
@@ -40,12 +37,12 @@ class SCScaffoldManager {
 
   SCScaffoldManager._internal() {
     _scaffoldModel = SCScaffoldModel();
-    _user = SCUser();
+    _user = SCUserModel();
   }
 
   SCScaffoldModel get scaffoldModel => _scaffoldModel;
 
-  SCUser get user => _user;
+  SCUserModel get user => _user;
 
   bool get isLogin => _isLogin;
 
@@ -60,7 +57,7 @@ class SCScaffoldManager {
   }
 
   /// set user
-  set user(SCUser user) {
+  set user(SCUserModel user) {
     // TODO: implement user=
     _user = user;
     cacheUserData(user.toJson());
@@ -78,24 +75,20 @@ class SCScaffoldManager {
     _getXTagList = [];
     _preferences = await SharedPreferences.getInstance();
 
-    bool hasScaffoldKey =
-    _preferences.containsKey(SkinDefaultKey.scaffold_key);
+    bool hasScaffoldKey = _preferences.containsKey(SkinDefaultKey.scaffold_key);
 
     /// 引导页key
     bool hasGuideKey = _preferences.containsKey(SCKey.isShowGuide);
 
     if (hasScaffoldKey) {
       String? scaffolfJsonString =
-      _preferences.getString(SkinDefaultKey.scaffold_key);
+          _preferences.getString(SkinDefaultKey.scaffold_key);
       var localJson = jsonDecode(scaffolfJsonString ?? '');
       _scaffoldModel = SCScaffoldModel.fromJson(localJson);
-      // log('皮肤数据:${SCScaffoldManager.instance.scaffoldModel.toJson()}');
-      // log('皮肤已设置完成');
     } else {
       _scaffoldModel = SCScaffoldModel.fromJson(scaffoldJson);
       _preferences.setString(
           SkinDefaultKey.scaffold_key, jsonEncode(scaffoldJson));
-      // log('设置皮肤完成');
     }
 
     final state = Get.find<SCCustomScaffoldController>();
@@ -113,20 +106,21 @@ class SCScaffoldManager {
   Future<String> getRouterBasePath() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     bool isShowPrivacy = preferences.getBool(SCKey.isShowPrivacyAlert) ?? true;
-    String basePath = SCRouterPath.tabPath;
+
+    String basePath = SCRouterPath.loginPath;
 
     bool contains = SCSpUtil.containsKey(SCKey.kIsLogin);
     if (contains == true) {
       _isLogin = SCSpUtil.getBool(SCKey.kIsLogin);
     }
-    //
-    // if (isShowPrivacy == true) {
-    //   basePath = SCRouterPath.basePrivacyPath;
-    // } else {
-    //   if (_isLogin) {
-    //     basePath = SCRouterPath.tabPath;
-    //   }
-    // }
+
+    if (isShowPrivacy == true) {
+      basePath = SCRouterPath.basePrivacyPath;
+    } else {
+      if (_isLogin) {
+        basePath = SCRouterPath.tabPath;
+      }
+    }
 
     return Future(() => basePath);
   }
@@ -165,7 +159,7 @@ class SCScaffoldManager {
 
   /*退出登录*/
   logout({bool? isAfterTip, Duration? tipDuration}) {
-    _user = SCUser();
+    _user = SCUserModel();
     _isLogin = false;
     SCSpUtil.remove(SCKey.kIsLogin);
     SCSpUtil.remove(SCKey.kUserData);
@@ -196,7 +190,7 @@ class SCScaffoldManager {
     bool contains = SCSpUtil.containsKey(SCKey.kUserData);
     if (contains == true) {
       var data = SCSpUtil.getMap(SCKey.kUserData);
-      _user = SCUser.fromJson(data);
+      _user = SCUserModel.fromJson(data);
       // print('本地数据：${_user.toJson()}');
       return _user;
     }
@@ -207,7 +201,7 @@ class SCScaffoldManager {
     bool isContainPage = false;
     int pageIndex = 0;
     String tag = "$pageName$pageIndex";
-    for (int i=0; i<getXTagList.length; i++) {
+    for (int i = 0; i < getXTagList.length; i++) {
       var json = getXTagList[i];
       String subPageName = json['pageName'];
       if (subPageName == pageName) {
@@ -217,21 +211,23 @@ class SCScaffoldManager {
       }
     }
 
-    if (isContainPage) {/// page已存在
+    if (isContainPage) {
+      /// page已存在
       var json = getXTagList[pageIndex];
       int index = json['index'];
       List tagList = json['tagList'];
-      index+=1;
+      index += 1;
       tag = "$pageName$index";
       tagList.add(tag);
       json['index'] = index;
       json['tagList'] = tagList;
       getXTagList[pageIndex] = json;
-    } else {/// page不存在
+    } else {
+      /// page不存在
       var json = {
-        "pageName" : pageName,
-        "index" : 0,
-        "tagList" : [tag]
+        "pageName": pageName,
+        "index": 0,
+        "tagList": [tag]
       };
       getXTagList.add(json);
     }
@@ -243,7 +239,7 @@ class SCScaffoldManager {
     bool success = false;
     bool isContainPage = false;
     int pageIndex = 0;
-    for (int i=0; i<getXTagList.length; i++) {
+    for (int i = 0; i < getXTagList.length; i++) {
       var json = getXTagList[i];
       String subPageName = json['pageName'];
       if (subPageName == pageName) {

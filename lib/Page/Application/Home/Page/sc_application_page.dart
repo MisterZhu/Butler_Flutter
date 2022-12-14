@@ -75,10 +75,8 @@ class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeep
       String url = "${SCH5.jxRentingHomeUrl}?token=$token";
       SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : title, "url" : url});
     } else {
-      String defCommunityId = SCScaffoldManager.instance.user.communityId ?? "";
       String token = SCScaffoldManager.instance.user.token ?? "";
-      String defRoomId = SCScaffoldManager.instance.user.spaceId.toString();
-      String urlStr = "$url?defCommunityId=$defCommunityId&Authorization=$token&defRoomId=$defRoomId&client=${SCDefaultValue.client}";
+      String urlStr = "$url?&Authorization=$token&client=${SCDefaultValue.client}";
       SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : title, "url" : urlStr});
     }
   }

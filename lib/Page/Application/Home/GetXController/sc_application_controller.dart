@@ -1,12 +1,10 @@
 
-import 'dart:developer';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import '../../../../Constants/sc_asset.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
-import '../../../../Skin/Model/sc_user.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../Model/sc_application_module_model.dart';
 
@@ -82,8 +80,6 @@ class SCApplicationController extends GetxController {
           updateModuleList(list: dataList);
         },
         failure: (value) {
-          log('appList失败===$value');
-
         });
   }
 
