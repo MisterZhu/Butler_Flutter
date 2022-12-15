@@ -97,7 +97,7 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
         tabBarNormalImageList: tabBarNormalImageList,
         tabBarSelectImageList: tabBarSelectImageList,
         defaultIndex: currentIndex,
-        onTap: (int index){
+        onTap: (int index) {
           currentIndex = index;
           pageController.jumpToPage(index);
         },
@@ -135,6 +135,7 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
 
     SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
       SCDialogUtils().showCustomBottomDialog(
+          isDismissible: true,
           context: context,
           widget: SCQuickApplicationAlert(
             list: list,

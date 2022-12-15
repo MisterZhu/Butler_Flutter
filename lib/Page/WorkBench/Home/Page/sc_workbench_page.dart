@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/WorkBench/sc_workbench_view.dart';
+import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 
 import '../../../../Utils/sc_utils.dart';
 import '../Model/sc_home_task_model.dart';
@@ -15,6 +18,9 @@ class SCWorkBenchPage extends StatefulWidget {
 
 class SCWorkBenchPageState extends State<SCWorkBenchPage>
     with SingleTickerProviderStateMixin {
+  
+  late SCWorkBenchController state;
+  
   /// tab-title
   List<String> tabTitleList = ['待办', '处理中'];
 
@@ -35,6 +41,8 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   @override
   initState() {
     super.initState();
+    String pageName = (SCWorkBenchPage).toString();
+    state = Get.put(SCWorkBenchController(), tag: SCScaffoldManager.instance.getXControllerTag(pageName));
     tabController = TabController(length: tabTitleList.length, vsync: this);
   }
 
