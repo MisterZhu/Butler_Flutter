@@ -55,7 +55,7 @@ class SCRouterHelper {
       }
     }
     if (isNeedLogin == true && SCScaffoldManager.instance.isLogin == false) {
-      presentLoginPage();
+      SCRouterHelper.pathOffAllPage(SCRouterPath.loginPath, null);
       return null;
     }
 

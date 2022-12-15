@@ -161,6 +161,7 @@ class SCMineHeaderItem extends StatelessWidget {
       onTap: () {
         avatarTapAction?.call();
       },
+      behavior: HitTestBehavior.opaque,
       child: Padding(
         padding: const EdgeInsets.only(left: 16.0, top: 6.0),
         child: Container(
@@ -205,6 +206,7 @@ class SCMineHeaderItem extends StatelessWidget {
         onTap: () {
           avatarTapAction?.call();
         },
+        behavior: HitTestBehavior.opaque,
         child: Text(
           nickname,
           textAlign: TextAlign.left,
@@ -224,6 +226,7 @@ class SCMineHeaderItem extends StatelessWidget {
       onTap: () {
         switchTapAction?.call();
       },
+      behavior: HitTestBehavior.opaque,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         height: 24.0,
@@ -273,6 +276,7 @@ class SCMineHeaderItem extends StatelessWidget {
         onTap: () {
           userInfoTapAction?.call();
         },
+        behavior: HitTestBehavior.opaque,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,

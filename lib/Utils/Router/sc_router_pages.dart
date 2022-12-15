@@ -6,11 +6,12 @@ import 'package:smartcommunity/Page/Login/Home/Page/sc_login_page.dart';
 import 'package:smartcommunity/Page/Login/Privacy/Page/sc_privacy_alert_page.dart';
 import 'package:smartcommunity/Page/Mine/Home/Page/sc_mine_page.dart';
 import 'package:smartcommunity/Page/Mine/Home/Page/sc_setting_page.dart';
-import 'package:smartcommunity/Page/Mine/Home/Page/sc_switch_identity_page.dart';
+import 'package:smartcommunity/Page/Mine/Home/Page/sc_switch_tenant_page.dart';
 import 'package:smartcommunity/Page/Tab/Page/sc_tab_page.dart';
 import 'package:smartcommunity/Page/Webview/Page/sc_webview_page.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_detail_page.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_page.dart';
+import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
 import 'sc_router_path.dart';
 
 /// 路由-pages
@@ -40,7 +41,10 @@ class SCRouterPages {
     /*设置*/
     GetPage(name: SCRouterPath.settingPath, page: () => SCSettingPage()),
     /*切换身份*/
-    GetPage(name: SCRouterPath.switchIdentityPath, page: () => SCSwitchIdentityPage()),
+    GetPage(name: SCRouterPath.switchIdentityPath, page: () => SCSwitchTenantPage()),
+    /*个人资料*/
+    GetPage(name: SCRouterPath.personalInfoPath, page: () => SCPersonalInfoPage()),
+
   ];
 
   /*根据code使用路由*/

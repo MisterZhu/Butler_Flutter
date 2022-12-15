@@ -40,12 +40,14 @@ class SCMinePageState extends State<SCMinePage> {
             SCRouterHelper.pathPage(SCRouterPath.settingPath, null);
           },
           avatarTapAction: () {
-            SCRouterHelper.pathPage(SCRouterPath.loginPath, null);
+            SCRouterHelper.pathPage(SCRouterPath.personalInfoPath, null);
           },
           switchTapAction: () {
             SCRouterHelper.pathPage(SCRouterPath.switchIdentityPath, null);
           },
-          userInfoTapAction: () {},
+          userInfoTapAction: () {
+            SCRouterHelper.pathPage(SCRouterPath.personalInfoPath, null);
+          },
         ),
       ),
     );
