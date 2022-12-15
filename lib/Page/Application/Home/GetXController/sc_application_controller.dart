@@ -71,6 +71,7 @@ class SCApplicationController extends GetxController {
 
   /// 获取应用列表数据
   loadAppListData() {
+    SCLoadingUtils.show();
     SCHttpManager.instance.get(
         url: SCUrl.kApplicationListUrl,
         params: null,

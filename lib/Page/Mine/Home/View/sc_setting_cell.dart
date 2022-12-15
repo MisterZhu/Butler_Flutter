@@ -172,7 +172,24 @@ class SCSettingCell extends StatelessWidget {
   }
 
   Widget imageWidget() {
-    return Image.asset(rightImage, width: 40.0, height: 40.0, fit: BoxFit.cover,);
+    return Container(
+        width: 34.0,
+        height: 34.0,
+        decoration: BoxDecoration(
+            color: SCColors.color_F2F3F5,
+            borderRadius: BorderRadius.circular(17.0),
+            border: Border.all(color: SCColors.color_FFFFFF, width: 1)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(17.0),
+          child: SCImage(
+            url: rightImage,
+            placeholder: SCAsset.iconUserDefault,
+            fit: BoxFit.cover,
+            width: 34.0,
+            height: 34.0,
+          ),
+        )
+    );
   }
   
   /// 箭头icon

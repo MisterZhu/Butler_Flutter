@@ -13,7 +13,7 @@ class SCMineHeaderItem extends StatelessWidget {
     Key? key,
     this.avatar = SCAsset.iconMineUserAvatarDefault,
     this.nickname = '',
-    this.identity = '',
+    this.space = '',
     this.qrCodeTapAction,
     this.settingTapAction,
     this.userInfoTapAction,
@@ -27,8 +27,8 @@ class SCMineHeaderItem extends StatelessWidget {
   /// 昵称
   final String nickname;
 
-  /// 身份
-  final String identity;
+  /// 空间
+  final String space;
 
   /// 点击二维码
   final Function? qrCodeTapAction;
@@ -171,18 +171,22 @@ class SCMineHeaderItem extends StatelessWidget {
               color: SCColors.color_F2F3F5,
               borderRadius: BorderRadius.circular(21.0),
               border: Border.all(color: SCColors.color_FFFFFF, width: 1)),
-          child: Image.asset(
-            avatar,
-            fit: BoxFit.cover,
-            width: 42.0,
-            height: 42.0,
-          ),
-        ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(21.0),
+            child: SCImage(
+              url: avatar,
+              placeholder: SCAsset.iconUserDefault,
+              fit: BoxFit.cover,
+              width: 42.0,
+              height: 42.0,
+            ),
+          )
+        )
       ),
     );
   }
 
-  /// 名字、身份
+  /// 名字、空间
   Widget identityItem() {
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints){
       return Column(
@@ -242,7 +246,7 @@ class SCMineHeaderItem extends StatelessWidget {
             ConstrainedBox(
               constraints: BoxConstraints(maxWidth: maxWidth - 60),
               child: Text(
-                identity,
+                space,
                 textAlign: TextAlign.left,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

@@ -5,9 +5,14 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 /// 工作台-切换空间
 
 class SCWorkBenchSwitchSpaceView extends StatelessWidget {
-  const SCWorkBenchSwitchSpaceView({Key? key, this.onTap, this.headerTap})
+  const SCWorkBenchSwitchSpaceView({Key? key, this.avatar = SCAsset.iconUserDefault, this.space = '', this.onTap, this.headerTap})
       : super(key: key);
 
+  /// 头像
+  final String avatar;
+
+  /// 空间
+  final String space;
   /// 切换空间
   final Function? onTap;
 
@@ -41,21 +46,34 @@ class SCWorkBenchSwitchSpaceView extends StatelessWidget {
       onTap: () {
         headerTap?.call();
       },
-      child: Image.asset(
-        SCAsset.iconUserDefault,
-        width: 32.0,
-        height: 32.0,
-      ),
+      child: Container(
+          width: 32.0,
+          height: 32.0,
+          decoration: BoxDecoration(
+              color: SCColors.color_F2F3F5,
+              borderRadius: BorderRadius.circular(16.0),
+              border: Border.all(color: SCColors.color_FFFFFF, width: 0.5)),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16.0),
+            child: SCImage(
+              url: avatar,
+              placeholder: SCAsset.iconUserDefault,
+              fit: BoxFit.cover,
+              width: 42.0,
+              height: 42.0,
+            ),
+          )
+      )
     );
   }
 
   /// 空间名称
   Widget titleItem() {
-    String title = '慧享生活馆';
     int maxLength = 10;
-    if (title.length > maxLength) {
+    String title = space;
+    if (space.length > maxLength) {
       /// 最多展示10个字
-      title = '${title.substring(0, maxLength)}...';
+      title = '${space.substring(0, maxLength)}...';
     }
     return GestureDetector(
       onTap: () {

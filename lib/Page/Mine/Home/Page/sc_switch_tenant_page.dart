@@ -30,12 +30,13 @@ class SCSwitchTenantPageState extends State<SCSwitchTenantPage> {
 
   /// body
   Widget body() {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: SCColors.color_F2F3F5,
-      child: SCSwitchTenantListView(),
-    );
+    return GetBuilder<SCSwitchTenantController>(builder: (state) {
+      return Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: SCColors.color_F2F3F5,
+        child: SCSwitchTenantListView(),
+      );
+    });
   }
-
 }

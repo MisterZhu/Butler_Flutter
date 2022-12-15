@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_setting_cell.dart';
-import 'package:smartcommunity/skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/utils/Permission/sc_permission_utils.dart';
 import 'package:smartcommunity/utils/Upload/sc_upload_utils.dart';
+import '../../../../Network/sc_config.dart';
 import '../../../../constants/sc_asset.dart';
+import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 
 /// 个人资料listview
 
@@ -39,14 +41,11 @@ class SCPersonalInfoListView extends StatelessWidget {
 
   /// cell
   Widget getCell(int index, BuildContext context) {
-    /// 头像
-    String userPicUrl = userHeadPicUrl ?? SCAsset.iconUserDefault;
-
     if (index == 0) {
       return SCSettingCell(
         title: '头像',
         cellType: SCSettingCellType.imageArrowType,
-        rightImage: userPicUrl,
+        rightImage: SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri?.fileKey ?? ''),
         onTap: () {
           selectHeadPicAction();
         },
@@ -54,7 +53,7 @@ class SCPersonalInfoListView extends StatelessWidget {
     } else if (index == 1) {
       return SCSettingCell(
         title: '姓名',
-        content: SCScaffoldManager.instance.user.nickName,
+        content: SCScaffoldManager.instance.user.userName,
         cellType: SCSettingCellType.contentType,
       );
     } else if (index == 2) {
@@ -72,7 +71,7 @@ class SCPersonalInfoListView extends StatelessWidget {
         content: '请选择',
         cellType: SCSettingCellType.contentArrowType,
         onTap: () {
-          selectBirthdayAction();
+          selectBirthdayAction(context);
         },
       );
     } else if (index == 4) {
@@ -114,18 +113,19 @@ class SCPersonalInfoListView extends StatelessWidget {
 
   /// gridView
   Widget gridView() {
+    List<String> list = SCScaffoldManager.instance.user.roleNames ?? [];
     return SizedBox(
-      width: 170.0,
+      width: 160.0,
       child: StaggeredGridView.countBuilder(
-          padding: EdgeInsets.zero,
+          padding: const EdgeInsets.only(top: 4.0),
           mainAxisSpacing: 4,
           crossAxisSpacing: 4,
           crossAxisCount: 2,
           shrinkWrap: true,
-          itemCount: 4,
+          itemCount: list.length,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            return cell();
+            return cell(list[index]);
           },
           staggeredTileBuilder: (int index) {
             return const StaggeredTile.fit(1);
@@ -133,23 +133,23 @@ class SCPersonalInfoListView extends StatelessWidget {
     );
   }
 
-  Widget cell() {
+  Widget cell(String name) {
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
-      width: 72.0,
+      width: 70.0,
       height: 22.0,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(2.0),
           color: SCColors.color_FFFFFF,
           border: Border.all(color: SCColors.color_8D8E99, width: 0.5)
       ),
-      child: const Text(
-        '集团管理员',
+      child: Text(
+        name,
         textAlign: TextAlign.center,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
+        style: const TextStyle(
             fontSize: SCFonts.f12,
             fontWeight: FontWeight.w400,
             color: SCColors.color_5E5F66
@@ -206,15 +206,13 @@ class SCPersonalInfoListView extends StatelessWidget {
     //     });
   }
 
-
-
   /// 选择出生日期
-  selectBirthdayAction() {
-    // SCPickerUtils pickerUtils = SCPickerUtils();
-    // pickerUtils.completionHandler = (selectedValues, selecteds) {
-    //   print('数据11:${selectedValues}');
-    //   print('数据22:${selecteds}');
-    // };
-    //pickerUtils.showDatePicker(dateType: PickerDateTimeType.kYMD, columnFlex: [1, 1, 1]);
+  selectBirthdayAction(BuildContext context) {
+    SCPickerUtils pickerUtils = SCPickerUtils();
+    pickerUtils.completionHandler = (selectedValues, selecteds) {
+      print('数据11:${selectedValues}');
+      print('数据22:${selecteds}');
+    };
+    pickerUtils.showDatePicker(context: context, dateType: PickerDateTimeType.kYMD, columnFlex: [1, 1, 1]);
   }
 }

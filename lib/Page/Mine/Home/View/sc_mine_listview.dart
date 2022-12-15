@@ -5,6 +5,8 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_mine_header_item.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_setting_cell.dart';
+import '../../../../Network/sc_config.dart';
+import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 
 /// 我的listview
 
@@ -43,8 +45,9 @@ class SCMineListView extends StatelessWidget {
     return Column(
       children: [
         SCMineHeaderItem(
-          nickname: '李大明',
-          identity: '慧享科技公司',
+          avatar: SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri?.fileKey ?? ''),
+          nickname: SCScaffoldManager.instance.user.userName ?? '',
+          space: SCScaffoldManager.instance.user.tenantName ?? '',
           avatarTapAction: () {
           avatarTapAction?.call();
         }, qrCodeTapAction: () {

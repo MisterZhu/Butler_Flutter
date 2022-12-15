@@ -7,7 +7,7 @@ import 'dart:convert';
 /// roleNames : ["研发","账号管理员","搜索配置员"]
 /// userName : ""
 /// nickName : ""
-/// headPicUri : {}
+/// headPicUri : {"fileKey":"eb1e1ad8-85af-42d0-ba3c-21229be19009/user_head_pic/info/UserTenantE/113475827062205/1663923824709103.jpg","name":null,"suffix":null,"size":null,"type":1}
 /// tenantId : "eb1e1ad8-85af-42d0-ba3c-21229be19009"
 /// tenantName : "海滨租户"
 /// orgIds : [894]
@@ -31,9 +31,9 @@ class SCUserModel {
       List<String>? roleIds, 
       List<String>? roleNames, 
       String? userName, 
-      String? nickName, 
-      dynamic headPicUri, 
-      String? tenantId, 
+      String? nickName,
+      HeadPicUri? headPicUri,
+      String? tenantId,
       String? tenantName, 
       List<int>? orgIds, 
       String? mobileNum, 
@@ -75,7 +75,7 @@ class SCUserModel {
     _roleNames = json['roleNames'] != null ? json['roleNames'].cast<String>() : [];
     _userName = json['userName'];
     _nickName = json['nickName'];
-    _headPicUri = json['headPicUri'];
+    _headPicUri = json['headPicUri'] != null ? HeadPicUri.fromJson(json['headPicUri']) : null;
     _tenantId = json['tenantId'];
     _tenantName = json['tenantName'];
     _orgIds = json['orgIds'] != null ? json['orgIds'].cast<int>() : [];
@@ -101,7 +101,7 @@ class SCUserModel {
   List<String>? _roleNames;
   String? _userName;
   String? _nickName;
-  dynamic _headPicUri;
+  HeadPicUri? _headPicUri;
   String? _tenantId;
   String? _tenantName;
   List<int>? _orgIds;
@@ -121,7 +121,7 @@ SCUserModel copyWith({  String? email,
   List<String>? roleNames,
   String? userName,
   String? nickName,
-  dynamic headPicUri,
+  HeadPicUri? headPicUri,
   String? tenantId,
   String? tenantName,
   List<int>? orgIds,
@@ -162,7 +162,7 @@ SCUserModel copyWith({  String? email,
   List<String>? get roleNames => _roleNames;
   String? get userName => _userName;
   String? get nickName => _nickName;
-  dynamic get headPicUri => _headPicUri;
+  HeadPicUri? get headPicUri => _headPicUri;
   String? get tenantId => _tenantId;
   String? get tenantName => _tenantName;
   List<int>? get orgIds => _orgIds;
@@ -185,7 +185,9 @@ SCUserModel copyWith({  String? email,
     map['roleNames'] = _roleNames;
     map['userName'] = _userName;
     map['nickName'] = _nickName;
-    map['headPicUri'] = _headPicUri;
+    if (_headPicUri != null) {
+      map['headPicUri'] = _headPicUri?.toJson();
+    }
     map['tenantId'] = _tenantId;
     map['tenantName'] = _tenantName;
     map['orgIds'] = _orgIds;
@@ -207,4 +209,73 @@ SCUserModel copyWith({  String? email,
     _token = value;
   }
 
+}
+
+/// fileKey : "eb1e1ad8-85af-42d0-ba3c-21229be19009/user_head_pic/info/UserTenantE/113475827062205/1663923824709103.jpg"
+/// name : null
+/// suffix : null
+/// size : null
+/// type : 1
+
+class HeadPicUri {
+  HeadPicUri({
+    String? fileKey,
+    dynamic name,
+    dynamic suffix,
+    dynamic size,
+    int? type,}) {
+    _fileKey = fileKey;
+    _name = name;
+    _suffix = suffix;
+    _size = size;
+    _type = type;
+  }
+
+  HeadPicUri.fromJson(dynamic json) {
+    _fileKey = json['fileKey'];
+    _name = json['name'];
+    _suffix = json['suffix'];
+    _size = json['size'];
+    _type = json['type'];
+  }
+
+  String? _fileKey;
+  dynamic _name;
+  dynamic _suffix;
+  dynamic _size;
+  int? _type;
+
+  HeadPicUri copyWith({ String? fileKey,
+    dynamic name,
+    dynamic suffix,
+    dynamic size,
+    int? type,
+  }) =>
+      HeadPicUri(
+        fileKey: fileKey ?? _fileKey,
+        name: name ?? _name,
+        suffix: suffix ?? _suffix,
+        size: size ?? _size,
+        type: type ?? _type,
+      );
+
+  String? get fileKey => _fileKey;
+
+  dynamic get name => _name;
+
+  dynamic get suffix => _suffix;
+
+  dynamic get size => _size;
+
+  int? get type => _type;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['fileKey'] = _fileKey;
+    map['name'] = _name;
+    map['suffix'] = _suffix;
+    map['size'] = _size;
+    map['type'] = _type;
+    return map;
+  }
 }

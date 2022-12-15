@@ -63,7 +63,7 @@ class SCScaffoldManager {
     cacheUserData(user.toJson());
   }
 
-  /// set user
+  /// set login
   set isLogin(bool isLogin) {
     // TODO: implement user=
     _isLogin = isLogin;

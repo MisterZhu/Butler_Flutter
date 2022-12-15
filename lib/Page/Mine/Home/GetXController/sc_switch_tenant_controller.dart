@@ -1,8 +1,14 @@
 
 import 'dart:developer';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
+import '../../../../Skin/Tools/sc_scaffold_manager.dart';
+import '../../../../Utils/Router/sc_router_helper.dart';
 import '../Model/sc_tenant_list_model.dart';
 
 class SCSwitchTenantController extends GetxController {
@@ -29,8 +35,9 @@ class SCSwitchTenantController extends GetxController {
 
   /// 获取租户列表数据
   loadTenantListData() {
+    SCLoadingUtils.show();
     SCHttpManager.instance.get(
-        url: SCUrl.kApplicationListUrl,
+        url: SCUrl.kSwitchTenantUrl,
         params: null,
         success: (value) {
           dataList = List<SCTenantListModel>.from(value.map((e) => SCTenantListModel.fromJson(e)).toList());
@@ -44,21 +51,24 @@ class SCSwitchTenantController extends GetxController {
 
   /// 切换租户
   switchTenant() {
+    SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kApplicationListUrl,
+        url: SCUrl.kSwitchTenantUrl,
         params: {
-          "externalId": externalId,
-          "externalUserType": externalUserType,
           "tenantId": tenantId,
           "userId": userId
         },
         success: (value) {
-
-
+          SCUserModel model = SCUserModel.fromJson(value);
+          SCScaffoldManager.instance.user = model;
+          SCRouterHelper.back(null);
+          Get.forceAppUpdate();
         },
         failure: (value) {
-          log('appList失败===$value');
-
+          if (value['message'] != null) {
+            String message = value['message'];
+            SCToast.showTip(message);
+          }
         });
   }
 
