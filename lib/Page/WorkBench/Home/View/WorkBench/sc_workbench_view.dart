@@ -17,6 +17,7 @@ class SCWorkBenchView extends StatelessWidget {
       required this.tabController,
       required this.tabTitleList,
       required this.classificationList,
+      this.tagAction,
       this.menuTap,})
       : super(key: key);
 
@@ -34,6 +35,9 @@ class SCWorkBenchView extends StatelessWidget {
 
   /// 点击菜单
   final Function? menuTap;
+
+  /// 点击标签
+  final Function(int index)? tagAction;
 
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -79,6 +83,9 @@ class SCWorkBenchView extends StatelessWidget {
       tabTitleList: tabTitleList,
       classificationList: classificationList,
       tabController: tabController,
+      tagAction: (index) {
+        tagAction?.call(index);
+      },
       tagMenuAction: () {
         menuTap?.call();
       },

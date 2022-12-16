@@ -223,7 +223,6 @@ class SCHttpManager {
   checkLogin({required String url, dynamic headers, dynamic data}) {
     if (url == SCUrl.kPhoneCodeLoginUrl) {
       String token = '';
-
       var list = headers['authorization'];
       if (list != null) {
         int count = list.length;

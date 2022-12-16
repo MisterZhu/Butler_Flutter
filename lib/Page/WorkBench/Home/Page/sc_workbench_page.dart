@@ -67,6 +67,9 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
           tabTitleList: tabTitleList,
           classificationList: classificationList,
           tabController: tabController,
+          tagAction: (index) {
+
+          },
           menuTap: () {
             showTaskAlert();
           },

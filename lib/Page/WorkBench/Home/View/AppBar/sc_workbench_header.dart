@@ -124,7 +124,6 @@ class SCWorkBenchHeader extends StatelessWidget {
             tabTitleList: tabTitleList,
             classificationList: classificationList,
             currentTabIndex: 0,
-            currentClassificationIndex: 0,
             menuTap: () {
               tagMenuAction?.call();
             },

@@ -1,19 +1,18 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 
 /// 导航栏
 
-class SCWorkBenchTabBar extends StatelessWidget {
-  const SCWorkBenchTabBar(
-      {Key? key,
-      required this.tabController,
-      required this.tabTitleList,
-      required this.classificationList,
-      required this.currentTabIndex,
-      required this.currentClassificationIndex,
-      this.menuTap,
-      this.tagTap})
+class SCWorkBenchTabBar extends StatefulWidget {
+  SCWorkBenchTabBar({Key? key,
+    required this.tabController,
+    required this.tabTitleList,
+    required this.classificationList,
+    required this.currentTabIndex,
+    this.menuTap,
+    this.tagTap})
       : super(key: key);
 
   /// tabController
@@ -28,14 +27,20 @@ class SCWorkBenchTabBar extends StatelessWidget {
   /// tab-index
   final int currentTabIndex;
 
-  /// 分类-index
-  final int currentClassificationIndex;
-
   /// 点击菜单
   final Function? menuTap;
 
   /// 标签点击
   final Function(int index)? tagTap;
+
+  @override
+  SCWorkBenchTabBarState createState() => SCWorkBenchTabBarState();
+
+}
+  class SCWorkBenchTabBarState extends State<SCWorkBenchTabBar> {
+
+  /// 分类-index
+  int currentClassificationIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +62,7 @@ class SCWorkBenchTabBar extends StatelessWidget {
   /// tabBar
   Widget tabBar() {
     List<Tab> tabItemList = [];
-    for (String title in tabTitleList) {
+    for (String title in widget.tabTitleList) {
       tabItemList.add(Tab(
         text: title,
       ));
@@ -72,7 +77,7 @@ class SCWorkBenchTabBar extends StatelessWidget {
                   highlightColor: Colors.transparent),
               child: TabBar(
                 padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                controller: tabController,
+                controller: widget.tabController,
                 labelPadding: const EdgeInsets.symmetric(horizontal: 12.0),
                 isScrollable: true,
                 indicatorSize: TabBarIndicatorSize.label,
@@ -111,7 +116,7 @@ class SCWorkBenchTabBar extends StatelessWidget {
                   width: 10.0,
                 );
               },
-              itemCount: classificationList.length),
+              itemCount: widget.classificationList.length),
           menuItem()
         ],
       ),
@@ -188,7 +193,10 @@ class SCWorkBenchTabBar extends StatelessWidget {
     }
     return GestureDetector(
       onTap: () {
-        tagTap?.call(index);
+        setState(() {
+          currentClassificationIndex = index;
+        });
+        widget.tagTap?.call(index);
       },
       child: Container(
         height: 26.0,
@@ -196,7 +204,7 @@ class SCWorkBenchTabBar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14.0),
         decoration: decoration,
         child: Text(
-          classificationList[index],
+          widget.classificationList[index],
           style: TextStyle(
               fontSize: SCFonts.f14,
               fontWeight: FontWeight.w400,
@@ -208,6 +216,6 @@ class SCWorkBenchTabBar extends StatelessWidget {
 
   /// 点击菜单
   menuAction() {
-    menuTap?.call();
+    widget.menuTap?.call();
   }
 }

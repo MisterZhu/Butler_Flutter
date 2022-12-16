@@ -17,14 +17,14 @@ class SCWorkBenchController extends GetxController {
   /// 获取用户信息
   getUserInfo() {
     if (SCScaffoldManager.instance.isLogin) {
+      String token = SCScaffoldManager.instance.user.token ?? '';
       var params = {
         'id' : SCScaffoldManager.instance.user.id
       };
       SCHttpManager.instance.get(url: SCUrl.kUserInfoUrl, params: params, success: (value){
-        String token = SCScaffoldManager.instance.user.token ?? '';
+        value['token'] = token;
         SCUserModel userModel = SCUserModel.fromJson(value);
         SCScaffoldManager.instance.user = userModel;
-        SCScaffoldManager.instance.user.token = token;
         Get.forceAppUpdate();
       });
     }
