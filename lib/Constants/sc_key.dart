@@ -6,8 +6,6 @@ class SCKey {
   static const String isShowPrivacyAlert = 'SCIsShowPrivacyAlert';
   /// 用户信息key
   static const String kUserData = 'kUserData';
-  /// 租户信息key
-  static const String kTenantInfoData = 'kTenantInfoData';
   /// 用户是否已登录key
   static const String kIsLogin = 'kIsLogin';
   /// 是否显示扫码权限提示弹窗
