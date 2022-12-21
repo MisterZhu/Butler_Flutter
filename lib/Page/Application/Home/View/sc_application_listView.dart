@@ -1,7 +1,9 @@
 
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:smartcommunity/Page/Application/Home/View/sc_application_cell_item.dart';
+import '../GetXController/sc_application_controller.dart';
 import '../Model/sc_application_module_model.dart';
 
 /// 应用列表
@@ -26,15 +28,18 @@ class SCApplicationListView extends StatelessWidget {
         padding: EdgeInsets.zero,
         itemBuilder: (BuildContext context, int index) {
           SCApplicationModuleModel moduleModel = appList![index];
-          return SCApplicationCellItem(
-            section: index,
-            moduleModel: moduleModel,
-            tapAction: (title, url){
-              if (itemTapAction != null) {
-                itemTapAction?.call(title, url);
-              }
-            },
-          );
+          return GetBuilder<SCApplicationController>(builder: (state) {
+            return SCApplicationCellItem(
+              state: state,
+              section: index,
+              moduleModel: moduleModel,
+              tapAction: (title, url) {
+                if (itemTapAction != null) {
+                  itemTapAction?.call(title, url);
+                }
+              },
+            );
+          });
         },
         separatorBuilder: (BuildContext context, int index) {
           return Container(height: 8,);

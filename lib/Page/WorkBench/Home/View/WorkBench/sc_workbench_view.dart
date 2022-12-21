@@ -6,6 +6,7 @@ import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_wor
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_listview.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
 
+import '../../GetXController/sc_workbench_controller.dart';
 import '../AppBar/sc_workbench_header.dart';
 
 /// 工作台-view
@@ -13,6 +14,7 @@ import '../AppBar/sc_workbench_header.dart';
 class SCWorkBenchView extends StatelessWidget {
   SCWorkBenchView(
       {Key? key,
+      required this.state,
       required this.height,
       required this.tabController,
       required this.tabTitleList,
@@ -20,6 +22,8 @@ class SCWorkBenchView extends StatelessWidget {
       this.tagAction,
       this.menuTap,})
       : super(key: key);
+
+  final SCWorkBenchController state;
 
   /// 组件高度
   final double height;
@@ -79,6 +83,7 @@ class SCWorkBenchView extends StatelessWidget {
   /// header
   Widget headerView(double height, BuildContext context) {
     return SCWorkBenchHeader(
+      state: state,
       height: height,
       tabTitleList: tabTitleList,
       classificationList: classificationList,
@@ -99,11 +104,11 @@ class SCWorkBenchView extends StatelessWidget {
   Widget pageView(double height) {
     Widget tabBarView = SizedBox(
       height: height,
-      child: TabBarView(controller: tabController, children: [
-        const SCWorkBenchListView(),
-        Container(
-          color: Colors.white,
-        )
+      child: TabBarView(
+        controller: tabController,
+        children: [
+          SCWorkBenchListView(dataList: state.dataList,),
+          Container(color: Colors.white,)
       ]),
     );
     return tabBarView;

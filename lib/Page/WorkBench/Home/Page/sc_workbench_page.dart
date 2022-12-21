@@ -38,11 +38,17 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   /// tabController
   late TabController tabController;
 
+  String tag = '';
+
   @override
   initState() {
     super.initState();
     String pageName = (SCWorkBenchPage).toString();
-    state = Get.put(SCWorkBenchController(), tag: SCScaffoldManager.instance.getXControllerTag(pageName));
+    tag = SCScaffoldManager.instance.getXControllerTag(pageName);
+
+    state = Get.put(SCWorkBenchController(), tag: tag);
+    state.tag = tag;
+    state.pageName = pageName;
     tabController = TabController(length: tabTitleList.length, vsync: this);
   }
 
@@ -62,18 +68,24 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
       color: SCColors.color_F2F3F5,
       child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-        return SCWorkBenchView(
-          height: constraints.maxHeight,
-          tabTitleList: tabTitleList,
-          classificationList: classificationList,
-          tabController: tabController,
-          tagAction: (index) {
+        return GetBuilder<SCWorkBenchController>(
+            tag: tag,
+            init: state,
+            builder: (value) {
+          return SCWorkBenchView(
+            state: state,
+            height: constraints.maxHeight,
+            tabTitleList: tabTitleList,
+            classificationList: classificationList,
+            tabController: tabController,
+            tagAction: (index) {
 
-          },
-          menuTap: () {
-            showTaskAlert();
-          },
-        );
+            },
+            menuTap: () {
+              showTaskAlert();
+            },
+          );
+        });
       }),
     );
   }

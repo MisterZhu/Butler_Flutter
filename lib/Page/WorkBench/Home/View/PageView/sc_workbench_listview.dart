@@ -5,13 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_empty_view.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_time_view.dart';
+
+import '../../Model/sc_work_order_model.dart';
 
 /// 工作台-listView
 
 class SCWorkBenchListView extends StatefulWidget {
   const SCWorkBenchListView(
       {Key? key,
+      required this.dataList,
       this.detailAction,
       this.moreAction,
       this.likeAction,
@@ -19,20 +23,22 @@ class SCWorkBenchListView extends StatefulWidget {
       this.acceptAction})
       : super(key: key);
 
+  final List<SCWorkOrderModel> dataList;
+
   /// 详情
-  final Function(int index)? detailAction;
+  final Function(String orderId)? detailAction;
 
   /// 更多
-  final Function(int index)? moreAction;
+  final Function(String orderId)? moreAction;
 
   /// 收藏
-  final Function(int index)? likeAction;
+  final Function(String orderId)? likeAction;
 
   /// 打电话
-  final Function(int index)? callAction;
+  final Function(String mobile)? callAction;
 
   /// 立即接单
-  final Function(int index)? acceptAction;
+  final Function(String orderId)? acceptAction;
 
   @override
   SCWorkBenchListViewState createState() => SCWorkBenchListViewState();
@@ -78,26 +84,35 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
         failedText: '加载失败',
         canLoadingText: '加载更多',
       ),
-      child: ListView.separated(
+      child: listView(),
+    );
+  }
+
+  Widget listView() {
+    if (widget.dataList.isNotEmpty) {
+      return ListView.separated(
           physics: const ClampingScrollPhysics(),
           padding:
-              const EdgeInsets.only(left: 16.0, right: 16.0, top: 0, bottom: 0),
+          const EdgeInsets.only(left: 16.0, right: 16.0, top: 0, bottom: 0),
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            return cell(index);
+            SCWorkOrderModel model = widget.dataList[index];
+            return cell(index, model);
           },
           separatorBuilder: (BuildContext context, int index) {
             return const SizedBox(height: 12.0);
           },
-          itemCount: timeList.length),
-    );
+          itemCount: widget.dataList.length);
+    } else {
+      return SCWorkBenchEmptyView();
+    }
   }
 
   /// cell
-  Widget cell(int index) {
+  Widget cell(int index, SCWorkOrderModel model) {
     return GestureDetector(
       onTap: () {
-        widget.detailAction?.call(index);
+        widget.detailAction?.call(model.orderId ?? '');
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -106,16 +121,18 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
             borderRadius: BorderRadius.circular(4.0)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            titleView(index),
+            titleView(model),
             const SizedBox(
               height: 12.0,
             ),
-            contentView(index),
+            contentView(model.description ?? ''),
             const SizedBox(
               height: 6.0,
             ),
-            addressInfoView(index),
+            addressInfoView(model),
             const SizedBox(
               height: 12.0,
             ),
@@ -123,7 +140,7 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
             const SizedBox(
               height: 12.0,
             ),
-            timeView(index)
+            timeView(index, model)
           ],
         ),
       ),
@@ -131,8 +148,8 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
   }
 
   /// title
-  Widget titleView(int index) {
-    String title = '居家维修/门锁';
+  Widget titleView(SCWorkOrderModel model) {
+    String title = model.categoryName ?? '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
@@ -164,7 +181,7 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
                           height: 22.0,
                         ),
                         onPressed: () {
-                          widget.likeAction?.call(index);
+                          widget.likeAction?.call(model.orderId ?? '');
                         }))
               ])),
           CupertinoButton(
@@ -176,7 +193,7 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
                 height: 20.0,
               ),
               onPressed: () {
-                widget.moreAction?.call(index);
+                widget.moreAction?.call(model.orderId ?? '');
               })
         ],
       ),
@@ -184,26 +201,26 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
   }
 
   /// content
-  Widget contentView(int index) {
-    String title = '家里大门的智能锁失灵，一时打开一时打不开，有时自动开，请专业人员来查看...';
+  Widget contentView(String content) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Text(
-        title,
+        content,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.left,
         style: const TextStyle(
-            fontSize: SCFonts.f14,
-            fontWeight: FontWeight.w400,
+            fontSize: SCFonts.f16,
+            fontWeight: FontWeight.w500,
             color: SCColors.color_1B1D33),
       ),
     );
   }
 
   /// 地址等信息
-  Widget addressInfoView(int index) {
-    String address = '慧享生活馆-1幢-3单元-201';
-    String name = '李大明';
+  Widget addressInfoView(SCWorkOrderModel model) {
+    String address = model.address ?? '';
+    String name = model.reportUserName ?? '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
@@ -252,7 +269,7 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
                 ],
               ),
               onPressed: () {
-                widget.callAction?.call(index);
+                widget.callAction?.call(model.reportUserPhone ?? '');
               })
         ],
       ),
@@ -271,7 +288,7 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
   }
 
   /// 倒计时
-  Widget timeView(int index) {
+  Widget timeView(int index, SCWorkOrderModel model) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
@@ -308,7 +325,7 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
                       color: SCColors.color_FFFFFF),
                 ),
                 onPressed: () {
-                  widget.acceptAction?.call(index);
+                  widget.acceptAction?.call(model.orderId ?? '');
                 }),
           )
         ],
