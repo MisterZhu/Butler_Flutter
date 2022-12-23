@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_alert.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_listview.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
@@ -21,7 +22,8 @@ class SCWorkBenchView extends StatelessWidget {
       required this.classificationList,
       this.tagAction,
       this.menuTap,
-      this.onRefreshAction
+      this.onRefreshAction,
+      this.detailAction
       })
       : super(key: key);
 
@@ -44,6 +46,9 @@ class SCWorkBenchView extends StatelessWidget {
 
   /// 点击标签
   final Function(int index)? tagAction;
+
+  /// 详情
+  final Function(SCWorkOrderModel model)? detailAction;
 
   /// 下拉刷新
   final Function? onRefreshAction;
@@ -114,6 +119,9 @@ class SCWorkBenchView extends StatelessWidget {
         children: [
           SCWorkBenchListView(
             dataList: state.dataList,
+            detailAction: (SCWorkOrderModel model){
+              detail(model);
+            },
           ),
           Container(color: Colors.white,)
       ]),
@@ -135,5 +143,10 @@ class SCWorkBenchView extends StatelessWidget {
         context: context,
         isDismissible: true,
         widget: SCWorkBenchChangeSpaceAlert());
+  }
+
+  /// 详情
+  detail(SCWorkOrderModel model) {
+    detailAction?.call(model);
   }
 }

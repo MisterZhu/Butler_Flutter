@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Constants/sc_h5.dart';
+import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_controller.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/WorkBench/sc_workbench_view.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
+import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
+import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 
 import '../../../../Utils/sc_utils.dart';
 import '../Model/sc_home_task_model.dart';
@@ -87,6 +92,9 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
             onRefreshAction: (){
               state.loadData();
             },
+            detailAction: (SCWorkOrderModel model){
+              detailAction(model);
+            },
           );
         });
       }),
@@ -117,5 +125,11 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
             closeTap: (selectList) {},
           ));
     });
+  }
+
+  /// 详情
+  detailAction(SCWorkOrderModel model) {
+    String url = "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?status=${model.status}&title=${model.status}&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}&from=qwHome";
+    SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : model.categoryName ?? '', "url" : url, "needJointParams" : true});
   }
 }

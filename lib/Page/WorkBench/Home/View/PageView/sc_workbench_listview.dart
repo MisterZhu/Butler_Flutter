@@ -19,14 +19,13 @@ class SCWorkBenchListView extends StatefulWidget {
       this.detailAction,
       this.moreAction,
       this.likeAction,
-      this.callAction,
-      this.acceptAction})
+      this.callAction,})
       : super(key: key);
 
   final List<SCWorkOrderModel> dataList;
 
   /// 详情
-  final Function(String orderId)? detailAction;
+  final Function(SCWorkOrderModel model)? detailAction;
 
   /// 更多
   final Function(String orderId)? moreAction;
@@ -36,9 +35,6 @@ class SCWorkBenchListView extends StatefulWidget {
 
   /// 打电话
   final Function(String mobile)? callAction;
-
-  /// 立即接单
-  final Function(String orderId)? acceptAction;
 
   @override
   SCWorkBenchListViewState createState() => SCWorkBenchListViewState();
@@ -111,7 +107,7 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
   Widget cell(int index, SCWorkOrderModel model) {
     return GestureDetector(
       onTap: () {
-        widget.detailAction?.call(model.orderId ?? '');
+        widget.detailAction?.call(model);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -336,7 +332,7 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
                       color: SCColors.color_FFFFFF),
                 ),
                 onPressed: () {
-                  widget.acceptAction?.call(model.orderId ?? '');
+                  widget.detailAction?.call(model);
                 }),
           )
         ],
