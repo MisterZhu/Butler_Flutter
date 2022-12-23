@@ -19,7 +19,7 @@ class SCQuickApplicationAlert extends StatelessWidget {
   }) : super(key: key);
 
   /// 数据源
-  final List<MenuServerList> list;
+  final List<SCMenuItemModel> list;
   /// 按钮点击事件
   final Function(int id, String title)? tapAction;
 
@@ -74,8 +74,8 @@ class SCQuickApplicationAlert extends StatelessWidget {
         if (index == list.length) {
            return cell(id: 0,icon: SCAsset.iconHomeMoreApplication, name: '更多应用');
         } else {
-          MenuServerList menuServerList = list[index];
-           return cell(id: menuServerList.id!, icon: menuServerList.icon?.name ?? '', name: menuServerList.name ?? '');
+          SCMenuItemModel model = list[index];
+           return cell(id: model.id!, icon: model.icon?.name ?? '', name: model.name ?? '');
         }
       },
       staggeredTileBuilder: (int index) {

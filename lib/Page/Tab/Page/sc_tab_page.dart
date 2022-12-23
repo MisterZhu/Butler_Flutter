@@ -131,7 +131,7 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
       {'icon':{'name':SCAsset.iconApplicationWorkOrder}, 'name': '报事报修', 'id': 1},
       {'icon':{'name':SCAsset.iconApplicationVehicleRegistration}, 'name': '车访登记', 'id': 2}
     ];
-    List<MenuServerList> list = testList.map((e) => MenuServerList.fromJson(e)).toList();
+    List<SCMenuItemModel> list = testList.map((e) => SCMenuItemModel.fromJson(e)).toList();
 
     SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
       SCDialogUtils().showCustomBottomDialog(

@@ -16,7 +16,7 @@ class SCUrl {
   /// 退出登录url
   static const String kLogoutUrl = '/api/user/loginOut';
 
-  /************************* 登录 *************************/
+  /************************* 工作台 *************************/
 
   /// 用户信息url
   static const String kUserInfoUrl = '/api/user/info';

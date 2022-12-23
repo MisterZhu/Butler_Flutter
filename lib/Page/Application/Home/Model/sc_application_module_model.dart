@@ -6,7 +6,7 @@ class SCApplicationModuleModel {
   SCApplicationModuleModel({
       String? id, 
       String? name, 
-      List<MenuServerList>? menuServerList,}){
+      List<SCMenuItemModel>? menuServerList,}){
     _id = id;
     _name = name;
     _menuServerList = menuServerList;
@@ -18,23 +18,23 @@ class SCApplicationModuleModel {
     if (json['menuServerList'] != null) {
       _menuServerList = [];
       json['menuServerList'].forEach((v) {
-        _menuServerList?.add(MenuServerList.fromJson(v));
+        _menuServerList?.add(SCMenuItemModel.fromJson(v));
       });
     }
   }
   String? _id;
   String? _name;
-  List<MenuServerList>? _menuServerList;
+  List<SCMenuItemModel>? _menuServerList;
   SCApplicationModuleModel copyWith({  String? id,
   String? name,
-  List<MenuServerList>? menuServerList,
+  List<SCMenuItemModel>? menuServerList,
 }) => SCApplicationModuleModel(  id: id ?? _id,
   name: name ?? _name,
   menuServerList: menuServerList ?? _menuServerList,
 );
   String? get id => _id;
   String? get name => _name;
-  List<MenuServerList>? get menuServerList => _menuServerList;
+  List<SCMenuItemModel>? get menuServerList => _menuServerList;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -57,11 +57,11 @@ class SCApplicationModuleModel {
 /// belong : 0
 /// url : "https://saasdev.wisharetec.com/h5Manage-order/#/workOrder/orderList"
 
-class MenuServerList {
-  MenuServerList({
+class SCMenuItemModel {
+  SCMenuItemModel({
       int? id, 
-      String? name, 
-      Icon? icon, 
+      String? name,
+      SCIcon? icon,
       String? moduleId, 
       int? form, 
       int? jumpType, 
@@ -77,10 +77,10 @@ class MenuServerList {
     _url = url;
 }
 
-  MenuServerList.fromJson(dynamic json) {
+  SCMenuItemModel.fromJson(dynamic json) {
     _id = json['id'];
     _name = json['name'];
-    _icon = json['icon'] != null ? Icon.fromJson(json['icon']) : null;
+    _icon = json['icon'] != null ? SCIcon.fromJson(json['icon']) : null;
     _moduleId = json['moduleId'];
     _form = json['form'];
     _jumpType = json['jumpType'];
@@ -89,21 +89,21 @@ class MenuServerList {
   }
   int? _id;
   String? _name;
-  Icon? _icon;
+  SCIcon? _icon;
   String? _moduleId;
   int? _form;
   int? _jumpType;
   int? _belong;
   String? _url;
-MenuServerList copyWith({  int? id,
+  SCMenuItemModel copyWith({  int? id,
   String? name,
-  Icon? icon,
+  SCIcon? icon,
   String? moduleId,
   int? form,
   int? jumpType,
   int? belong,
   String? url,
-}) => MenuServerList(  id: id ?? _id,
+}) => SCMenuItemModel(  id: id ?? _id,
   name: name ?? _name,
   icon: icon ?? _icon,
   moduleId: moduleId ?? _moduleId,
@@ -114,7 +114,7 @@ MenuServerList copyWith({  int? id,
 );
   int? get id => _id;
   String? get name => _name;
-  Icon? get icon => _icon;
+  SCIcon? get icon => _icon;
   String? get moduleId => _moduleId;
   int? get form => _form;
   int? get jumpType => _jumpType;
@@ -144,8 +144,8 @@ MenuServerList copyWith({  int? id,
 /// size : null
 /// type : 1
 
-class Icon {
-  Icon({
+class SCIcon {
+  SCIcon({
       String? fileKey, 
       dynamic name, 
       dynamic suffix, 
@@ -158,7 +158,7 @@ class Icon {
     _type = type;
 }
 
-  Icon.fromJson(dynamic json) {
+  SCIcon.fromJson(dynamic json) {
     _fileKey = json['fileKey'];
     _name = json['name'];
     _suffix = json['suffix'];
@@ -170,12 +170,12 @@ class Icon {
   dynamic _suffix;
   dynamic _size;
   int? _type;
-Icon copyWith({  String? fileKey,
+  SCIcon copyWith({  String? fileKey,
   dynamic name,
   dynamic suffix,
   dynamic size,
   int? type,
-}) => Icon(  fileKey: fileKey ?? _fileKey,
+}) => SCIcon(  fileKey: fileKey ?? _fileKey,
   name: name ?? _name,
   suffix: suffix ?? _suffix,
   size: size ?? _size,

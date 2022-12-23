@@ -12,6 +12,7 @@ class SCWorkBenchController extends GetxController {
   onInit(){
     super.onInit();
     getUserInfo();
+    getDefaultConfigInfo();
   }
 
   /// 获取用户信息
@@ -23,10 +24,20 @@ class SCWorkBenchController extends GetxController {
       SCHttpManager.instance.get(url: SCUrl.kUserInfoUrl, params: params, success: (value){
         String token = SCScaffoldManager.instance.user.token ?? '';
         SCUserModel userModel = SCUserModel.fromJson(value);
+        userModel.token = token;
         SCScaffoldManager.instance.user = userModel;
-        SCScaffoldManager.instance.user.token = token;
         Get.forceAppUpdate();
       });
     }
   }
+
+  /// 默认配置信息
+  getDefaultConfigInfo() {
+    if (SCScaffoldManager.instance.isLogin) {
+      SCHttpManager.instance.get(url: SCUrl.kUserDefaultConfigUrl, params: {}, success: (value){
+        print("默认配置信息:$value");
+      });
+    }
+  }
+
 }

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Page/Application/Home/Model/sc_application_module_model.dart';
 import '../../../../Constants/sc_asset.dart';
-import '../../../../Network/sc_config.dart';
 import '../GetXController/sc_application_controller.dart';
 
 /// 单个appItem
@@ -17,7 +17,7 @@ class SCApplicationAppItem extends StatelessWidget {
 
   final int section;
 
-  final MenuServerList serverList;
+  final SCMenuItemModel model;
 
   /// 按钮点击事件
   final Function(String title, String url)? appTapAction;
@@ -26,7 +26,7 @@ class SCApplicationAppItem extends StatelessWidget {
     Key? key,
     required this.isRegularApp,
     required this.section,
-    required this.serverList,
+    required this.model,
     this.appTapAction,
   }) : super(key: key);
 
@@ -45,8 +45,8 @@ class SCApplicationAppItem extends StatelessWidget {
       hide = state.isEditing ? false : true;
     } else {
       if (state.isEditing) {
-        List<MenuServerList>? regularList = state.regularModuleModel.menuServerList;
-        hide = regularList?.any((element) => serverList.id == element.id) ?? true;
+        List<SCMenuItemModel>? regularList = state.regularModuleModel.menuServerList;
+        hide = regularList?.any((element) => model.id == element.id) ?? true;
       }
     }
     return GestureDetector(
@@ -54,15 +54,15 @@ class SCApplicationAppItem extends StatelessWidget {
         if (!hide) {
           if (section == 0) {
             log('常用应用删除');
-            state.deleteRegularApp(serverList);
+            state.deleteRegularApp(model);
           } else {
             log('应用添加');
-            state.addRegularApp(serverList);
+            state.addRegularApp(model);
           }
         }
         if (!state.isEditing) {
           if (appTapAction != null) {
-            appTapAction?.call(serverList.name ?? '', serverList.url ?? '');
+            appTapAction?.call(model.name ?? '', model.url ?? '');
           }
         }
       },
@@ -94,15 +94,18 @@ class SCApplicationAppItem extends StatelessWidget {
 
   /// 应用图标icon
   Widget iconItem() {
+    SCIcon? icon = model.icon;
+    String url;
+    if (model.name != '工单助手') {
+      url = icon?.fileKey ?? '';
+    } else {
+      url = SCConfig.getImageUrl(icon?.fileKey ?? '');
+    }
     return Container(
       width: 60,
       height: 52,
       alignment: Alignment.bottomCenter,
-      child: Image.asset(
-        serverList.icon?.name ?? '',
-        width: 44,
-        height: 44,
-      ),
+      child: SCImage(url: url, width: 44.0, height: 44.0,),
     );
   }
 
@@ -122,7 +125,7 @@ class SCApplicationAppItem extends StatelessWidget {
   /// 应用名称item
   Widget nameItem() {
     return Text(
-      serverList.name ?? '',
+      model.name ?? '',
       textAlign: TextAlign.center,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,

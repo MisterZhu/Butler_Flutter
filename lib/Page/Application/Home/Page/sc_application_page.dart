@@ -52,13 +52,15 @@ class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeep
       width: double.infinity,
       height: double.infinity,
       color: SCColors.color_F2F3F5,
-      child: SCApplicationListView(
-          appList: state.moduleList,
-          itemTapAction: (title, url) {
-            /// 应用icon点击跳转
-            itemDetail(title, url);
-          }
-      ),
+      child: GetBuilder<SCApplicationController>(builder: (state){
+        return SCApplicationListView(
+            appList: state.moduleList,
+            itemTapAction: (title, url) {
+              /// 应用icon点击跳转
+              itemDetail(title, url);
+            }
+        );
+      }),
     );
   }
 
@@ -75,9 +77,7 @@ class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeep
       String url = "${SCH5.jxRentingHomeUrl}?token=$token";
       SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : title, "url" : url});
     } else {
-      String token = SCScaffoldManager.instance.user.token ?? "";
-      String urlStr = "$url?&Authorization=$token&client=${SCDefaultValue.client}";
-      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : title, "url" : urlStr});
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : title, "url" : url, "needJointParams" : true});
     }
   }
 }

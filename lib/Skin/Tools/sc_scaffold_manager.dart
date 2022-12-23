@@ -77,9 +77,6 @@ class SCScaffoldManager {
 
     bool hasScaffoldKey = _preferences.containsKey(SkinDefaultKey.scaffold_key);
 
-    /// 引导页key
-    bool hasGuideKey = _preferences.containsKey(SCKey.isShowGuide);
-
     if (hasScaffoldKey) {
       String? scaffoldJsonString =
           _preferences.getString(SkinDefaultKey.scaffold_key);
@@ -154,6 +151,7 @@ class SCScaffoldManager {
 
   /*缓存用户信息*/
   cacheUserData(dynamic data) async {
+    print("缓存用户信息:$data");
     SCSpUtil.setMap(SCKey.kUserData, data);
   }
 
@@ -191,7 +189,7 @@ class SCScaffoldManager {
     if (contains == true) {
       var data = SCSpUtil.getMap(SCKey.kUserData);
       _user = SCUserModel.fromJson(data);
-      // print('本地数据：${_user.toJson()}');
+      print('本地数据：${_user.toJson()}');
       return _user;
     }
   }

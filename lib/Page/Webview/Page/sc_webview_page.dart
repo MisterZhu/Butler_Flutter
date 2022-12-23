@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
 import 'package:smartcommunity/Page/Webview/Constant/sc_flutter_h5_key.dart';
 import 'package:smartcommunity/Page/Webview/Constant/sc_h5_flutter_key.dart';
@@ -48,6 +49,9 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
   /// 如果是富文本 则传递richText
   String _richText = "";
 
+  /// 是否需要拼接参数
+  bool needJointParams = false;
+
   bool _isLocalUrl = false;
 
   /// 进度
@@ -60,12 +64,20 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
     log('webView接收的参数：$params');
     _title =
         StringUtils.isNotNullOrEmpty(params?["title"]) ? params!["title"] : "";
-    _url = StringUtils.isNotNullOrEmpty(params?["url"]) ? params!["url"] : "";
-
     _richText = StringUtils.isNotNullOrEmpty(params?["richText"])
         ? params!["richText"]
         : "";
     _isLocalUrl = params?["isLocalUrl"] ?? false;
+    needJointParams = params["needJointParams"] ?? false;
+
+    /// 是否需要拼接参数
+    String subUrl = StringUtils.isNotNullOrEmpty(params?["url"]) ? params!["url"] : "";
+    if (needJointParams) {
+      _url = jointParams(subUrl);
+    } else {
+      _url = subUrl;
+    }
+    print("url=$_url");
   }
 
   @override
@@ -305,5 +317,20 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
   /// 缓存建信租房token
   cacheJXToken(String token) {
     SCSpUtil.setString(SCKey.kJianXinRentingToken, token);
+  }
+
+  /// 拼接参数
+  String jointParams(String url) {
+    String token = SCScaffoldManager.instance.user.token ?? "";
+    String client = SCDefaultValue.client;
+    String defOrgId = SCScaffoldManager.instance.user.tenantId ?? '';
+
+    if (url.contains('?')) {
+      String newUrl = "$url&Authorization=$token&client=$client&defOrgId=$defOrgId";
+      return newUrl;
+    } else {
+      String newUrl = "$url?&Authorization=$token&client=$client&defOrgId=$defOrgId";
+      return newUrl;
+    }
   }
 }

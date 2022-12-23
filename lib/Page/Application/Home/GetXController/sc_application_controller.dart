@@ -31,9 +31,9 @@ class SCApplicationController extends GetxController {
 
   addRegularAppData() {
     var homeTestList = [
-      {"icon": {"fileKey": "", "name": SCAsset.iconApplicationWorkOrder}, "id": 1, "name": "工单调度", "url": ""},
-      {"icon": {"fileKey": "", "name": SCAsset.iconApplicationVehicleRegistration}, "id": 2, "name": "车访登记", "url": ""},
-      {"icon": {"fileKey": "", "name": SCAsset.iconApplicationReportRepair}, "id": 3, "name": "报事报修", "url": ""},
+      {"icon": {"fileKey": SCAsset.iconApplicationWorkOrder, "name": SCAsset.iconApplicationWorkOrder}, "id": 1, "name": "工单调度", "url": ""},
+      {"icon": {"fileKey": SCAsset.iconApplicationVehicleRegistration, "name": SCAsset.iconApplicationVehicleRegistration}, "id": 2, "name": "车访登记", "url": ""},
+      {"icon": {"fileKey": SCAsset.iconApplicationReportRepair, "name": SCAsset.iconApplicationReportRepair}, "id": 3, "name": "报事报修", "url": ""},
     ];
     var regularData = {"id": "0", "name": "快捷应用", "menuServerList": homeTestList};
     regularModuleModel = SCApplicationModuleModel.fromJson(regularData);
@@ -86,7 +86,7 @@ class SCApplicationController extends GetxController {
 
   /// 更新数据源
   updateModuleList({required List<SCApplicationModuleModel> list}) {
-    moduleList = list;
+    moduleList.addAll(list);
     update();
   }
 
@@ -97,13 +97,13 @@ class SCApplicationController extends GetxController {
   }
 
   /// 移除首页应用
-  deleteRegularApp(MenuServerList model) {
+  deleteRegularApp(SCMenuItemModel model) {
     regularModuleModel.menuServerList?.remove(model);
     update();
   }
 
   /// 添加常用应用
-  addRegularApp(MenuServerList model) {
+  addRegularApp(SCMenuItemModel model) {
     if (regularModuleModel.menuServerList?.length == 9) {
       SCToast.showTip('首页最多添加9个应用\n请先移除再添加');
     } else {

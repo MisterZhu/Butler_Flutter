@@ -112,7 +112,7 @@ class SCApplicationCellItem extends StatelessWidget {
 
   /// cell
   Widget itemsCell() {
-    List<MenuServerList>?list = [];
+    List<SCMenuItemModel>?list = [];
     /// 是否是常用应用，暂定id=0为常用应用，后面根据接口返回的数据再定
     bool isRegularApp = moduleModel.id == '0' ? true : false;
     return GetBuilder<SCApplicationController>(builder: (state) {
@@ -130,11 +130,11 @@ class SCApplicationCellItem extends StatelessWidget {
           itemCount: list?.length ?? 0,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            MenuServerList serverList = list![index];
+            SCMenuItemModel model = list![index];
             return SCApplicationAppItem(
               isRegularApp: isRegularApp,
               section: section,
-              serverList: serverList,
+              model: model,
               appTapAction: (title, url) {
                 if (tapAction != null) {
                   tapAction?.call(title, url);
