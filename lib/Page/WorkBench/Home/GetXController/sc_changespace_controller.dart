@@ -2,14 +2,14 @@ import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Network/sc_url.dart';
-import '../Model/sc_space_tree_model.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 
 
 /// 修改空间Controller
 
 class SCChangeSpaceController extends GetxController {
 
-  List<SCSpaceTreeModel> dataList = [];
+  List<SCSpaceModel> dataList = [];
 
   /// 当前节点id，不传入就返回最顶级节点
   String currentId = '';
@@ -35,12 +35,12 @@ class SCChangeSpaceController extends GetxController {
       "needOrgNode": needOrgNode,
     };
     SCLoadingUtils.show();
-    SCHttpManager.instance.post(
+    SCHttpManager.instance.get(
         url: SCUrl.kSpaceTreeUrl,
         params: params,
         success: (value){
           print('空间树==========$value');
-          dataList = List<SCSpaceTreeModel>.from(value.map((e) => SCSpaceTreeModel.fromJson(e)).toList());
+          dataList = List<SCSpaceModel>.from(value.map((e) => SCSpaceModel.fromJson(e)).toList());
           update();
         });
 

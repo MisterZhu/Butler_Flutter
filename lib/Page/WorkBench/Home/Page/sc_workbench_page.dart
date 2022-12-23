@@ -22,7 +22,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   late SCWorkBenchController state;
   
   /// tab-title
-  List<String> tabTitleList = ['待办', '处理中'];
+  List<String> tabTitleList = ['待处理', '处理中'];
 
   /// 分类
   List<String> classificationList = [

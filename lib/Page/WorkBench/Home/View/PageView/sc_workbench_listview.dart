@@ -92,8 +92,7 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
     if (widget.dataList.isNotEmpty) {
       return ListView.separated(
           physics: const ClampingScrollPhysics(),
-          padding:
-          const EdgeInsets.only(left: 16.0, right: 16.0, top: 0, bottom: 0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 0, bottom: 0),
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             SCWorkOrderModel model = widget.dataList[index];
@@ -160,6 +159,18 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               text: TextSpan(children: [
+                WidgetSpan(
+                  alignment: PlaceholderAlignment.middle,
+                  child: Image.asset(
+                    SCAsset.iconWorkOrderCommon,
+                    width: 18.0,
+                    height: 18.0,
+                  ),
+                ),
+                const WidgetSpan(
+                    child: SizedBox(
+                      width: 6.0,
+                    )),
                 TextSpan(
                     text: title,
                     style: const TextStyle(

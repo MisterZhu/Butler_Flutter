@@ -55,6 +55,10 @@ class SCAsset {
   static const String iconGreyMenu = "images/common/icon_menu_grey.png";
   /// 收藏-选中
   static const String iconLikeSelect = "images/common/icon_like_select.png";
+  /// 投诉
+  static const String iconWorkOrderComplaint = "images/common/icon_work_order_complaint.png";
+  /// 建议
+  static const String iconWorkOrderCommon = "images/common/icon_work_order_common.png";
   /// 灰色更多
   static const String iconGreyMore = "images/common/icon_more_grey.png";
   /// 位置

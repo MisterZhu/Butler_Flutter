@@ -1,16 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_allspace_listview.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_header.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_currentspace_view.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_searchbar.dart';
 import 'package:smartcommunity/utils/sc_utils.dart';
+import '../../../GetXController/sc_changespace_controller.dart';
 
 /// 修改空间弹窗
 
 class SCWorkBenchChangeSpaceAlert extends StatelessWidget {
-  const SCWorkBenchChangeSpaceAlert({Key? key}) : super(key: key);
+  SCWorkBenchChangeSpaceAlert({Key? key}) : super(key: key);
+
+  SCChangeSpaceController state = Get.put(SCChangeSpaceController());
 
   @override
   Widget build(BuildContext context) {
