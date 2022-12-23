@@ -3,18 +3,19 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 
+import '../../GetXController/sc_workbench_controller.dart';
+
 /// 卡片
 
 class SCWorkBenchCard extends StatelessWidget {
-  SCWorkBenchCard({Key? key, this.onTap}) : super(key: key);
+  const SCWorkBenchCard({Key? key,
+    required this.data,
+    this.onTap
+  }) : super(key: key);
+
+  final List data;
 
   final Function(int index)? onTap;
-
-  final List data = [
-    {'number': 100, 'description': '今日新增', 'iconUrl': SCAsset.iconTodayAdd},
-    {'number': 240, 'description': '进行中', 'iconUrl': SCAsset.iconDoing},
-    {'number': 86, 'description': '我的关注', 'iconUrl': SCAsset.iconLike}
-  ];
 
   @override
   Widget build(BuildContext context) {

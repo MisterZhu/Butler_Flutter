@@ -7,11 +7,12 @@ import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/Application/Home/GetXController/sc_application_controller.dart';
 import 'package:smartcommunity/Page/Application/Home/View/sc_application_app_item.dart';
-
 import '../Model/sc_application_module_model.dart';
 
 /// 单个模块应用cell
 class SCApplicationCellItem extends StatelessWidget {
+
+  final SCApplicationController state;
 
   final int section;
 
@@ -23,6 +24,7 @@ class SCApplicationCellItem extends StatelessWidget {
   SCApplicationCellItem(
       {
         Key? key,
+        required this.state,
         this.section = 0,
         required this.moduleModel,
         this.tapAction,
@@ -35,18 +37,16 @@ class SCApplicationCellItem extends StatelessWidget {
 
   /// body
   Widget body() {
-    return GetBuilder<SCApplicationController>(builder: (state) {
-      return Container(
-        color: SCColors.color_FFFFFF,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            headerItem(),
-            itemsCell(),
-          ],
-        ),
-      );
-    });
+    return Container(
+      color: SCColors.color_FFFFFF,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          headerItem(),
+          itemsCell(),
+        ],
+      ),
+    );
   }
 
   /// header
@@ -85,7 +85,6 @@ class SCApplicationCellItem extends StatelessWidget {
 
   /// header-right
   Widget headerRightItem() {
-    return GetBuilder<SCApplicationController>(builder: (state){
       return Offstage(
         offstage: moduleModel.id == '0' ? false : true, /// 如果是常用应用显示右边的编辑
         child: CupertinoButton(
@@ -107,7 +106,6 @@ class SCApplicationCellItem extends StatelessWidget {
           },
         ),
       );
-    });
   }
 
   /// cell
@@ -115,7 +113,6 @@ class SCApplicationCellItem extends StatelessWidget {
     List<SCMenuItemModel>?list = [];
     /// 是否是常用应用，暂定id=0为常用应用，后面根据接口返回的数据再定
     bool isRegularApp = moduleModel.id == '0' ? true : false;
-    return GetBuilder<SCApplicationController>(builder: (state) {
       if (isRegularApp) {
         list = state.regularModuleModel.menuServerList;
       } else {
@@ -132,6 +129,7 @@ class SCApplicationCellItem extends StatelessWidget {
           itemBuilder: (context, index) {
             SCMenuItemModel model = list![index];
             return SCApplicationAppItem(
+              state: state,
               isRegularApp: isRegularApp,
               section: section,
               model: model,
@@ -145,7 +143,6 @@ class SCApplicationCellItem extends StatelessWidget {
           staggeredTileBuilder: (int index) {
             return const StaggeredTile.fit(1);
           });
-    });
   }
 
 }

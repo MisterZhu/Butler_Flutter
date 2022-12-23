@@ -13,6 +13,8 @@ import '../GetXController/sc_application_controller.dart';
 
 class SCApplicationAppItem extends StatelessWidget {
 
+  final SCApplicationController state;
+
   final bool isRegularApp;
 
   final int section;
@@ -24,13 +26,12 @@ class SCApplicationAppItem extends StatelessWidget {
 
   SCApplicationAppItem({
     Key? key,
+    required this.state,
     required this.isRegularApp,
     required this.section,
     required this.model,
     this.appTapAction,
   }) : super(key: key);
-
-  SCApplicationController state = Get.find<SCApplicationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +130,10 @@ class SCApplicationAppItem extends StatelessWidget {
       textAlign: TextAlign.center,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style: const TextStyle(fontSize: 12, color: SCColors.color_1B1D33),
+      style: const TextStyle(
+          fontSize: SCFonts.f12,
+          fontWeight: FontWeight.w400,
+          color: SCColors.color_1B1D33),
     );
   }
 }

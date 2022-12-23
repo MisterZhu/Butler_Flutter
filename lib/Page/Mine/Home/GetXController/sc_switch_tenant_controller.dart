@@ -59,7 +59,7 @@ class SCSwitchTenantController extends GetxController {
           "userId": userId
         },
         success: (value) {
-          SCUserModel model = SCUserModel.fromJson(value);
+          SCUserModel model = SCUserModel.fromJson(value['userInfoV']);
           SCScaffoldManager.instance.user = model;
           SCRouterHelper.back(null);
           Get.forceAppUpdate();

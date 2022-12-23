@@ -18,15 +18,9 @@ class SCApplicationController extends GetxController {
   /// 数据
   List<SCApplicationModuleModel> moduleList = [];
 
-
   @override
   onInit() {
     super.onInit();
-    addRegularAppData();
-  }
-
-  loadTestData() {
-    testData();
   }
 
   addRegularAppData() {
@@ -40,11 +34,10 @@ class SCApplicationController extends GetxController {
     moduleList.insert(0, regularModuleModel);
   }
 
-  testData() {
+  loadTestData() {
     moduleList = [];
-
     var testList = [
-      {"applets": [
+      {"menuServerList": [
         {"icon": {"fileKey": "", "name": SCAsset.iconApplicationWorkOrder},"id": 1,"name": "工单调度", "url": ""},
         {"icon": {"fileKey": "","name": SCAsset.iconApplicationVehicleRegistration},"id": 2,"name": "车访登记", "url": ""},
         {"icon": {"fileKey": "","name": SCAsset.iconApplicationReportRepair,},"id": 3,"name": "报事报修", "url": ""},
@@ -52,7 +45,7 @@ class SCApplicationController extends GetxController {
         {"icon": {"fileKey": "","name": SCAsset.iconApplicationVisitorRegistration},"id": 14,"name": "人行登记", "url": ""},
         {"icon": {"fileKey": "","name": SCAsset.iconApplicationDecorationRegistration,},"id": 15,"name": "装修登记", "url": ""},
       ],"id": "1", "name": "业主服务"},
-      {"applets": [
+      {"menuServerList": [
         {"icon": {"fileKey": "","name": SCAsset.iconApplicationWorkOrder},"id": 21,"name": "业主二维码", "url": ""},
         {"icon": {"fileKey": "","name": SCAsset.iconApplicationVehicleRegistration},"id": 22,"name": "公务用车", "url": ""},
         {"icon": {"fileKey": "","name": SCAsset.iconApplicationReportRepair},"id": 23,"name": "小区缴费", "url": ""},
@@ -66,7 +59,7 @@ class SCApplicationController extends GetxController {
       ],"id": "2","name": "智慧应用"},
     ];
     moduleList = testList.map((e) => SCApplicationModuleModel.fromJson(e)).toList();
-
+    addRegularAppData();
   }
 
   /// 获取应用列表数据

@@ -67,17 +67,10 @@ class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeep
   /// 获取数据，接口没返回数据，暂时用本地测试数据
   loadData() {
     state.loadAppListData();
-    //state.loadTestData();
   }
 
   /// 应用详情
   itemDetail(String title, String url) {
-    if (title.contains('建信')) {// 建信租房
-      String token = SCSpUtil.getString(SCKey.kJianXinRentingToken);
-      String url = "${SCH5.jxRentingHomeUrl}?token=$token";
-      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : title, "url" : url});
-    } else {
-      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : title, "url" : url, "needJointParams" : true});
-    }
+    SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : title, "url" : url, "needJointParams" : true});
   }
 }

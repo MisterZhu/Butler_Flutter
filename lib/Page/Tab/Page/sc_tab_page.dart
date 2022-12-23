@@ -45,22 +45,22 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
     super.initState();
     tabBarNormalImageList = [
       SCAsset.iconTabWorkBenchNormal,
-      SCAsset.iconTabAddressBookNormal,
+      //SCAsset.iconTabAddressBookNormal,
       SCAsset.iconTabApplicationNormal,
       SCAsset.iconTabMineNormal,
       ''
     ];
     tabBarSelectImageList = [
       SCAsset.iconTabWorkBenchselect,
-      SCAsset.iconTabAddressBookSelect,
+      //SCAsset.iconTabAddressBookSelect,
       SCAsset.iconTabApplicationSelect,
       SCAsset.iconTabMineSelect,
       ''
     ];
-    tabBarTitleList = ['工作台', '通讯录', '应用', '我的', ''];
+    tabBarTitleList = ['工作台', '应用', '我的', ''];
     pageList = [
       SCWorkBenchPage(),
-      SCAddressBookPage(),
+      //SCAddressBookPage(),
       SCApplicationPage(),
       SCMinePage(),
       emptyPage()
@@ -128,8 +128,9 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
   /// floating点击，弹出
   floatingAction() {
     List testList = [
-      {'icon':{'name':SCAsset.iconApplicationWorkOrder}, 'name': '报事报修', 'id': 1},
-      {'icon':{'name':SCAsset.iconApplicationVehicleRegistration}, 'name': '车访登记', 'id': 2}
+      {"icon": {"fileKey": "", "name": SCAsset.iconApplicationWorkOrder}, "id": 1, "name": "工单调度", "url": ""},
+      {"icon": {"fileKey": "", "name": SCAsset.iconApplicationVehicleRegistration}, "id": 2, "name": "车访登记", "url": ""},
+      {"icon": {"fileKey": "", "name": SCAsset.iconApplicationReportRepair}, "id": 3, "name": "报事报修", "url": ""},
     ];
     List<SCMenuItemModel> list = testList.map((e) => SCMenuItemModel.fromJson(e)).toList();
 

@@ -9,12 +9,14 @@ import 'package:smartcommunity/Utils/sc_utils.dart';
 
 import '../../../../../Network/sc_config.dart';
 import '../../../../../Skin/Tools/sc_scaffold_manager.dart';
+import '../../GetXController/sc_workbench_controller.dart';
 
 /// 工作台-header
 
 class SCWorkBenchHeader extends StatelessWidget {
   const SCWorkBenchHeader({
     Key? key,
+    required this.state,
     required this.height,
     required this.tabController,
     required this.tabTitleList,
@@ -28,6 +30,8 @@ class SCWorkBenchHeader extends StatelessWidget {
     this.tagMenuAction,
     this.tagAction,
   }) : super(key: key);
+
+  final SCWorkBenchController state;
 
   /// 组件高度
   final double height;
@@ -112,6 +116,7 @@ class SCWorkBenchHeader extends StatelessWidget {
             height: 22.0,
           ),
           SCWorkBenchCard(
+            data: state.numDataList,
             onTap: (int index) {
               cardDetailAction?.call(index);
             },
@@ -124,7 +129,6 @@ class SCWorkBenchHeader extends StatelessWidget {
             tabTitleList: tabTitleList,
             classificationList: classificationList,
             currentTabIndex: 0,
-            currentClassificationIndex: 0,
             menuTap: () {
               tagMenuAction?.call();
             },

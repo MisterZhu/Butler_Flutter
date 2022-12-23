@@ -24,7 +24,18 @@ class SCUrl {
   /// 用户默认配置url
   static const String kUserDefaultConfigUrl = '/api/user/defaultConfig';
 
- /************************* 服务 *************************/
+  /************************* 工单 *************************/
+
+  /// 工单数量url
+  static const String kWorkOrderNumberUrl = '/api/workorder/task/query/routine/count';
+
+  /// 工单列表url
+  static const String kWorkOrderListUrl = '/api/workorder/task/query/page';
+
+  /// 获取管理空间树
+  static const String kSpaceTreeUrl = '/api/space/space/manageTree';
+
+  /************************* 服务 *************************/
 
   /// 应用列表url
   static const String kApplicationListUrl = '/api/auth/menuServer/menuServerTree';

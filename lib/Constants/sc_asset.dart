@@ -55,6 +55,10 @@ class SCAsset {
   static const String iconGreyMenu = "images/common/icon_menu_grey.png";
   /// 收藏-选中
   static const String iconLikeSelect = "images/common/icon_like_select.png";
+  /// 投诉
+  static const String iconWorkOrderComplaint = "images/common/icon_work_order_complaint.png";
+  /// 建议
+  static const String iconWorkOrderCommon = "images/common/icon_work_order_common.png";
   /// 灰色更多
   static const String iconGreyMore = "images/common/icon_more_grey.png";
   /// 位置
@@ -65,6 +69,9 @@ class SCAsset {
   static const String iconBlackClose = "images/common/icon_close_black.png";
   /// 清除按钮
   static const String iconSearchClear =  "images/common/icon_search_clear.png";
+
+  /// 首页-占位图
+  static const String iconWorkBenchEmpty = "images/common/icon_work_bench_empty.png";
 
   /***********************  首页  ************************/
   /// 首页弹窗-关闭icon
