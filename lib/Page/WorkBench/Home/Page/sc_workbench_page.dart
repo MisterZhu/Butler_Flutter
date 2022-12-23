@@ -84,6 +84,9 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
             menuTap: () {
               showTaskAlert();
             },
+            onRefreshAction: (){
+              state.loadData();
+            },
           );
         });
       }),

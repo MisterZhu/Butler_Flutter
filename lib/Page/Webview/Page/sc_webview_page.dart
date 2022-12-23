@@ -324,13 +324,18 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
     String token = SCScaffoldManager.instance.user.token ?? "";
     String client = SCDefaultValue.client;
     String defOrgId = SCScaffoldManager.instance.user.tenantId ?? '';
+    String phoneNum = SCScaffoldManager.instance.user.mobileNum ?? '';
+    String defOrgName = SCScaffoldManager.instance.user.tenantName ?? '';
+    String userId = SCScaffoldManager.instance.user.id ?? '';
+    /// 拼接符号
+    String jointSymbol = "";
 
     if (url.contains('?')) {
-      String newUrl = "$url&Authorization=$token&client=$client&defOrgId=$defOrgId";
-      return newUrl;
+      jointSymbol = "&";
     } else {
-      String newUrl = "$url?&Authorization=$token&client=$client&defOrgId=$defOrgId";
-      return newUrl;
+      jointSymbol = "?";
     }
+    String newUrl = "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&tenantId==$defOrgId&phoneNum=$phoneNum&spaceIds=&userId=$userId";
+    return newUrl;
   }
 }

@@ -20,7 +20,9 @@ class SCWorkBenchView extends StatelessWidget {
       required this.tabTitleList,
       required this.classificationList,
       this.tagAction,
-      this.menuTap,})
+      this.menuTap,
+      this.onRefreshAction
+      })
       : super(key: key);
 
   final SCWorkBenchController state;
@@ -42,6 +44,9 @@ class SCWorkBenchView extends StatelessWidget {
 
   /// 点击标签
   final Function(int index)? tagAction;
+
+  /// 下拉刷新
+  final Function? onRefreshAction;
 
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -107,7 +112,9 @@ class SCWorkBenchView extends StatelessWidget {
       child: TabBarView(
         controller: tabController,
         children: [
-          SCWorkBenchListView(dataList: state.dataList,),
+          SCWorkBenchListView(
+            dataList: state.dataList,
+          ),
           Container(color: Colors.white,)
       ]),
     );
@@ -118,6 +125,7 @@ class SCWorkBenchView extends StatelessWidget {
   Future onRefresh() async {
     Future.delayed(const Duration(milliseconds: 1500), () {
       refreshController.refreshCompleted();
+      onRefreshAction?.call();
     });
   }
 
