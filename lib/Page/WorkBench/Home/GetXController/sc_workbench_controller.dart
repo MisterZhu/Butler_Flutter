@@ -69,6 +69,14 @@ class SCWorkBenchController extends GetxController {
     }
   }
 
+  /// 获取默认配置
+  getDefaultConfig() {
+    if (SCScaffoldManager.instance.isLogin) {
+      SCHttpManager.instance.get(url: SCUrl.kUserDefaultConfigUrl, params: null, success: (value){
+      });
+    }
+  }
+
   /// 获取工单数量
   getWorkOrderNumber() {
     SCHttpManager.instance.get(

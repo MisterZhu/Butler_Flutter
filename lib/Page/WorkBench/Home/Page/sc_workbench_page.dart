@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_h5.dart';
 import 'package:smartcommunity/Network/sc_config.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/WorkBench/sc_workbench_view.dart';
@@ -23,9 +24,10 @@ class SCWorkBenchPage extends StatefulWidget {
 
 class SCWorkBenchPageState extends State<SCWorkBenchPage>
     with SingleTickerProviderStateMixin {
-  
   late SCWorkBenchController state;
-  
+
+  SCChangeSpaceController changeSpaceController = Get.put(SCChangeSpaceController());
+
   /// tab-title
   List<String> tabTitleList = ['待处理', '处理中'];
 
@@ -77,26 +79,25 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
             tag: tag,
             init: state,
             builder: (value) {
-          return SCWorkBenchView(
-            state: state,
-            height: constraints.maxHeight,
-            tabTitleList: tabTitleList,
-            classificationList: classificationList,
-            tabController: tabController,
-            tagAction: (index) {
-
-            },
-            menuTap: () {
-              showTaskAlert();
-            },
-            onRefreshAction: (){
-              state.loadData();
-            },
-            detailAction: (SCWorkOrderModel model){
-              detailAction(model);
-            },
-          );
-        });
+              return SCWorkBenchView(
+                state: state,
+                changeSpaceController: changeSpaceController,
+                height: constraints.maxHeight,
+                tabTitleList: tabTitleList,
+                classificationList: classificationList,
+                tabController: tabController,
+                tagAction: (index) {},
+                menuTap: () {
+                  showTaskAlert();
+                },
+                onRefreshAction: () {
+                  state.loadData();
+                },
+                detailAction: (SCWorkOrderModel model) {
+                  detailAction(model);
+                },
+              );
+            });
       }),
     );
   }
@@ -129,7 +130,12 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
 
   /// 详情
   detailAction(SCWorkOrderModel model) {
-    String url = "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?status=${model.status}&title=${model.status}&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}&from=qwHome";
-    SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : model.categoryName ?? '', "url" : url, "needJointParams" : true});
+    String url =
+        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?status=${model.status}&title=${model.status}&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}&from=qwHome";
+    SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+      "title": model.categoryName ?? '',
+      "url": url,
+      "needJointParams": true
+    });
   }
 }

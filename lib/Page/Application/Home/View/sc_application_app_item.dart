@@ -96,12 +96,7 @@ class SCApplicationAppItem extends StatelessWidget {
   /// 应用图标icon
   Widget iconItem() {
     SCIcon? icon = model.icon;
-    String url;
-    if (model.name != '工单助手') {
-      url = icon?.fileKey ?? '';
-    } else {
-      url = SCConfig.getImageUrl(icon?.fileKey ?? '');
-    }
+    String url = SCConfig.getImageUrl(icon?.fileKey ?? '');
     return Container(
       width: 60,
       height: 52,

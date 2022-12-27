@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_alert.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_listview.dart';
@@ -16,6 +19,7 @@ class SCWorkBenchView extends StatelessWidget {
   SCWorkBenchView(
       {Key? key,
       required this.state,
+      required this.changeSpaceController,
       required this.height,
       required this.tabController,
       required this.tabTitleList,
@@ -28,6 +32,9 @@ class SCWorkBenchView extends StatelessWidget {
       : super(key: key);
 
   final SCWorkBenchController state;
+
+  /// 切换空间controller
+  final SCChangeSpaceController changeSpaceController;
 
   /// 组件高度
   final double height;
@@ -139,10 +146,18 @@ class SCWorkBenchView extends StatelessWidget {
 
   /// 切换空间
   switchAction(BuildContext context) {
-    SCDialogUtils().showCustomBottomDialog(
-        context: context,
-        isDismissible: true,
-        widget: SCWorkBenchChangeSpaceAlert());
+    changeSpaceController.clearData();
+    changeSpaceController.loadManageTreeData(success: (List<SCSpaceModel> list){
+      SCDialogUtils().showCustomBottomDialog(
+          context: context,
+          isDismissible: true,
+          widget: GetBuilder<SCChangeSpaceController>(builder: (state){
+            return SCWorkBenchChangeSpaceAlert(
+              changeSpaceController: changeSpaceController,
+              selectList: state.dataList,
+            );
+          }));
+    });
   }
 
   /// 详情

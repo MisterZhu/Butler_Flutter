@@ -1,21 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_allspace_listview.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_header.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_currentspace_view.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_searchbar.dart';
 import 'package:smartcommunity/utils/sc_utils.dart';
-import '../../../GetXController/sc_changespace_controller.dart';
 
 /// 修改空间弹窗
 
 class SCWorkBenchChangeSpaceAlert extends StatelessWidget {
-  SCWorkBenchChangeSpaceAlert({Key? key}) : super(key: key);
+  SCWorkBenchChangeSpaceAlert({
+    Key? key,
+    required this.selectList,
+    required this.changeSpaceController
+  }) : super(key: key);
 
-  SCChangeSpaceController state = Get.put(SCChangeSpaceController());
+  /// 数据源-已选择的空间
+  final List<SCSpaceModel> selectList;
+
+  /// 切换空间controller
+  final SCChangeSpaceController changeSpaceController;
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +67,18 @@ class SCWorkBenchChangeSpaceAlert extends StatelessWidget {
     );
   }
 
-  /// 当前空间
+  /// 当前已选择的空间
   Widget currentSpaceView() {
-    return SCCurrentSpaceView();
+    return SCCurrentSpaceView(
+      list: selectList,
+      hasNextSpace: changeSpaceController.hasNextSpace,
+      lastSpaceName: changeSpaceController.title,
+      switchSpaceAction: (int index){
+        if (index > 0) {
+          changeSpaceController.switchSpace(index < changeSpaceController.dataList.length ? index : index - 1);
+        }
+      },
+    );
   }
 
   /// 横线和请选择
@@ -92,6 +108,16 @@ class SCWorkBenchChangeSpaceAlert extends StatelessWidget {
 
   /// 空间listView
   Widget spaceListView() {
-    return Expanded(child: SCAllSpaceListView());
+    SCSpaceModel model = selectList.last;
+    return Expanded(child: SCAllSpaceListView(
+      list: model.children ?? [],
+      hasNextSpace: changeSpaceController.hasNextSpace,
+      lastIndex: changeSpaceController.lastIndex,
+      onTap: (int index, SCSubSpaceModel subModel){
+        changeSpaceController.lastIndex = index;
+        changeSpaceController.updateCurrentSpace(subModel.id ?? '', subModel.flag ?? 0, true, subModel.title ?? '');
+        changeSpaceController.loadManageTreeData();
+      },
+    ));
   }
 }

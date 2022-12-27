@@ -111,7 +111,7 @@ class SCLoginListView extends StatelessWidget {
             color: SCColors.color_4285F4,
             borderRadius: BorderRadius.circular(8.0),
             child: const Text(
-              '获取验证码',
+              '登录',
               style: TextStyle(
                 fontSize: SCFonts.f16,
                 fontWeight: FontWeight.w500,

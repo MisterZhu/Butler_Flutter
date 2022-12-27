@@ -15,7 +15,7 @@ class SCSpaceModel {
   SCSpaceModel({
       String? id, 
       String? pid, 
-      List<Children>? children, 
+      List<SCSubSpaceModel>? children,
       String? title, 
       int? flag, 
       bool? isLeaf, 
@@ -45,7 +45,7 @@ class SCSpaceModel {
     if (json['children'] != null) {
       _children = [];
       json['children'].forEach((v) {
-        _children?.add(Children.fromJson(v));
+        _children?.add(SCSubSpaceModel.fromJson(v));
       });
     }
     _title = json['title'];
@@ -60,7 +60,7 @@ class SCSpaceModel {
   }
   String? _id;
   String? _pid;
-  List<Children>? _children;
+  List<SCSubSpaceModel>? _children;
   String? _title;
   int? _flag;
   bool? _isLeaf;
@@ -72,7 +72,7 @@ class SCSpaceModel {
   String? _communityId;
   SCSpaceModel copyWith({  String? id,
   String? pid,
-  List<Children>? children,
+  List<SCSubSpaceModel>? children,
   String? title,
   int? flag,
   bool? isLeaf,
@@ -97,7 +97,7 @@ class SCSpaceModel {
 );
   String? get id => _id;
   String? get pid => _pid;
-  List<Children>? get children => _children;
+  List<SCSubSpaceModel>? get children => _children;
   String? get title => _title;
   int? get flag => _flag;
   bool? get isLeaf => _isLeaf;
@@ -142,8 +142,8 @@ class SCSpaceModel {
 /// unable : 0
 /// communityId : ""
 
-class Children {
-  Children({
+class SCSubSpaceModel {
+  SCSubSpaceModel({
       String? id, 
       String? pid, 
       List<dynamic>? children, 
@@ -170,7 +170,7 @@ class Children {
     _communityId = communityId;
 }
 
-  Children.fromJson(dynamic json) {
+  SCSubSpaceModel.fromJson(dynamic json) {
     _id = json['id'];
     _pid = json['pid'];
     if (json['children'] != null) {
@@ -201,7 +201,7 @@ class Children {
   String? _floor;
   int? _unable;
   String? _communityId;
-Children copyWith({  String? id,
+  SCSubSpaceModel copyWith({  String? id,
   String? pid,
   List<dynamic>? children,
   String? title,
@@ -213,7 +213,7 @@ Children copyWith({  String? id,
   String? floor,
   int? unable,
   String? communityId,
-}) => Children(  id: id ?? _id,
+}) => SCSubSpaceModel(  id: id ?? _id,
   pid: pid ?? _pid,
   children: children ?? _children,
   title: title ?? _title,
