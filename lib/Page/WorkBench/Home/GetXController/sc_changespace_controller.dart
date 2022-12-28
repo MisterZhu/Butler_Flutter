@@ -1,12 +1,21 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Network/sc_url.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
+import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 
 /// 修改空间Controller
 
 class SCChangeSpaceController extends GetxController {
+
+  /// 已选择的空间列表
+  List<SCSpaceModel> selectList = [];
+
+  /// 空间列表
   List<SCSpaceModel> dataList = [];
 
   /// 当前节点id，不传入就返回最顶级节点
@@ -18,26 +27,55 @@ class SCChangeSpaceController extends GetxController {
   /// 是否需要组织节点，默认为true(返回组织节点)
   bool needOrgNode = true;
 
-  /// 当前title
-  String title = '';
+  /// 选择的空间model
+  SCSpaceModel? spaceModel;
 
   /// 是否有下一级空间
-  bool hasNextSpace = true;
+  bool hasNextSpace = false;
 
-  /// 没有下一级空间时，最后选择的index
-  int lastIndex = 0;
 
   @override
   onInit() {
     super.onInit();
   }
 
+  /// 初始化默认数据
+  initBase({Function(String spaceName)? success}) {
+    if (SCScaffoldManager.instance.defaultConfigModel != null) {
+      var jsonValue = SCScaffoldManager.instance.defaultConfigModel!.jsonValue;
+      List list = jsonDecode(jsonValue!);
+      for (var element in List.from(list)) {
+        SCSpaceModel model = SCSpaceModel.fromJson(element);
+        selectList.add(model);
+      }
+
+      if (selectList.isNotEmpty) {
+        SCSpaceModel model;
+        if (selectList.length > 1) {
+          model = selectList[selectList.length - 2];
+          spaceModel = selectList.last;
+        } else {
+          model = selectList.first;
+        }
+
+        currentId = model.id ?? '';
+        flag = model.flag ?? 0;
+        needOrgNode = true;
+
+        SCSpaceModel lastModel = selectList.last;
+        Map<String, dynamic> header = SCHttpManager.instance.headers!;
+        header['spaceIds'] = lastModel.id;
+        SCHttpManager.instance.updateHeaders(headers: header);
+        success?.call(lastModel.title ?? '');
+      }
+    }
+  }
+
   /// 更新当前空间树数据
-  updateCurrentSpace(String currentIdValue, int flagValue, bool needOrgNodeValue, String titleValue) {
+  updateCurrentSpace(String currentIdValue, int flagValue, bool needOrgNodeValue) {
     currentId = currentIdValue;
     flag = flagValue;
     needOrgNode = needOrgNodeValue;
-    title = titleValue;
   }
 
   /// 清空数据
@@ -45,9 +83,32 @@ class SCChangeSpaceController extends GetxController {
     currentId = '';
     flag = 0;
     needOrgNode = true;
-    hasNextSpace = true;
-    lastIndex = 0;
+    hasNextSpace = false;
+    spaceModel = null;
+    selectList.clear();
     dataList.clear();
+  }
+
+  /// 更新已选择数据
+  updateSelectData(SCSpaceModel model) {
+    spaceModel = model;
+    bool contains = false;
+    int index = -1;
+    for (int i=0; i<selectList.length; i++) {
+      SCSpaceModel subModel = selectList[i];
+      if (subModel.pid == model.pid) {
+        contains = true;
+        index = i;
+        break;
+      }
+    }
+    if (contains == false) {
+      selectList.add(model);
+    } else {
+      if (index >= 0) {
+        selectList[index] = model;
+      }
+    }
   }
 
   /// 获取管理空间树
@@ -62,93 +123,57 @@ class SCChangeSpaceController extends GetxController {
         url: SCUrl.kSpaceTreeUrl,
         params: params,
         success: (value) {
-          print('空间树==========$value');
           if (currentId.isEmpty) {
             List<SCSpaceModel> list = List<SCSpaceModel>.from(
                 value.map((e) => SCSpaceModel.fromJson(e)).toList());
             SCSpaceModel model = list.first;
-            hasNextSpace = model.children?.isNotEmpty ?? true;
-            dataList.add(model);
+            dataList = model.children ?? [];
+            hasNextSpace = dataList.isNotEmpty ? true : false;
             update();
             success?.call(dataList);
           } else {
-            var data = [{
-              "id" : currentId,
-              "flag" : flag,
-              "needOrgNode" : needOrgNode,
-              "title" : title,
-              "children" : value
-            }];
             List<SCSpaceModel> list = List<SCSpaceModel>.from(
-                data.map((e) => SCSpaceModel.fromJson(e)).toList());
-            SCSpaceModel model = list.first;
-            hasNextSpace = model.children?.isNotEmpty ?? false;
-            if (hasNextSpace) {
-              dataList.add(model);
-            }
+                value.map((e) => SCSpaceModel.fromJson(e)).toList());
+            dataList = list;
+            hasNextSpace = list.isNotEmpty ? true : false;
             update();
             success?.call(dataList);
           }
         });
   }
 
-  /// 切换空间
-  switchSpace(int index, {Function(List<SCSpaceModel> list)? success}) {
-    SCSpaceModel model = dataList[index];
-    if (hasNextSpace) {
-      if (index == 0) {
-        updateCurrentSpace('', 0, true, '');
+  /// 选择空间
+  selectSpace(int index, {Function(List<SCSpaceModel> list)? success}) {
+    int subIndex = index - 1;
+    spaceModel = null;
+    if (subIndex < selectList.length) {
+      SCSpaceModel model = selectList[subIndex];
+      if (subIndex == 0) {
+        selectList = selectList.sublist(0, 1);
       } else {
-        updateCurrentSpace(model.id ?? '', model.flag ?? 0, true, model.title ?? '');
+        if (selectList.length > 2) {
+          selectList = selectList.sublist(0, subIndex + 1);
+        }
       }
-    } else {
-      if (index == 0) {
-        updateCurrentSpace('', 0, true, '');
-      } else if (index == dataList.length) {
-        updateCurrentSpace(currentId, flag, true, title);
-      } else {
-        updateCurrentSpace(model.id ?? '', model.flag ?? 0, true, model.title ?? '');
-      }
+      updateCurrentSpace(model.id ?? '', model.flag ?? 0, true);
+      loadManageTreeData();
     }
+  }
+
+  /// 确认切换空间
+  switchSpace({Function? success}) {
     var params = {
-      "currentId": currentId,
-      "flag": flag,
-      "needOrgNode": needOrgNode,
+      "id" : SCScaffoldManager.instance.defaultConfigModel?.id ,
+      "jsonValue" : jsonEncode(selectList)
     };
-    SCLoadingUtils.show();
-    SCHttpManager.instance.get(
-        url: SCUrl.kSpaceTreeUrl,
-        params: params,
-        success: (value) {
-          print('空间树==========$value');
-          if (index == 0) {
-            List<SCSpaceModel> list = List<SCSpaceModel>.from(
-                value.map((e) => SCSpaceModel.fromJson(e)).toList());
-            SCSpaceModel model = list.first;
-            hasNextSpace = model.children?.isNotEmpty ?? true;
-            dataList[index] = model;
-            dataList = dataList.sublist(0, index > 0 ? index : 1);
-            update();
-            success?.call(dataList);
-          } else {
-            var data = [{
-              "id" : currentId,
-              "flag" : flag,
-              "needOrgNode" : needOrgNode,
-              "title" : title,
-              "children" : value
-            }];
-            List<SCSpaceModel> list = List<SCSpaceModel>.from(
-                data.map((e) => SCSpaceModel.fromJson(e)).toList());
-            SCSpaceModel model = list.first;
-            hasNextSpace = model.children?.isNotEmpty ?? false;
-            if (hasNextSpace) {
-              dataList[index] = model;
-              dataList = dataList.sublist(0, index > 0 ? index : 1);
-            }
-            update();
-            success?.call(dataList);
-          }
-        });
+    SCLoadingUtils.show(text: '');
+    SCHttpManager.instance.post(url: SCUrl.kUserDefaultConfigUrl, params: params, success: (value){
+      SCLoadingUtils.hide();
+      success?.call();
+    }, failure: (value){
+      SCLoadingUtils.hide();
+      String message = value['message'];
+      SCToast.showTip(message);
+    });
   }
 }

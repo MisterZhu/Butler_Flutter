@@ -19,7 +19,6 @@ class SCWorkBenchView extends StatelessWidget {
   SCWorkBenchView(
       {Key? key,
       required this.state,
-      required this.changeSpaceController,
       required this.height,
       required this.tabController,
       required this.tabTitleList,
@@ -27,14 +26,11 @@ class SCWorkBenchView extends StatelessWidget {
       this.tagAction,
       this.menuTap,
       this.onRefreshAction,
-      this.detailAction
-      })
+      this.detailAction,
+      this.showSpaceAlert})
       : super(key: key);
 
   final SCWorkBenchController state;
-
-  /// 切换空间controller
-  final SCChangeSpaceController changeSpaceController;
 
   /// 组件高度
   final double height;
@@ -59,6 +55,9 @@ class SCWorkBenchView extends StatelessWidget {
 
   /// 下拉刷新
   final Function? onRefreshAction;
+
+  /// 显示空间弹窗
+  final Function? showSpaceAlert;
 
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -121,16 +120,16 @@ class SCWorkBenchView extends StatelessWidget {
   Widget pageView(double height) {
     Widget tabBarView = SizedBox(
       height: height,
-      child: TabBarView(
-        controller: tabController,
-        children: [
-          SCWorkBenchListView(
-            dataList: state.dataList,
-            detailAction: (SCWorkOrderModel model){
-              detail(model);
-            },
-          ),
-          Container(color: Colors.white,)
+      child: TabBarView(controller: tabController, children: [
+        SCWorkBenchListView(
+          dataList: state.dataList,
+          detailAction: (SCWorkOrderModel model) {
+            detail(model);
+          },
+        ),
+        Container(
+          color: Colors.white,
+        )
       ]),
     );
     return tabBarView;
@@ -146,18 +145,7 @@ class SCWorkBenchView extends StatelessWidget {
 
   /// 切换空间
   switchAction(BuildContext context) {
-    changeSpaceController.clearData();
-    changeSpaceController.loadManageTreeData(success: (List<SCSpaceModel> list){
-      SCDialogUtils().showCustomBottomDialog(
-          context: context,
-          isDismissible: true,
-          widget: GetBuilder<SCChangeSpaceController>(builder: (state){
-            return SCWorkBenchChangeSpaceAlert(
-              changeSpaceController: changeSpaceController,
-              selectList: state.dataList,
-            );
-          }));
-    });
+    showSpaceAlert?.call();
   }
 
   /// 详情

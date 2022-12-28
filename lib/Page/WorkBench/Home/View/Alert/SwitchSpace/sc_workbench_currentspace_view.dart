@@ -12,7 +12,9 @@ class SCCurrentSpaceView extends StatelessWidget {
     required this.list,
     required this.hasNextSpace,
     required this.lastSpaceName,
-    this.switchSpaceAction
+    required this.currentId,
+    this.switchSpaceAction,
+    this.selectModel
   }) : super(key: key);
 
   final List<SCSpaceModel> list;
@@ -34,6 +36,12 @@ class SCCurrentSpaceView extends StatelessWidget {
 
   /// 最后一层空间名称
   final String lastSpaceName;
+
+  /// 当前节点id
+  final String currentId;
+
+  /// 已选的空间
+  final SCSpaceModel? selectModel;
 
   final ScrollController scrollController = ScrollController();
 
@@ -64,8 +72,9 @@ class SCCurrentSpaceView extends StatelessWidget {
 
   /// listView
   Widget listView() {
+    int itemCount = getItemCount();
     ScrollPhysics physics;
-    if (list.length > maxRow) {
+    if (itemCount > maxRow) {
       physics = const BouncingScrollPhysics();
     } else {
       physics = const NeverScrollableScrollPhysics();
@@ -75,12 +84,12 @@ class SCCurrentSpaceView extends StatelessWidget {
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         physics: physics,
-        itemCount: list.length + 1,
+        itemCount: itemCount,
         controller: scrollController,
         itemBuilder: (BuildContext context, int index) {
           return cell(index);
         });
-    if (list.length > maxRow) {
+    if (itemCount > maxRow) {
       return SizedBox(
         height: cellHeight * maxRow,
         child: listView,
@@ -95,8 +104,15 @@ class SCCurrentSpaceView extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: (){
-        if (index != list.length && index != 0) {
-          switchSpaceAction?.call(index);
+        int itemCount = getItemCount();
+        if (index != 0) {
+          if (index == itemCount - 1) {
+            if (hasNextSpace == false) {
+              switchSpaceAction?.call(index);
+            }
+          } else {
+            switchSpaceAction?.call(index);
+          }
         }
       },
       child: SizedBox(
@@ -116,6 +132,7 @@ class SCCurrentSpaceView extends StatelessWidget {
 
   /// cell-左侧circle
   Widget leftCircle(int index) {
+    int itemCount = getItemCount();
     Color circleColor;
     Color color1;
     Color color2;
@@ -127,7 +144,7 @@ class SCCurrentSpaceView extends StatelessWidget {
       circleColor = SCColors.color_EBF2FF;
       borderWidth = 1.0;
       borderColor = SCColors.color_4285F4.withOpacity(0.8);
-    } else if (index == list.length) {
+    } else if (index == itemCount - 1) {
       if (hasNextSpace) {
         color1 = SCColors.color_4285F4;
         color2 = Colors.transparent;
@@ -179,17 +196,30 @@ class SCCurrentSpaceView extends StatelessWidget {
   Widget rightTitle(int index) {
     String title = '';
     Color color;
+    int itemCount = getItemCount();
     if (index == 0) {
       color = SCColors.color_5E5F66;
       SCSpaceModel model = list[index];
       title = model.title ?? '';
-    } else if(index == list.length) {
-      if (hasNextSpace) {
-        color = SCColors.color_4285F4;
-        title = '全部';
+    } else if(index == itemCount - 1) {
+      if (currentId.isEmpty) {
+        if (selectModel == null) {
+          color = SCColors.color_4285F4;
+          title = '全部';
+        } else {
+          SCSpaceModel model = list[index];
+          color = SCColors.color_1B1C33;
+          title = model.title ?? '';
+        }
       } else {
-        color = SCColors.color_1B1C33;
-        title = lastSpaceName;
+        if (hasNextSpace) {
+          color = SCColors.color_4285F4;
+          title = '全部';
+        } else {
+          SCSpaceModel model = list[index];
+          color = SCColors.color_1B1C33;
+          title = model.title ?? '';
+        }
       }
     } else {
       color = SCColors.color_1B1C33;
@@ -205,10 +235,30 @@ class SCCurrentSpaceView extends StatelessWidget {
     );
   }
 
+  /// listView-count
+  int getItemCount() {
+    int itemCount;
+    if (currentId.isEmpty) {
+      if (selectModel == null) {
+        itemCount = list.length + 1;
+      } else {
+        itemCount = list.length;
+      }
+    } else {
+      if (hasNextSpace) {
+        itemCount = list.length + 1;
+      } else {
+        itemCount = list.length;
+      }
+    }
+    return itemCount;
+  }
+
   /// 滑动到底部
   scrollToBottom() {
+    int itemCount = getItemCount();
     SchedulerBinding.instance.addPostFrameCallback((_) { //build完成后的回调
-      if (list.length >= maxRow) {
+      if (itemCount >= maxRow) {
         scrollController.animateTo(
           scrollController.position.maxScrollExtent,//滚动到底部
           duration: const Duration(milliseconds: 10),

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_h5.dart';
 import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_controller.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_alert.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/WorkBench/sc_workbench_view.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
-
 import '../../../../Utils/sc_utils.dart';
 import '../Model/sc_home_task_model.dart';
 import '../View/Alert/sc_task_module_alert.dart';
@@ -24,9 +26,7 @@ class SCWorkBenchPage extends StatefulWidget {
 
 class SCWorkBenchPageState extends State<SCWorkBenchPage>
     with SingleTickerProviderStateMixin {
-  late SCWorkBenchController state;
-
-  SCChangeSpaceController changeSpaceController = Get.put(SCChangeSpaceController());
+  late SCWorkBenchController workBenchController;
 
   /// tab-title
   List<String> tabTitleList = ['待处理', '处理中'];
@@ -45,17 +45,24 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   /// tabController
   late TabController tabController;
 
-  String tag = '';
+  /// SCWorkBenchController - tag
+  String workBenchControllerTag = '';
+
+  /// changeSpaceController
+  SCChangeSpaceController changeSpaceController =
+      Get.put(SCChangeSpaceController());
 
   @override
   initState() {
     super.initState();
+    SCUtils().changeStatusBarStyle(style: SystemUiOverlayStyle.dark);
     String pageName = (SCWorkBenchPage).toString();
-    tag = SCScaffoldManager.instance.getXControllerTag(pageName);
+    workBenchControllerTag =
+        SCScaffoldManager.instance.getXControllerTag(pageName);
 
-    state = Get.put(SCWorkBenchController(), tag: tag);
-    state.tag = tag;
-    state.pageName = pageName;
+    workBenchController = Get.put(SCWorkBenchController(), tag: workBenchControllerTag);
+    workBenchController.tag = workBenchControllerTag;
+    workBenchController.pageName = pageName;
     tabController = TabController(length: tabTitleList.length, vsync: this);
   }
 
@@ -76,12 +83,11 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
       child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
         return GetBuilder<SCWorkBenchController>(
-            tag: tag,
-            init: state,
+            tag: workBenchControllerTag,
+            init: workBenchController,
             builder: (value) {
               return SCWorkBenchView(
-                state: state,
-                changeSpaceController: changeSpaceController,
+                state: workBenchController,
                 height: constraints.maxHeight,
                 tabTitleList: tabTitleList,
                 classificationList: classificationList,
@@ -91,10 +97,13 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
                   showTaskAlert();
                 },
                 onRefreshAction: () {
-                  state.loadData();
+                  workBenchController.loadData();
                 },
                 detailAction: (SCWorkOrderModel model) {
                   detailAction(model);
+                },
+                showSpaceAlert: () {
+                  showSpaceAlert();
                 },
               );
             });
@@ -136,6 +145,30 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
       "title": model.categoryName ?? '',
       "url": url,
       "needJointParams": true
+    });
+  }
+
+  /// 空间弹窗
+  showSpaceAlert() {
+    changeSpaceController.clearData();
+    changeSpaceController.initBase();
+    changeSpaceController.loadManageTreeData(
+        success: (List<SCSpaceModel> list) {
+      SCDialogUtils().showCustomBottomDialog(
+          context: context,
+          isDismissible: true,
+          widget: GetBuilder<SCChangeSpaceController>(builder: (state) {
+            return SCWorkBenchChangeSpaceAlert(
+              changeSpaceController: changeSpaceController,
+              selectList: state.selectList,
+              onCancel: () {},
+              onSure: () {
+                changeSpaceController.switchSpace(success: (){
+                  workBenchController.loadData();
+                });
+              },
+            );
+          }));
     });
   }
 }

@@ -10,21 +10,21 @@ class SCAllSpaceListView extends StatelessWidget {
     Key? key,
     required this.list,
     required this.hasNextSpace,
-    required this.lastIndex,
-    this.onTap
+    this.onTap,
+    this.selectModel
   }) : super(key: key);
 
   /// 数据源-空间列表
-  final List<SCSubSpaceModel> list;
+  final List<SCSpaceModel> list;
 
   /// 选择空间
-  final Function(int index, SCSubSpaceModel model)? onTap;
+  final Function(int index, SCSpaceModel model)? onTap;
 
   /// 是否有下一级空间
   final bool hasNextSpace;
 
-  /// 没有下一级空间时，最后选择的index
-  final int lastIndex;
+  /// 已选的空间
+  final SCSpaceModel? selectModel;
 
   @override
   Widget build(BuildContext context) {
@@ -40,21 +40,24 @@ class SCAllSpaceListView extends StatelessWidget {
 
   /// cell
   Widget cell(int index) {
-    SCSubSpaceModel model = list[index];
+    SCSpaceModel model = list[index];
     String title = model.title ?? '';
     Color color;
     if (hasNextSpace) {
-      color = SCColors.color_1B1D33;
-    } else {
-      if (index == lastIndex) {
+      String selectId = selectModel?.id ?? '';
+      if (selectId == model.id) {
         color = SCColors.color_4285F4;
       } else {
         color = SCColors.color_1B1D33;
       }
+    } else {
+      color = SCColors.color_4285F4;
     }
     return GestureDetector(
       onTap: (){
-        selectSpace(index, model);
+        if (hasNextSpace) {
+          selectSpace(index, model);
+        }
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 9.0),
@@ -79,7 +82,7 @@ class SCAllSpaceListView extends StatelessWidget {
   }
 
   /// 选择空间
-  selectSpace(int index, SCSubSpaceModel model) {
+  selectSpace(int index, SCSpaceModel model) {
     onTap?.call(index, model);
   }
 }

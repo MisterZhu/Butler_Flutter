@@ -90,7 +90,7 @@ class SCWorkBenchHeader extends StatelessWidget {
         children: [
           SCWorkBenchSwitchSpaceView(
             avatar: SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri?.fileKey ?? ''),
-            space: SCScaffoldManager.instance.user.tenantName ?? '',
+            space: state.spaceName,
             onTap: () {
               switchSpaceAction?.call();
             },

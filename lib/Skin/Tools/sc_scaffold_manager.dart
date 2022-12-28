@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_default_config_model.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../Constants/sc_default_value.dart';
 import '../../Constants/sc_key.dart';
@@ -35,6 +36,9 @@ class SCScaffoldManager {
 
   static late List _getXTagList;
 
+  /// 默认配置数据
+  static SCDefaultConfigModel? _defaultConfigModel;
+
   SCScaffoldManager._internal() {
     _scaffoldModel = SCScaffoldModel();
     _user = SCUserModel();
@@ -49,6 +53,8 @@ class SCScaffoldManager {
   SharedPreferences get preferences => _preferences;
 
   List get getXTagList => _getXTagList;
+
+  SCDefaultConfigModel? get defaultConfigModel => _defaultConfigModel;
 
   /// 初始化
   void initBase() {
@@ -65,9 +71,15 @@ class SCScaffoldManager {
 
   /// set login
   set isLogin(bool isLogin) {
-    // TODO: implement user=
+    // TODO: implement isLogin=
     _isLogin = isLogin;
     cacheUserIsLogin(isLogin);
+  }
+
+  /// set defaultConfigModel
+  set defaultConfigModel(SCDefaultConfigModel? model) {
+    // TODO: implement SCDefaultConfigModel=
+    _defaultConfigModel = model;
   }
 
   /// 初始化scaffold数据

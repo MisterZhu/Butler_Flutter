@@ -15,7 +15,9 @@ class SCWorkBenchChangeSpaceAlert extends StatelessWidget {
   SCWorkBenchChangeSpaceAlert({
     Key? key,
     required this.selectList,
-    required this.changeSpaceController
+    required this.changeSpaceController,
+    this.onSure,
+    this.onCancel
   }) : super(key: key);
 
   /// 数据源-已选择的空间
@@ -23,6 +25,12 @@ class SCWorkBenchChangeSpaceAlert extends StatelessWidget {
 
   /// 切换空间controller
   final SCChangeSpaceController changeSpaceController;
+
+  /// 取消
+  final Function? onCancel;
+
+  /// 确定
+  final Function? onSure;
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +63,12 @@ class SCWorkBenchChangeSpaceAlert extends StatelessWidget {
   /// header
   Widget headerView() {
     return SCChangeSpaceAlertHeader(
-      onCancel: () {},
-      onSure: () {},
+      onCancel: () {
+        onCancel?.call();
+      },
+      onSure: () {
+        onSure?.call();
+      },
     );
   }
 
@@ -71,12 +83,12 @@ class SCWorkBenchChangeSpaceAlert extends StatelessWidget {
   Widget currentSpaceView() {
     return SCCurrentSpaceView(
       list: selectList,
+      currentId: changeSpaceController.currentId,
       hasNextSpace: changeSpaceController.hasNextSpace,
-      lastSpaceName: changeSpaceController.title,
+      lastSpaceName: changeSpaceController.spaceModel?.title ?? '',
+      selectModel: changeSpaceController.spaceModel,
       switchSpaceAction: (int index){
-        if (index > 0) {
-          changeSpaceController.switchSpace(index < changeSpaceController.dataList.length ? index : index - 1);
-        }
+        changeSpaceController.selectSpace(index);
       },
     );
   }
@@ -108,14 +120,19 @@ class SCWorkBenchChangeSpaceAlert extends StatelessWidget {
 
   /// 空间listView
   Widget spaceListView() {
-    SCSpaceModel model = selectList.last;
+    List<SCSpaceModel> list = [];
+    if (changeSpaceController.hasNextSpace == false && changeSpaceController.spaceModel != null && changeSpaceController.dataList.isEmpty) {
+      list = [changeSpaceController.spaceModel!];
+    } else {
+      list = changeSpaceController.dataList;
+    }
     return Expanded(child: SCAllSpaceListView(
-      list: model.children ?? [],
+      list: list,
       hasNextSpace: changeSpaceController.hasNextSpace,
-      lastIndex: changeSpaceController.lastIndex,
-      onTap: (int index, SCSubSpaceModel subModel){
-        changeSpaceController.lastIndex = index;
-        changeSpaceController.updateCurrentSpace(subModel.id ?? '', subModel.flag ?? 0, true, subModel.title ?? '');
+      selectModel: changeSpaceController.spaceModel,
+      onTap: (int index, SCSpaceModel subModel){
+        changeSpaceController.updateCurrentSpace(subModel.id ?? '', subModel.flag ?? 0, true);
+        changeSpaceController.updateSelectData(subModel);
         changeSpaceController.loadManageTreeData();
       },
     ));
