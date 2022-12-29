@@ -66,6 +66,7 @@ class SCChangeSpaceController extends GetxController {
         Map<String, dynamic> header = SCHttpManager.instance.headers!;
         header['spaceIds'] = lastModel.id;
         SCHttpManager.instance.updateHeaders(headers: header);
+        SCScaffoldManager.instance.spaceIds = lastModel.id;
         success?.call(lastModel.title ?? '');
       }
     }

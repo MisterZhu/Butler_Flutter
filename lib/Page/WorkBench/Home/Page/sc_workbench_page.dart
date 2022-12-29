@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_h5.dart';
+import 'package:smartcommunity/Constants/sc_key.dart';
 import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_controller.dart';
@@ -52,6 +55,8 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   SCChangeSpaceController changeSpaceController =
       Get.put(SCChangeSpaceController());
 
+  late StreamSubscription subscription;
+
   @override
   initState() {
     super.initState();
@@ -64,6 +69,13 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     workBenchController.tag = workBenchControllerTag;
     workBenchController.pageName = pageName;
     tabController = TabController(length: tabTitleList.length, vsync: this);
+    addNotification();
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    subscription.cancel();
   }
 
   @override
@@ -169,6 +181,16 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
               },
             );
           }));
+    });
+  }
+
+  /// 通知
+  addNotification() {
+    subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
+      String key = event['key'];
+      if (key == SCKey.kSwitchEnterprise) {
+        workBenchController.loadData();
+      }
     });
   }
 }

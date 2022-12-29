@@ -1,9 +1,9 @@
-
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Constants/sc_key.dart';
 import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
@@ -12,7 +12,6 @@ import '../../../../Utils/Router/sc_router_helper.dart';
 import '../Model/sc_tenant_list_model.dart';
 
 class SCSwitchTenantController extends GetxController {
-
   List<SCTenantListModel> dataList = [];
 
   /// 外部用户ID 比如微信小程序端的openId
@@ -30,7 +29,6 @@ class SCSwitchTenantController extends GetxController {
   @override
   onInit() {
     super.onInit();
-
   }
 
   /// 获取租户列表数据
@@ -40,12 +38,12 @@ class SCSwitchTenantController extends GetxController {
         url: SCUrl.kSwitchTenantUrl,
         params: null,
         success: (value) {
-          dataList = List<SCTenantListModel>.from(value.map((e) => SCTenantListModel.fromJson(e)).toList());
+          dataList = List<SCTenantListModel>.from(
+              value.map((e) => SCTenantListModel.fromJson(e)).toList());
           update();
         },
         failure: (value) {
           log('appList失败===$value');
-
         });
   }
 
@@ -54,15 +52,15 @@ class SCSwitchTenantController extends GetxController {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kSwitchTenantUrl,
-        params: {
-          "tenantId": tenantId,
-          "userId": userId
-        },
+        params: {"tenantId": tenantId, "userId": userId},
         success: (value) {
           SCUserModel model = SCUserModel.fromJson(value['userInfoV']);
           SCScaffoldManager.instance.user = model;
           SCRouterHelper.back(null);
           Get.forceAppUpdate();
+
+          var params = {"key" : SCKey.kSwitchEnterprise};
+          SCScaffoldManager.instance.eventBus.fire(params);
         },
         failure: (value) {
           if (value['message'] != null) {
@@ -71,5 +69,4 @@ class SCSwitchTenantController extends GetxController {
           }
         });
   }
-
 }

@@ -66,18 +66,24 @@ class SCWorkBenchController extends GetxController {
 
   /// 加载数据
   loadData() {
-    getUserInfo();
-    getWorkOrderNumber();
-    getWorkOrderList();
-    getDefaultConfig();
+    getDefaultConfig().then((value) {
+      if (value == true) {
+        getUserInfo().then((subValue) {
+          if (subValue == true) {
+            getWorkOrderNumber();
+            getWorkOrderList();
+          }
+        });
+      }
+    });
   }
 
   /// 获取用户信息
-  getUserInfo() {
+  Future getUserInfo() {
     if (SCScaffoldManager.instance.isLogin) {
       String token = SCScaffoldManager.instance.user.token ?? '';
       var params = {'id': SCScaffoldManager.instance.user.id};
-      SCHttpManager.instance.get(
+      return SCHttpManager.instance.get(
           url: SCUrl.kUserInfoUrl,
           params: params,
           success: (value) {
@@ -86,13 +92,15 @@ class SCWorkBenchController extends GetxController {
             SCScaffoldManager.instance.user = userModel;
             Get.forceAppUpdate();
           });
+    } else {
+      return Future(() => false);
     }
   }
 
   /// 获取默认配置
-  getDefaultConfig() {
+  Future getDefaultConfig() {
     if (SCScaffoldManager.instance.isLogin) {
-      SCHttpManager.instance.get(
+      return SCHttpManager.instance.get(
           url: SCUrl.kUserDefaultConfigUrl,
           params: null,
           success: (value) {
@@ -107,6 +115,8 @@ class SCWorkBenchController extends GetxController {
               }
             );
           });
+    } else {
+      return Future(() => false);
     }
   }
 
@@ -116,8 +126,8 @@ class SCWorkBenchController extends GetxController {
         url: SCUrl.kWorkOrderNumberUrl,
         params: null,
         success: (value) {
-          processOrder = value['processOrder'];
-          newOrder = value['newOrder'];
+          processOrder = value['processOrder'] ?? 0;
+          newOrder = value['newOrder'] ?? 0;
           updateNumData();
         });
   }

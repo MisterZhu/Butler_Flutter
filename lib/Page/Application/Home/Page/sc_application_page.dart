@@ -1,4 +1,4 @@
-
+import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,8 +22,19 @@ class SCApplicationPage extends StatefulWidget {
   SCApplicationPageState createState() => SCApplicationPageState();
 }
 
-class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeepAliveClientMixin{
-  SCApplicationController state = Get.put(SCApplicationController());
+class SCApplicationPageState extends State<SCApplicationPage>
+    with AutomaticKeepAliveClientMixin {
+
+  /// SCApplicationController
+  late SCApplicationController state;
+
+  /// SCApplicationController-tag
+  late String tag;
+
+  /// pageName
+  late String pageName;
+
+  late StreamSubscription subscription;
 
   @override
   // TODO: implement wantKeepAlive
@@ -32,7 +43,18 @@ class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeep
   @override
   void initState() {
     super.initState();
+    pageName = (SCApplicationPage).toString();
+    tag = SCScaffoldManager.instance.getXControllerTag(pageName);
+    state = Get.put(SCApplicationController(), tag: tag);
     loadData();
+    addNotification();
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    subscription.cancel;
+    SCScaffoldManager.instance.deleteGetXControllerTag(pageName, tag);
   }
 
   @override
@@ -42,8 +64,7 @@ class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeep
         centerTitle: true,
         navBackgroundColor: SCColors.color_F2F3F5,
         elevation: 0,
-        body: body()
-    );
+        body: body());
   }
 
   /// body
@@ -52,25 +73,40 @@ class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeep
       width: double.infinity,
       height: double.infinity,
       color: SCColors.color_F2F3F5,
-      child: GetBuilder<SCApplicationController>(builder: (state){
-        return SCApplicationListView(
-            appList: state.moduleList,
-            itemTapAction: (title, url) {
-              /// 应用icon点击跳转
-              itemDetail(title, url);
-            }
-        );
-      }),
+      child: GetBuilder<SCApplicationController>(
+          tag: tag,
+          init: state,
+          builder: (state) {
+            return SCApplicationListView(
+                appList: state.moduleList,
+                state: state,
+                tag: tag,
+                itemTapAction: (title, url) {
+                  /// 应用icon点击跳转
+                  itemDetail(title, url);
+                });
+          }),
     );
   }
 
-  /// 获取数据，接口没返回数据，暂时用本地测试数据
+  /// 获取数据
   loadData() {
     state.loadAppListData();
   }
 
   /// 应用详情
   itemDetail(String title, String url) {
-    SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title" : title, "url" : url, "needJointParams" : true});
+    SCRouterHelper.pathPage(SCRouterPath.webViewPath,
+        {"title": title, "url": url, "needJointParams": true});
+  }
+
+  /// 通知
+  addNotification() {
+    subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
+      String key = event['key'];
+      if (key == SCKey.kSwitchEnterprise) {
+        state.loadAppListData();
+      }
+    });
   }
 }

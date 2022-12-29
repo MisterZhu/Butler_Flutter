@@ -18,4 +18,6 @@ class SCKey {
   static const String kIsShowLocationAlert = "kIsShowLocationAlert";
   /// 建信租房应用token
   static const String kJianXinRentingToken = "kJianXinRentingToken";
+  /// 切换企业key
+  static const String kSwitchEnterprise = "kSwitchEnterprise";
 }

@@ -69,7 +69,6 @@ class SCApplicationController extends GetxController {
         url: SCUrl.kApplicationListUrl,
         params: null,
         success: (value) {
-          print('应用列表======$value');
           List<SCApplicationModuleModel> dataList = List<SCApplicationModuleModel>.from(value.map((e) => SCApplicationModuleModel.fromJson(e)).toList());
           updateModuleList(list: dataList);
         },
@@ -79,7 +78,7 @@ class SCApplicationController extends GetxController {
 
   /// 更新数据源
   updateModuleList({required List<SCApplicationModuleModel> list}) {
-    moduleList.addAll(list);
+    moduleList = list;
     update();
   }
 

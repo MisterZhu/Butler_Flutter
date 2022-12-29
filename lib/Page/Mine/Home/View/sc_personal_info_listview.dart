@@ -188,9 +188,8 @@ class SCPersonalInfoListView extends StatelessWidget {
 
   /// 选择头像
   selectHeadPicAction() {
-    SCPermissionUtils.showImagePicker(completionHandler: (imagePath){
-      print("图片路径:$imagePath");
-      SCUploadUtils.uploadHeadPic(imagePath: imagePath);
+    SCPermissionUtils.showImagePicker(maxLength: 1,completionHandler: (imageList){
+      SCUploadUtils.uploadHeadPic(imagePath: imageList.first);
     });
     // SCPermissionUtils.photoPicker(
     //     maxLength: 1,

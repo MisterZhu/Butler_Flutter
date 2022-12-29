@@ -18,6 +18,7 @@ import '../../Utils/Router/sc_router_helper.dart';
 import '../../Utils/sc_sp_utils.dart';
 import '../GetXController/sc_scaffold_controller.dart';
 import '../Model/sc_scaffold_model.dart';
+import 'package:event_bus/event_bus.dart';
 
 class SCScaffoldManager {
   factory SCScaffoldManager() => _instance;
@@ -39,6 +40,12 @@ class SCScaffoldManager {
   /// 默认配置数据
   static SCDefaultConfigModel? _defaultConfigModel;
 
+  /// 空间id
+  static String? _spaceIds;
+
+  /// eventBus
+  static late EventBus _eventBus;
+
   SCScaffoldManager._internal() {
     _scaffoldModel = SCScaffoldModel();
     _user = SCUserModel();
@@ -55,6 +62,10 @@ class SCScaffoldManager {
   List get getXTagList => _getXTagList;
 
   SCDefaultConfigModel? get defaultConfigModel => _defaultConfigModel;
+
+  String? get spaceIds => _spaceIds;
+
+  EventBus get eventBus => _eventBus;
 
   /// 初始化
   void initBase() {
@@ -82,10 +93,17 @@ class SCScaffoldManager {
     _defaultConfigModel = model;
   }
 
+  /// set spaceIds
+  set spaceIds(String? spaceIds) {
+    // TODO: implement spaceIds=
+    _spaceIds = spaceIds;
+  }
+
   /// 初始化scaffold数据
   Future initScaffold() async {
     _getXTagList = [];
     _preferences = await SharedPreferences.getInstance();
+    _eventBus = EventBus();
 
     bool hasScaffoldKey = _preferences.containsKey(SkinDefaultKey.scaffold_key);
 
