@@ -82,6 +82,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: SCColors.color_FFFFFF,
+      resizeToAvoidBottomInset: false,
       body: body(),
     );
   }

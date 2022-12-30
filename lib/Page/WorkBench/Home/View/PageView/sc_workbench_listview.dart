@@ -13,14 +13,14 @@ import '../../Model/sc_work_order_model.dart';
 /// 工作台-listView
 
 class SCWorkBenchListView extends StatefulWidget {
-  const SCWorkBenchListView(
-      {Key? key,
-      required this.dataList,
-      this.detailAction,
-      this.moreAction,
-      this.likeAction,
-      this.callAction,})
-      : super(key: key);
+  const SCWorkBenchListView({
+    Key? key,
+    required this.dataList,
+    this.detailAction,
+    this.moreAction,
+    this.likeAction,
+    this.callAction,
+  }) : super(key: key);
 
   final List<SCWorkOrderModel> dataList;
 
@@ -91,7 +91,8 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
   Widget listView() {
     return ListView.separated(
         physics: const ClampingScrollPhysics(),
-        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 0, bottom: 0),
+        padding:
+            const EdgeInsets.only(left: 16.0, right: 16.0, top: 0, bottom: 0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           SCWorkOrderModel model = widget.dataList[index];
@@ -165,8 +166,8 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
                 ),
                 const WidgetSpan(
                     child: SizedBox(
-                      width: 6.0,
-                    )),
+                  width: 6.0,
+                )),
                 TextSpan(
                     text: title,
                     style: const TextStyle(
