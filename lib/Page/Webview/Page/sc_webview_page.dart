@@ -186,6 +186,8 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
         getLocationChannel(context),
         scanChannel(context),
         userInfoChannel(context),
+        cameraChannel(context),
+        photosChannel(context),
       },
 
       ///WebView创建
