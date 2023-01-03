@@ -20,7 +20,11 @@ class SCWorkBenchController extends GetxController {
 
   String tag = '';
 
+  /// 待处理工单数据
   List<SCWorkOrderModel> dataList = [];
+
+  /// 处理中工单 数据
+  List<SCWorkOrderModel> processingDataList = [];
 
   /// 进行中数量
   int processOrder = 0;
@@ -72,6 +76,7 @@ class SCWorkBenchController extends GetxController {
           if (subValue == true) {
             getWorkOrderNumber();
             getWorkOrderList();
+            getProcessingWorkOrderList();
           }
         });
       }
@@ -132,7 +137,7 @@ class SCWorkBenchController extends GetxController {
         });
   }
 
-  /// 获取工单列表
+  /// 获取待处理工单列表
   getWorkOrderList() {
     var params = {
       "conditions": {
@@ -142,7 +147,7 @@ class SCWorkBenchController extends GetxController {
             "map": {},
             "method": 1,
             "name": "wo.process_user_id",
-            "value": "11165121145828"
+            "value": SCScaffoldManager.instance.user.id
           }
         ]
       },
@@ -161,6 +166,40 @@ class SCWorkBenchController extends GetxController {
         success: (value) {
           List list = value['records'];
           dataList = List<SCWorkOrderModel>.from(
+              list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
+          update();
+        });
+  }
+
+  /// 获取处理中工单列表
+  getProcessingWorkOrderList() {
+    var params = {
+      "conditions": {
+        "fields": [
+          {"map": {}, "method": 1, "name": "wo.status", "value": 5},
+          {
+            "map": {},
+            "method": 1,
+            "name": "wo.process_user_id",
+            "value": SCScaffoldManager.instance.user.id
+          }
+        ]
+      },
+      "count": true,
+      "last": true,
+      "orderBy": [
+        {"asc": false, "field": "wo.create_time"}
+      ],
+      "pageNum": 1,
+      "pageSize": 10
+    };
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kWorkOrderListUrl,
+        params: params,
+        success: (value) {
+          List list = value['records'];
+          processingDataList = List<SCWorkOrderModel>.from(
               list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
           update();
         });

@@ -30,7 +30,8 @@ class SCWorkBenchView extends StatelessWidget {
       this.showSpaceAlert,
       this.scanAction,
       this.messageAction,
-      this.cardDetailAction
+      this.cardDetailAction,
+      this.headerAction
       })
       : super(key: key);
 
@@ -71,6 +72,9 @@ class SCWorkBenchView extends StatelessWidget {
 
   /// 卡片详情
   final Function(int index)? cardDetailAction;
+
+  /// 点击头像
+  final Function? headerAction;
 
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -135,6 +139,9 @@ class SCWorkBenchView extends StatelessWidget {
       cardDetailAction: (int index) {
         cardDetailAction?.call(index);
       },
+      headerAction: () {
+        headerAction?.call();
+      },
     );
   }
 
@@ -149,9 +156,12 @@ class SCWorkBenchView extends StatelessWidget {
             detail(model);
           },
         ),
-        Container(
-          color: Colors.white,
-        )
+        SCWorkBenchListView(
+          dataList: state.processingDataList,
+          detailAction: (SCWorkOrderModel model) {
+            detail(model);
+          },
+        ),
       ]),
     );
     return tabBarView;

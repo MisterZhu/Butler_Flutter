@@ -128,6 +128,9 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
                 cardDetailAction: (int index) {
                   cardDetailAction(index);
                 },
+                headerAction: () {
+                  userInfoAction();
+                },
               );
             });
       }),
@@ -205,6 +208,11 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
 
   /// 卡片详情
   cardDetailAction(int index) {}
+
+  /// 用户信息
+  userInfoAction() {
+    SCRouterHelper.pathPage(SCRouterPath.personalInfoPath, null);
+  }
 
   /// 通知
   addNotification() {
