@@ -27,7 +27,11 @@ class SCWorkBenchView extends StatelessWidget {
       this.menuTap,
       this.onRefreshAction,
       this.detailAction,
-      this.showSpaceAlert})
+      this.showSpaceAlert,
+      this.scanAction,
+      this.messageAction,
+      this.cardDetailAction
+      })
       : super(key: key);
 
   final SCWorkBenchController state;
@@ -58,6 +62,15 @@ class SCWorkBenchView extends StatelessWidget {
 
   /// 显示空间弹窗
   final Function? showSpaceAlert;
+
+  /// 扫一扫
+  final Function? scanAction;
+
+  /// 消息详情
+  final Function? messageAction;
+
+  /// 卡片详情
+  final Function(int index)? cardDetailAction;
 
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -112,6 +125,15 @@ class SCWorkBenchView extends StatelessWidget {
       },
       switchSpaceAction: () {
         switchAction(context);
+      },
+      scanAction: () {
+        scanAction?.call();
+      },
+      messageAction: () {
+        messageAction?.call();
+      },
+      cardDetailAction: (int index) {
+        cardDetailAction?.call(index);
       },
     );
   }

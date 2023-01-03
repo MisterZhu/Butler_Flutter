@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
@@ -14,7 +13,6 @@ class SCPersonalInfoPage extends StatefulWidget {
 }
 
 class SCPersonalInfoPageState extends State<SCPersonalInfoPage> {
-
   SCPersonalInfoController state = Get.put(SCPersonalInfoController());
 
   @override
@@ -29,11 +27,28 @@ class SCPersonalInfoPageState extends State<SCPersonalInfoPage> {
       width: double.infinity,
       height: double.infinity,
       color: SCColors.color_F2F3F5,
-      child: GetBuilder<SCPersonalInfoController>(builder: (state){
+      child: GetBuilder<SCPersonalInfoController>(builder: (state) {
         return SCPersonalInfoListView(
           userHeadPicUrl: state.userHeadPicUrl,
+          birthday:  state.birthday,
+          updateUserHeadPicAction: (String path) {
+            updateUserHeadPicAction(path);
+          },
+          updateBirthdayAction: (value) {
+            updateBirthdayAction(value);
+          },
         );
       }),
     );
+  }
+
+  /// 更新用户头像
+  updateUserHeadPicAction(String path) {
+    state.updateUserHeadPic(path);
+  }
+
+  /// 更新出生日期
+  updateBirthdayAction(String birthday) {
+    state.updateBirthday(birthday);
   }
 }

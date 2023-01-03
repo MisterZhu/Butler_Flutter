@@ -95,7 +95,9 @@ class SCPermissionUtils {
           onTap: (index, context) {
             if (index == 0) {
               // 相机
-              takePhoto(completionHandler);
+              takePhoto((String path){
+                completionHandler?.call([path]);
+              });
             } else {
               // 相册
               photoPicker(
@@ -194,7 +196,7 @@ class SCPermissionUtils {
   }
 
   /// 拍照
-  static takePhoto(Function? completionHandler) {
+  static takePhoto(Function(String path)? completionHandler) {
     SCUtils.getCurrentContext(completionHandler: (context) async {
       bool isShowAlert = SCSpUtil.getBool(SCKey.kIsShowCameraAlert);
       if (!isShowAlert) {

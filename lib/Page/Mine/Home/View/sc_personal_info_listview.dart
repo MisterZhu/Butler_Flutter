@@ -3,7 +3,9 @@ import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/Mine/Home/Model/sc_headpic_model.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_setting_cell.dart';
+import 'package:smartcommunity/Utils/Date/sc_date_utils.dart';
 import 'package:smartcommunity/utils/Permission/sc_permission_utils.dart';
 import 'package:smartcommunity/utils/Upload/sc_upload_utils.dart';
 import '../../../../Network/sc_config.dart';
@@ -13,12 +15,25 @@ import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 /// 个人资料listview
 
 class SCPersonalInfoListView extends StatelessWidget {
-  const SCPersonalInfoListView(
-      {Key? key, this.userHeadPicUrl = SCAsset.iconUserDefault})
-      : super(key: key);
+  const SCPersonalInfoListView({
+    Key? key,
+    required this.userHeadPicUrl,
+    this.birthday,
+    this.updateUserHeadPicAction,
+    this.updateBirthdayAction
+  }) : super(key: key);
 
   /// 用户头像
-  final String? userHeadPicUrl;
+  final String userHeadPicUrl;
+
+  /// 出生日期
+  final String? birthday;
+
+  /// 更新用户头像
+  final Function(String path)? updateUserHeadPicAction;
+
+  /// 更新出生日期
+  final Function(String path)? updateBirthdayAction;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +60,7 @@ class SCPersonalInfoListView extends StatelessWidget {
       return SCSettingCell(
         title: '头像',
         cellType: SCSettingCellType.imageArrowType,
-        rightImage: SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri?.fileKey ?? ''),
+        rightImage: userHeadPicUrl,
         onTap: () {
           selectHeadPicAction();
         },
@@ -66,9 +81,15 @@ class SCPersonalInfoListView extends StatelessWidget {
         onTap: () {},
       );
     } else if (index == 3) {
+      String value;
+      if (birthday == null || birthday == '') {
+        value = '请选择';
+      } else {
+        value = birthday!;
+      }
       return SCSettingCell(
         title: '出生日期',
-        content: '请选择',
+        content: value,
         cellType: SCSettingCellType.contentArrowType,
         onTap: () {
           selectBirthdayAction(context);
@@ -94,7 +115,8 @@ class SCPersonalInfoListView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Expanded(child: Text(
+          const Expanded(
+              child: Text(
             '角色',
             textAlign: TextAlign.left,
             maxLines: 1,
@@ -102,9 +124,11 @@ class SCPersonalInfoListView extends StatelessWidget {
             style: TextStyle(
                 fontSize: SCFonts.f16,
                 fontWeight: FontWeight.w400,
-                color: SCColors.color_1B1C33
-            ),)),
-          const SizedBox(width: 30.0,),
+                color: SCColors.color_1B1C33),
+          )),
+          const SizedBox(
+            width: 30.0,
+          ),
           gridView(),
         ],
       ),
@@ -142,8 +166,7 @@ class SCPersonalInfoListView extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(2.0),
           color: SCColors.color_FFFFFF,
-          border: Border.all(color: SCColors.color_8D8E99, width: 0.5)
-      ),
+          border: Border.all(color: SCColors.color_8D8E99, width: 0.5)),
       child: Text(
         name,
         textAlign: TextAlign.center,
@@ -152,8 +175,8 @@ class SCPersonalInfoListView extends StatelessWidget {
         style: const TextStyle(
             fontSize: SCFonts.f12,
             fontWeight: FontWeight.w400,
-            color: SCColors.color_5E5F66
-        ),),
+            color: SCColors.color_5E5F66),
+      ),
     );
   }
 
@@ -188,9 +211,11 @@ class SCPersonalInfoListView extends StatelessWidget {
 
   /// 选择头像
   selectHeadPicAction() {
-    SCPermissionUtils.showImagePicker(maxLength: 1,completionHandler: (imageList){
-      SCUploadUtils.uploadHeadPic(imagePath: imageList.first);
-    });
+    SCPermissionUtils.showImagePicker(
+        maxLength: 1,
+        completionHandler: (imageList) {
+          updateUserHeadPicAction?.call(imageList.first);
+        });
     // SCPermissionUtils.photoPicker(
     //     maxLength: 1,
     //     requestType: RequestType.image,
@@ -208,10 +233,16 @@ class SCPersonalInfoListView extends StatelessWidget {
   /// 选择出生日期
   selectBirthdayAction(BuildContext context) {
     SCPickerUtils pickerUtils = SCPickerUtils();
+    pickerUtils.pickerType = SCPickerType.date;
     pickerUtils.completionHandler = (selectedValues, selecteds) {
-      print('数据11:${selectedValues}');
-      print('数据22:${selecteds}');
+      String dateString = SCDateUtils.transformDate(
+          dateTime: selectedValues.first,
+          formats: ['yyyy', '-', 'mm', '-', 'dd']);
+      updateBirthdayAction?.call(dateString);
     };
-    pickerUtils.showDatePicker(context: context, dateType: PickerDateTimeType.kYMD, columnFlex: [1, 1, 1]);
+    pickerUtils.showDatePicker(
+        context: context,
+        dateType: PickerDateTimeType.kYMD,
+        columnFlex: [1, 1, 1]);
   }
 }

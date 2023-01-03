@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 /// email : "88899@qq.com"
 /// id : "11165121145828"
 /// account : "13221028695"
@@ -20,30 +21,34 @@ import 'dart:convert';
 /// gmtModify : "2022-12-02 11:44:19"
 /// defaultConfigList : [{}]
 
-SCUserModel scUserModelFromJson(String str) => SCUserModel.fromJson(json.decode(str));
+SCUserModel scUserModelFromJson(String str) =>
+    SCUserModel.fromJson(json.decode(str));
 String scUserModelToJson(SCUserModel data) => json.encode(data.toJson());
+
 class SCUserModel {
   SCUserModel({
-      String? email, 
-      String? id, 
-      String? account, 
-      String? token, 
-      List<String>? roleIds, 
-      List<String>? roleNames, 
-      String? userName, 
-      String? nickName,
-      HeadPicUri? headPicUri,
-      String? tenantId,
-      String? tenantName, 
-      List<int>? orgIds, 
-      String? mobileNum, 
-      int? state, 
-      int? gender, 
-      String? creatorName, 
-      String? gmtCreate, 
-      String? operatorName, 
-      String? gmtModify, 
-      List<Map<String, dynamic>>? defaultConfigList,}){
+    String? email,
+    String? id,
+    String? account,
+    String? token,
+    List<String>? roleIds,
+    List<String>? roleNames,
+    String? userName,
+    String? nickName,
+    HeadPicUri? headPicUri,
+    String? tenantId,
+    String? tenantName,
+    List<int>? orgIds,
+    String? mobileNum,
+    int? state,
+    int? gender,
+    String? creatorName,
+    String? gmtCreate,
+    String? operatorName,
+    String? gmtModify,
+    List<Map<String, dynamic>>? defaultConfigList,
+    String? birthday,
+  }) {
     _email = email;
     _id = id;
     _account = account;
@@ -64,7 +69,8 @@ class SCUserModel {
     _operatorName = operatorName;
     _gmtModify = gmtModify;
     _defaultConfigList = defaultConfigList;
-}
+    _birthday = birthday;
+  }
 
   SCUserModel.fromJson(dynamic json) {
     _email = json['email'];
@@ -72,10 +78,13 @@ class SCUserModel {
     _account = json['account'];
     _token = json['token'];
     _roleIds = json['roleIds'] != null ? json['roleIds'].cast<String>() : [];
-    _roleNames = json['roleNames'] != null ? json['roleNames'].cast<String>() : [];
+    _roleNames =
+        json['roleNames'] != null ? json['roleNames'].cast<String>() : [];
     _userName = json['userName'];
     _nickName = json['nickName'];
-    _headPicUri = json['headPicUri'] != null ? HeadPicUri.fromJson(json['headPicUri']) : null;
+    _headPicUri = json['headPicUri'] != null
+        ? HeadPicUri.fromJson(json['headPicUri'])
+        : null;
     _tenantId = json['tenantId'];
     _tenantName = json['tenantName'];
     _orgIds = json['orgIds'] != null ? json['orgIds'].cast<int>() : [];
@@ -86,6 +95,7 @@ class SCUserModel {
     _gmtCreate = json['gmtCreate'];
     _operatorName = json['operatorName'];
     _gmtModify = json['gmtModify'];
+    _birthday = json['birthday'];
     if (json['defaultConfigList'] != null) {
       _defaultConfigList = [];
       json['defaultConfigList'].forEach((v) {
@@ -113,47 +123,53 @@ class SCUserModel {
   String? _operatorName;
   String? _gmtModify;
   List<Map<String, dynamic>>? _defaultConfigList;
-SCUserModel copyWith({  String? email,
-  String? id,
-  String? account,
-  String? token,
-  List<String>? roleIds,
-  List<String>? roleNames,
-  String? userName,
-  String? nickName,
-  HeadPicUri? headPicUri,
-  String? tenantId,
-  String? tenantName,
-  List<int>? orgIds,
-  String? mobileNum,
-  int? state,
-  int? gender,
-  String? creatorName,
-  String? gmtCreate,
-  String? operatorName,
-  String? gmtModify,
-  List<Map<String, dynamic>>? defaultConfigList,
-}) => SCUserModel(  email: email ?? _email,
-  id: id ?? _id,
-  account: account ?? _account,
-  token: token ?? _token,
-  roleIds: roleIds ?? _roleIds,
-  roleNames: roleNames ?? _roleNames,
-  userName: userName ?? _userName,
-  nickName: nickName ?? _nickName,
-  headPicUri: headPicUri ?? _headPicUri,
-  tenantId: tenantId ?? _tenantId,
-  tenantName: tenantName ?? _tenantName,
-  orgIds: orgIds ?? _orgIds,
-  mobileNum: mobileNum ?? _mobileNum,
-  state: state ?? _state,
-  gender: gender ?? _gender,
-  creatorName: creatorName ?? _creatorName,
-  gmtCreate: gmtCreate ?? _gmtCreate,
-  operatorName: operatorName ?? _operatorName,
-  gmtModify: gmtModify ?? _gmtModify,
-  defaultConfigList: defaultConfigList ?? _defaultConfigList,
-);
+  String? _birthday;
+  SCUserModel copyWith({
+    String? email,
+    String? id,
+    String? account,
+    String? token,
+    List<String>? roleIds,
+    List<String>? roleNames,
+    String? userName,
+    String? nickName,
+    HeadPicUri? headPicUri,
+    String? tenantId,
+    String? tenantName,
+    List<int>? orgIds,
+    String? mobileNum,
+    int? state,
+    int? gender,
+    String? creatorName,
+    String? gmtCreate,
+    String? operatorName,
+    String? gmtModify,
+    List<Map<String, dynamic>>? defaultConfigList,
+    String? birthday,
+  }) =>
+      SCUserModel(
+        email: email ?? _email,
+        id: id ?? _id,
+        account: account ?? _account,
+        token: token ?? _token,
+        roleIds: roleIds ?? _roleIds,
+        roleNames: roleNames ?? _roleNames,
+        userName: userName ?? _userName,
+        nickName: nickName ?? _nickName,
+        headPicUri: headPicUri ?? _headPicUri,
+        tenantId: tenantId ?? _tenantId,
+        tenantName: tenantName ?? _tenantName,
+        orgIds: orgIds ?? _orgIds,
+        mobileNum: mobileNum ?? _mobileNum,
+        state: state ?? _state,
+        gender: gender ?? _gender,
+        creatorName: creatorName ?? _creatorName,
+        gmtCreate: gmtCreate ?? _gmtCreate,
+        operatorName: operatorName ?? _operatorName,
+        gmtModify: gmtModify ?? _gmtModify,
+        defaultConfigList: defaultConfigList ?? _defaultConfigList,
+        birthday: birthday ?? _birthday,
+      );
   String? get email => _email;
   String? get id => _id;
   String? get account => _account;
@@ -174,6 +190,7 @@ SCUserModel copyWith({  String? email,
   String? get operatorName => _operatorName;
   String? get gmtModify => _gmtModify;
   List<Map<String, dynamic>>? get defaultConfigList => _defaultConfigList;
+  String? get birthday => _birthday;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -198,6 +215,7 @@ SCUserModel copyWith({  String? email,
     map['gmtCreate'] = _gmtCreate;
     map['operatorName'] = _operatorName;
     map['gmtModify'] = _gmtModify;
+    map['birthday'] = _birthday;
     if (_defaultConfigList != null) {
       map['defaultConfigList'] = _defaultConfigList;
     }
@@ -209,6 +227,10 @@ SCUserModel copyWith({  String? email,
     _token = value;
   }
 
+  /// set birthday
+  set birthday(String? value) {
+    _birthday = value;
+  }
 }
 
 /// fileKey : "eb1e1ad8-85af-42d0-ba3c-21229be19009/user_head_pic/info/UserTenantE/113475827062205/1663923824709103.jpg"
@@ -223,7 +245,8 @@ class HeadPicUri {
     dynamic name,
     dynamic suffix,
     dynamic size,
-    int? type,}) {
+    int? type,
+  }) {
     _fileKey = fileKey;
     _name = name;
     _suffix = suffix;
@@ -245,7 +268,8 @@ class HeadPicUri {
   dynamic _size;
   int? _type;
 
-  HeadPicUri copyWith({ String? fileKey,
+  HeadPicUri copyWith({
+    String? fileKey,
     dynamic name,
     dynamic suffix,
     dynamic size,
@@ -268,6 +292,11 @@ class HeadPicUri {
   dynamic get size => _size;
 
   int? get type => _type;
+
+  /// set fileKey
+  set fileKey(String? value) {
+    _fileKey = value;
+  }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

@@ -57,7 +57,6 @@ class SCWorkBenchSwitchSpaceView extends StatelessWidget {
             borderRadius: BorderRadius.circular(16.0),
             child: SCImage(
               url: avatar,
-              placeholder: SCAsset.iconUserDefault,
               fit: BoxFit.cover,
               width: 42.0,
               height: 42.0,

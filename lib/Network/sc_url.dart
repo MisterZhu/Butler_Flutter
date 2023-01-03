@@ -76,4 +76,7 @@ class SCUrl {
 
   /// 上传头像url
   static const String kUploadHeadPicUrl = "/api/user/upload/headPic";
+
+  /// 修改用户信息
+  static const String kModifyUserInfoUrl = "/api/user/info/modifyAccount";
 }

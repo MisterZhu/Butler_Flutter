@@ -183,7 +183,6 @@ class SCSettingCell extends StatelessWidget {
           borderRadius: BorderRadius.circular(17.0),
           child: SCImage(
             url: rightImage,
-            placeholder: SCAsset.iconUserDefault,
             fit: BoxFit.cover,
             width: 34.0,
             height: 34.0,

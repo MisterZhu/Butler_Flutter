@@ -65,7 +65,8 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     workBenchControllerTag =
         SCScaffoldManager.instance.getXControllerTag(pageName);
 
-    workBenchController = Get.put(SCWorkBenchController(), tag: workBenchControllerTag);
+    workBenchController =
+        Get.put(SCWorkBenchController(), tag: workBenchControllerTag);
     workBenchController.tag = workBenchControllerTag;
     workBenchController.pageName = pageName;
     tabController = TabController(length: tabTitleList.length, vsync: this);
@@ -117,6 +118,15 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
                 },
                 showSpaceAlert: () {
                   showSpaceAlert();
+                },
+                scanAction: () {
+                  scanAction();
+                },
+                messageAction: () {
+                  messageAction();
+                },
+                cardDetailAction: (int index) {
+                  cardDetailAction(index);
                 },
               );
             });
@@ -176,7 +186,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
               selectList: state.selectList,
               onCancel: () {},
               onSure: () {
-                changeSpaceController.switchSpace(success: (){
+                changeSpaceController.switchSpace(success: () {
                   workBenchController.loadData();
                 });
               },
@@ -184,6 +194,17 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
           }));
     });
   }
+
+  /// 扫一扫
+  scanAction() {
+    SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
+  }
+
+  /// 消息
+  messageAction() {}
+
+  /// 卡片详情
+  cardDetailAction(int index) {}
 
   /// 通知
   addNotification() {
