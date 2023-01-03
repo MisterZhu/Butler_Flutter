@@ -101,7 +101,9 @@ class SCApplicationAppItem extends StatelessWidget {
       width: 60,
       height: 52,
       alignment: Alignment.bottomCenter,
-      child: SCImage(url: url, width: 44.0, height: 44.0,),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(14.0),
+        child: SCImage(url: url, width: 44.0, height: 44.0,)),
     );
   }
 
