@@ -53,7 +53,7 @@ class SCWorkBenchCard extends StatelessWidget {
       },
       child: Container(
         height: 84.0,
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.only(left: 12.0),
         alignment: Alignment.center,
         decoration: BoxDecoration(
             color: SCColors.color_FFFFFF,
@@ -98,7 +98,7 @@ class SCWorkBenchCard extends StatelessWidget {
         const SizedBox(
           width: 6.0,
         ),
-        Text(
+        Expanded(child: Text(
           value,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
@@ -106,7 +106,7 @@ class SCWorkBenchCard extends StatelessWidget {
               fontSize: SCFonts.f14,
               fontWeight: FontWeight.w400,
               color: SCColors.color_5E5F66),
-        )
+        ))
       ],
     );
   }

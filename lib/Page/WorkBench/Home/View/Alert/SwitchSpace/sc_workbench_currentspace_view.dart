@@ -110,6 +110,11 @@ class SCCurrentSpaceView extends StatelessWidget {
           if (index == itemCount - 1) {
             if (hasNextSpace == false) {
               switchSpaceAction?.call(index);
+            } else {
+              bool canTap = isLastCellCanTap(index);
+              if (canTap == true) {
+                switchSpaceAction?.call(index);
+              }
             }
           } else {
             switchSpaceAction?.call(index);
@@ -275,5 +280,24 @@ class SCCurrentSpaceView extends StatelessWidget {
         );
       }
     });
+  }
+
+  /// 最后一个cell是否可以点击
+  bool isLastCellCanTap(int index) {
+    bool status = false;
+    if (currentId.isEmpty) {
+      if (selectModel == null) {
+        status = false;
+      } else {
+        status = true;
+      }
+    } else {
+      if (hasNextSpace) {
+        status = false;
+      } else {
+        status = true;
+      }
+    }
+    return status;
   }
 }

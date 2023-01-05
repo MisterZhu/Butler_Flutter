@@ -143,12 +143,10 @@ class SCChangeSpaceController extends GetxController {
           } else {
             List<SCSpaceModel> list = List<SCSpaceModel>.from(
                 value.map((e) => SCSpaceModel.fromJson(e)).toList());
-            if (list.isNotEmpty) {
-              dataList = list;
-              hasNextSpace = list.isNotEmpty ? true : false;
-              update();
-              success?.call(dataList);
-            }
+            dataList = list;
+            hasNextSpace = list.isNotEmpty ? true : false;
+            update();
+            success?.call(dataList);
           }
         });
   }

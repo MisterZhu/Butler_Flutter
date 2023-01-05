@@ -381,12 +381,15 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
     /// 拼接符号
     String jointSymbol = "";
 
+    if (spaceIds.isEmpty) {
+      spaceIds = SCScaffoldManager.instance.user.tenantId ?? '';
+    }
     if (url.contains('?')) {
       jointSymbol = "&";
     } else {
       jointSymbol = "?";
     }
-    String newUrl = "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId==$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&fromQw=1";
+    String newUrl = "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&fromQw=1";
     return newUrl;
   }
 }
