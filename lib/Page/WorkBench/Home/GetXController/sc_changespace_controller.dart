@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
@@ -90,24 +91,44 @@ class SCChangeSpaceController extends GetxController {
     dataList.clear();
   }
 
-  /// 更新已选择数据
+  /// 更新header已选择数据
   updateSelectData(SCSpaceModel model) {
+    for (SCSpaceModel subModel1 in selectList) {
+      print("现有已选的数据:${subModel1.toJson()}");
+    }
+    print("刚选的数据:${model.toJson()}");
     spaceModel = model;
-    bool contains = false;
-    int index = -1;
+    bool containsID = false;
+    bool containsPid = false;
+    int idIndex = -1;
+    int pidIndex = -1;
     for (int i=0; i<selectList.length; i++) {
       SCSpaceModel subModel = selectList[i];
-      if (subModel.pid == model.pid) {
-        contains = true;
-        index = i;
+      if (subModel.id == model.id) {
+        containsID = true;
+        idIndex = i;
         break;
       }
     }
-    if (contains == false) {
-      selectList.add(model);
+    for (int i=0; i<selectList.length; i++) {
+      SCSpaceModel subModel = selectList[i];
+      if (subModel.pid == model.pid) {
+        containsPid = true;
+        pidIndex = i;
+        break;
+      }
+    }
+    if (containsID == false) {
+      if (containsPid) {
+        if (pidIndex > 0) {
+          selectList[pidIndex] = model;
+        }
+      } else {
+        selectList.add(model);
+      }
     } else {
-      if (index >= 0) {
-        selectList[index] = model;
+      if (idIndex >= 0) {
+        selectList[idIndex] = model;
       }
     }
   }
@@ -173,6 +194,9 @@ class SCChangeSpaceController extends GetxController {
   switchSpace({Function? success}) {
     var params = {
       "id" : SCScaffoldManager.instance.defaultConfigModel?.id ,
+      "userId" : SCScaffoldManager.instance.user.id,
+      "tenantId" : SCScaffoldManager.instance.user.tenantId,
+      "type" : 1,
       "jsonValue" : jsonEncode(selectList)
     };
     SCLoadingUtils.show(text: '');

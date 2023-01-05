@@ -121,7 +121,38 @@ class SCWorkBenchController extends GetxController {
                   }
               );
             } else {
-
+              SCSpaceModel model = SCSpaceModel.fromJson(
+                  {
+                    "id" : "",
+                    "pid" : "",
+                    "flag" : 0,
+                    "type" : 1,
+                    "floor" : "",
+                    "title" : SCScaffoldManager.instance.user.tenantName,
+                    "value" : "",
+                    "isLeaf" : false,
+                    "unable" : 0,
+                    "iconUrl" : "",
+                    "children" : [],
+                    "communityId" : ""
+                  });
+              var params = {
+                "id" : SCScaffoldManager.instance.defaultConfigModel?.id ,
+                "userId" : SCScaffoldManager.instance.user.id,
+                "tenantId" : SCScaffoldManager.instance.user.tenantId,
+                "type" : 1,
+                "jsonValue" : jsonEncode([model])
+              };
+              SCDefaultConfigModel defModel = SCDefaultConfigModel.fromJson(params);
+              SCScaffoldManager.instance.defaultConfigModel = defModel;
+              SCChangeSpaceController controller =
+              Get.find<SCChangeSpaceController>();
+              controller.initBase(
+                  success: (String spaceNameValue){
+                    spaceName = spaceNameValue;
+                    update();
+                  }
+              );
             }
           });
     } else {
