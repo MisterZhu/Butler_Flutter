@@ -93,10 +93,6 @@ class SCChangeSpaceController extends GetxController {
 
   /// 更新header已选择数据
   updateSelectData(SCSpaceModel model) {
-    for (SCSpaceModel subModel1 in selectList) {
-      print("现有已选的数据:${subModel1.toJson()}");
-    }
-    print("刚选的数据:${model.toJson()}");
     spaceModel = model;
     bool containsID = false;
     bool containsPid = false;
