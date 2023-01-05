@@ -12,8 +12,17 @@ class SCWorkBenchTimeView extends StatelessWidget {
 
   final int time;
 
+  String timeStr = '已超时';
+  Color textColor = SCColors.color_FA4C41;
+
   /// 根据time获取时分秒
-  Map<String, dynamic> getTimeData() {
+  getTimeData() {
+
+    /// 天
+    int day = 0;
+
+    String dayString = '';
+
     /// 时
     int hour = 0;
 
@@ -31,55 +40,78 @@ class SCWorkBenchTimeView extends StatelessWidget {
 
     /// 秒
     String secondString = '00';
-    if (time <= 0) {
-      hour = 0;
-      minute = 0;
-      second = 0;
-      hourString = '00';
-      minuteString = '00';
-      secondString = '00';
+
+
+    int newTime = 0;
+    if (time > 0) {
+      timeStr = '剩余时间';
+      textColor = SCColors.color_5E5E66;
+      newTime = time;
     } else {
-      hour = time ~/ 3600;
-      minute = (time - hour * 3600) ~/ 60;
-      second = time - hour * 3600 - minute * 60;
-      if (hour == 0) {
-        hourString = '00';
-      } else if (hour < 10) {
-        hourString = '0$hour';
-      } else {
-        hourString = '$hour';
-      }
-
-      if (minute == 0) {
-        minuteString = '00';
-      } else if (minute < 10) {
-        minuteString = '0$minute';
-      } else {
-        minuteString = '$minute';
-      }
-
-      if (second == 0) {
-        secondString = '00';
-      } else if (second < 10) {
-        secondString = '0$second';
-      } else {
-        secondString = '$second';
-      }
+      newTime = -time;
     }
-    return {'hour': hourString, 'minute': minuteString, 'second': secondString};
+
+    day = newTime ~/ 24 ~/ 3600;
+    hour = (newTime - day * 24 * 3600) ~/ 3600;
+    minute = (newTime - day * 24 * 3600 - hour * 3600) ~/ 60;
+    second = newTime - day * 24 * 3600 - hour * 3600 - minute * 60;
+
+    if (day > 0) {
+      dayString = '$day天';
+    }
+    if (hour == 0) {
+      hourString = '00';
+    } else if (hour < 10) {
+      hourString = '0$hour';
+    } else {
+      hourString = '$hour';
+    }
+
+    if (minute == 0) {
+      minuteString = '00';
+    } else if (minute < 10) {
+      minuteString = '0$minute';
+    } else {
+      minuteString = '$minute';
+    }
+
+    if (second == 0) {
+      secondString = '00';
+    } else if (second < 10) {
+      secondString = '0$second';
+    } else {
+      secondString = '$second';
+    }
+
+    return '$timeStr$dayString$hourString小时$minuteString分钟$secondString秒';
+    //return {'day': day, 'hour': hourString, 'minute': minuteString, 'second': secondString};
   }
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> timeMap = getTimeData();
-    return Row(
-      children: [
-        timeView(timeMap['hour']),
-        colonView(),
-        timeView(timeMap['minute']),
-        colonView(),
-        timeView(timeMap['second']),
-      ],
+    return timeItem(getTimeData());
+
+    // Map<String, dynamic> timeMap = getTimeData();
+    // return Row(
+    //   children: [
+    //     timeView(timeMap['hour']),
+    //     colonView(),
+    //     timeView(timeMap['minute']),
+    //     colonView(),
+    //     timeView(timeMap['second']),
+    //   ],
+    // );
+  }
+
+  /// timeItem
+  Widget timeItem(String str) {
+    return Text(
+      str,
+      textAlign: TextAlign.left,
+      style: TextStyle(
+          fontSize: SCFonts.f14,
+          fontWeight: FontWeight.w400,
+          color: textColor),
     );
   }
 

@@ -63,7 +63,7 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
   @override
   initState() {
     super.initState();
-    startTimer();
+    //startTimer();
   }
 
   @override
@@ -302,18 +302,18 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            '剩余时间',
-            style: TextStyle(
-                fontSize: SCFonts.f14,
-                fontWeight: FontWeight.w400,
-                color: SCColors.color_5E5F66),
-          ),
-          const SizedBox(
-            width: 6.0,
-          ),
+          // const Text(
+          //   '剩余时间',
+          //   style: TextStyle(
+          //       fontSize: SCFonts.f14,
+          //       fontWeight: FontWeight.w400,
+          //       color: SCColors.color_5E5F66),
+          // ),
+          // const SizedBox(
+          //   width: 6.0,
+          // ),
           SCWorkBenchTimeView(
-            time: timeList[index],
+            time: model.remainingTime ?? 0,
           ),
           const Expanded(child: SizedBox()),
           SizedBox(
@@ -326,7 +326,7 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
                 color: SCColors.color_4285F4,
                 padding: EdgeInsets.zero,
                 child: const Text(
-                  '立即接单',
+                  '完成处理',
                   style: TextStyle(
                       fontSize: SCFonts.f16,
                       fontWeight: FontWeight.w400,
