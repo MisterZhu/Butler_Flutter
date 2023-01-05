@@ -127,18 +127,28 @@ class SCChangeSpaceController extends GetxController {
           if (currentId.isEmpty) {
             List<SCSpaceModel> list = List<SCSpaceModel>.from(
                 value.map((e) => SCSpaceModel.fromJson(e)).toList());
-            SCSpaceModel model = list.first;
-            dataList = model.children ?? [];
-            hasNextSpace = dataList.isNotEmpty ? true : false;
-            update();
-            success?.call(dataList);
+            if (list.isNotEmpty) {
+              SCSpaceModel model = list.first;
+              dataList = model.children ?? [];
+              hasNextSpace = dataList.isNotEmpty ? true : false;
+              update();
+              success?.call(dataList);
+            } else {
+              SCSpaceModel model = SCSpaceModel.fromJson({"title" : SCScaffoldManager.instance.user.tenantName});
+              hasNextSpace = false;
+              dataList = [model];
+              update();
+              success?.call(dataList);
+            }
           } else {
             List<SCSpaceModel> list = List<SCSpaceModel>.from(
                 value.map((e) => SCSpaceModel.fromJson(e)).toList());
-            dataList = list;
-            hasNextSpace = list.isNotEmpty ? true : false;
-            update();
-            success?.call(dataList);
+            if (list.isNotEmpty) {
+              dataList = list;
+              hasNextSpace = list.isNotEmpty ? true : false;
+              update();
+              success?.call(dataList);
+            }
           }
         });
   }

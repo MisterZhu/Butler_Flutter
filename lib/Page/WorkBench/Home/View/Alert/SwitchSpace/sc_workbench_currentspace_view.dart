@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
+import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 
 /// 已选择的空间
 
@@ -199,8 +200,12 @@ class SCCurrentSpaceView extends StatelessWidget {
     int itemCount = getItemCount();
     if (index == 0) {
       color = SCColors.color_5E5F66;
-      SCSpaceModel model = list[index];
-      title = model.title ?? '';
+      if (list.isNotEmpty) {
+        SCSpaceModel model = list[index];
+        title = model.title ?? '';
+      } else {
+        title = SCScaffoldManager.instance.user.tenantName ?? '';
+      }
     } else if(index == itemCount - 1) {
       if (currentId.isEmpty) {
         if (selectModel == null) {
@@ -240,7 +245,11 @@ class SCCurrentSpaceView extends StatelessWidget {
     int itemCount;
     if (currentId.isEmpty) {
       if (selectModel == null) {
-        itemCount = list.length + 1;
+        if (list.isEmpty) {
+          itemCount = 2;
+        } else {
+          itemCount = list.length + 1;
+        }
       } else {
         itemCount = list.length;
       }

@@ -83,6 +83,12 @@ class SCWorkBenchHeader extends StatelessWidget {
 
   /// body
   Widget body(BuildContext context) {
+    String spaceName = '';
+    if (state.spaceName.isNotEmpty) {
+      spaceName = state.spaceName;
+    } else {
+      spaceName = SCScaffoldManager.instance.user.tenantName ?? '';
+    }
     return Padding(
       padding: EdgeInsets.only(top: SCUtils().getTopSafeArea()),
       child: Column(
@@ -90,7 +96,7 @@ class SCWorkBenchHeader extends StatelessWidget {
         children: [
           SCWorkBenchSwitchSpaceView(
             avatar: SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri?.fileKey ?? ''),
-            space: state.spaceName,
+            space: spaceName,
             onTap: () {
               switchSpaceAction?.call();
             },

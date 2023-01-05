@@ -26,7 +26,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 33
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -36,8 +36,8 @@ android {
 
     signingConfigs {
         wishare {
-            storeFile file('../shanshuguanli.key')
-            keyAlias 'shanshuguanli'
+            storeFile file('../yishenghuo.key')
+            keyAlias 'yishenghuo'
             keyPassword 'hx123456'
             storePassword 'hx123456'
             v1SigningEnabled true
@@ -56,6 +56,7 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {

@@ -109,16 +109,20 @@ class SCWorkBenchController extends GetxController {
           url: SCUrl.kUserDefaultConfigUrl,
           params: null,
           success: (value) {
-            SCDefaultConfigModel model = SCDefaultConfigModel.fromJson(value);
-            SCScaffoldManager.instance.defaultConfigModel = model;
-            SCChangeSpaceController controller =
-                Get.find<SCChangeSpaceController>();
-            controller.initBase(
-              success: (String spaceNameValue){
-                spaceName = spaceNameValue;
-                update();
-              }
-            );
+            if (value is Map) {
+              SCDefaultConfigModel model = SCDefaultConfigModel.fromJson(value);
+              SCScaffoldManager.instance.defaultConfigModel = model;
+              SCChangeSpaceController controller =
+              Get.find<SCChangeSpaceController>();
+              controller.initBase(
+                  success: (String spaceNameValue){
+                    spaceName = spaceNameValue;
+                    update();
+                  }
+              );
+            } else {
+
+            }
           });
     } else {
       return Future(() => false);
