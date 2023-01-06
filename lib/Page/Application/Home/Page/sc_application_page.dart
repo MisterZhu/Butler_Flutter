@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
 import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
@@ -36,6 +37,8 @@ class SCApplicationPageState extends State<SCApplicationPage>
 
   late StreamSubscription subscription;
 
+  RefreshController refreshController = RefreshController(initialRefresh: false);
+
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
@@ -55,6 +58,7 @@ class SCApplicationPageState extends State<SCApplicationPage>
     super.dispose();
     subscription.cancel;
     SCScaffoldManager.instance.deleteGetXControllerTag(pageName, tag);
+    refreshController.dispose();
   }
 
   @override
@@ -81,10 +85,15 @@ class SCApplicationPageState extends State<SCApplicationPage>
                 appList: state.moduleList,
                 state: state,
                 tag: tag,
+                refreshController: refreshController,
                 itemTapAction: (title, url) {
                   /// 应用icon点击跳转
                   itemDetail(title, url);
-                });
+                },
+              refreshAction: () {
+                state.loadAppListData();
+              },
+            );
           }),
     );
   }

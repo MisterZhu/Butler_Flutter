@@ -25,6 +25,7 @@ class SCWorkBenchSwitchSpaceView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           userImage(),
           const SizedBox(
@@ -86,6 +87,11 @@ class SCWorkBenchSwitchSpaceView extends StatelessWidget {
             fontSize: SCFonts.f16,
             fontWeight: FontWeight.w500,
             color: SCColors.color_1B1D33),
+        strutStyle: const StrutStyle(
+          fontSize: SCFonts.f16,
+          height: 0.95,
+          forceStrutHeight: true,
+        ),
       ),
     );
   }

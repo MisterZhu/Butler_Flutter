@@ -147,4 +147,30 @@ class SCUtils {
     String base64 = jsonEncode(Uint8List.view(buffer));
     return base64;
   }
+
+  /// 根据status获取工单按钮text
+  static String getWorkOrderButtonText(int status) {
+    switch (status) {
+      case 1:
+        return "立即接单";
+      case 2:
+        return "开始处理";
+      case 3:
+        return "立即接单";
+      case 4:
+        return "开始处理";
+      case 5:
+        return "完成处理";
+      case 6:
+        return "进行回访";
+      case 7:
+        return "进行回访";
+      case 8:
+        return "完成";
+      case 9:
+        return "完成处理";
+      default:
+        return "完成";
+    }
+  }
 }

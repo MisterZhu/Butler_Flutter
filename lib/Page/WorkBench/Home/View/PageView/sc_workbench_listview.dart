@@ -7,6 +7,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_empty_view.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_time_view.dart';
+import 'package:smartcommunity/Utils/sc_utils.dart';
 
 import '../../Model/sc_work_order_model.dart';
 
@@ -325,9 +326,9 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
                 minSize: 40.0,
                 color: SCColors.color_4285F4,
                 padding: EdgeInsets.zero,
-                child: const Text(
-                  '完成处理',
-                  style: TextStyle(
+                child: Text(
+                  SCUtils.getWorkOrderButtonText(model.status ?? 0),
+                  style: const TextStyle(
                       fontSize: SCFonts.f16,
                       fontWeight: FontWeight.w400,
                       color: SCColors.color_FFFFFF),

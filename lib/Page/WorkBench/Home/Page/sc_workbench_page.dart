@@ -165,8 +165,9 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
 
   /// 详情
   detailAction(SCWorkOrderModel model) {
+    String title = Uri.encodeComponent(SCUtils.getWorkOrderButtonText(model.status ?? 0));
     String url =
-        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?status=${model.status}&title=${model.status}&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}&from=qwHome";
+        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?status=${model.status}&title=$title&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}&from=qwHome";
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
       "title": model.categoryName ?? '',
       "url": url,
