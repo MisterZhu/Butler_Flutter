@@ -43,20 +43,7 @@ class SCWorkBenchListView extends StatefulWidget {
 
 class SCWorkBenchListViewState extends State<SCWorkBenchListView>
     with AutomaticKeepAliveClientMixin {
-  List timeList = [
-    61,
-    61,
-    61,
-    61,
-    61,
-    61,
-    61,
-    61,
-    61,
-    61,
-  ];
-
-  late Timer timer;
+  // late Timer timer;
 
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -64,7 +51,7 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
   @override
   initState() {
     super.initState();
-    //startTimer();
+    // startTimer();
   }
 
   @override
@@ -298,24 +285,29 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
 
   /// 倒计时
   Widget timeView(int index, SCWorkOrderModel model) {
+    /// 剩余时间
+    int remainingTime = model.remainingTime ?? 0;
+    print("剩余时间:$remainingTime");
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // const Text(
-          //   '剩余时间',
-          //   style: TextStyle(
-          //       fontSize: SCFonts.f14,
-          //       fontWeight: FontWeight.w400,
-          //       color: SCColors.color_5E5F66),
-          // ),
-          // const SizedBox(
-          //   width: 6.0,
-          // ),
-          SCWorkBenchTimeView(
-            time: model.remainingTime ?? 0,
-          ),
+          remainingTime > 0
+              ? const Text(
+                  '剩余时间',
+                  style: TextStyle(
+                      fontSize: SCFonts.f14,
+                      fontWeight: FontWeight.w400,
+                      color: SCColors.color_5E5F66),
+                )
+              : const SizedBox(),
+          remainingTime > 0
+              ? const SizedBox(
+                  width: 6.0,
+                )
+              : const SizedBox(),
+          SCWorkBenchTimeView(time: remainingTime),
           const Expanded(child: SizedBox()),
           SizedBox(
             width: 100.0,
@@ -342,21 +334,22 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
     );
   }
 
-  /// 定时器
-  startTimer() {
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        for (int i = 0; i < timeList.length; i++) {
-          int subTime = timeList[i];
-          if (subTime <= 0) {
-            timeList[i] = 0;
-          } else {
-            timeList[i] = subTime - 1;
-          }
-        }
-      });
-    });
-  }
+  // /// 定时器
+  // startTimer() {
+  //   timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+  //     setState(() {
+  //       for (int i = 0; i < widget.dataList.length; i++) {
+  //         SCWorkOrderModel model = widget.dataList[i];
+  //         int subTime = model.remainingTime ?? 0;
+  //         if (subTime > 0) {
+  //           model.remainingTime = subTime - 1;
+  //         } else if (subTime == 0) {
+  //           model.remainingTime = 0;
+  //         } else {}
+  //       }
+  //     });
+  //   });
+  // }
 
   /// 加载更多
   Future onLoading() async {
@@ -368,9 +361,9 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
   @override
   dispose() {
     super.dispose();
-    if (timer.isActive) {
-      timer.cancel();
-    }
+    // if (timer.isActive) {
+    //   timer.cancel();
+    // }
   }
 
   @override

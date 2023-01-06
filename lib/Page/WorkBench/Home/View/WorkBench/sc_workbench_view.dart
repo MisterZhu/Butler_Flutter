@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_listview_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_alert.dart';
@@ -19,6 +20,8 @@ class SCWorkBenchView extends StatelessWidget {
   SCWorkBenchView(
       {Key? key,
       required this.state,
+      required this.waitController,
+        required this.doingController,
       required this.height,
       required this.tabController,
       required this.tabTitleList,
@@ -35,7 +38,14 @@ class SCWorkBenchView extends StatelessWidget {
       })
       : super(key: key);
 
+  /// 工作台controller
   final SCWorkBenchController state;
+
+  /// 待处理controller
+  final SCWorkBenchListViewController waitController;
+
+  /// 处理中controller
+  final SCWorkBenchListViewController doingController;
 
   /// 组件高度
   final double height;
@@ -150,18 +160,34 @@ class SCWorkBenchView extends StatelessWidget {
     Widget tabBarView = SizedBox(
       height: height,
       child: TabBarView(controller: tabController, children: [
-        SCWorkBenchListView(
-          dataList: state.dataList,
-          detailAction: (SCWorkOrderModel model) {
-            detail(model);
-          },
-        ),
-        SCWorkBenchListView(
-          dataList: state.processingDataList,
-          detailAction: (SCWorkOrderModel model) {
-            detail(model);
-          },
-        ),
+        GetBuilder<SCWorkBenchListViewController>(
+            tag: waitController.tag,
+            init: waitController,
+            builder: (state){
+          return SCWorkBenchListView(
+            dataList: state.dataList,
+            detailAction: (SCWorkOrderModel model) {
+              detail(model);
+            },
+            callAction: (String phone) {
+              SCUtils.call(phone);
+            },
+          );
+        }),
+        GetBuilder<SCWorkBenchListViewController>(
+            tag: doingController.tag,
+            init: doingController,
+            builder: (state){
+              return SCWorkBenchListView(
+                dataList: state.dataList,
+                detailAction: (SCWorkOrderModel model) {
+                  detail(model);
+                },
+                callAction: (String phone) {
+                  SCUtils.call(phone);
+                },
+              );
+            }),
       ]),
     );
     return tabBarView;

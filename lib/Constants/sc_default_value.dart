@@ -98,6 +98,9 @@ class SCDefaultValue {
   /// 未安装微信
   static const String unInstallWeChatTip = "请安装微信";
 
+  /// 拨号失败
+  static const String callFailedTip = "拨号失败";
+
   /// 图片路径
   static const files = "/files/";
 }

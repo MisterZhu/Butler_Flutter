@@ -15,8 +15,8 @@ class SCWorkBenchTimeView extends StatelessWidget {
   String timeStr = '已超时';
   Color textColor = SCColors.color_FA4C41;
 
-  /// 根据time获取时分秒
-  getTimeData() {
+  /// 根据time获取时分秒,返回类型type=1为字符串，type=2为map
+  dynamic getTimeData({required int type}) {
 
     /// 天
     int day = 0;
@@ -83,24 +83,32 @@ class SCWorkBenchTimeView extends StatelessWidget {
       secondString = '$second';
     }
 
-    return '$timeStr$dayString$hourString小时$minuteString分钟$secondString秒';
+    if (type == 1) {
+      return '$timeStr$dayString$hourString小时$minuteString分钟$secondString秒';
+    } else {
+      return {"day" : "$day", "hour" : "$hour", "minute" : "$minute", "second" : "$second"};
+    }
     //return {'day': day, 'hour': hourString, 'minute': minuteString, 'second': secondString};
   }
 
   @override
   Widget build(BuildContext context) {
-    return timeItem(getTimeData());
-
-    // Map<String, dynamic> timeMap = getTimeData();
-    // return Row(
-    //   children: [
-    //     timeView(timeMap['hour']),
-    //     colonView(),
-    //     timeView(timeMap['minute']),
-    //     colonView(),
-    //     timeView(timeMap['second']),
-    //   ],
-    // );
+    if (time > 0) {
+      Map<String, dynamic> timeMap = getTimeData(type: 2);
+      return Row(
+        children: [
+          timeView(timeMap['hour']),
+          colonView(),
+          timeView(timeMap['minute']),
+          colonView(),
+          timeView(timeMap['second']),
+        ],
+      );
+    } else if(time == 0) {
+      return const SizedBox();
+    } else {
+      return timeItem(getTimeData(type: 1));
+    }
   }
 
   /// timeItem

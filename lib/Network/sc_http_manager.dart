@@ -307,6 +307,7 @@ doError(e) {
         case 404:
           {}
           break;
+
         case 405:
           {
             if (error.response?.data is Map) {
@@ -320,6 +321,17 @@ doError(e) {
           break;
 
         case 500:
+          {
+            if (error.response?.data is Map) {
+              var errorData = error.response?.data;
+              message = errorData['msg'] ?? SCDefaultValue.errorMessage;
+            } else {
+              message = error.response?.data.toString() ??
+                  SCDefaultValue.errorMessage;
+            }
+          }
+          break;
+        case 503:
           {
             if (error.response?.data is Map) {
               var errorData = error.response?.data;

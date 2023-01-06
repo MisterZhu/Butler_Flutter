@@ -359,6 +359,10 @@ class SCWorkOrderModel {
   int? get taskType => _taskType;
   String? get videos => _videos;
 
+  set remainingTime(int? value) {
+    _remainingTime = value;
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['address'] = _address;

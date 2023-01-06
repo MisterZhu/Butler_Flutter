@@ -9,6 +9,7 @@ import 'package:smartcommunity/Constants/sc_key.dart';
 import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_controller.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_listview_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_alert.dart';
@@ -29,7 +30,15 @@ class SCWorkBenchPage extends StatefulWidget {
 
 class SCWorkBenchPageState extends State<SCWorkBenchPage>
     with SingleTickerProviderStateMixin {
+
+  /// 工作台controller
   late SCWorkBenchController workBenchController;
+
+  /// 待处理controller
+  late SCWorkBenchListViewController waitController;
+
+  /// 处理中controller
+  late SCWorkBenchListViewController processingController;
 
   /// tab-title
   List<String> tabTitleList = ['待处理', '处理中'];
@@ -51,32 +60,55 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   /// SCWorkBenchController - tag
   String workBenchControllerTag = '';
 
+  /// 待处理SCWorkBenchListViewController - tag
+  String waitControllerTag = '';
+
+  /// 处理中SCWorkBenchListViewController - tag
+  String processingControllerTag = '';
+
   /// changeSpaceController
   SCChangeSpaceController changeSpaceController =
       Get.put(SCChangeSpaceController());
 
   late StreamSubscription subscription;
 
+  late String pageName;
+
   @override
   initState() {
     super.initState();
     SCUtils().changeStatusBarStyle(style: SystemUiOverlayStyle.dark);
-    String pageName = (SCWorkBenchPage).toString();
+    pageName = (SCWorkBenchPage).toString();
     workBenchControllerTag =
         SCScaffoldManager.instance.getXControllerTag(pageName);
-
+    waitControllerTag = SCScaffoldManager.instance.getXControllerTag(pageName);
+    processingControllerTag = SCScaffoldManager.instance.getXControllerTag(pageName);
     workBenchController =
         Get.put(SCWorkBenchController(), tag: workBenchControllerTag);
     workBenchController.tag = workBenchControllerTag;
     workBenchController.pageName = pageName;
     tabController = TabController(length: tabTitleList.length, vsync: this);
+    waitController =
+        Get.put(SCWorkBenchListViewController(), tag: waitControllerTag);
+    workBenchController.tag = waitControllerTag;
+    workBenchController.pageName = pageName;
+    processingController =
+        Get.put(SCWorkBenchListViewController(), tag: processingControllerTag);
+    processingController.tag = processingControllerTag;
+    processingController.pageName = pageName;
+    workBenchController.waitController = waitController;
+    workBenchController.processingController = processingController;
     addNotification();
+    workBenchController.startTimer();
   }
 
   @override
   dispose() {
     super.dispose();
     subscription.cancel();
+    SCScaffoldManager.instance.deleteGetXControllerTag(pageName, workBenchControllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag(pageName, waitControllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag(pageName, processingControllerTag);
   }
 
   @override
@@ -102,6 +134,8 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
             builder: (value) {
               return SCWorkBenchView(
                 state: workBenchController,
+                waitController: waitController,
+                doingController: processingController,
                 height: constraints.maxHeight,
                 tabTitleList: tabTitleList,
                 classificationList: classificationList,

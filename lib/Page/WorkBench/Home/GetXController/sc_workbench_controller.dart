@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:get/get.dart';
@@ -6,6 +7,7 @@ import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Network/sc_url.dart';
 import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_listview_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_default_config_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
@@ -16,12 +18,13 @@ import '../Model/sc_work_order_model.dart';
 /// 工作台Controller
 
 class SCWorkBenchController extends GetxController {
+
   String pageName = '';
 
   String tag = '';
 
   /// 待处理工单数据
-  List<SCWorkOrderModel> dataList = [];
+  List<SCWorkOrderModel> waitDataList = [];
 
   /// 处理中工单 数据
   List<SCWorkOrderModel> processingDataList = [];
@@ -39,6 +42,15 @@ class SCWorkBenchController extends GetxController {
 
   /// 空间名称
   String spaceName = '';
+
+  /// 定时器
+  late Timer timer;
+
+  /// 待处理controller
+  late SCWorkBenchListViewController waitController;
+
+  /// 处理中controller
+  late SCWorkBenchListViewController processingController;
 
   @override
   onInit() {
@@ -200,9 +212,11 @@ class SCWorkBenchController extends GetxController {
         params: params,
         success: (value) {
           List list = value['records'];
-          dataList = List<SCWorkOrderModel>.from(
+          waitDataList = List<SCWorkOrderModel>.from(
               list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
           update();
+          waitController.dataList = waitDataList;
+          waitController.update();
         });
   }
 
@@ -237,6 +251,46 @@ class SCWorkBenchController extends GetxController {
           processingDataList = List<SCWorkOrderModel>.from(
               list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
           update();
+          processingController.dataList = processingDataList;
+          processingController.update();
         });
+  }
+
+  /// 定时器
+  startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      for (int i = 0; i < waitDataList.length; i++) {
+        SCWorkOrderModel model = waitDataList[i];
+        int subTime = model.remainingTime ?? 0;
+        if (subTime > 0) {
+          model.remainingTime = subTime - 1;
+        } else if (subTime == 0) {
+          model.remainingTime = 0;
+        } else {}
+      }
+
+      for (int i = 0; i < processingDataList.length; i++) {
+        SCWorkOrderModel model = processingDataList[i];
+        int subTime = model.remainingTime ?? 0;
+        if (subTime > 0) {
+          model.remainingTime = subTime - 1;
+        } else if (subTime == 0) {
+          model.remainingTime = 0;
+        } else {}
+      }
+
+      waitController.dataList = waitDataList;
+      waitController.update();
+      processingController.dataList = processingDataList;
+      processingController.update();
+    });
+  }
+
+  @override
+  onClose() {
+    super.onClose();
+    if (timer.isActive) {
+      timer.cancel();
+    }
   }
 }

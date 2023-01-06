@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../Constants/sc_asset.dart';
 import '../sc_app.dart';
 import 'package:sc_uikit/sc_uikit.dart';
@@ -171,6 +172,16 @@ class SCUtils {
         return "完成处理";
       default:
         return "完成";
+    }
+  }
+
+  /*打电话*/
+  static call(String phone) async{
+    String phonePath = 'tel:$phone';
+    Uri uri = Uri.parse(phonePath);
+    bool success = await launchUrl(uri);
+    if (success == false) {
+      SCToast.showTip(SCDefaultValue.callFailedTip);
     }
   }
 }
