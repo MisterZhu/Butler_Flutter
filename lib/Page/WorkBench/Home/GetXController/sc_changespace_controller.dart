@@ -170,7 +170,7 @@ class SCChangeSpaceController extends GetxController {
 
   /// 选择空间
   selectSpace(int index, {Function(List<SCSpaceModel> list)? success}) {
-    int subIndex = index - 1;
+    int subIndex = index == 0 ? 0 : index - 1;
     spaceModel = null;
     if (subIndex < selectList.length) {
       SCSpaceModel model = selectList[subIndex];

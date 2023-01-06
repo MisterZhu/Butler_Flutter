@@ -106,19 +106,17 @@ class SCCurrentSpaceView extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: (){
         int itemCount = getItemCount();
-        if (index != 0) {
-          if (index == itemCount - 1) {
-            if (hasNextSpace == false) {
-              switchSpaceAction?.call(index);
-            } else {
-              bool canTap = isLastCellCanTap(index);
-              if (canTap == true) {
-                switchSpaceAction?.call(index);
-              }
-            }
-          } else {
+        if (index == itemCount - 1) {
+          if (hasNextSpace == false) {
             switchSpaceAction?.call(index);
+          } else {
+            bool canTap = isLastCellCanTap(index);
+            if (canTap == true) {
+              switchSpaceAction?.call(index);
+            }
           }
+        } else {
+          switchSpaceAction?.call(index);
         }
       },
       child: SizedBox(
