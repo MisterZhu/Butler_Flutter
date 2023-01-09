@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
+import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/AddressBook/Home/Page/sc_addressbook_page.dart';
 import 'package:smartcommunity/Page/Application/Home/Page/sc_application_page.dart';
 import 'package:smartcommunity/Page/Mine/Home/Page/sc_mine_page.dart';
@@ -128,11 +129,30 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
   /// floating点击，弹出
   floatingAction() {
     List testList = [
-      {"icon": {"fileKey": "", "name": SCAsset.iconApplicationWorkOrder}, "id": 1, "name": "工单调度", "url": ""},
-      {"icon": {"fileKey": "", "name": SCAsset.iconApplicationVehicleRegistration}, "id": 2, "name": "车访登记", "url": ""},
-      {"icon": {"fileKey": "", "name": SCAsset.iconApplicationReportRepair}, "id": 3, "name": "报事报修", "url": ""},
+      {
+        "icon": {"fileKey": "", "name": SCAsset.iconApplicationWorkOrder},
+        "id": 1,
+        "name": "工单调度",
+        "url": ""
+      },
+      {
+        "icon": {
+          "fileKey": "",
+          "name": SCAsset.iconApplicationVehicleRegistration
+        },
+        "id": 2,
+        "name": "车访登记",
+        "url": ""
+      },
+      {
+        "icon": {"fileKey": "", "name": SCAsset.iconApplicationReportRepair},
+        "id": 3,
+        "name": "报事报修",
+        "url": ""
+      },
     ];
-    List<SCMenuItemModel> list = testList.map((e) => SCMenuItemModel.fromJson(e)).toList();
+    List<SCMenuItemModel> list =
+        testList.map((e) => SCMenuItemModel.fromJson(e)).toList();
 
     SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
       SCDialogUtils().showCustomBottomDialog(
@@ -141,9 +161,11 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
           widget: SCQuickApplicationAlert(
             list: list,
             tapAction: (id, text) {
-              Navigator.of(context).pop();
               if (id == 0) {
+                Navigator.of(context).pop();
                 SCRouterHelper.pathPage(SCRouterPath.applicationPath, null);
+              } else {
+                SCToast.showTip(SCDefaultValue.developingTip);
               }
             },
           ));

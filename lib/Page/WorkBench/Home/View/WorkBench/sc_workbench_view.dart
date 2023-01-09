@@ -131,6 +131,8 @@ class SCWorkBenchView extends StatelessWidget {
       tabTitleList: tabTitleList,
       classificationList: classificationList,
       tabController: tabController,
+      currentTabIndex: state.currentWorkOrderIndex,
+      currentTagIndex: state.currentPlateIndex,
       tagAction: (index) {
         tagAction?.call(index);
       },

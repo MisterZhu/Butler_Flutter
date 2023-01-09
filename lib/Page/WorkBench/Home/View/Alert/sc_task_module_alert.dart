@@ -11,14 +11,18 @@ import '../../Model/sc_home_task_model.dart';
 class SCTaskModuleAlert extends StatefulWidget {
   SCTaskModuleAlert({Key? key,
     required this.list,
+    required this.currentIndex,
     this.closeTap,
   }) : super(key: key);
 
   /// 关闭
-  final Function(List selectList)? closeTap;
+  final Function(SCHomeTaskModel model, int index)? closeTap;
 
   /// 数据源
   final List<SCHomeTaskModel> list;
+
+  /// 最多选几个
+  final int currentIndex;
 
   @override
   SCTaskModuleAlertState createState() => SCTaskModuleAlertState();
@@ -29,9 +33,13 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
   /// 选中的标签
   List<SCHomeTaskModel> selectList = [];
 
+  /// 默认index
+  int normalIndex = 0;
+
   @override
   initState() {
     super.initState();
+    normalIndex = widget.currentIndex;
   }
 
   @override
@@ -64,7 +72,6 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
       title: '任务板块',
       closeTap: () {
         Navigator.of(context).pop();
-        widget.closeTap?.call(selectList);
       },
     );
   }
@@ -83,7 +90,7 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
         physics: physics,
         itemBuilder: (context, index) {
           SCHomeTaskModel model = widget.list[index];
-          return cell(model);
+          return cell(model, index);
         },
         staggeredTileBuilder: (int index) {
           return const StaggeredTile.fit(1);
@@ -101,9 +108,9 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
   }
 
   /// cell
-  Widget cell(SCHomeTaskModel model) {
+  Widget cell(SCHomeTaskModel model, int index) {
     String name = model.name ?? '';
-    bool isSelect = model.isSelect ?? false;
+    bool isSelect = index == normalIndex;
     /// 背景颜色
     Color bgColor = isSelect == true ? SCColors.color_EBF2FF : SCColors.color_EDEDF0;
     /// 边框颜色
@@ -116,7 +123,7 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        tagAction(model);
+        tagAction(model, index);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
@@ -142,21 +149,11 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
   }
 
   /// 标签点击
-  tagAction(SCHomeTaskModel model) {
-    bool isSelect = model.isSelect ?? false;
-    if (isSelect) {
-        selectList.removeWhere((element) {
-          String? id = element.id;
-          if (id == model.id) {
-            return true;
-          }
-          return false;
-        });
-    } else {
-        selectList.add(model);
-    }
+  tagAction(SCHomeTaskModel model, int index) {
     setState(() {
-      model.isSelect = !isSelect;
+      normalIndex = index;
     });
+    widget.closeTap?.call(model, index);
+    Navigator.of(context).pop();
   }
 }

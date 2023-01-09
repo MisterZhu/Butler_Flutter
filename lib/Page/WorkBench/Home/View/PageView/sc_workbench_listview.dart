@@ -287,7 +287,6 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
   Widget timeView(int index, SCWorkOrderModel model) {
     /// 剩余时间
     int remainingTime = model.remainingTime ?? 0;
-    print("剩余时间:$remainingTime");
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(

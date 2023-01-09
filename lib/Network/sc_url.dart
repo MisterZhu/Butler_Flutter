@@ -29,11 +29,17 @@ class SCUrl {
   /// 工单数量url
   static const String kWorkOrderNumberUrl = '/api/workorder/task/query/routine/count';
 
-  /// 工单列表url
+  /// 工单处理工单url
   static const String kWorkOrderListUrl = '/api/workorder/task/query/page';
 
   /// 获取管理空间树
   static const String kSpaceTreeUrl = '/api/space/space/manageTree';
+
+  /// 实地核验工单url
+  static const String kActualVerifyUrl = '/api/stylestay/house/actualVerify/getActualVerifyList';
+
+  /// 订单处理工单url
+  static const String kOrderFormUrl = '/api//stylestay/microapp/hotel/pageOrderList';
 
   /************************* 服务 *************************/
 

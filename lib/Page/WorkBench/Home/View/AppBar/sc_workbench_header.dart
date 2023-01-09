@@ -21,6 +21,8 @@ class SCWorkBenchHeader extends StatelessWidget {
     required this.tabController,
     required this.tabTitleList,
     required this.classificationList,
+    required this.currentTabIndex,
+    required this.currentTagIndex,
     this.switchSpaceAction,
     this.headerAction,
     this.searchAction,
@@ -44,6 +46,12 @@ class SCWorkBenchHeader extends StatelessWidget {
 
   /// 分类list
   final List classificationList;
+
+  /// 当前tabIndex
+  final int currentTabIndex;
+
+  /// 当前tagIndex
+  final int currentTagIndex;
 
   /// 切换空间
   final Function? switchSpaceAction;
@@ -134,7 +142,8 @@ class SCWorkBenchHeader extends StatelessWidget {
             tabController: tabController,
             tabTitleList: tabTitleList,
             classificationList: classificationList,
-            currentTabIndex: 0,
+            currentTabIndex: currentTabIndex,
+            currentTagIndex: currentTagIndex,
             menuTap: () {
               tagMenuAction?.call();
             },

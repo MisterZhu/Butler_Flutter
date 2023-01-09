@@ -52,10 +52,60 @@ class SCWorkBenchController extends GetxController {
   /// 处理中controller
   late SCWorkBenchListViewController processingController;
 
+  /// 当前工单index,0-待处理,1-处理中
+  int currentWorkOrderIndex = 0;
+
+  /// 当前板块index,0-工单处理，1-实地核验，2-订单处理
+  int currentPlateIndex = 0;
+
+  /// 板块数据源
+  List plateList = [
+    {"type" : 0, "title" : "工单处理"},
+    {"type" : 1, "title" : "实地核验"},
+    {"type" : 2, "title" : "订单处理"},
+  ];
+
   @override
   onInit() {
     super.onInit();
     loadData();
+  }
+
+
+  /// 更新当前工单index
+  updateCurrentWorkOrderIndex(int value) {
+    currentWorkOrderIndex = value;
+  }
+
+  /// 更新当前板块index
+  updatePlateIndex(int value) {
+    currentPlateIndex = value;
+    update();
+    if (currentPlateIndex == 0) {
+      workOrderAPI();
+    } else if (currentPlateIndex == 1) {
+      realVerificationAPI();
+    } else if (currentPlateIndex == 2) {
+      orderFormAPI();
+    }
+  }
+
+  /// 调用工单处理接口
+  workOrderAPI() {
+    getWorkOrderList();
+    getProcessingWorkOrderList();
+  }
+
+  /// 调用实地核验接口
+  realVerificationAPI() {
+    getRealVerificationWaitList();
+    getRealVerificationProcessingList();
+  }
+
+  /// 调用订单处理接口
+  orderFormAPI() {
+    getOrderFormWaitList();
+    getOrderFormProcessingList();
   }
 
   /// 更新头部数量数据
@@ -87,8 +137,7 @@ class SCWorkBenchController extends GetxController {
         getUserInfo().then((subValue) {
           if (subValue == true) {
             getWorkOrderNumber();
-            getWorkOrderList();
-            getProcessingWorkOrderList();
+            updatePlateIndex(currentPlateIndex);
           }
         });
       }
@@ -184,7 +233,7 @@ class SCWorkBenchController extends GetxController {
         });
   }
 
-  /// 获取待处理工单列表
+  /// 工单处理-待处理数据
   getWorkOrderList() {
     var params = {
       "conditions": {
@@ -211,16 +260,21 @@ class SCWorkBenchController extends GetxController {
         url: SCUrl.kWorkOrderListUrl,
         params: params,
         success: (value) {
-          List list = value['records'];
-          waitDataList = List<SCWorkOrderModel>.from(
-              list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
+          SCLoadingUtils.hide();
+         if (value is Map) {
+           List list = value['records'];
+           waitDataList = List<SCWorkOrderModel>.from(
+               list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
+         } else {
+           waitDataList = [];
+         }
           update();
           waitController.dataList = waitDataList;
           waitController.update();
         });
   }
 
-  /// 获取处理中工单列表
+  /// 工单处理-处理中数据
   getProcessingWorkOrderList() {
     var params = {
       "conditions": {
@@ -247,9 +301,146 @@ class SCWorkBenchController extends GetxController {
         url: SCUrl.kWorkOrderListUrl,
         params: params,
         success: (value) {
-          List list = value['records'];
-          processingDataList = List<SCWorkOrderModel>.from(
-              list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
+          SCLoadingUtils.hide();
+          if (value is Map) {
+            List list = value['records'];
+            processingDataList = List<SCWorkOrderModel>.from(
+                list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
+          } else {
+            processingDataList = [];
+          }
+          update();
+          processingController.dataList = processingDataList;
+          processingController.update();
+        });
+  }
+
+  /// 实地核验-待处理数据
+  getRealVerificationWaitList() {
+    var params = {
+      "conditions": {
+        "fields": [
+          {"map": {}, "method": 1, "name": "dealStatus", "value": 0}
+        ],
+        "specialMap" : {}
+      },
+      "count": true,
+      "last": true,
+      "orderBy": [
+        {"asc": true, "field": "applyTime"}
+      ],
+      "pageNum": 1,
+      "pageSize": 10
+    };
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kActualVerifyUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          if (value is Map) {
+            List list = value['records'];
+            waitDataList = List<SCWorkOrderModel>.from(
+                list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
+          } else {
+            waitDataList = [];
+          }
+          update();
+          waitController.dataList = waitDataList;
+          waitController.update();
+        });
+  }
+
+  /// 实地核验-处理中数据
+  getRealVerificationProcessingList() {
+    var params = {
+      "conditions": {
+        "fields": [
+          {"map": {}, "method": 1, "name": "dealStatus", "value": 1}
+        ],
+        "specialMap" : {}
+      },
+      "count": true,
+      "last": true,
+      "orderBy": [
+        {"asc": true, "field": "applyTime"}
+      ],
+      "pageNum": 1,
+      "pageSize": 10
+    };
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kActualVerifyUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          if (value is Map) {
+            List list = value['records'];
+            processingDataList = List<SCWorkOrderModel>.from(
+                list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
+          } else {
+            processingDataList = [];
+          }
+          update();
+          processingController.dataList = processingDataList;
+          processingController.update();
+        });
+  }
+
+  /// 订单处理-待处理数据
+  getOrderFormWaitList() {
+    var params = {
+      "conditions": {
+        "fields": [
+          {"name": "state", "value": 2}
+        ]
+      },
+      "pageNum": 1,
+      "pageSize": 10
+    };
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kActualVerifyUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          if (value is Map) {
+            List list = value['records'];
+            waitDataList = List<SCWorkOrderModel>.from(
+                list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
+          } else {
+            waitDataList = [];
+          }
+          update();
+          waitController.dataList = waitDataList;
+          waitController.update();
+        });
+  }
+
+  /// 订单处理-处理中数据
+  getOrderFormProcessingList() {
+    var params = {
+      "conditions": {
+        "fields": [
+          {"name": "state", "value": 3}
+        ]
+      },
+      "pageNum": 1,
+      "pageSize": 10
+    };
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kActualVerifyUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          if (value is Map) {
+            List list = value['records'];
+            processingDataList = List<SCWorkOrderModel>.from(
+                list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
+          } else {
+            processingDataList = [];
+          }
           update();
           processingController.dataList = processingDataList;
           processingController.update();

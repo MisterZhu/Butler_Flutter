@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Base/sc_all_binding.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
+import 'package:smartcommunity/Utils/Router/sc_router_observer.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_pages.dart';
 import 'package:smartcommunity/Utils/WeChat/sc_wechat_utils.dart';
 import 'package:smartcommunity/Utils/sc_sp_utils.dart';
@@ -24,8 +25,6 @@ void startApp() async {
   /// 路由的basePath
   String basePath = await SCScaffoldManager.instance.getRouterBasePath();
 
-  RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
-
   // Android设备设置沉浸式
   if(Platform.isAndroid) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -37,7 +36,7 @@ void startApp() async {
   runApp(GetMaterialApp(
     theme: ThemeData(
         primaryColor: Colors.white,
-        colorScheme: ColorScheme(brightness: Brightness.light, primary: Colors.white, onPrimary: SCColors.color_1B1C33, secondary: SCColors.color_1B1C33, onSecondary: Colors.white, error: Colors.white, onError: Colors.white, background: Colors.white, onBackground: Colors.white, surface: Colors.white, onSurface: Colors.white)
+        colorScheme: const ColorScheme(brightness: Brightness.light, primary: Colors.white, onPrimary: SCColors.color_1B1C33, secondary: SCColors.color_1B1C33, onSecondary: Colors.white, error: Colors.white, onError: Colors.white, background: Colors.white, onBackground: Colors.white, surface: Colors.white, onSurface: Colors.white)
     ),
     navigatorKey: navigatorKey,
     debugShowCheckedModeBanner: false,
@@ -51,7 +50,7 @@ void startApp() async {
         child: widget ?? const SizedBox(),
       );
     },),
-    navigatorObservers: [routeObserver],
+    navigatorObservers: [SCAppRouteObserver().routeObserver],
   ));
 
   SCWeChatUtils.init();

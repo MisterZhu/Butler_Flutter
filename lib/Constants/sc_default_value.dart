@@ -101,6 +101,9 @@ class SCDefaultValue {
   /// 拨号失败
   static const String callFailedTip = "拨号失败";
 
+  /// 功能开发中
+  static const String developingTip = "功能开发中";
+
   /// 图片路径
   static const files = "/files/";
 }

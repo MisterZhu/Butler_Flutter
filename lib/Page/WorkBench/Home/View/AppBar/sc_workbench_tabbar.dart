@@ -6,13 +6,15 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 /// 导航栏
 
 class SCWorkBenchTabBar extends StatefulWidget {
-  SCWorkBenchTabBar({Key? key,
-    required this.tabController,
-    required this.tabTitleList,
-    required this.classificationList,
-    required this.currentTabIndex,
-    this.menuTap,
-    this.tagTap})
+  SCWorkBenchTabBar(
+      {Key? key,
+      required this.tabController,
+      required this.tabTitleList,
+      required this.classificationList,
+      required this.currentTabIndex,
+      required this.currentTagIndex,
+      this.menuTap,
+      this.tagTap})
       : super(key: key);
 
   /// tabController
@@ -24,8 +26,11 @@ class SCWorkBenchTabBar extends StatefulWidget {
   /// 分类list
   final List classificationList;
 
-  /// tab-index
+  /// 当前tabIndex
   final int currentTabIndex;
+
+  /// 当前tagIndex
+  final int currentTagIndex;
 
   /// 点击菜单
   final Function? menuTap;
@@ -35,15 +40,20 @@ class SCWorkBenchTabBar extends StatefulWidget {
 
   @override
   SCWorkBenchTabBarState createState() => SCWorkBenchTabBarState();
-
 }
-  class SCWorkBenchTabBarState extends State<SCWorkBenchTabBar> {
 
+class SCWorkBenchTabBarState extends State<SCWorkBenchTabBar> {
   /// 分类-index
   int currentClassificationIndex = 0;
 
   @override
+  initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    currentClassificationIndex = widget.currentTagIndex;
     return SizedBox(
       height: 96.0,
       child: Column(
@@ -102,6 +112,7 @@ class SCWorkBenchTabBar extends StatefulWidget {
   Widget classificationItem() {
     return SizedBox(
       height: 26.0,
+      width: double.infinity,
       child: Stack(
         children: [
           ListView.separated(
@@ -178,6 +189,9 @@ class SCWorkBenchTabBar extends StatefulWidget {
 
     /// decoration
     BoxDecoration decoration;
+
+    /// title
+    String title =  widget.classificationList[index]['title'];
     if (index == currentClassificationIndex) {
       backgroundColor = SCColors.color_EBF2FF;
       textColor = SCColors.color_4285F4;
@@ -191,6 +205,7 @@ class SCWorkBenchTabBar extends StatefulWidget {
       decoration = BoxDecoration(
           color: backgroundColor, borderRadius: BorderRadius.circular(13.0));
     }
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -204,7 +219,7 @@ class SCWorkBenchTabBar extends StatefulWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14.0),
         decoration: decoration,
         child: Text(
-          widget.classificationList[index],
+         title,
           style: TextStyle(
               fontSize: SCFonts.f14,
               fontWeight: FontWeight.w400,

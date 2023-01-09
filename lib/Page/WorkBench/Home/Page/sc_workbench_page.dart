@@ -16,6 +16,7 @@ import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_wor
 import 'package:smartcommunity/Page/WorkBench/Home/View/WorkBench/sc_workbench_view.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
+import 'package:smartcommunity/Utils/Router/sc_router_observer.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../Model/sc_home_task_model.dart';
@@ -29,7 +30,7 @@ class SCWorkBenchPage extends StatefulWidget {
 }
 
 class SCWorkBenchPageState extends State<SCWorkBenchPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin,RouteAware {
 
   /// 工作台controller
   late SCWorkBenchController workBenchController;
@@ -42,17 +43,6 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
 
   /// tab-title
   List<String> tabTitleList = ['待处理', '处理中'];
-
-  /// 分类
-  List<String> classificationList = [
-    '工单处理',
-    '订单处理',
-    '居民审核',
-    '维保维修',
-    '三巡一保',
-    '报事报修',
-    '工单处理'
-  ];
 
   /// tabController
   late TabController tabController;
@@ -100,10 +90,31 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     workBenchController.processingController = processingController;
     addNotification();
     workBenchController.startTimer();
+    tabController.addListener(() {
+      if (workBenchController.currentWorkOrderIndex != tabController.index) {
+        workBenchController.updateCurrentWorkOrderIndex(tabController.index);
+      }
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    /// 路由订阅
+    SCAppRouteObserver().routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  /// Called when the top route has been popped off, and the current route
+  @override
+  void didPopNext() {
+    workBenchController.loadData();
   }
 
   @override
   dispose() {
+    /// 取消路由订阅
+    SCAppRouteObserver().routeObserver.unsubscribe(this);
     super.dispose();
     subscription.cancel();
     SCScaffoldManager.instance.deleteGetXControllerTag(pageName, workBenchControllerTag);
@@ -138,9 +149,13 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
                 doingController: processingController,
                 height: constraints.maxHeight,
                 tabTitleList: tabTitleList,
-                classificationList: classificationList,
+                classificationList: workBenchController.plateList,
                 tabController: tabController,
-                tagAction: (index) {},
+                tagAction: (index) {
+                  if (workBenchController.currentPlateIndex != index) {
+                    workBenchController.updatePlateIndex(index);
+                  }
+                },
                 menuTap: () {
                   showTaskAlert();
                 },
@@ -173,26 +188,21 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
 
   /// 弹出任务模块弹窗
   showTaskAlert() {
-    List testList = [
-      {'id': '0', 'name': '全部', 'isSelect': false},
-      {'id': '1', 'name': '工单处理', 'isSelect': false},
-      {'id': '2', 'name': '居民审核', 'isSelect': false},
-      {'id': '3', 'name': '维保任务', 'isSelect': false},
-      {'id': '4', 'name': '巡检任务', 'isSelect': false},
-      {'id': '5', 'name': '巡查任务', 'isSelect': false},
-      {'id': '6', 'name': '巡更任务', 'isSelect': false},
-      {'id': '7', 'name': '装修审核', 'isSelect': false},
-      {'id': '8', 'name': '资产审核', 'isSelect': false},
-    ];
-    List<SCHomeTaskModel> list =
-        testList.map((e) => SCHomeTaskModel.fromJson(e)).toList();
+    List<SCHomeTaskModel> list = [];
+    for (int i=0; i<workBenchController.plateList.length; i++) {
+      var map = workBenchController.plateList[i];
+      list.add(SCHomeTaskModel.fromJson({"name" : map['title'], "id" : "${map["type"]}", "isSelect" : i == workBenchController.currentPlateIndex}));
+    }
     SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
       SCDialogUtils().showCustomBottomDialog(
           isDismissible: true,
           context: context,
           widget: SCTaskModuleAlert(
             list: list,
-            closeTap: (selectList) {},
+            currentIndex: workBenchController.currentPlateIndex,
+            closeTap: (SCHomeTaskModel model, int index) {
+              workBenchController.updatePlateIndex(index);
+            },
           ));
     });
   }
