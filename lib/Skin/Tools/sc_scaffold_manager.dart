@@ -79,6 +79,8 @@ class SCScaffoldManager {
 
   /// 初始化
   Future initBase() {
+    _longitude = 0;
+    _latitude = 0;
     Get.put(SCCustomScaffoldController());
     return SCScaffoldManager.instance.initScaffold();
   }

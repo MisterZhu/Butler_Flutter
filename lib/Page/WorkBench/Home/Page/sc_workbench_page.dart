@@ -256,9 +256,12 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   }
 
   /// 获取定位
-  location() async{
-    Position position = await SCLocationUtils.location();
-    SCScaffoldManager.instance.latitude = position.latitude;
-    SCScaffoldManager.instance.longitude = position.longitude;
+  location() {
+    SCLocationUtils.locationOnlyPosition((position, status) {
+      if (status == 1) {
+        SCScaffoldManager.instance.longitude = position?.longitude ?? 0;
+        SCScaffoldManager.instance.latitude = position?.latitude ?? 0;
+      }
+    });
   }
 }

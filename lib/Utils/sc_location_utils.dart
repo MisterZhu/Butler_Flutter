@@ -14,6 +14,24 @@ class SCLocationUtils {
     return permission;
   }
 
+  /// 获取位置-仅仅是posotion, status:0-权限被拒绝，1-获取成功，2-权限无法确定
+  static locationOnlyPosition(Function(Position? position, int status)? completeHandler) async{
+    LocationPermission permission = await SCLocationUtils.requestPermission();
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      /// 定位被拒绝，无权限
+      completeHandler?.call(null, 0);
+    } else if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      /// 已获取定位权限
+      Position position = await SCLocationUtils.location();
+      completeHandler?.call(position, 1);
+    } else {
+      /// 权限无法确定
+      completeHandler?.call(null, 2);
+    }
+  }
+
   /// 获取位置
   static Future<Position> location() async{
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);

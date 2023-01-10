@@ -136,8 +136,8 @@ class SCLoginListView extends StatelessWidget {
       SCToast.showTip('验证码不能为空');
       return;
     }
-    if (SCUtils().checkPhone(phone: state.phone) == false) {
-      SCToast.showTip('请输入正确的手机号');
+    if (state.phone.length != 11) {
+      SCToast.showTip('请输入正确的手机号码');
       return;
     }
 
