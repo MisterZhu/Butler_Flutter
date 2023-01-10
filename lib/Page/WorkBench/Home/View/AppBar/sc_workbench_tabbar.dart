@@ -224,6 +224,11 @@ class SCWorkBenchTabBarState extends State<SCWorkBenchTabBar> {
               fontSize: SCFonts.f14,
               fontWeight: FontWeight.w400,
               color: textColor),
+          strutStyle: const StrutStyle(
+            fontSize: SCFonts.f14,
+            height: 1.25,
+            forceStrutHeight: true,
+          ),
         ),
       ),
     );

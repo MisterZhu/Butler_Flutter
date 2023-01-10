@@ -46,6 +46,12 @@ class SCScaffoldManager {
   /// eventBus
   static late EventBus _eventBus;
 
+  /// 经度
+  static late double _latitude;
+
+  /// 纬度
+  static late double _longitude;
+
   SCScaffoldManager._internal() {
     _scaffoldModel = SCScaffoldModel();
     _user = SCUserModel();
@@ -67,10 +73,14 @@ class SCScaffoldManager {
 
   EventBus get eventBus => _eventBus;
 
+  double get latitude => _latitude;
+
+  double get longitude => _longitude;
+
   /// 初始化
-  void initBase() {
+  Future initBase() {
     Get.put(SCCustomScaffoldController());
-    SCScaffoldManager.instance.initScaffold();
+    return SCScaffoldManager.instance.initScaffold();
   }
 
   /// set user
@@ -97,6 +107,18 @@ class SCScaffoldManager {
   set spaceIds(String? spaceIds) {
     // TODO: implement spaceIds=
     _spaceIds = spaceIds;
+  }
+
+  /// set latitude
+  set latitude(double latitude) {
+    // TODO: implement latitude=
+    _latitude = latitude;
+  }
+
+  /// set latitude
+  set longitude(double longitude) {
+    // TODO: implement longitude=
+    _longitude = longitude;
   }
 
   /// 初始化scaffold数据

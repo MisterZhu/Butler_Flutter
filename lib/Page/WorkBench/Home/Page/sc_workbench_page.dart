@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_h5.dart';
@@ -16,8 +17,8 @@ import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_wor
 import 'package:smartcommunity/Page/WorkBench/Home/View/WorkBench/sc_workbench_view.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
-import 'package:smartcommunity/Utils/Router/sc_router_observer.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
+import 'package:smartcommunity/Utils/sc_location_utils.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../Model/sc_home_task_model.dart';
 import '../View/Alert/sc_task_module_alert.dart';
@@ -30,7 +31,7 @@ class SCWorkBenchPage extends StatefulWidget {
 }
 
 class SCWorkBenchPageState extends State<SCWorkBenchPage>
-    with SingleTickerProviderStateMixin,RouteAware {
+    with SingleTickerProviderStateMixin {
 
   /// 工作台controller
   late SCWorkBenchController workBenchController;
@@ -95,26 +96,11 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
         workBenchController.updateCurrentWorkOrderIndex(tabController.index);
       }
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    /// 路由订阅
-    SCAppRouteObserver().routeObserver.subscribe(this, ModalRoute.of(context)!);
-  }
-
-  /// Called when the top route has been popped off, and the current route
-  @override
-  void didPopNext() {
-    workBenchController.loadData();
+    location();
   }
 
   @override
   dispose() {
-    /// 取消路由订阅
-    SCAppRouteObserver().routeObserver.unsubscribe(this);
     super.dispose();
     subscription.cancel();
     SCScaffoldManager.instance.deleteGetXControllerTag(pageName, workBenchControllerTag);
@@ -267,5 +253,12 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
         workBenchController.loadData();
       }
     });
+  }
+
+  /// 获取定位
+  location() async{
+    Position position = await SCLocationUtils.location();
+    SCScaffoldManager.instance.latitude = position.latitude;
+    SCScaffoldManager.instance.longitude = position.longitude;
   }
 }

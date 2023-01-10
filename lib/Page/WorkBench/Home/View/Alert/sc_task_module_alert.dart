@@ -126,7 +126,7 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
         tagAction(model, index);
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
+        padding: const EdgeInsets.symmetric(horizontal: 6.0),
         alignment: Alignment.center,
         height: 26.0,
         decoration: BoxDecoration(
@@ -142,8 +142,13 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
           style: TextStyle(
             fontSize: SCFonts.f12,
             fontWeight: FontWeight.w400,
-            color: textColor
-        ),),
+            color: textColor),
+          strutStyle: const StrutStyle(
+            fontSize: SCFonts.f12,
+            height: 1.25,
+            forceStrutHeight: true,
+          ),
+        ),
       ),
     );
   }

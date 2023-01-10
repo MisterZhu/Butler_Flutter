@@ -380,6 +380,10 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
     String userName = Uri.encodeComponent(SCScaffoldManager.instance.user.userName ?? '');
     /// 拼接符号
     String jointSymbol = "";
+    /// 经度
+    double latitude = SCScaffoldManager.instance.latitude;
+    /// 纬度
+    double longitude = SCScaffoldManager.instance.longitude;
 
     if (spaceIds.isEmpty) {
       spaceIds = SCScaffoldManager.instance.user.tenantId ?? '';
@@ -389,7 +393,7 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
     } else {
       jointSymbol = "?";
     }
-    String newUrl = "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&fromQw=1";
+    String newUrl = "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&fromQw=1&latitude=$latitude&longitude=$longitude";
     return newUrl;
   }
 }
