@@ -13,4 +13,10 @@ class SCH5FlutterKey {
   static const String camera = 'sc_app_camera';
   /// 相册
   static const String photos  = 'sc_app_photos';
+  /// 打电话
+  static const String phone  = 'sc_app_phone';
+  /// 弹窗-选择相机或相册
+  static const String albumAlert = "sc_app_album_alert";
+  /// 刷新工作台
+  static const String reloadWorkBench = "sc_app_workbench_reload";
 }

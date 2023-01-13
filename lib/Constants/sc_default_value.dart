@@ -9,8 +9,14 @@ class SCDefaultValue {
   /// APP名称
   static const String appName = '善数管理';
 
+  /// h5渠道，用于表示h5是应用在flutter上
+  static int h5Channel = 1;
+
   /// client
   static const String client = 'co-app';
+
+  /// app唯一标识
+  static const String appCode = '101';
 
   /// 高德web key
   static const String kAMapWebKey = 'fb48becc7b7a077d4da585a977d39ed2';

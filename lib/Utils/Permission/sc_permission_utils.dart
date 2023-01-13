@@ -7,7 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
 import 'package:smartcommunity/Utils/Location/sc_location_model.dart';
-import 'package:smartcommunity/Utils/sc_location_utils.dart';
+import 'package:smartcommunity/Utils/Location/sc_location_utils.dart';
 import 'package:smartcommunity/Utils/sc_sp_utils.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';

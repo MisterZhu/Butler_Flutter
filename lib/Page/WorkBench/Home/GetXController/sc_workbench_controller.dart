@@ -11,6 +11,7 @@ import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_l
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_default_config_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
+import 'package:smartcommunity/Utils/Location/sc_location_utils.dart';
 
 import '../../../../Constants/sc_asset.dart';
 import '../Model/sc_work_order_model.dart';
@@ -132,6 +133,7 @@ class SCWorkBenchController extends GetxController {
 
   /// 加载数据
   loadData() {
+    location();
     getDefaultConfig().then((value) {
       if (value == true) {
         getUserInfo().then((subValue) {
@@ -474,6 +476,16 @@ class SCWorkBenchController extends GetxController {
       waitController.update();
       processingController.dataList = processingDataList;
       processingController.update();
+    });
+  }
+
+  /// 获取定位
+  location() {
+    SCLocationUtils.locationOnlyPosition((position, status) {
+      if (status == 1) {
+        SCScaffoldManager.instance.longitude = position?.longitude ?? 0;
+        SCScaffoldManager.instance.latitude = position?.latitude ?? 0;
+      }
     });
   }
 

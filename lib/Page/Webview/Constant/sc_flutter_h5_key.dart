@@ -11,4 +11,6 @@ class SCFlutterH5Key {
   static const String camera = 'sc_app_camera_result';
   /// 相册
   static const String photos  = 'sc_app_photos_result';
+  /// 弹窗-选择相机或相册
+  static const String albumAlert  = 'sc_app_album_alert_result';
 }

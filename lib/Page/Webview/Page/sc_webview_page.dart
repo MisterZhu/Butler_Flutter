@@ -7,12 +7,14 @@ import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
+import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Page/Webview/Constant/sc_flutter_h5_key.dart';
 import 'package:smartcommunity/Page/Webview/Constant/sc_h5_flutter_key.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Skin/View/sc_custom_scaffold.dart';
 import 'package:smartcommunity/Utils/Location/sc_location_model.dart';
 import 'package:smartcommunity/Utils/Permission/sc_permission_utils.dart';
+import 'package:smartcommunity/Utils/Upload/sc_upload_utils.dart';
 import 'package:smartcommunity/Utils/sc_sp_utils.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -71,7 +73,8 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
     needJointParams = params["needJointParams"] ?? false;
 
     /// 是否需要拼接参数
-    String subUrl = StringUtils.isNotNullOrEmpty(params?["url"]) ? params!["url"] : "";
+    String subUrl =
+        StringUtils.isNotNullOrEmpty(params?["url"]) ? params!["url"] : "";
     if (needJointParams) {
       _url = jointParams(subUrl);
     } else {
@@ -188,6 +191,9 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
         userInfoChannel(context),
         cameraChannel(context),
         photosChannel(context),
+        phoneChannel(context),
+        albumAlertChannel(context),
+        reloadWorkBenchChannel(context),
       },
 
       ///WebView创建
@@ -299,10 +305,8 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
       onMessageReceived: (JavascriptMessage message) {
         SCPermissionUtils.scanCodeWithPrivacyAlert(completionHandler: (value) {
           var params = {
-            "status" : 1,
-            "data" : {
-              "result" : value
-            }
+            "status": 1,
+            "data": {"result": value}
           };
           webViewController?.runJavascript(SCUtils()
               .flutterCallH5(h5Name: SCFlutterH5Key.scan, params: params));
@@ -314,11 +318,11 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
       name: SCH5FlutterKey.userInfo,
       onMessageReceived: (JavascriptMessage message) {
         var params = {
-          "status" : 1,
-          "data" : {
-            'token' : SCScaffoldManager.instance.user.token,
-            'phone' : SCScaffoldManager.instance.user.mobileNum,
-            'userName' : SCScaffoldManager.instance.user.userName,
+          "status": 1,
+          "data": {
+            'token': SCScaffoldManager.instance.user.token,
+            'phone': SCScaffoldManager.instance.user.mobileNum,
+            'userName': SCScaffoldManager.instance.user.userName,
           }
         };
         webViewController?.runJavascript(SCUtils()
@@ -332,10 +336,8 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
         SCPermissionUtils.takePhoto((String path) async {
           String base64 = await SCUtils().localImageToBase64(path);
           var params = {
-            "status" : 1,
-            "data" : {
-              "result" : base64
-            }
+            "status": 1,
+            "data": {"result": base64}
           };
           webViewController?.runJavascript(SCUtils()
               .flutterCallH5(h5Name: SCFlutterH5Key.camera, params: params));
@@ -353,15 +355,72 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
             list.add(base64);
           }
           var params = {
-            "status" : 1,
-            "data" : {
-              "result" : list
-            }
+            "status": 1,
+            "data": {"result": list}
           };
           webViewController?.runJavascript(SCUtils()
               .flutterCallH5(h5Name: SCFlutterH5Key.photos, params: params));
         });
       });
+
+  //  打电话-channel
+  JavascriptChannel phoneChannel(BuildContext context) => JavascriptChannel(
+      name: SCH5FlutterKey.phone,
+      onMessageReceived: (JavascriptMessage message) {
+        var json = jsonDecode(message.message);
+        String phone = json['phone'];
+        SCUtils.call(phone);
+      });
+
+  //  弹窗选择拍照或相册-channel
+  JavascriptChannel albumAlertChannel(BuildContext context) =>
+      JavascriptChannel(
+          name: SCH5FlutterKey.albumAlert,
+          onMessageReceived: (JavascriptMessage message) {
+            var json = jsonDecode(message.message);
+            int maxLength = json['maxLength'];
+            SCPermissionUtils.showImagePicker(
+                maxLength: maxLength,
+                completionHandler: (imageList) {
+                  List list = [];
+                  for (String path in imageList) {
+                    Uri uri = Uri.file(path);
+                    list.add(uri);
+                  }
+                  var params = {
+                    "status": 1,
+                    "data": {"result": list}
+                  };
+                  print("选择的所有图片:$list");
+                  webViewController?.runJavascript(SCUtils().flutterCallH5(
+                      h5Name: SCFlutterH5Key.albumAlert, params: params));
+                  // SCUploadUtils.uploadMoreHeadPic(imagePathList: imageList, successHandler: (value){
+                  //   List list = [];
+                  //   for (var map in value) {
+                  //     String fileKey = map['fileKey'];
+                  //     list.add(SCConfig.getImageUrl(fileKey));
+                  //   }
+                  //   var params = {
+                  //     "status" : 1,
+                  //     "data" : {
+                  //       "result" : list
+                  //     }
+                  //   };
+                  //   webViewController?.runJavascript(SCUtils()
+                  //       .flutterCallH5(h5Name: SCFlutterH5Key.albumAlert, params: params));
+                  // });
+                });
+          });
+
+  //  刷新工作台-channel
+  JavascriptChannel reloadWorkBenchChannel(BuildContext context) =>
+      JavascriptChannel(
+          name: SCH5FlutterKey.reloadWorkBench,
+          onMessageReceived: (JavascriptMessage message) {
+            print("刷新工作台数据");
+            var params = {"key": SCKey.kSwitchEnterprise};
+            SCScaffoldManager.instance.eventBus.fire(params);
+          });
 
   /// 缓存建信租房token
   cacheJXToken(String token) {
@@ -374,16 +433,27 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
     String client = SCDefaultValue.client;
     String defOrgId = SCScaffoldManager.instance.user.tenantId ?? '';
     String phoneNum = SCScaffoldManager.instance.user.mobileNum ?? '';
-    String defOrgName = Uri.encodeComponent(SCScaffoldManager.instance.user.tenantName ?? '');
+    String defOrgName =
+        Uri.encodeComponent(SCScaffoldManager.instance.user.tenantName ?? '');
     String userId = SCScaffoldManager.instance.user.id ?? '';
     String spaceIds = SCScaffoldManager.instance.spaceIds ?? '';
-    String userName = Uri.encodeComponent(SCScaffoldManager.instance.user.userName ?? '');
+    String userName =
+        Uri.encodeComponent(SCScaffoldManager.instance.user.userName ?? '');
+
     /// 拼接符号
     String jointSymbol = "";
+
     /// 经度
     double latitude = SCScaffoldManager.instance.latitude;
+
     /// 纬度
     double longitude = SCScaffoldManager.instance.longitude;
+
+    /// h5渠道-key
+    String h5ChannelKey = SCKey.kH5Channel;
+
+    /// h5渠道-value
+    int h5ChannelValue = SCDefaultValue.h5Channel;
 
     if (spaceIds.isEmpty) {
       spaceIds = SCScaffoldManager.instance.user.tenantId ?? '';
@@ -393,7 +463,8 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
     } else {
       jointSymbol = "?";
     }
-    String newUrl = "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&fromQw=1&latitude=$latitude&longitude=$longitude";
+    String newUrl =
+        "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&fromQw=1&latitude=$latitude&longitude=$longitude&$h5ChannelKey=$h5ChannelValue";
     return newUrl;
   }
 }

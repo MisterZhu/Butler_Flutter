@@ -16,9 +16,11 @@ import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dar
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_alert.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/WorkBench/sc_workbench_view.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
+import 'package:smartcommunity/Utils/Permission/sc_permission_utils.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
-import 'package:smartcommunity/Utils/sc_location_utils.dart';
+import 'package:smartcommunity/Utils/Upload/sc_upload_utils.dart';
+import 'package:smartcommunity/Utils/Location/sc_location_utils.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../Model/sc_home_task_model.dart';
 import '../View/Alert/sc_task_module_alert.dart';
@@ -96,7 +98,6 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
         workBenchController.updateCurrentWorkOrderIndex(tabController.index);
       }
     });
-    location();
   }
 
   @override
@@ -251,16 +252,6 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
       String key = event['key'];
       if (key == SCKey.kSwitchEnterprise) {
         workBenchController.loadData();
-      }
-    });
-  }
-
-  /// 获取定位
-  location() {
-    SCLocationUtils.locationOnlyPosition((position, status) {
-      if (status == 1) {
-        SCScaffoldManager.instance.longitude = position?.longitude ?? 0;
-        SCScaffoldManager.instance.latitude = position?.latitude ?? 0;
       }
     });
   }

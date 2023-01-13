@@ -20,4 +20,6 @@ class SCKey {
   static const String kJianXinRentingToken = "kJianXinRentingToken";
   /// 切换企业key
   static const String kSwitchEnterprise = "kSwitchEnterprise";
+  /// h5渠道key
+  static const String kH5Channel = "SCCHANNEL";
 }

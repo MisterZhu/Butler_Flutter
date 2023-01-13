@@ -79,8 +79,8 @@ class SCScaffoldManager {
 
   /// 初始化
   Future initBase() {
-    _longitude = 0;
-    _latitude = 0;
+    _longitude = 120.2155118;
+    _latitude = 30.25308298;
     Get.put(SCCustomScaffoldController());
     return SCScaffoldManager.instance.initScaffold();
   }
@@ -117,7 +117,7 @@ class SCScaffoldManager {
     _latitude = latitude;
   }
 
-  /// set latitude
+  /// set longitude
   set longitude(double longitude) {
     // TODO: implement longitude=
     _longitude = longitude;

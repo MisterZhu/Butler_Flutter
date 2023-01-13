@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
@@ -100,7 +101,7 @@ class SCLoginController extends GetxController {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kPhoneCodeLoginUrl,
-        params: {'mobileNum' : phone, 'code' : code},
+        params: {'mobileNum' : phone, 'code' : code, 'appCode' : SCDefaultValue.appCode},
         success: (value) {
           var userParams = value['userInfoV'];
           SCUserModel userModel = SCUserModel.fromJson(userParams);

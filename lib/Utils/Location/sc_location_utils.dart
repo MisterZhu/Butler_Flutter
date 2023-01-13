@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'package:geolocator/geolocator.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Utils/Location/sc_location_model.dart';
-import '../Constants/sc_default_value.dart';
-import '../Network/sc_http_manager.dart';
-import '../Network/sc_url.dart';
+import '../../Constants/sc_default_value.dart';
+import '../../Network/sc_http_manager.dart';
+import '../../Network/sc_url.dart';
 
 class SCLocationUtils {
   /// 获取定位权限

@@ -89,7 +89,7 @@ class SCWorkBenchSwitchSpaceView extends StatelessWidget {
             color: SCColors.color_1B1D33),
         strutStyle: const StrutStyle(
           fontSize: SCFonts.f16,
-          height: 0.95,
+          height: 1.30,
           forceStrutHeight: true,
         ),
       ),
