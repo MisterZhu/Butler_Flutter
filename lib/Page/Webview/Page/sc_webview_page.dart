@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -381,11 +382,12 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
             int maxLength = json['maxLength'];
             SCPermissionUtils.showImagePicker(
                 maxLength: maxLength,
-                completionHandler: (imageList) {
+                completionHandler: (imageList) async {
                   List list = [];
                   for (String path in imageList) {
-                    Uri uri = Uri.file(path);
-                    list.add(uri);
+                    File file = new File(path);
+                    List<int> imageBytes = await file.readAsBytes();
+                    list.add(base64Encode(imageBytes));
                   }
                   var params = {
                     "status": 1,

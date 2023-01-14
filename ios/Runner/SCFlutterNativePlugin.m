@@ -7,8 +7,28 @@
 
 #import "SCFlutterNativePlugin.h"
 
+//static SCFlutterNativePlugin *plugin;
 
 @implementation SCFlutterNativePlugin
+
+//+ (SCFlutterNativePlugin *)shared {
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        plugin = [[SCFlutterNativePlugin alloc] init];
+//    });
+//    return plugin;
+//}
+//
+//- (instancetype)init {
+//    if (self = [super init]) {
+////        self.flutterController = [UIApplication sharedApplication].keyWindow.;
+////        [GeneratedPluginRegistrant registerWithRegistry:self.flutterController];
+////        [self nativeToFlutter];
+////        [self flutterToNative];
+////        [self proxy];
+//    }
+//    return self;
+//}
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
     FlutterMethodChannel *methodChannel = [FlutterMethodChannel methodChannelWithName:@"flutter_to_native" binaryMessenger:[registrar messenger]];
