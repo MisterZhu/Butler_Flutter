@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -8,6 +9,7 @@ import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import 'package:smartcommunity/Utils/sc_sp_utils.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Utils/sc_utils.dart';
 import '../../../../Constants/sc_default_value.dart';
 import '../../../../Constants/sc_h5.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
@@ -105,8 +107,12 @@ class SCApplicationPageState extends State<SCApplicationPage>
 
   /// 应用详情
   itemDetail(String title, String url) {
-    SCRouterHelper.pathPage(SCRouterPath.webViewPath,
-        {"title": title, "url": url, "needJointParams": true});
+    if (Platform.isAndroid) {
+      String realUrl = SCUtils.getWebViewUrl(url: url, needJointParams: true);
+    } else {
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath,
+          {"title": title, "url": url, "needJointParams": true});
+    }
   }
 
   /// 通知

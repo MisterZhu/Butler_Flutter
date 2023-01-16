@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -201,13 +202,17 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     String title = Uri.encodeComponent(SCUtils.getWorkOrderButtonText(model.status ?? 0));
     String url =
         "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?status=${model.status}&title=$title&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}&from=qwHome";
-     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
-      "title": model.categoryName ?? '',
-      "url": url,
-      "needJointParams": true
-    })?.then((value) {
-       workBenchController.loadData();
-     });
+    if (Platform.isAndroid) {
+      String realUrl = SCUtils.getWebViewUrl(url: url, needJointParams: true);
+    } else {
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+        "title": model.categoryName ?? '',
+        "url": url,
+        "needJointParams": true
+      })?.then((value) {
+        workBenchController.loadData();
+      });
+    }
   }
 
   /// 空间弹窗
