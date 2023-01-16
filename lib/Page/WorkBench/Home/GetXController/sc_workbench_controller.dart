@@ -8,6 +8,7 @@ import 'package:smartcommunity/Network/sc_url.dart';
 import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_listview_controller.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/Sc_hotel_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_default_config_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
@@ -25,10 +26,16 @@ class SCWorkBenchController extends GetxController {
   String tag = '';
 
   /// 待处理工单数据
-  List<SCWorkOrderModel> waitDataList = [];
+  List waitDataList = [];
+
+  /// 待处理pageNum
+  int waitPageNum = 1;
+
+  /// 处理中pageNum
+  int processingPageNum = 1;
 
   /// 处理中工单 数据
-  List<SCWorkOrderModel> processingDataList = [];
+  List processingDataList = [];
 
   /// 进行中数量
   int processOrder = 0;
@@ -254,7 +261,7 @@ class SCWorkBenchController extends GetxController {
       "orderBy": [
         {"asc": false, "field": "wo.create_time"}
       ],
-      "pageNum": 1,
+      "pageNum": waitPageNum,
       "pageSize": 10
     };
     SCLoadingUtils.show();
@@ -295,7 +302,7 @@ class SCWorkBenchController extends GetxController {
       "orderBy": [
         {"asc": false, "field": "wo.create_time"}
       ],
-      "pageNum": 1,
+      "pageNum": processingPageNum,
       "pageSize": 10
     };
     SCLoadingUtils.show();
@@ -331,7 +338,7 @@ class SCWorkBenchController extends GetxController {
       "orderBy": [
         {"asc": true, "field": "applyTime"}
       ],
-      "pageNum": 1,
+      "pageNum": waitPageNum,
       "pageSize": 10
     };
     SCLoadingUtils.show();
@@ -367,7 +374,7 @@ class SCWorkBenchController extends GetxController {
       "orderBy": [
         {"asc": true, "field": "applyTime"}
       ],
-      "pageNum": 1,
+      "pageNum": processingPageNum,
       "pageSize": 10
     };
     SCLoadingUtils.show();
@@ -397,7 +404,7 @@ class SCWorkBenchController extends GetxController {
           {"name": "state", "value": 2}
         ]
       },
-      "pageNum": 1,
+      "pageNum": waitPageNum,
       "pageSize": 10
     };
     SCLoadingUtils.show();
@@ -408,8 +415,8 @@ class SCWorkBenchController extends GetxController {
           SCLoadingUtils.hide();
           if (value is Map) {
             List list = value['records'];
-            waitDataList = List<SCWorkOrderModel>.from(
-                list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
+            waitDataList = List<SCHotelOrderModel>.from(
+                list.map((e) => SCHotelOrderModel.fromJson(e)).toList());
           } else {
             waitDataList = [];
           }
@@ -427,7 +434,7 @@ class SCWorkBenchController extends GetxController {
           {"name": "state", "value": 3}
         ]
       },
-      "pageNum": 1,
+      "pageNum": processingPageNum,
       "pageSize": 10
     };
     SCLoadingUtils.show();
@@ -438,8 +445,8 @@ class SCWorkBenchController extends GetxController {
           SCLoadingUtils.hide();
           if (value is Map) {
             List list = value['records'];
-            processingDataList = List<SCWorkOrderModel>.from(
-                list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
+            processingDataList = List<SCHotelOrderModel>.from(
+                list.map((e) => SCHotelOrderModel.fromJson(e)).toList());
           } else {
             processingDataList = [];
           }
@@ -452,30 +459,32 @@ class SCWorkBenchController extends GetxController {
   /// 定时器
   startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      for (int i = 0; i < waitDataList.length; i++) {
-        SCWorkOrderModel model = waitDataList[i];
-        int subTime = model.remainingTime ?? 0;
-        if (subTime > 0) {
-          model.remainingTime = subTime - 1;
-        } else if (subTime == 0) {
-          model.remainingTime = 0;
-        } else {}
-      }
+      if (currentPlateIndex == 0) {
+        for (int i = 0; i < waitDataList.length; i++) {
+          SCWorkOrderModel model = waitDataList[i];
+          int subTime = model.remainingTime ?? 0;
+          if (subTime > 0) {
+            model.remainingTime = subTime - 1;
+          } else if (subTime == 0) {
+            model.remainingTime = 0;
+          } else {}
+        }
 
-      for (int i = 0; i < processingDataList.length; i++) {
-        SCWorkOrderModel model = processingDataList[i];
-        int subTime = model.remainingTime ?? 0;
-        if (subTime > 0) {
-          model.remainingTime = subTime - 1;
-        } else if (subTime == 0) {
-          model.remainingTime = 0;
-        } else {}
-      }
+        for (int i = 0; i < processingDataList.length; i++) {
+          SCWorkOrderModel model = processingDataList[i];
+          int subTime = model.remainingTime ?? 0;
+          if (subTime > 0) {
+            model.remainingTime = subTime - 1;
+          } else if (subTime == 0) {
+            model.remainingTime = 0;
+          } else {}
+        }
 
-      waitController.dataList = waitDataList;
-      waitController.update();
-      processingController.dataList = processingDataList;
-      processingController.update();
+        waitController.dataList = waitDataList;
+        waitController.update();
+        processingController.dataList = processingDataList;
+        processingController.update();
+      }
     });
   }
 

@@ -23,7 +23,7 @@ class SCWorkBenchListView extends StatefulWidget {
     this.callAction,
   }) : super(key: key);
 
-  final List<SCWorkOrderModel> dataList;
+  final List dataList;
 
   /// 详情
   final Function(SCWorkOrderModel model)? detailAction;

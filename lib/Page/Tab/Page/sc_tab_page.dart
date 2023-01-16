@@ -4,12 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
+import 'package:smartcommunity/Constants/sc_key.dart';
 import 'package:smartcommunity/Page/AddressBook/Home/Page/sc_addressbook_page.dart';
 import 'package:smartcommunity/Page/Application/Home/Page/sc_application_page.dart';
 import 'package:smartcommunity/Page/Mine/Home/Page/sc_mine_page.dart';
 import 'package:smartcommunity/Page/Tab/View/sc_tab_floating_button.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_page.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/AppBar/sc_bottom_appbar.dart';
+import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../Utils/sc_utils.dart';
@@ -101,6 +103,7 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
         onTap: (int index) {
           currentIndex = index;
           pageController.jumpToPage(index);
+          updateStatusBar(index);
         },
       ),
     );
@@ -117,6 +120,7 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
   updateStatusBar(int index) {
     if (index == 0) {
       SCUtils().changeStatusBarStyle(style: SystemUiOverlayStyle.dark);
+      updateWorkBench();
     } else if (index == 1) {
       SCUtils().changeStatusBarStyle(style: SystemUiOverlayStyle.dark);
     } else if (index == 2) {
@@ -124,6 +128,12 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
     } else {
       SCUtils().changeStatusBarStyle(style: SystemUiOverlayStyle.dark);
     }
+  }
+
+  /// 刷新工作台
+  updateWorkBench() {
+    var params = {"key" : SCKey.kSwitchEnterprise};
+    SCScaffoldManager.instance.eventBus.fire(params);
   }
 
   /// floating点击，弹出

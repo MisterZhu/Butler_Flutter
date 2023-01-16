@@ -8,7 +8,7 @@ import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dar
 class SCWorkBenchListViewController extends GetxController {
 
   /// 数据源
-  List<SCWorkOrderModel> dataList = [];
+  List dataList = [];
 
   String pageName = '';
 

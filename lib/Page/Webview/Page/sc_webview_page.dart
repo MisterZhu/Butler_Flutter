@@ -77,7 +77,7 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
     String subUrl =
         StringUtils.isNotNullOrEmpty(params?["url"]) ? params!["url"] : "";
     if (needJointParams) {
-      _url = jointParams(subUrl);
+      _url = SCUtils.getWebViewUrl(url: subUrl, needJointParams: true);
     } else {
       _url = subUrl;
     }
@@ -393,24 +393,8 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
                     "status": 1,
                     "data": {"result": list}
                   };
-                  print("选择的所有图片:$list");
                   webViewController?.runJavascript(SCUtils().flutterCallH5(
                       h5Name: SCFlutterH5Key.albumAlert, params: params));
-                  // SCUploadUtils.uploadMoreHeadPic(imagePathList: imageList, successHandler: (value){
-                  //   List list = [];
-                  //   for (var map in value) {
-                  //     String fileKey = map['fileKey'];
-                  //     list.add(SCConfig.getImageUrl(fileKey));
-                  //   }
-                  //   var params = {
-                  //     "status" : 1,
-                  //     "data" : {
-                  //       "result" : list
-                  //     }
-                  //   };
-                  //   webViewController?.runJavascript(SCUtils()
-                  //       .flutterCallH5(h5Name: SCFlutterH5Key.albumAlert, params: params));
-                  // });
                 });
           });
 

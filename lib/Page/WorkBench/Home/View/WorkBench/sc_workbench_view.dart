@@ -8,7 +8,9 @@ import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_l
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_alert.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/View/Hotel/sc_hotel_listview.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_listview.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/View/RealVerification/sc_realverification_listview.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
 
 import '../../GetXController/sc_workbench_controller.dart';
@@ -21,7 +23,7 @@ class SCWorkBenchView extends StatelessWidget {
       {Key? key,
       required this.state,
       required this.waitController,
-        required this.doingController,
+      required this.doingController,
       required this.height,
       required this.tabController,
       required this.tabTitleList,
@@ -34,8 +36,7 @@ class SCWorkBenchView extends StatelessWidget {
       this.scanAction,
       this.messageAction,
       this.cardDetailAction,
-      this.headerAction
-      })
+      this.headerAction})
       : super(key: key);
 
   /// 工作台controller
@@ -165,30 +166,52 @@ class SCWorkBenchView extends StatelessWidget {
         GetBuilder<SCWorkBenchListViewController>(
             tag: waitController.tag,
             init: waitController,
-            builder: (state){
-          return SCWorkBenchListView(
-            dataList: state.dataList,
-            detailAction: (SCWorkOrderModel model) {
-              detail(model);
-            },
-            callAction: (String phone) {
-              SCUtils.call(phone);
-            },
-          );
-        }),
+            builder: (value) {
+              if (state.currentPlateIndex == 2) {
+                return SCHotelListView(
+                  dataList: waitController.dataList,
+                );
+              }
+              else if (state.currentPlateIndex == 1) {
+                return SCRealVerificationListView(
+                  dataList: waitController.dataList,
+                );
+              } else {
+                return SCWorkBenchListView(
+                  dataList: waitController.dataList,
+                  detailAction: (SCWorkOrderModel model) {
+                    detail(model);
+                  },
+                  callAction: (String phone) {
+                    SCUtils.call(phone);
+                  },
+                );
+              }
+            }),
         GetBuilder<SCWorkBenchListViewController>(
             tag: doingController.tag,
             init: doingController,
-            builder: (state){
-              return SCWorkBenchListView(
-                dataList: state.dataList,
-                detailAction: (SCWorkOrderModel model) {
-                  detail(model);
-                },
-                callAction: (String phone) {
-                  SCUtils.call(phone);
-                },
-              );
+            builder: (value) {
+              if (state.currentPlateIndex == 2) {
+                return SCHotelListView(
+                  dataList: [SCWorkOrderModel(), SCWorkOrderModel(),],
+                );
+              }
+              else if (state.currentPlateIndex == 1) {
+                return SCRealVerificationListView(
+                  dataList: [SCWorkOrderModel(), SCWorkOrderModel(),],
+                );
+              } else {
+                return SCWorkBenchListView(
+                  dataList: doingController.dataList,
+                  detailAction: (SCWorkOrderModel model) {
+                    detail(model);
+                  },
+                  callAction: (String phone) {
+                    SCUtils.call(phone);
+                  },
+                );
+              }
             }),
       ]),
     );
