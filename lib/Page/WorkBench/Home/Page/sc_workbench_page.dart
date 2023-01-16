@@ -11,7 +11,9 @@ import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_listview_controller.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_hotel_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_alert.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/WorkBench/sc_workbench_view.dart';
@@ -201,7 +203,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   detailAction(SCWorkOrderModel model) {
     String title = Uri.encodeComponent(SCUtils.getWorkOrderButtonText(model.status ?? 0));
     String url =
-        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?status=${model.status}&title=$title&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}&from=qwHome";
+        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?status=${model.status}&title=$title&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}";
     if (Platform.isAndroid) {
       String realUrl = SCUtils.getWebViewUrl(url: url, needJointParams: true);
     } else {
@@ -213,6 +215,15 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
         workBenchController.loadData();
       });
     }
+  }
+
+  /// 实地核验详情
+  verificationDetailAction(SCVerificationOrderModel model) {
+
+  }
+  /// 酒店订单处理详情
+  hotelOrderDetailAction(SCHotelOrderModel model) {
+
   }
 
   /// 空间弹窗

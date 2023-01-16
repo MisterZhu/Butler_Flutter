@@ -1,3 +1,4 @@
+/// 订单处理model
 class SCHotelOrderModel {
   SCHotelOrderModel({
       this.id, 

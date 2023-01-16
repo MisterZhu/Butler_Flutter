@@ -30,4 +30,8 @@ class SCH5 {
   static const String prepayAccountUrl = "https://saasprod.4001113900.com:10020/h5new/newUser/index.html#/home/prepayAccount?defCommunityId=fe38ad0a-beaa-11eb-bdca-005056b13afd&appVersion=3.11.3&token=9f3f3eb4-5e39-40df-baeb-faaf2883fc34&defRoomId=2759511&defOrgId=2678533";
   /// 建信长租房-首页
   static const String jxRentingHomeUrl = "https://hxzfczt.wisharetec.com/h5new/#/publishRentalHouse/tenant/index";
+  /// 实地核验详情
+  static const String verificationDetailUrl = "";
+  /// 酒店订单处理详情
+  static const String hotelOrderDetailUrl = "";
 }

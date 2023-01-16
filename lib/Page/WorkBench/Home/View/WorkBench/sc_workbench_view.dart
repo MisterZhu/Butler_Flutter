@@ -5,7 +5,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_listview_controller.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_hotel_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_alert.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Hotel/sc_hotel_listview.dart';
@@ -32,6 +34,8 @@ class SCWorkBenchView extends StatelessWidget {
       this.menuTap,
       this.onRefreshAction,
       this.detailAction,
+      this.verificationDetailAction,
+      this.hotelOrderDetailAction,
       this.showSpaceAlert,
       this.scanAction,
       this.messageAction,
@@ -68,6 +72,12 @@ class SCWorkBenchView extends StatelessWidget {
 
   /// 详情
   final Function(SCWorkOrderModel model)? detailAction;
+
+  /// 实地核验详情
+  final Function(SCVerificationOrderModel model)? verificationDetailAction;
+
+  /// 酒店订单处理详情
+  final Function(SCHotelOrderModel model)? hotelOrderDetailAction;
 
   /// 下拉刷新
   final Function? onRefreshAction;
@@ -170,11 +180,23 @@ class SCWorkBenchView extends StatelessWidget {
               if (state.currentPlateIndex == 2) {
                 return SCHotelListView(
                   dataList: waitController.dataList,
+                  callAction: (phone) {
+                    callAction(phone);
+                  },
+                  doneAction: (SCHotelOrderModel model) {
+                    hotelOrderDoneAction(model);
+                  },
                 );
               }
               else if (state.currentPlateIndex == 1) {
                 return SCRealVerificationListView(
                   dataList: waitController.dataList,
+                  callAction: (phone) {
+                    callAction(phone);
+                  },
+                  doneAction: (SCVerificationOrderModel model) {
+                    verificationDoneAction(model);
+                  },
                 );
               } else {
                 return SCWorkBenchListView(
@@ -194,12 +216,24 @@ class SCWorkBenchView extends StatelessWidget {
             builder: (value) {
               if (state.currentPlateIndex == 2) {
                 return SCHotelListView(
-                  dataList: [SCWorkOrderModel(), SCWorkOrderModel(),],
+                  dataList: doingController.dataList,
+                  callAction: (phone) {
+                    callAction(phone);
+                  },
+                  doneAction: (SCHotelOrderModel model) {
+                      hotelOrderDoneAction(model);
+                  },
                 );
               }
               else if (state.currentPlateIndex == 1) {
                 return SCRealVerificationListView(
-                  dataList: [SCWorkOrderModel(), SCWorkOrderModel(),],
+                  dataList: doingController.dataList,
+                  callAction: (phone) {
+                    callAction(phone);
+                  },
+                  doneAction: (SCVerificationOrderModel model) {
+                    verificationDoneAction(model);
+                  },
                 );
               } else {
                 return SCWorkBenchListView(
@@ -208,7 +242,7 @@ class SCWorkBenchView extends StatelessWidget {
                     detail(model);
                   },
                   callAction: (String phone) {
-                    SCUtils.call(phone);
+                    callAction(phone);
                   },
                 );
               }
@@ -234,5 +268,20 @@ class SCWorkBenchView extends StatelessWidget {
   /// 详情
   detail(SCWorkOrderModel model) {
     detailAction?.call(model);
+  }
+
+  /// 打电话
+  callAction(String phone) {
+    SCUtils.call(phone);
+  }
+
+  /// 实地核验完成
+  verificationDoneAction(SCVerificationOrderModel model) {
+    verificationDetailAction?.call(model);
+  }
+
+  /// 订单处理完成
+  hotelOrderDoneAction(SCHotelOrderModel model) {
+    hotelOrderDetailAction?.call(model);
   }
 }

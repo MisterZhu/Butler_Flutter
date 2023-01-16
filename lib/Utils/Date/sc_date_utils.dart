@@ -15,4 +15,54 @@ class SCDateUtils {
   static int timestamp() {
     return DateTime.now().millisecondsSinceEpoch;
   }
+
+  /// 天数差
+  static int difference(String start, String end) {
+    DateTime startDateTime = DateTime.parse(start);
+    DateTime endDateTime = DateTime.parse(end);
+    return endDateTime.difference(startDateTime).inDays;
+  }
+
+  /// 获取星期几-短
+  static String getShortWeekday({required int weekday}) {
+    String weekdayText = '';
+    switch (weekday) {
+      case 1:
+        {
+          weekdayText = '周一';
+        }
+        break;
+      case 2:
+        {
+          weekdayText = '周二';
+        }
+        break;
+      case 3:
+        {
+          weekdayText = '周三';
+        }
+        break;
+      case 4:
+        {
+          weekdayText = '周四';
+        }
+        break;
+      case 5:
+        {
+          weekdayText = '周五';
+        }
+        break;
+      case 6:
+        {
+          weekdayText = '周六';
+        }
+        break;
+      case 7:
+        {
+          weekdayText = '周日';
+        }
+        break;
+    }
+    return weekdayText;
+  }
 }

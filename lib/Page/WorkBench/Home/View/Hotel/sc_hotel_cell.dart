@@ -1,15 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/Model/Sc_hotel_order_model.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_hotel_order_model.dart';
+import 'package:smartcommunity/Utils/Date/sc_date_utils.dart';
 
 /// 酒店cell
 
 class SCHotelCell extends StatelessWidget {
 
-  const SCHotelCell({Key? key, required this.model}) : super(key: key);
+  const SCHotelCell({Key? key, required this.model, this.callAction, this.doneAction}) : super(key: key);
 
   final SCHotelOrderModel model;
+
+  /// 打电话
+  final Function(String phone)? callAction;
+
+  /// 完成
+  final Function(SCHotelOrderModel model)? doneAction;
 
   @override
   Widget build(BuildContext context) {
@@ -75,44 +82,62 @@ class SCHotelCell extends StatelessWidget {
 
   /// 房间信息
   Widget roomInfoView() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          roomInfoSubView(),
-          const SizedBox(
+    List list = model.orderHouseType ?? [];
+    if (list.isEmpty) {
+      return const SizedBox();
+    } else {
+      List<Widget> widgetList = [];
+      for (int i=0; i<list.length; i++) {
+        String title = list[i];
+        String startDate = SCDateUtils.transformDate(dateTime: DateTime.parse(model.gmtStartDate ?? ''), formats: ['mm', '月', 'dd', '日']);
+        String endDate = SCDateUtils.transformDate(dateTime: DateTime.parse(model.gmtEndDate ?? ''), formats: ['mm', '月', 'dd', '日']);
+        int days = SCDateUtils.difference(model.gmtStartDate ?? '', model.gmtEndDate ?? '');
+        DateTime startTime = DateTime.parse(model.gmtStartDate ?? '');
+        DateTime endTime = DateTime.parse(model.gmtEndDate ?? '');
+        String startWeekDay = SCDateUtils.getShortWeekday(weekday: startTime.weekday);
+        String endWeekDay = SCDateUtils.getShortWeekday(weekday: endTime.weekday);
+        if (i == list.length - 1) {
+          widgetList.add(roomInfoSubView(title: title, startDate: startDate, startWeekday: startWeekDay, endDate: endDate, endWeekday: endWeekDay, days: days));
+        } else {
+          widgetList.add(roomInfoSubView(title: title, startDate: startDate, startWeekday: startWeekDay, endDate: endDate, endWeekday: endWeekDay, days: days));
+          widgetList.add(const SizedBox(
             height: 10.0,
-          ),
-          roomInfoSubView()
-        ],
-      ),
-    );
+          ));
+        }
+      }
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: widgetList,
+        ),
+      );
+    }
   }
 
   /// 房间信息subView
-  Widget roomInfoSubView() {
+  Widget roomInfoSubView({required String title, required String startDate, required String startWeekday, required String endDate,required String endWeekday, required int days}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        roomTitleView(),
+        roomTitleView(title: title),
         const SizedBox(
           height: 10.0,
         ),
-        roomLiveDateView(),
+        roomLiveDateView(startDate: startDate, startWeekday: startWeekday, endDate: endDate, endWeekday: endWeekday, days: days),
       ],
     );
   }
 
   /// 房间-title
-  Widget roomTitleView() {
-    return const Text(
-      '高级双床房  共2间',
+  Widget roomTitleView({required String title}) {
+    return Text(
+      title,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style: TextStyle(
+      style: const TextStyle(
           fontSize: SCFonts.f16,
           fontWeight: FontWeight.w500,
           color: SCColors.color_1B1D33),
@@ -120,22 +145,22 @@ class SCHotelCell extends StatelessWidget {
   }
 
   /// 房间-入住、离店日期
-  Widget roomLiveDateView() {
+  Widget roomLiveDateView({required String startDate, required String startWeekday, required String endDate, required String endWeekday, required int days}) {
     return Row(
       children: [
         RichText(
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            text: const TextSpan(
-                text: '12月16日',
-                style: TextStyle(
+            text: TextSpan(
+                text: startDate,
+                style: const TextStyle(
                     fontSize: SCFonts.f16,
                     fontWeight: FontWeight.w500,
                     color: SCColors.color_1B1D33),
                 children: [
                   TextSpan(
-                    text: '(周六入住)',
-                    style: TextStyle(
+                    text: '($startWeekday入住)',
+                    style: const TextStyle(
                         fontSize: SCFonts.f12,
                         fontWeight: FontWeight.w500,
                         color: SCColors.color_5E5F66),
@@ -162,9 +187,9 @@ class SCHotelCell extends StatelessWidget {
                 height: 20.0,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: const Text(
-                  '1晚',
-                  style: TextStyle(
+                child: Text(
+                  '${model.duration}晚',
+                  style: const TextStyle(
                       fontSize: SCFonts.f12,
                       fontWeight: FontWeight.w400,
                       color: SCColors.color_4285F4),
@@ -185,16 +210,16 @@ class SCHotelCell extends StatelessWidget {
             child: RichText(
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                text: const TextSpan(
-                    text: '12月16日',
-                    style: TextStyle(
+                text: TextSpan(
+                    text: endDate,
+                    style: const TextStyle(
                         fontSize: SCFonts.f16,
                         fontWeight: FontWeight.w500,
                         color: SCColors.color_1B1D33),
                     children: [
                       TextSpan(
-                        text: '(周日离店)',
-                        style: TextStyle(
+                        text: '($endWeekday离店)',
+                        style: const TextStyle(
                             fontSize: SCFonts.f12,
                             fontWeight: FontWeight.w500,
                             color: SCColors.color_5E5F66),
@@ -206,6 +231,9 @@ class SCHotelCell extends StatelessWidget {
 
   /// 房间-地址
   Widget roomAddressView() {
+    String address = model.customerSource ?? '';
+    String userName = model.customerName ?? '';
+    String phone = model.customerMobileNum ?? '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
@@ -218,12 +246,12 @@ class SCHotelCell extends StatelessWidget {
           const SizedBox(
             width: 3.0,
           ),
-          const Expanded(
+          Expanded(
               child: Text(
-            '怀挺民宿',
+            address,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: SCFonts.f12,
                 fontWeight: FontWeight.w400,
                 color: SCColors.color_5E5F66),
@@ -242,18 +270,20 @@ class SCHotelCell extends StatelessWidget {
                   const SizedBox(
                     width: 8.0,
                   ),
-                  const Text(
-                    '李小敏',
+                  Text(
+                    userName,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: SCFonts.f12,
                         fontWeight: FontWeight.w400,
                         color: SCColors.color_5E5F66),
                   )
                 ],
               ),
-              onPressed: () {})
+              onPressed: () {
+                callAction?.call(phone);
+              })
         ],
       ),
     );
@@ -303,7 +333,9 @@ class SCHotelCell extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       color: SCColors.color_FFFFFF),
                 ),
-                onPressed: () {}),
+                onPressed: () {
+                doneAction?.call(model);
+                }),
           )
         ],
       ),

@@ -8,9 +8,10 @@ import 'package:smartcommunity/Network/sc_url.dart';
 import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_listview_controller.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/Model/Sc_hotel_order_model.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_hotel_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_default_config_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_model.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Location/sc_location_utils.dart';
 
@@ -349,8 +350,8 @@ class SCWorkBenchController extends GetxController {
           SCLoadingUtils.hide();
           if (value is Map) {
             List list = value['records'];
-            waitDataList = List<SCWorkOrderModel>.from(
-                list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
+            waitDataList = List<SCVerificationOrderModel>.from(
+                list.map((e) => SCVerificationOrderModel.fromJson(e)).toList());
           } else {
             waitDataList = [];
           }
@@ -385,8 +386,8 @@ class SCWorkBenchController extends GetxController {
           SCLoadingUtils.hide();
           if (value is Map) {
             List list = value['records'];
-            processingDataList = List<SCWorkOrderModel>.from(
-                list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
+            processingDataList = List<SCVerificationOrderModel>.from(
+                list.map((e) => SCVerificationOrderModel.fromJson(e)).toList());
           } else {
             processingDataList = [];
           }

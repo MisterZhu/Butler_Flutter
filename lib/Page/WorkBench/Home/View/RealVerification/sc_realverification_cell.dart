@@ -1,10 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_model.dart';
 
 /// 实地核验cell
 
 class SCRealVerificationCell extends StatelessWidget {
+
+  const SCRealVerificationCell({Key? key, required this.model, this.callAction, this.doneAction}) : super(key: key);
+
+  final SCVerificationOrderModel model;
+
+  /// 打电话
+  final Function(String phone)? callAction;
+
+  /// 完成
+  final Function(SCVerificationOrderModel model)? doneAction;
+
   @override
   Widget build(BuildContext context) {
     return view();
@@ -43,6 +55,7 @@ class SCRealVerificationCell extends StatelessWidget {
 
   /// title
   Widget titleView() {
+    String title = model.hotelRegisterBaseInfoV?['hotelLabelNames'] ?? '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
@@ -53,12 +66,12 @@ class SCRealVerificationCell extends StatelessWidget {
             height: 18.0,
           ),
           const SizedBox(width: 6.0,),
-          const Expanded(
+          Expanded(
               child: Text(
-                "酒店名宿",
+                title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: SCFonts.f14,
                     fontWeight: FontWeight.w400,
                     color: SCColors.color_1B1D33),
@@ -78,9 +91,10 @@ class SCRealVerificationCell extends StatelessWidget {
 
   /// 房间-title
   Widget roomTitleView() {
-    return const Text(
-      '高级双床房  共2间 高级双床房  共2间 高级双床房  共2间 高级双床房  共2间 高级双床房  共2间 高级双床房  共2间',
-      style: TextStyle(
+    String title = model.hotelRegisterBaseInfoV?['hotelName'] ?? '';
+    return Text(
+      title,
+      style: const TextStyle(
           fontSize: SCFonts.f16,
           fontWeight: FontWeight.w500,
           color: SCColors.color_1B1D33),
@@ -89,6 +103,9 @@ class SCRealVerificationCell extends StatelessWidget {
 
   /// 房间-地址
   Widget roomAddressView() {
+    String address = model.hotelRegisterBaseInfoV?['address'] ?? '';
+    String contacts = model.hotelRegisterBaseInfoV?['contacts'] ?? '';
+    String phone = model.hotelRegisterBaseInfoV?['phoneNum'] ?? '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
@@ -101,12 +118,12 @@ class SCRealVerificationCell extends StatelessWidget {
           const SizedBox(
             width: 3.0,
           ),
-          const Expanded(
+          Expanded(
               child: Text(
-                '怀挺民宿',
+                address,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: SCFonts.f12,
                     fontWeight: FontWeight.w400,
                     color: SCColors.color_5E5F66),
@@ -125,18 +142,20 @@ class SCRealVerificationCell extends StatelessWidget {
                   const SizedBox(
                     width: 8.0,
                   ),
-                  const Text(
-                    '李小敏',
+                  Text(
+                    contacts,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: SCFonts.f12,
                         fontWeight: FontWeight.w400,
                         color: SCColors.color_5E5F66),
                   )
                 ],
               ),
-              onPressed: () {})
+              onPressed: () {
+                callAction?.call(phone);
+              })
         ],
       ),
     );
@@ -155,18 +174,19 @@ class SCRealVerificationCell extends StatelessWidget {
 
   /// 房间-立即处理
   Widget roomDealView() {
+    String applyTime = model.applyTime ?? '';
     return Container(
       height: 64.0,
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       alignment: Alignment.center,
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
               child: Text(
-                '2022-11-14 12:00:00',
+                applyTime,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: SCFonts.f14,
                     fontWeight: FontWeight.w400,
                     color: SCColors.color_5E5F66),
@@ -186,7 +206,9 @@ class SCRealVerificationCell extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       color: SCColors.color_FFFFFF),
                 ),
-                onPressed: () {}),
+                onPressed: () {
+                  doneAction?.call(model);
+                }),
           )
         ],
       ),

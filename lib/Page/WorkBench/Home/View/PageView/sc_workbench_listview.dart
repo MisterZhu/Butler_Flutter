@@ -57,20 +57,25 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
   @override
   Widget build(BuildContext context) {
     if (widget.dataList.isNotEmpty) {
-      return SmartRefresher(
-        controller: refreshController,
-        enablePullDown: false,
-        enablePullUp: true,
-        onLoading: onLoading,
-        footer: const ClassicFooter(
-          loadingText: '加载中...',
-          idleText: '加载更多',
-          noDataText: '到底了',
-          failedText: '加载失败',
-          canLoadingText: '加载更多',
-        ),
-        child: listView(),
-      );
+      var value = widget.dataList.first;
+      if (value is SCWorkOrderModel) {
+        return SmartRefresher(
+          controller: refreshController,
+          enablePullDown: false,
+          enablePullUp: true,
+          onLoading: onLoading,
+          footer: const ClassicFooter(
+            loadingText: '加载中...',
+            idleText: '加载更多',
+            noDataText: '到底了',
+            failedText: '加载失败',
+            canLoadingText: '加载更多',
+          ),
+          child: listView(),
+        );
+      } else {
+        return SCWorkBenchEmptyView();
+      }
     } else {
       return SCWorkBenchEmptyView();
     }
