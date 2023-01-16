@@ -24,6 +24,9 @@ class SCUrl {
   /// 用户默认配置url
   static const String kUserDefaultConfigUrl = '/api/user/defaultConfig';
 
+  /// 实地核验工单点击url
+  static const String kDealActualVerifyUrl = '/api/stylestay/house/actualVerify/dealActualVerify';
+
   /************************* 工单 *************************/
 
   /// 工单数量url

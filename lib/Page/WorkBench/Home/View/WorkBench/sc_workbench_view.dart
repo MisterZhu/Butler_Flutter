@@ -179,6 +179,7 @@ class SCWorkBenchView extends StatelessWidget {
             builder: (value) {
               if (state.currentPlateIndex == 2) {
                 return SCHotelListView(
+                  state: state,
                   dataList: waitController.dataList,
                   callAction: (phone) {
                     callAction(phone);
@@ -190,6 +191,7 @@ class SCWorkBenchView extends StatelessWidget {
               }
               else if (state.currentPlateIndex == 1) {
                 return SCRealVerificationListView(
+                  state: state,
                   dataList: waitController.dataList,
                   callAction: (phone) {
                     callAction(phone);
@@ -200,6 +202,7 @@ class SCWorkBenchView extends StatelessWidget {
                 );
               } else {
                 return SCWorkBenchListView(
+                  state: state,
                   dataList: waitController.dataList,
                   detailAction: (SCWorkOrderModel model) {
                     detail(model);
@@ -216,6 +219,7 @@ class SCWorkBenchView extends StatelessWidget {
             builder: (value) {
               if (state.currentPlateIndex == 2) {
                 return SCHotelListView(
+                  state: state,
                   dataList: doingController.dataList,
                   callAction: (phone) {
                     callAction(phone);
@@ -227,6 +231,7 @@ class SCWorkBenchView extends StatelessWidget {
               }
               else if (state.currentPlateIndex == 1) {
                 return SCRealVerificationListView(
+                  state: state,
                   dataList: doingController.dataList,
                   callAction: (phone) {
                     callAction(phone);
@@ -237,6 +242,7 @@ class SCWorkBenchView extends StatelessWidget {
                 );
               } else {
                 return SCWorkBenchListView(
+                  state: state,
                   dataList: doingController.dataList,
                   detailAction: (SCWorkOrderModel model) {
                     detail(model);

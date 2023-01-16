@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_hotel_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Hotel/sc_hotel_cell.dart';
@@ -8,7 +9,7 @@ import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_em
 /// 酒店订单listview
 
 class SCHotelListView extends StatelessWidget {
-  SCHotelListView({Key? key, required this.dataList, this.callAction, this.doneAction}) : super(key: key);
+  SCHotelListView({Key? key, required this.dataList, this.callAction, this.doneAction,required this.state}) : super(key: key);
 
   final List dataList;
 
@@ -17,6 +18,9 @@ class SCHotelListView extends StatelessWidget {
 
   /// 完成
   final Function(SCHotelOrderModel model)? doneAction;
+
+  /// 工作台controller
+  final SCWorkBenchController state;
 
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -79,7 +83,7 @@ class SCHotelListView extends StatelessWidget {
 
   /// 加载更多
   Future onLoading() async {
-    Future.delayed(const Duration(milliseconds: 1500), () {
+    state.loadMore().then((value) {
       refreshController.loadComplete();
     });
   }

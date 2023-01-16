@@ -31,7 +31,7 @@ class SCH5 {
   /// 建信长租房-首页
   static const String jxRentingHomeUrl = "https://hxzfczt.wisharetec.com/h5new/#/publishRentalHouse/tenant/index";
   /// 实地核验详情
-  static const String verificationDetailUrl = "";
+  static const String verificationDetailUrl = "/h5Manage/#/inNucleartest/index";
   /// 酒店订单处理详情
-  static const String hotelOrderDetailUrl = "";
+  static const String hotelOrderDetailUrl = "/h5Manage/#/order/orderDetail";
 }

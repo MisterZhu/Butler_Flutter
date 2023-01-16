@@ -193,7 +193,7 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
         cameraChannel(context),
         photosChannel(context),
         phoneChannel(context),
-        albumAlertChannel(context),
+        // albumAlertChannel(context),
         reloadWorkBenchChannel(context),
       },
 

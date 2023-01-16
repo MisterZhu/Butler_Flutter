@@ -1,5 +1,6 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:smartcommunity/Utils/Date/sc_date_locale.dart';
 
 /// 日期工具
@@ -64,5 +65,12 @@ class SCDateUtils {
         break;
     }
     return weekdayText;
+  }
+
+  /// 日期格式转换
+  static String formatDateStyle({required String format,required String date}) {
+    var currentDate = DateTime.parse(date);
+    DateFormat dateFormat = DateFormat(format, 'zh');
+    return dateFormat.format(currentDate);
   }
 }

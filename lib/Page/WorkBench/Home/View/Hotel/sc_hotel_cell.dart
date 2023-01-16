@@ -89,13 +89,30 @@ class SCHotelCell extends StatelessWidget {
       List<Widget> widgetList = [];
       for (int i=0; i<list.length; i++) {
         String title = list[i];
-        String startDate = SCDateUtils.transformDate(dateTime: DateTime.parse(model.gmtStartDate ?? ''), formats: ['mm', '月', 'dd', '日']);
-        String endDate = SCDateUtils.transformDate(dateTime: DateTime.parse(model.gmtEndDate ?? ''), formats: ['mm', '月', 'dd', '日']);
-        int days = SCDateUtils.difference(model.gmtStartDate ?? '', model.gmtEndDate ?? '');
-        DateTime startTime = DateTime.parse(model.gmtStartDate ?? '');
-        DateTime endTime = DateTime.parse(model.gmtEndDate ?? '');
-        String startWeekDay = SCDateUtils.getShortWeekday(weekday: startTime.weekday);
-        String endWeekDay = SCDateUtils.getShortWeekday(weekday: endTime.weekday);
+        String gmtStartDate = model.gmtStartDate ?? '';
+        String gmtEndDate = model.gmtEndDate ?? '';
+        String startDate = '';
+        String endDate = '';
+        int days = model.duration ?? 0;
+        String startWeekDay = '';
+        String endWeekDay = '';
+
+        if (gmtStartDate == '') {
+          startDate = '';
+        } else {
+          DateTime startTime = DateTime.parse(model.gmtStartDate ?? '');
+          startWeekDay = SCDateUtils.getShortWeekday(weekday: startTime.weekday);
+          startDate = SCDateUtils.transformDate(dateTime: DateTime.parse(model.gmtStartDate ?? ''), formats: ['mm', '月', 'dd', '日']);
+        }
+
+        if (gmtEndDate == '') {
+          endDate = '';
+        } else {
+          DateTime endTime = DateTime.parse(model.gmtEndDate ?? '');
+          endWeekDay = SCDateUtils.getShortWeekday(weekday: endTime.weekday);
+          endDate = SCDateUtils.transformDate(dateTime: DateTime.parse(model.gmtEndDate ?? ''), formats: ['mm', '月', 'dd', '日']);
+        }
+
         if (i == list.length - 1) {
           widgetList.add(roomInfoSubView(title: title, startDate: startDate, startWeekday: startWeekDay, endDate: endDate, endWeekday: endWeekDay, days: days));
         } else {

@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_empty_view.dart';
@@ -10,7 +11,7 @@ import 'package:smartcommunity/Page/WorkBench/Home/View/RealVerification/sc_real
 /// 实地核验listview
 
 class SCRealVerificationListView extends StatelessWidget {
-  SCRealVerificationListView({Key? key, required this.dataList, this.callAction, this.doneAction}) : super(key: key);
+  SCRealVerificationListView({Key? key, required this.dataList, required this.state, this.callAction, this.doneAction}) : super(key: key);
 
   final List dataList;
 
@@ -19,6 +20,9 @@ class SCRealVerificationListView extends StatelessWidget {
 
   /// 完成
   final Function(SCVerificationOrderModel model)? doneAction;
+
+  /// 工作台controller
+  final SCWorkBenchController state;
 
   RefreshController refreshController =
   RefreshController(initialRefresh: false);
@@ -87,7 +91,7 @@ class SCRealVerificationListView extends StatelessWidget {
 
   /// 加载更多
   Future onLoading() async {
-    Future.delayed(const Duration(milliseconds: 1500), () {
+    state.loadMore().then((value) {
       refreshController.loadComplete();
     });
   }

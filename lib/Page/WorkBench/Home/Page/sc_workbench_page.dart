@@ -172,6 +172,12 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
                 headerAction: () {
                   userInfoAction();
                 },
+                verificationDetailAction: (SCVerificationOrderModel model) {
+                  verificationDetailAction(model);
+                },
+                hotelOrderDetailAction: (SCHotelOrderModel model) {
+                  hotelOrderDetailAction(model);
+                },
               );
             });
       }),
@@ -219,11 +225,38 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
 
   /// 实地核验详情
   verificationDetailAction(SCVerificationOrderModel model) {
+    int status = model.dealStatus ?? -1;
+    if (status == 0) {
+      workBenchController.verificationOrderDetailTap('${model.id})').then((value) {
+        SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+          "title":  '',
+          "url": SCConfig.getH5Url(SCH5.verificationDetailUrl),
+          "needJointParams": true
+        })?.then((value) {
+          workBenchController.loadData();
+        });
+      });
+    } else if (status == 1) {
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+        "title":  '',
+        "url": SCConfig.getH5Url(SCH5.verificationDetailUrl),
+        "needJointParams": true
+      })?.then((value) {
+        workBenchController.loadData();
+      });
+    } else {
 
+    }
   }
   /// 酒店订单处理详情
   hotelOrderDetailAction(SCHotelOrderModel model) {
-
+    SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+      "title":  model.hotelName,
+      "url": '${SCConfig.getH5Url(SCH5.hotelOrderDetailUrl)}?orderId=${model.id ?? ''}',
+      "needJointParams": true
+    })?.then((value) {
+      workBenchController.loadData();
+    });
   }
 
   /// 空间弹窗

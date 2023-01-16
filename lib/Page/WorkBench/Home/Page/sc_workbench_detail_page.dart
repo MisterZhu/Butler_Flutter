@@ -17,7 +17,6 @@ class SCWorkBenchDetailPageState extends State<SCWorkBenchDetailPage> {
         body: Container(
           width: double.infinity,
           height: double.infinity,
-          child: SCWorkBenchListView(dataList: [],),
     ));
   }
 }
