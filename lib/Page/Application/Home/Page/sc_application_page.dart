@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
@@ -27,7 +28,6 @@ class SCApplicationPage extends StatefulWidget {
 
 class SCApplicationPageState extends State<SCApplicationPage>
     with AutomaticKeepAliveClientMixin {
-
   /// SCApplicationController
   late SCApplicationController state;
 
@@ -39,7 +39,8 @@ class SCApplicationPageState extends State<SCApplicationPage>
 
   late StreamSubscription subscription;
 
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   // TODO: implement wantKeepAlive
@@ -84,14 +85,14 @@ class SCApplicationPageState extends State<SCApplicationPage>
           init: state,
           builder: (state) {
             return SCApplicationListView(
-                appList: state.moduleList,
-                state: state,
-                tag: tag,
-                refreshController: refreshController,
-                itemTapAction: (title, url) {
-                  /// 应用icon点击跳转
-                  itemDetail(title, url);
-                },
+              appList: state.moduleList,
+              state: state,
+              tag: tag,
+              refreshController: refreshController,
+              itemTapAction: (title, url) {
+                /// 应用icon点击跳转
+                itemDetail(title, url);
+              },
               refreshAction: () {
                 state.loadAppListData();
               },
@@ -106,9 +107,18 @@ class SCApplicationPageState extends State<SCApplicationPage>
   }
 
   /// 应用详情
-  itemDetail(String title, String url) {
+  itemDetail(String title, String url) async {
     if (Platform.isAndroid) {
       String realUrl = SCUtils.getWebViewUrl(url: url, needJointParams: true);
+
+      /// 调用Android WebView
+      var params = {"title": title, "url": realUrl};
+      var channel = SCScaffoldManager.flutterToNative;
+      var result =
+          await channel.invokeMethod(SCScaffoldManager.android_webview, params);
+
+      /// todo 刷新控制台数据
+      print("-------$result-------");
     } else {
       SCRouterHelper.pathPage(SCRouterPath.webViewPath,
           {"title": title, "url": url, "needJointParams": true});
