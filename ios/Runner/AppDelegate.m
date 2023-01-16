@@ -6,9 +6,9 @@
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [GeneratedPluginRegistrant registerWithRegistry:self];
+//    [GeneratedPluginRegistrant registerWithRegistry:self];
     
-    [SCFlutterNativePlugin registerWithRegistrar:[self registrarForPlugin:@"FlutterNativePlugin"]];
+    [[SCFlutterNativePlugin shared] registerWithFlutterViewController:(FlutterViewController *)self.window.rootViewController];
     
 
     // Override point for customization after application launch.

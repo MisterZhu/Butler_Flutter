@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_h5.dart';
@@ -16,11 +15,8 @@ import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dar
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_alert.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/WorkBench/sc_workbench_view.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
-import 'package:smartcommunity/Utils/Permission/sc_permission_utils.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
-import 'package:smartcommunity/Utils/Upload/sc_upload_utils.dart';
-import 'package:smartcommunity/Utils/Location/sc_location_utils.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../Model/sc_home_task_model.dart';
 import '../View/Alert/sc_task_module_alert.dart';
@@ -98,6 +94,12 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
         workBenchController.updateCurrentWorkOrderIndex(tabController.index);
       }
     });
+    // // 监听接收native_flutter消息
+    // SCScaffoldManager.instance.nativeToFlutter.receiveBroadcastStream()
+    //     .listen(getNativeData, onError: getNativeDataError);
+    // Future.delayed(const Duration(seconds: 5), (){
+    //   SCScaffoldManager.instance.flutterToNativeAction(SCFlutterKey.kShowAlert, {"data" : "123"});
+    // });
   }
 
   @override
@@ -255,4 +257,17 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
       }
     });
   }
+
+  /*获得到原生传递过来的消息*/
+  void getNativeData(dynamic data) {
+    // print('原生传递过来的消息:${data.toString()}');
+    //
+    // Map<String, dynamic> baseParams = Map<String, dynamic>.from(data);
+    // String? key = baseParams['key'];
+    // Map<String, dynamic> params =
+    // new Map<String, dynamic>.from(baseParams['data']);
+  }
+
+  /*获取到错误*/
+  void getNativeDataError(Object err) {}
 }

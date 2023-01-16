@@ -402,7 +402,7 @@ class SCWorkBenchController extends GetxController {
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kActualVerifyUrl,
+        url: SCUrl.kOrderFormUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
@@ -432,7 +432,7 @@ class SCWorkBenchController extends GetxController {
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kActualVerifyUrl,
+        url: SCUrl.kOrderFormUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();

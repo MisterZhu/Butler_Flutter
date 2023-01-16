@@ -385,7 +385,7 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
                 completionHandler: (imageList) async {
                   List list = [];
                   for (String path in imageList) {
-                    File file = new File(path);
+                    File file = File(path);
                     List<int> imageBytes = await file.readAsBytes();
                     list.add(base64Encode(imageBytes));
                   }

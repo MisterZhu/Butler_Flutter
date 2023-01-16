@@ -2,9 +2,12 @@
 
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:sc_uikit/sc_uikit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartcommunity/Constants/sc_flutter_key.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_default_config_model.dart';
@@ -52,12 +55,20 @@ class SCScaffoldManager {
   /// 纬度
   static late double _longitude;
 
+  /// flutter调用原生的channel
+  static MethodChannel flutterToNative = const MethodChannel(SCFlutterKey.kFlutterToNative);
+
+  /// 原生调用flutter的channel
+  static EventChannel _nativeToFlutter = const EventChannel(SCFlutterKey.kNativeToFlutter);
+
   SCScaffoldManager._internal() {
     _scaffoldModel = SCScaffoldModel();
     _user = SCUserModel();
   }
 
   SCScaffoldModel get scaffoldModel => _scaffoldModel;
+
+  EventChannel get nativeToFlutter => _nativeToFlutter;
 
   SCUserModel get user => _user;
 
@@ -81,6 +92,7 @@ class SCScaffoldManager {
   Future initBase() {
     _longitude = 120.2155118;
     _latitude = 30.25308298;
+    listenNativeToFlutterChannel();
     Get.put(SCCustomScaffoldController());
     return SCScaffoldManager.instance.initScaffold();
   }
@@ -314,5 +326,36 @@ class SCScaffoldManager {
       getXTagList[pageIndex] = json;
     }
     return success;
+  }
+
+  /// 监听原生调用flutter的消息
+  listenNativeToFlutterChannel() {
+    nativeToFlutter.receiveBroadcastStream().listen(nativeToFlutterAction, onError: nativeToFlutterError);
+  }
+
+  /*原生调用flutter*/
+  void nativeToFlutterAction(dynamic data) {
+    print('原生传递过来的消息:${data.toString()}');
+    SCToast.showTip('原生调用了flutter');
+    // Map<String, dynamic> baseParams = new Map<String, dynamic>.from(data);
+    // String? key = baseParams['key'];
+    // Map<String, dynamic> params =
+    // new Map<String, dynamic>.from(baseParams['data']);
+    // if (key == flutter_headerParams_key) {
+    //   MJAppInit.initHttp(params);
+    //   setState(() {
+    //     nativeHeaderState = true;
+    //   });
+    // }
+  }
+
+  /*原生调用flutter错误*/
+  void nativeToFlutterError(Object err) {
+    print('原生调用失败');
+  }
+
+  /// flutter调用原生
+  void flutterToNativeAction(String methodName ,dynamic params) {
+    flutterToNative.invokeMethod(methodName, params);
   }
 }
