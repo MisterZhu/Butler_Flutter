@@ -140,4 +140,23 @@ class SCAsset {
   static const String iconSwitchIdentityProjectIcon = "images/mine/icon_switch_identity_project_icon.png";
   /// 切换身份-箭头icon
   static const String iconSwitchIdentityArrow = "images/mine/icon_switch_identity_arrow.png";
+
+  /// ****************  入伙验房 ****************/
+  /// 已开通
+  static const String iconOpened = "images/houseInspect/icon_opened.png";
+  /// 未开通
+  static const String iconNotOpened = "images/houseInspect/icon_not_opened.png";
+  /// 问题-删除icon
+  static const String iconProblemDelete = "images/houseInspect/icon_problem_delete.png";
+  /// 评分-星星-选中
+  static const String icoScoreStarSelected = "images/houseInspect/icon_score_star_selected.png";
+  /// 评分-星星-未选中
+  static const String icoScoreStarNormal = "images/houseInspect/icon_score_star_normal.png";
+  /// 验房单-房屋icon
+  static const String iconInspectFormHouse = "images/houseInspect/icon_inspect_form_house.png";
+  /// 验房单-屋主icon
+  static const String iconInspectFormOwner = "images/houseInspect/icon_inspect_form_owner.png";
+  /// 验房单-手机号icon
+  static const String iconInspectFormPhone = "images/houseInspect/icon_inspect_form_phone.png";
+
 }

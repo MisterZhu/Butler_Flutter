@@ -135,6 +135,7 @@ flutter:
     - images/application/
     - images/mine/
     - images/home/
+    - images/houseInspect/
     - json/
 
   # To add assets to your application, add an assets section, like this:

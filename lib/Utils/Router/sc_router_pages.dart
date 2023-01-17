@@ -11,6 +11,10 @@ import 'package:smartcommunity/Page/Tab/Page/sc_tab_page.dart';
 import 'package:smartcommunity/Page/Webview/Page/sc_webview_page.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_detail_page.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_page.dart';
+import '../../Page/HouseInspect/Page/sc_formal_house_inspect_detail_page.dart';
+import '../../Page/HouseInspect/Page/sc_formal_house_inspect_page.dart';
+import '../../Page/HouseInspect/Page/sc_house_inspect_form_page.dart';
+import '../../Page/HouseInspect/Page/sc_house_inspect_problem_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
 import 'sc_router_path.dart';
 
@@ -44,7 +48,14 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.switchIdentityPath, page: () => SCSwitchTenantPage()),
     /*个人资料*/
     GetPage(name: SCRouterPath.personalInfoPath, page: () => SCPersonalInfoPage()),
-
+    /*正式验房*/
+    GetPage(name: SCRouterPath.formalHouseInspectPage, page: () => SCFormalHouseInspectPage()),
+    /*正式验房-详情*/
+    GetPage(name: SCRouterPath.formalHouseInspectDetailPage, page: () => SCFormalHouseInspectDetailPage()),
+    /*验房单*/
+    GetPage(name: SCRouterPath.houseInspectFormPage, page: () => SCHouseInspectFormPage()),
+    /*验房-问题*/
+    GetPage(name: SCRouterPath.houseInspectProblemPage, page: () => SCHouseInspectProblemPage()),
   ];
 
   /*根据code使用路由*/

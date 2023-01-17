@@ -5,6 +5,8 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_mine_header_item.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_setting_cell.dart';
+import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
+import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../../Network/sc_config.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 
@@ -104,11 +106,11 @@ class SCMineListView extends StatelessWidget {
       },);
     } else if (index == 3) {
       return SCSettingCell(
-        title: '我的学习',
+        title: '正式验房',
         showLeftIcon: true,
         leftIcon: SCAsset.iconMineService,
         onTap: () {
-
+          //SCRouterHelper.pathPage(SCRouterPath.formalHouseInspectPage, null);
       },);
     } else {
       return const SizedBox(height: 100.0,);

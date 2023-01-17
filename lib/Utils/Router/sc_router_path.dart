@@ -40,4 +40,18 @@ class SCRouterPath {
   /// 个人资料
   static String personalInfoPath = "/lib/Page/Mine/Home/Page/sc_personal_info_page";
 
+  /// *************************** 入伙验房 ******************************/
+
+  /// 正式验房
+  static String formalHouseInspectPage = "/lib/Page/HouseInspect/Page/sc_formal_house_inspect_page";
+
+  /// 正式验房-详情
+  static String formalHouseInspectDetailPage = "/lib/Page/HouseInspect/Page/sc_formal_house_inspect_detail_page";
+
+  /// 验房单
+  static String houseInspectFormPage = "/lib/Page/HouseInspect/Page/sc_house_inspect_form_page";
+
+  /// 问题
+  static String houseInspectProblemPage = "/lib/Page/HouseInspect/Page/sc_house_inspect_problem_page";
+
 }
