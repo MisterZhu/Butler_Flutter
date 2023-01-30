@@ -3,6 +3,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_hotel_order_model.dart';
 import 'package:smartcommunity/Utils/Date/sc_date_utils.dart';
+import 'package:smartcommunity/Utils/sc_utils.dart';
 
 /// 酒店cell
 
@@ -30,6 +31,8 @@ class SCHotelCell extends StatelessWidget {
           color: SCColors.color_FFFFFF,
           borderRadius: BorderRadius.circular(4.0)),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(
             height: 14.0,
@@ -126,6 +129,7 @@ class SCHotelCell extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: widgetList,
         ),
@@ -137,6 +141,7 @@ class SCHotelCell extends StatelessWidget {
   Widget roomInfoSubView({required String title, required String startDate, required String startWeekday, required String endDate,required String endWeekday, required int days}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         roomTitleView(title: title),
@@ -319,18 +324,20 @@ class SCHotelCell extends StatelessWidget {
 
   /// 房间-立即处理
   Widget roomDealView() {
+    String date = model.gmtCreateTime ?? '';
+    String btnText = SCUtils.getWorkOrderButtonText(model.stateCode ?? 0);
     return Container(
       height: 64.0,
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       alignment: Alignment.center,
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
               child: Text(
-            '2022-11-14 12:00:00',
+                date,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: SCFonts.f14,
                 fontWeight: FontWeight.w400,
                 color: SCColors.color_5E5F66),
@@ -343,9 +350,9 @@ class SCHotelCell extends StatelessWidget {
               padding: EdgeInsets.zero,
                 minSize: 40.0,
                 color: SCColors.color_4285F4,
-                child: const Text(
-                  '立即处理',
-                  style: TextStyle(
+                child: Text(
+                  btnText,
+                  style: const TextStyle(
                       fontSize: SCFonts.f16,
                       fontWeight: FontWeight.w400,
                       color: SCColors.color_FFFFFF),

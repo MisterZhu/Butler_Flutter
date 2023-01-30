@@ -223,7 +223,7 @@ class SCHttpManager {
 
   /// 校验登录
   checkLogin({required String url, dynamic headers, dynamic data}) {
-    if (url == SCUrl.kPhoneCodeLoginUrl) {
+    if (url == SCUrl.kPhoneCodeLoginUrl || url == SCUrl.kSwitchTenantUrl) {
       String token = '';
       var list = headers['authorization'];
       if (list != null) {

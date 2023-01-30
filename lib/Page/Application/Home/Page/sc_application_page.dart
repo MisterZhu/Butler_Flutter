@@ -119,6 +119,10 @@ class SCApplicationPageState extends State<SCApplicationPage>
 
       /// todo 刷新控制台数据
       print("-------$result-------");
+    } else if (Platform.isIOS) {
+      String realUrl = SCUtils.getWebViewUrl(url: url, needJointParams: true);
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath,
+          {"title": title, "url": realUrl, "needJointParams": false});
     } else {
       SCRouterHelper.pathPage(SCRouterPath.webViewPath,
           {"title": title, "url": url, "needJointParams": true});

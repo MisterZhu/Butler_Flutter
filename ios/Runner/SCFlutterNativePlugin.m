@@ -9,9 +9,7 @@
 #import "GeneratedPluginRegistrant.h"
 #import "SCCurrentViewController.h"
 #import "SCWebViewController.h"
-
-#define kNativeToFlutter @"native_flutter"
-#define kFlutterNative @"flutter_native"
+#import "SCFlutterKey.h"
 
 static SCFlutterNativePlugin *plugin;
 
@@ -65,6 +63,9 @@ static SCFlutterNativePlugin *plugin;
     [channel setMethodCallHandler:^(FlutterMethodCall * _Nonnull call, FlutterResult  _Nonnull result) {
         if ([call.method isEqualToString:@"kShowAlert"]) {// 弹窗
             [self showAlert:call.arguments];
+        } else if ([call.method isEqualToString:kWebView]) {
+            NSLog(@"调用webView参数:%@", call.arguments);
+            [self webView:call.arguments];
         }
     }];
 }
@@ -88,6 +89,18 @@ static SCFlutterNativePlugin *plugin;
     return nil;
 }
 
+/// webView
+- (void)webView:(id)params {
+    SCWebViewController *vc = [[SCWebViewController alloc] init];
+    vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    vc.titleString = params[@"title"];
+    vc.urlString = params[@"url"];
+    [[SCCurrentViewController presentViewController] presentViewController:vc animated:YES completion:^{
+            
+    }];
+}
+
+/// Alert弹窗
 - (void)showAlert:(id)params {
 }
 

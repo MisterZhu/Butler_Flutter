@@ -62,6 +62,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   SCChangeSpaceController changeSpaceController =
       Get.put(SCChangeSpaceController());
 
+  /// 通知
   late StreamSubscription subscription;
 
   late String pageName;
@@ -206,17 +207,25 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   }
 
   /// 详情
-  detailAction(SCWorkOrderModel model) {
+  detailAction(SCWorkOrderModel model) async{
     String title = Uri.encodeComponent(SCUtils.getWorkOrderButtonText(model.status ?? 0));
     String url =
         "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?status=${model.status}&title=$title&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}";
     if (Platform.isAndroid) {
       String realUrl = SCUtils.getWebViewUrl(url: url, needJointParams: true);
+
+      /// 调用Android WebView
+      var params = {"title": title, "url": realUrl};
+      var channel = SCScaffoldManager.flutterToNative;
+      var result =
+          await channel.invokeMethod(SCScaffoldManager.android_webview, params);
+      workBenchController.loadData();
     } else {
+      String realUrl = SCUtils.getWebViewUrl(url: url, needJointParams: true);
       SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
         "title": model.categoryName ?? '',
-        "url": url,
-        "needJointParams": true
+        "url": realUrl,
+        "needJointParams": false
       })?.then((value) {
         workBenchController.loadData();
       });
@@ -228,19 +237,21 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     int status = model.dealStatus ?? -1;
     if (status == 0) {
       workBenchController.verificationOrderDetailTap('${model.id})').then((value) {
+        String realUrl = SCUtils.getWebViewUrl(url: SCConfig.getH5Url(SCH5.verificationDetailUrl), needJointParams: true);
         SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
           "title":  '',
-          "url": SCConfig.getH5Url(SCH5.verificationDetailUrl),
-          "needJointParams": true
+          "url": realUrl,
+          "needJointParams": false
         })?.then((value) {
           workBenchController.loadData();
         });
       });
     } else if (status == 1) {
+      String realUrl = SCUtils.getWebViewUrl(url: SCConfig.getH5Url(SCH5.verificationDetailUrl), needJointParams: true);
       SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
         "title":  '',
-        "url": SCConfig.getH5Url(SCH5.verificationDetailUrl),
-        "needJointParams": true
+        "url": realUrl,
+        "needJointParams": false
       })?.then((value) {
         workBenchController.loadData();
       });
@@ -250,9 +261,10 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   }
   /// 酒店订单处理详情
   hotelOrderDetailAction(SCHotelOrderModel model) {
+    String realUrl = SCUtils.getWebViewUrl(url: '${SCConfig.getH5Url(SCH5.hotelOrderDetailUrl)}?orderId=${model.id ?? ''}', needJointParams: true);
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
       "title":  model.hotelName,
-      "url": '${SCConfig.getH5Url(SCH5.hotelOrderDetailUrl)}?orderId=${model.id ?? ''}',
+      "url": realUrl,
       "needJointParams": true
     })?.then((value) {
       workBenchController.loadData();
@@ -301,9 +313,11 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
 
   /// 通知
   addNotification() {
+    print("11111111");
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
       if (key == SCKey.kSwitchEnterprise) {
+        print("2222222");
         workBenchController.loadData();
       }
     });

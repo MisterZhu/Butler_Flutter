@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_model.dart';
+import 'package:smartcommunity/Utils/sc_utils.dart';
 
 /// 实地核验cell
 
@@ -175,6 +176,7 @@ class SCRealVerificationCell extends StatelessWidget {
   /// 房间-立即处理
   Widget roomDealView() {
     String applyTime = model.applyTime ?? '';
+    String btnText = SCUtils.getWorkOrderButtonText(model.dealStatus ?? 0);
     return Container(
       height: 64.0,
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -199,9 +201,9 @@ class SCRealVerificationCell extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 minSize: 40.0,
                 color: SCColors.color_4285F4,
-                child: const Text(
-                  '立即接单',
-                  style: TextStyle(
+                child: Text(
+                  btnText,
+                  style: const TextStyle(
                       fontSize: SCFonts.f16,
                       fontWeight: FontWeight.w400,
                       color: SCColors.color_FFFFFF),

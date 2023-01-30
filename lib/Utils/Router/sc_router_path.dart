@@ -11,8 +11,10 @@ class SCRouterPath {
   static String basePrivacyPath = "/lib/Page/Login/Privacy/sc_privacy_page";
   /// tabPage
   static String tabPath = "/lib/Page/Tab/Page/sc_tab_page";
-  /// webView
+  /// flutter-webView
   static String webViewPath = "/lib/Page/WebView/Page/sc_webview_age";
+  /// native-webView
+  static String nativeWebViewPath = "/lib/Page/WebView/Page/sc_native_webview_age";
 
   /***************************** 工作台 ******************************/
   /// 工作台

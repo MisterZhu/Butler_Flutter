@@ -33,6 +33,11 @@ flutter_ios_podfile_setup
 target 'Runner' do
   use_frameworks!
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  pod 'Masonry'
+  # webView 相关
+  pod 'LMWebViewJavascriptBridge', :git => 'http://10.100.10.22/ios_module/LMWebViewJavascriptBridge.git'
+  # 简化KVO使用
+  pod 'KVOController', '~> 1.2.0'
 end
 
 post_install do |installer|

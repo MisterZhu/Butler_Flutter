@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_pages.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
+
+import '../../Constants/sc_flutter_key.dart';
 
 /// 路由-工具管理
 class SCRouterHelper {
@@ -32,7 +36,7 @@ class SCRouterHelper {
   * 默认页面跳转都需要做登录验证
   * 如果页面需要去掉登录验证，params需要传参removeLoginCheck=true
   */
-  static Future? pathPage(String path, dynamic params) {
+  static Future? pathPage(String path, dynamic params) async {
     params ??= '';
     List<String> noLoginPathList = [
       SCRouterPath.loginPath,
@@ -54,9 +58,27 @@ class SCRouterHelper {
         break;
       }
     }
+
     if (isNeedLogin == true && SCScaffoldManager.instance.isLogin == false) {
       SCRouterHelper.pathOffAllPage(SCRouterPath.loginPath, null);
       return null;
+    }
+
+    /// webView
+    if (path == SCRouterPath.webViewPath) {
+      if (Platform.isAndroid) {
+        /// 调用Android WebView
+        var channel = SCScaffoldManager.flutterToNative;
+        var result =
+            await channel.invokeMethod(SCScaffoldManager.android_webview, params);
+
+        /// todo 刷新控制台数据
+        print("-------$result-------");
+        return result;
+      } else if (Platform.isIOS) {
+        /// 调用iOS WebView
+        return SCScaffoldManager.instance.flutterToNativeAction(SCFlutterKey.kIOSNativeWebView, params);
+      }
     }
 
     return Get.toNamed(path, arguments: params);

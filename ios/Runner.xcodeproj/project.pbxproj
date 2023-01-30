@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		011F200328D45CEB00A4502F /* launch_bottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 011F200128D45CEB00A4502F /* launch_bottom.png */; };
 		011F200428D45CEC00A4502F /* launch_top.png in Resources */ = {isa = PBXBuildFile; fileRef = 011F200228D45CEB00A4502F /* launch_top.png */; };
+		0155D3DD298622D1006868C8 /* SCCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0155D3DC298622D1006868C8 /* SCCustomNavigationBar.m */; };
 		01939418286BFC110045B72C /* SwiftHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01939417286BFC110045B72C /* SwiftHeader.swift */; };
 		01DFA43429729E6000A6EB41 /* SCCurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01DFA43329729E6000A6EB41 /* SCCurrentViewController.m */; };
 		01DFA43729729EC800A6EB41 /* SCWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01DFA43529729EC800A6EB41 /* SCWebViewController.m */; };
@@ -39,6 +40,9 @@
 /* Begin PBXFileReference section */
 		011F200128D45CEB00A4502F /* launch_bottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch_bottom.png; sourceTree = "<group>"; };
 		011F200228D45CEB00A4502F /* launch_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch_top.png; sourceTree = "<group>"; };
+		0155D3DB298622D1006868C8 /* SCCustomNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCCustomNavigationBar.h; sourceTree = "<group>"; };
+		0155D3DC298622D1006868C8 /* SCCustomNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCCustomNavigationBar.m; sourceTree = "<group>"; };
+		0155D3DE29864642006868C8 /* SCFlutterKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCFlutterKey.h; sourceTree = "<group>"; };
 		01939416286BFC110045B72C /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		01939417286BFC110045B72C /* SwiftHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftHeader.swift; sourceTree = "<group>"; };
 		01C2BC442901225900A2888C /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
@@ -142,6 +146,9 @@
 				01DFA43329729E6000A6EB41 /* SCCurrentViewController.m */,
 				01DFA43629729EC800A6EB41 /* SCWebViewController.h */,
 				01DFA43529729EC800A6EB41 /* SCWebViewController.m */,
+				0155D3DB298622D1006868C8 /* SCCustomNavigationBar.h */,
+				0155D3DC298622D1006868C8 /* SCCustomNavigationBar.m */,
+				0155D3DE29864642006868C8 /* SCFlutterKey.h */,
 				01939417286BFC110045B72C /* SwiftHeader.swift */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
@@ -330,6 +337,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0155D3DD298622D1006868C8 /* SCCustomNavigationBar.m in Sources */,
 				978B8F6F1D3862AE00F588F7 /* AppDelegate.m in Sources */,
 				01DFA43729729EC800A6EB41 /* SCWebViewController.m in Sources */,
 				97C146F31CF9000F007C117D /* main.m in Sources */,

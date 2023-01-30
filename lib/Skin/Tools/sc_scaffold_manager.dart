@@ -358,7 +358,7 @@ class SCScaffoldManager {
   }
 
   /// flutter调用原生
-  void flutterToNativeAction(String methodName ,dynamic params) {
-    flutterToNative.invokeMethod(methodName, params);
+  Future flutterToNativeAction(String methodName ,dynamic params) {
+    return flutterToNative.invokeMethod(methodName, params);
   }
 }
