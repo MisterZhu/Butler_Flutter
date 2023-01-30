@@ -1,10 +1,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import '../../../Constants/sc_asset.dart';
+import '../../../../Constants/sc_asset.dart';
 
 /// 验房单-房屋基本信息cell
 

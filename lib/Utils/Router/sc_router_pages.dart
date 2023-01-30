@@ -11,10 +11,10 @@ import 'package:smartcommunity/Page/Tab/Page/sc_tab_page.dart';
 import 'package:smartcommunity/Page/Webview/Page/sc_webview_page.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_detail_page.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_page.dart';
-import '../../Page/HouseInspect/Page/sc_formal_house_inspect_detail_page.dart';
-import '../../Page/HouseInspect/Page/sc_formal_house_inspect_page.dart';
-import '../../Page/HouseInspect/Page/sc_house_inspect_form_page.dart';
-import '../../Page/HouseInspect/Page/sc_house_inspect_problem_page.dart';
+import '../../Page/ApplicationModule/HouseInspect/Page/sc_formal_house_inspect_detail_page.dart';
+import '../../Page/ApplicationModule/HouseInspect/Page/sc_formal_house_inspect_page.dart';
+import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_form_page.dart';
+import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_problem_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
 import 'sc_router_path.dart';
 

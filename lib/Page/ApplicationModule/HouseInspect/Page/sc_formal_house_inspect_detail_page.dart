@@ -17,7 +17,7 @@ class SCFormalHouseInspectDetailState extends State<SCFormalHouseInspectDetailPa
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        resizeToAvoidBottomInset: false,///页面不会随着键盘上移
+        resizeToAvoidBottomInset: false, /// 页面不会随着键盘上移
         title: "正式验房", centerTitle: true, elevation: 0, body: body());
   }
 

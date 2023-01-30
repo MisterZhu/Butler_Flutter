@@ -158,5 +158,8 @@ class SCAsset {
   static const String iconInspectFormOwner = "images/houseInspect/icon_inspect_form_owner.png";
   /// 验房单-手机号icon
   static const String iconInspectFormPhone = "images/houseInspect/icon_inspect_form_phone.png";
-
+  /// 问题-提示icon
+  static const String iconInspectProblemTips = "images/houseInspect/icon_inspect_problem_tips.png";
+  /// 问题-添加图片icon
+  static const String iconInspectProblemAddPhoto = "images/houseInspect/icon_inspect_problem_add_photo.png";
 }

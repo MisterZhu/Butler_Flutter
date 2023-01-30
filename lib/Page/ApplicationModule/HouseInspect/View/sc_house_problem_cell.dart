@@ -2,9 +2,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/HouseInspect/View/sc_house_problem_photos_item.dart';
-import 'package:smartcommunity/Page/HouseInspect/View/sc_house_problem_tags_item.dart';
-import '../../../Constants/sc_asset.dart';
+import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_problem_photos_item.dart';
+import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_problem_tags_item.dart';
+
+import '../../../../Constants/sc_asset.dart';
 
 /// 正式验房-问题cell
 
@@ -30,7 +31,10 @@ class SCHouseProblemCell extends StatelessWidget {
           const SizedBox(height: 6.0,),
           descItem(),
           const SizedBox(height: 12.0,),
-          SCHouseProblemTagsCell(),
+          SCHouseProblemTagsCell(
+            tagList: ['地面不平整', '墙漆脱落', '淋浴水管漏水', '水管漏水', '地板翘起来了了', '防水问题'],
+            maxSelectedNum: 0,
+          ),
           SCHouseProblemPhotosCell(),
         ],
     );

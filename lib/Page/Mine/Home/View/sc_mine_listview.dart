@@ -51,7 +51,7 @@ class SCMineListView extends StatelessWidget {
           nickname: SCScaffoldManager.instance.user.userName ?? '',
           space: SCScaffoldManager.instance.user.tenantName ?? '',
           avatarTapAction: () {
-          avatarTapAction?.call();
+            avatarTapAction?.call();
         }, qrCodeTapAction: () {
             qrCodeTapAction?.call();
         }, settingTapAction: () {
@@ -110,7 +110,7 @@ class SCMineListView extends StatelessWidget {
         showLeftIcon: true,
         leftIcon: SCAsset.iconMineService,
         onTap: () {
-          //SCRouterHelper.pathPage(SCRouterPath.formalHouseInspectPage, null);
+          SCRouterHelper.pathPage(SCRouterPath.formalHouseInspectPage, null);
       },);
     } else {
       return const SizedBox(height: 100.0,);
@@ -127,7 +127,6 @@ class SCMineListView extends StatelessWidget {
         width: double.infinity,
         color: SCColors.color_EDEDF0,
       ),
-
     );
   }
 

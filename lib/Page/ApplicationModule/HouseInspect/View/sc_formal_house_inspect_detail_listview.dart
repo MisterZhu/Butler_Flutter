@@ -1,14 +1,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/HouseInspect/View/sc_bottom_button_item.dart';
-import 'package:smartcommunity/Page/HouseInspect/View/sc_house_problem_cell.dart';
-import 'package:smartcommunity/Page/HouseInspect/View/sc_house_status_cell.dart';
-import 'package:smartcommunity/Page/HouseInspect/View/sc_open_state_cell.dart';
-
-import '../../../Utils/Router/sc_router_helper.dart';
-import '../../../Utils/Router/sc_router_path.dart';
-import '../../../Utils/sc_utils.dart';
+import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_bottom_button_item.dart';
+import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_problem_cell.dart';
+import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_status_cell.dart';
+import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_open_state_cell.dart';
+import '../../../../Utils/Router/sc_router_helper.dart';
+import '../../../../Utils/Router/sc_router_path.dart';
+import '../../../../Utils/sc_utils.dart';
 
 /// 正式验房-详情listview
 
@@ -93,7 +92,7 @@ class SCFormalHouseInspectDeatilListView extends StatelessWidget {
       width: double.infinity,
       child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child:SCHouseProblemCell()
+          child: SCHouseProblemCell()
       ),
     );
   }

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import '../../../Constants/sc_asset.dart';
+import '../../../../Constants/sc_asset.dart';
 
 /// 正式验房-电表开启状态、度数cell
 
@@ -19,34 +19,29 @@ class SCOpenStateCellState extends State<SCOpenStateCell> {
   TextEditingController electricController = TextEditingController();
   /// 电表focusNode
   FocusNode electricNode = FocusNode();
-  /// 电表开启状态，默认未开启
-  bool electricState = false;
 
   /// 水表controller
   TextEditingController waterController = TextEditingController();
   /// 水表focusNode
   FocusNode waterNode = FocusNode();
-  /// 水表开启状态，默认未开启
-  bool waterState = false;
 
   /// 气表controller
   TextEditingController gasController = TextEditingController();
   /// 气表focusNode
   FocusNode gasNode = FocusNode();
-  /// 气表开启状态，默认未开启
-  bool gasState = false;
 
   List list = [
-    {'name': '电表', 'text': '电表度数', 'state': false},
-    {'name': '水表', 'text': '水表读数',  'state': false},
-    {'name': '气表', 'text': '气表读数',  'state': false},
+    {'name': '电表', 'text': '电表度数'},
+    {'name': '水表', 'text': '水表读数'},
+    {'name': '气表', 'text': '气表读数'},
   ];
+
+  late List stateList = [false, false, false];
 
   @override
   initState() {
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +64,7 @@ class SCOpenStateCellState extends State<SCOpenStateCell> {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
           var dic = list[index];
-          return cell(index, dic['name'], dic['state'], dic['text']);
+          return cell(index, dic['name'], dic['text']);
         },
         separatorBuilder: (BuildContext context, int index) {
           return line();
@@ -78,27 +73,21 @@ class SCOpenStateCellState extends State<SCOpenStateCell> {
   }
 
   /// cell
-  Widget cell(int index, String name, bool state, String text) {
+  Widget cell(int index, String name, String text) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        topItem(index, name, state),
+        topItem(index, name),
         bottomItem(index, text),
       ],
     );
   }
 
   /// topItem
-  Widget topItem(int index, String name, bool state) {
+  Widget topItem(int index, String name) {
     bool state = false;
-    if (index == 1) {
-      state = waterState;
-    } else if (index == 2) {
-      state = gasState;
-    } else {
-      state = electricState;
-    }
+    state = stateList[index];
     return Container(
         height: 48.0,
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
@@ -135,7 +124,7 @@ class SCOpenStateCellState extends State<SCOpenStateCell> {
   /// bottomItem
   Widget bottomItem(int index, String text) {
     return Offstage(
-      offstage: false,
+      offstage: !stateList[index],
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,13 +141,7 @@ class SCOpenStateCellState extends State<SCOpenStateCell> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          if (index == 1) {
-            waterState = true;
-          } else if (index == 2) {
-            gasState = true;
-          } else {
-            electricState = true;
-          }
+          stateList[index] = true;
         });
       },
       behavior: HitTestBehavior.opaque,
@@ -188,13 +171,7 @@ class SCOpenStateCellState extends State<SCOpenStateCell> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          if (index == 1) {
-            waterState = false;
-          } else if (index == 2) {
-            gasState = false;
-          } else {
-            electricState = false;
-          }
+          stateList[index] = false;
         });
       },
       behavior: HitTestBehavior.opaque,
