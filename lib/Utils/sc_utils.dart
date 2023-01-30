@@ -230,7 +230,7 @@ class SCUtils {
       return newUrl;
     } else {
       String newUrl =
-          "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&fromQw=1&latitude=$latitude&longitude=$longitude&$h5ChannelKey=$h5ChannelValue";
+          "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&fromQw=1&latitude=$latitude&longitude=$longitude";
       return newUrl;
     }
   }
