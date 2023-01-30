@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_empty_view.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_time_view.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
@@ -16,6 +17,7 @@ import '../../Model/sc_work_order_model.dart';
 class SCWorkBenchListView extends StatefulWidget {
   const SCWorkBenchListView({
     Key? key,
+    required this.state,
     required this.dataList,
     this.detailAction,
     this.moreAction,
@@ -23,7 +25,7 @@ class SCWorkBenchListView extends StatefulWidget {
     this.callAction,
   }) : super(key: key);
 
-  final List<SCWorkOrderModel> dataList;
+  final List dataList;
 
   /// 详情
   final Function(SCWorkOrderModel model)? detailAction;
@@ -36,6 +38,9 @@ class SCWorkBenchListView extends StatefulWidget {
 
   /// 打电话
   final Function(String mobile)? callAction;
+
+  /// 工作台controller
+  final SCWorkBenchController state;
 
   @override
   SCWorkBenchListViewState createState() => SCWorkBenchListViewState();
@@ -57,20 +62,25 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
   @override
   Widget build(BuildContext context) {
     if (widget.dataList.isNotEmpty) {
-      return SmartRefresher(
-        controller: refreshController,
-        enablePullDown: false,
-        enablePullUp: true,
-        onLoading: onLoading,
-        footer: const ClassicFooter(
-          loadingText: '加载中...',
-          idleText: '加载更多',
-          noDataText: '到底了',
-          failedText: '加载失败',
-          canLoadingText: '加载更多',
-        ),
-        child: listView(),
-      );
+      var value = widget.dataList.first;
+      if (value is SCWorkOrderModel) {
+        return SmartRefresher(
+          controller: refreshController,
+          enablePullDown: false,
+          enablePullUp: true,
+          onLoading: onLoading,
+          footer: const ClassicFooter(
+            loadingText: '加载中...',
+            idleText: '加载更多',
+            noDataText: '到底了',
+            failedText: '加载失败',
+            canLoadingText: '加载更多',
+          ),
+          child: listView(),
+        );
+      } else {
+        return SCWorkBenchEmptyView();
+      }
     } else {
       return SCWorkBenchEmptyView();
     }
@@ -352,7 +362,7 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
 
   /// 加载更多
   Future onLoading() async {
-    Future.delayed(const Duration(milliseconds: 1500), () {
+    widget.state.loadMore().then((value) {
       refreshController.loadComplete();
     });
   }

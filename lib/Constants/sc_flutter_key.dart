@@ -6,4 +6,10 @@ class SCFlutterKey {
 
   /// 调用原生alert弹窗
   static const String kShowAlert = "kShowAlert";
+
+  /// 调用iOS原生webView
+  static const String kIOSNativeWebView = "kNativeIOSWebView";
+
+  /// 调用安卓原生webView
+  static const String kAndroidNativeWebView = "kAndroidNativeWebView";
 }

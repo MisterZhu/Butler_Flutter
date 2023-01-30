@@ -54,11 +54,14 @@ class SCSwitchTenantController extends GetxController {
         url: SCUrl.kSwitchTenantUrl,
         params: {"tenantId": tenantId, "userId": userId},
         success: (value) {
-          SCRouterHelper.back(null);
-          Get.forceAppUpdate();
-
+          var userParams = value['userInfoV'];
+          SCUserModel userModel = SCUserModel.fromJson(userParams);
+          SCScaffoldManager.instance.user = userModel;
+          SCScaffoldManager.instance.isLogin = true;
           var params = {"key" : SCKey.kSwitchEnterprise};
           SCScaffoldManager.instance.eventBus.fire(params);
+          SCRouterHelper.back(null);
+          Get.forceAppUpdate();
         },
         failure: (value) {
           if (value['message'] != null) {

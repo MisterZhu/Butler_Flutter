@@ -80,6 +80,9 @@ class SCAsset {
   /// 首页弹窗-更多应用icon
   static const String iconHomeMoreApplication = "images/home/icon_more_application.png";
 
+  /// 首页-酒店icon
+  static const String iconHotel = "images/home/icon_hotel.png";
+
   /***********************  登录  ************************/
   /// 清除icon
   static const String iconLoginClear = "images/login/icon_login_clear.png";

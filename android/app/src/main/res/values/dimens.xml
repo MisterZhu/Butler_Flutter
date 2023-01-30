@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_bar_height">44dp</dimen>
+    <dimen name="status_bar_height">0dp</dimen>
+
+    <!-- titleBar textSize -->
+    <dimen name="txt_center_size">16sp</dimen>
+    <dimen name="txt_left_size">14sp</dimen>
+    <dimen name="txt_right_size">14sp</dimen>
+
+    <dimen name="dimen_padding">12dp</dimen>
+
+
+    <dimen name="grid_expected_size">120dp</dimen>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+</resources>

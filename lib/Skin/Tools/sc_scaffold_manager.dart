@@ -61,6 +61,9 @@ class SCScaffoldManager {
   /// 原生调用flutter的channel
   static EventChannel _nativeToFlutter = const EventChannel(SCFlutterKey.kNativeToFlutter);
 
+  /// flutter调用原生的channel 方法名
+  static String android_webview = "android_webview";
+
   SCScaffoldManager._internal() {
     _scaffoldModel = SCScaffoldModel();
     _user = SCUserModel();
@@ -355,7 +358,7 @@ class SCScaffoldManager {
   }
 
   /// flutter调用原生
-  void flutterToNativeAction(String methodName ,dynamic params) {
-    flutterToNative.invokeMethod(methodName, params);
+  Future flutterToNativeAction(String methodName ,dynamic params) {
+    return flutterToNative.invokeMethod(methodName, params);
   }
 }

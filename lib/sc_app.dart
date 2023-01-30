@@ -12,6 +12,8 @@ import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_pages.dart';
 import 'package:smartcommunity/Utils/WeChat/sc_wechat_utils.dart';
 import 'package:smartcommunity/Utils/sc_sp_utils.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -52,6 +54,17 @@ void startApp() async {
       );
     },),
     navigatorObservers: [routeObserver],
+    locale: const Locale("zh", "CH"),
+    fallbackLocale: const Locale('en', 'US'),
+    supportedLocales: const [
+      Locale("zh", "CH"),
+      Locale('en', 'US')
+    ],
+    localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+      GlobalMaterialLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+      SfGlobalLocalizations.delegate
+    ],
   ));
 
   SCWeChatUtils.init();

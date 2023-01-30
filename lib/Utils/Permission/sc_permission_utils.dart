@@ -138,8 +138,13 @@ class SCPermissionUtils {
                 textColor: SCColors.color_1B1C33,
                 fontWeight: FontWeight.w400, onTap: () async {
               SCSpUtil.setBool(SCKey.kIsShowPhotoAlert, true);
-              PermissionStatus permissionStatus =
-                  await Permission.photos.request();
+              PermissionStatus permissionStatus;
+              /// android权限为Permission.storage对应iOS的Permission.photos
+              if(Platform.isAndroid) {
+                permissionStatus = await Permission.storage.request();
+              } else {
+                permissionStatus = await Permission.photos.request();
+              }
               if (permissionStatus == PermissionStatus.granted) {
                 SCUtils.getCurrentContext(completionHandler: (context) async {
                   List<AssetEntity>? result = await AssetPicker.pickAssets(
@@ -167,7 +172,12 @@ class SCPermissionUtils {
           ],
         );
       } else {
-        PermissionStatus permissionStatus = await Permission.photos.request();
+        PermissionStatus permissionStatus;
+        if(Platform.isAndroid) {
+          permissionStatus = await Permission.storage.request();
+        } else {
+          permissionStatus = await Permission.photos.request();
+        }
         if (permissionStatus == PermissionStatus.granted) {
           SCUtils.getCurrentContext(completionHandler: (context) async {
             List<AssetEntity>? result = await AssetPicker.pickAssets(

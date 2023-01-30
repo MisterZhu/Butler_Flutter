@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +11,9 @@ import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_listview_controller.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_hotel_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_alert.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/WorkBench/sc_workbench_view.dart';
@@ -59,6 +62,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   SCChangeSpaceController changeSpaceController =
       Get.put(SCChangeSpaceController());
 
+  /// 通知
   late StreamSubscription subscription;
 
   late String pageName;
@@ -169,6 +173,12 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
                 headerAction: () {
                   userInfoAction();
                 },
+                verificationDetailAction: (SCVerificationOrderModel model) {
+                  verificationDetailAction(model);
+                },
+                hotelOrderDetailAction: (SCHotelOrderModel model) {
+                  hotelOrderDetailAction(model);
+                },
               );
             });
       }),
@@ -197,14 +207,67 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   }
 
   /// 详情
-  detailAction(SCWorkOrderModel model) {
+  detailAction(SCWorkOrderModel model) async{
     String title = Uri.encodeComponent(SCUtils.getWorkOrderButtonText(model.status ?? 0));
     String url =
-        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?status=${model.status}&title=$title&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}&from=qwHome";
+        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?status=${model.status}&title=$title&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}";
+    if (Platform.isAndroid) {
+      String realUrl = SCUtils.getWebViewUrl(url: url, needJointParams: true);
+
+      /// 调用Android WebView
+      var params = {"title": title, "url": realUrl};
+      var channel = SCScaffoldManager.flutterToNative;
+      var result =
+          await channel.invokeMethod(SCScaffoldManager.android_webview, params);
+      workBenchController.loadData();
+    } else {
+      String realUrl = SCUtils.getWebViewUrl(url: url, needJointParams: true);
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+        "title": model.categoryName ?? '',
+        "url": realUrl,
+        "needJointParams": false
+      })?.then((value) {
+        workBenchController.loadData();
+      });
+    }
+  }
+
+  /// 实地核验详情
+  verificationDetailAction(SCVerificationOrderModel model) {
+    int status = model.dealStatus ?? -1;
+    if (status == 0) {
+      workBenchController.verificationOrderDetailTap('${model.id})').then((value) {
+        String realUrl = SCUtils.getWebViewUrl(url: SCConfig.getH5Url(SCH5.verificationDetailUrl), needJointParams: true);
+        SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+          "title":  '',
+          "url": realUrl,
+          "needJointParams": false
+        })?.then((value) {
+          workBenchController.loadData();
+        });
+      });
+    } else if (status == 1) {
+      String realUrl = SCUtils.getWebViewUrl(url: SCConfig.getH5Url(SCH5.verificationDetailUrl), needJointParams: true);
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+        "title":  '',
+        "url": realUrl,
+        "needJointParams": false
+      })?.then((value) {
+        workBenchController.loadData();
+      });
+    } else {
+
+    }
+  }
+  /// 酒店订单处理详情
+  hotelOrderDetailAction(SCHotelOrderModel model) {
+    String realUrl = SCUtils.getWebViewUrl(url: '${SCConfig.getH5Url(SCH5.hotelOrderDetailUrl)}?orderId=${model.id ?? ''}', needJointParams: true);
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
-      "title": model.categoryName ?? '',
-      "url": url,
+      "title":  model.hotelName,
+      "url": realUrl,
       "needJointParams": true
+    })?.then((value) {
+      workBenchController.loadData();
     });
   }
 
@@ -250,9 +313,11 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
 
   /// 通知
   addNotification() {
+    print("11111111");
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
       if (key == SCKey.kSwitchEnterprise) {
+        print("2222222");
         workBenchController.loadData();
       }
     });
