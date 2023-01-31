@@ -59,4 +59,8 @@ class SCRouterPath {
   /// 问题
   static String houseInspectProblemPage = "/lib/Page/HouseInspect/Page/sc_house_inspect_problem_page";
 
+  /// 待上传事项
+  static String toBeUploadPage = "/lib/Page/HouseInspect/Page/sc_to_be_upload_page";
+
+
 }

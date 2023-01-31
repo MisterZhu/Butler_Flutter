@@ -9,7 +9,7 @@ import '../../../../Utils/Router/sc_router_path.dart';
 import '../../../../Utils/sc_utils.dart';
 
 class SCEnterHouseInspectView extends StatelessWidget {
-  
+
   @override
   Widget build(BuildContext context) {
     return body();

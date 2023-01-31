@@ -16,6 +16,7 @@ import '../../Page/ApplicationModule/HouseInspect/Page/sc_formal_house_inspect_d
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_formal_house_inspect_page.dart';
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_form_page.dart';
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_problem_page.dart';
+import '../../Page/ApplicationModule/HouseInspect/Page/sc_to_be_upload_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
 import 'sc_router_path.dart';
 
@@ -59,6 +60,9 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.houseInspectFormPage, page: () => SCHouseInspectFormPage()),
     /*验房-问题*/
     GetPage(name: SCRouterPath.houseInspectProblemPage, page: () => SCHouseInspectProblemPage()),
+    /*待上传事项*/
+    GetPage(name: SCRouterPath.toBeUploadPage, page: () => SCToBeUploadPage()),
+
   ];
 
   /*根据code使用路由*/

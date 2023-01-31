@@ -11,6 +11,10 @@ import '../../../../Constants/sc_asset.dart';
 
 class SCHouseProblemCell extends StatelessWidget {
 
+  final bool isToBeUpload;
+
+  SCHouseProblemCell({Key? key, this.isToBeUpload = false}) : super(key: key);
+
   List tagList = ['地面不平整','墙漆脱落',];
 
   String desc = '墙面上凸下凹，四周都有墙漆掉落的情况墙面上凸下，凹，四周都有墙漆掉落的情况';
@@ -28,13 +32,13 @@ class SCHouseProblemCell extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           topItem(),
-          const SizedBox(height: 6.0,),
           descItem(),
           const SizedBox(height: 12.0,),
           SCHouseProblemTagsCell(
-            tagList: ['地面不平整', '墙漆脱落', '淋浴水管漏水', '水管漏水', '地板翘起来了了', '防水问题'],
+            tagList: tagList,
             maxSelectedNum: 0,
           ),
+          const SizedBox(height: 12.0,),
           SCHouseProblemPhotosCell(),
         ],
     );
@@ -42,8 +46,10 @@ class SCHouseProblemCell extends StatelessWidget {
 
   /// topItem
   Widget topItem() {
+    double top = isToBeUpload ? 10.0 : 12.0;
+    double bottom = isToBeUpload ? 13.0 : 18.0;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      padding: EdgeInsets.only(top: top, bottom: bottom),
       child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -54,9 +60,9 @@ class SCHouseProblemCell extends StatelessWidget {
               textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: SCFonts.f16,
+                fontSize: isToBeUpload ? SCFonts.f14 : SCFonts.f16,
                 color: SCColors.color_1B1D33,
-                fontWeight: FontWeight.w500,
+                fontWeight: isToBeUpload ? FontWeight.w400 : FontWeight.w500,
               ),
             )),
             topRightItem(0),
@@ -70,6 +76,9 @@ class SCHouseProblemCell extends StatelessWidget {
     Color bgColor = SCColors.color_FFFFFF;
     if (status != 0) {
       bgColor = SCColors.color_F2F3F5;
+    }
+    if (isToBeUpload) {
+      bgColor = SCColors.color_F7F8FA;
     }
 
     return GestureDetector(
@@ -85,10 +94,11 @@ class SCHouseProblemCell extends StatelessWidget {
             offstage: status != 0,
             child: Image.asset(SCAsset.iconProblemDelete, width: 16.0, height: 16.0, fit: BoxFit.cover,),
           ),
+          const SizedBox(width: 5.0,),
           Container(
-            decoration: BoxDecoration(
-                color: bgColor, borderRadius: BorderRadius.circular(2.0)),
-            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+            // decoration: BoxDecoration(
+            //     color: bgColor, borderRadius: BorderRadius.circular(2.0)),
+            // padding: const EdgeInsets.symmetric(horizontal: 6.0),
             alignment: Alignment.center,
             child: Text(
               status == 0 ? '删除' : '已提交',
@@ -96,7 +106,7 @@ class SCHouseProblemCell extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontSize: SCFonts.f12,
-                color: SCColors.color_1B1D33,
+                color: SCColors.color_8D8E99,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -111,9 +121,9 @@ class SCHouseProblemCell extends StatelessWidget {
     return Text(
       desc,
       textAlign: TextAlign.left,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: SCFonts.f14,
-        color: SCColors.color_1B1D33,
+        color: isToBeUpload ? SCColors.color_5E5F66 : SCColors.color_1B1D33,
         fontWeight: FontWeight.w400,
       ),
     );

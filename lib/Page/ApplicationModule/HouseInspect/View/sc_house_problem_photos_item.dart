@@ -18,12 +18,12 @@ class SCHouseProblemPhotosCell extends StatelessWidget {
   /// body
   Widget body() {
     return StaggeredGridView.countBuilder(
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        padding: EdgeInsets.zero,
         mainAxisSpacing: 8,
         crossAxisSpacing: 8,
         crossAxisCount: 4,
         shrinkWrap: true,
-        itemCount: 8,
+        itemCount: 4,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           return cell();
@@ -42,10 +42,8 @@ class SCHouseProblemPhotosCell extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(4.0),
-          child: SCImage(
-            url: SCAsset.iconWorkBenchEmpty,
-            placeholder: SCAsset.iconWorkBenchEmpty,
-            fit: BoxFit.cover,
+          child: Container(
+            color: SCColors.color_4DA6FF,
             width: 74.0,
             height: 74.0,
           ),)

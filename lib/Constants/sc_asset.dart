@@ -173,6 +173,8 @@ class SCAsset {
   static const String iconInspectSign = "images/houseInspect/icon_inspect_sign.png";
   /// 更多楼幢-关闭icon
   static const String iconMoreBuildingsClose = "images/houseInspect/icon_more_buildings_close.png";
+  /// 待上传事项-房屋icon
+  static const String iconToBeUploadHouse = "images/houseInspect/icon_to_be_upload_house.png";
 
 
 }

@@ -6,28 +6,55 @@ import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_inspect_score_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_problem_cell.dart';
 
+import '../../../../Utils/Router/sc_router_helper.dart';
+import '../../../../Utils/Router/sc_router_path.dart';
+
 /// 验房单listview
 
 class SCHouseInspectFormListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return body();
+    return body(context);
   }
 
   /// body
-  Widget body() {
+  Widget body(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(child: listview()),
         SCBottomButtonItem(list: const ['重新签署', '确定'], buttonType: 1, leftTapAction: () {
-          /// 验收完成
-          //SCRouterHelper.back(null);
+          showAlert(context);
         }, rightTapAction: () {
           /// 确定
         },),
+      ],
+    );
+  }
+
+  /// 弹窗
+  showAlert(BuildContext context) {
+    SCDialogUtils.instance.showMiddleDialog(
+      context: context,
+      content: '请将手机转交给业主，先由业主签署后您在签署',
+      customWidgetButtons: [
+        defaultCustomButton(context,
+            text: '取消',
+            textColor: SCColors.color_1B1C33,
+            fontWeight: FontWeight.w400),
+        defaultCustomButton(context,
+            text: '确定',
+            textColor: SCColors.color_4285F4,
+            fontWeight: FontWeight.w400,
+            onTap: () {
+              /// 去签名
+
+              SCRouterHelper.pathPage(SCRouterPath.toBeUploadPage, null);
+
+            }
+        ),
       ],
     );
   }
