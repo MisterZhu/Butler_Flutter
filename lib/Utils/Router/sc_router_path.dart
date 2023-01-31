@@ -44,6 +44,9 @@ class SCRouterPath {
 
   /// *************************** 入伙验房 ******************************/
 
+
+  static String enterHouseInspectPage = "/lib/Page/HouseInspect/Page/sc_enter_house_inspect_page";
+
   /// 正式验房
   static String formalHouseInspectPage = "/lib/Page/HouseInspect/Page/sc_formal_house_inspect_page";
 

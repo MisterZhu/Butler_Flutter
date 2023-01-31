@@ -110,7 +110,7 @@ class SCMineListView extends StatelessWidget {
         showLeftIcon: true,
         leftIcon: SCAsset.iconMineService,
         onTap: () {
-          SCRouterHelper.pathPage(SCRouterPath.formalHouseInspectPage, null);
+          SCRouterHelper.pathPage(SCRouterPath.enterHouseInspectPage, null);
       },);
     } else {
       return const SizedBox(height: 100.0,);
