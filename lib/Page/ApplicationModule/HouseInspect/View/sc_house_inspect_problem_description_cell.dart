@@ -70,7 +70,6 @@ class SCHouseInspectProblemDescriptionState extends State<SCHouseInspectProblemD
           inputItem(),
           const SizedBox(height: 14.0,),
           photosItem(),
-          const SizedBox(height: 6.0,),
           tipsItem(),
         ],
       ),
@@ -125,11 +124,11 @@ class SCHouseInspectProblemDescriptionState extends State<SCHouseInspectProblemD
   Widget photosItem() {
     return StaggeredGridView.countBuilder(
         padding: EdgeInsets.zero,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
+        mainAxisSpacing: 8,
+        crossAxisSpacing: 8,
         crossAxisCount: 4,
         shrinkWrap: true,
-        itemCount: photosList.length + 1,
+        itemCount: photosList.length >= 9 ? 9 : photosList.length + 1,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           return photoItem(index);
@@ -145,13 +144,11 @@ class SCHouseInspectProblemDescriptionState extends State<SCHouseInspectProblemD
       onTap: () {
         SCUtils().hideKeyboard(context: context);
         if (index == photosList.length) {
-          SCPermissionUtils.showImagePicker(
-            maxLength: 1,
-            completionHandler: (imageList) {
-              setState(() {
-                photosList.add(imageList.first);
-              });
+          SCPermissionUtils.takePhoto((String path){
+            setState(() {
+              photosList.add(path);
             });
+          });
         }
       },
       child: SizedBox(
