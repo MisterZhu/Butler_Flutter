@@ -2,9 +2,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Constants/sc_asset.dart';
 import '../../../../Utils/Permission/sc_permission_utils.dart';
+import '../../../../Utils/sc_utils.dart';
 
 /// 验房-问题-问题说明
 class SCHouseInspectProblemDescriptionCell extends StatefulWidget {
@@ -20,6 +22,7 @@ class SCHouseInspectProblemDescriptionState extends State<SCHouseInspectProblemD
   TextEditingController controller = TextEditingController();
   FocusNode node = FocusNode();
 
+  List photosList = [];
   @override
   Widget build(BuildContext context) {
     return body();
@@ -66,7 +69,7 @@ class SCHouseInspectProblemDescriptionState extends State<SCHouseInspectProblemD
         children: [
           inputItem(),
           const SizedBox(height: 14.0,),
-          addPhotoItem(),
+          photosItem(),
           const SizedBox(height: 6.0,),
           tipsItem(),
         ],
@@ -118,19 +121,52 @@ class SCHouseInspectProblemDescriptionState extends State<SCHouseInspectProblemD
     );
   }
 
-  /// 添加图片
-  Widget addPhotoItem() {
-    return CupertinoButton(
-      minSize: 79.0,
-      padding: EdgeInsets.zero,
-      child: Image.asset(SCAsset.iconInspectProblemAddPhoto, width: 79.0, height:  79.0,),
-      onPressed: () {
-        SCPermissionUtils.showImagePicker(
+  /// photosItem
+  Widget photosItem() {
+    return StaggeredGridView.countBuilder(
+        padding: EdgeInsets.zero,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+        crossAxisCount: 4,
+        shrinkWrap: true,
+        itemCount: photosList.length + 1,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          return photoItem(index);
+        },
+        staggeredTileBuilder: (int index) {
+          return const StaggeredTile.fit(1);
+        });
+  }
+
+  /// 图片
+  Widget photoItem(int index) {
+    return GestureDetector(
+      onTap: () {
+        SCUtils().hideKeyboard(context: context);
+        if (index == photosList.length) {
+          SCPermissionUtils.showImagePicker(
             maxLength: 1,
             completionHandler: (imageList) {
-              print('imageList============$imageList');
+              setState(() {
+                photosList.add(imageList.first);
+              });
             });
-    });
+        }
+      },
+      child: SizedBox(
+        width: 79.0,
+        height:  79.0,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(4.0),
+          child:Image.asset(
+            index == photosList.length ? SCAsset.iconInspectProblemAddPhoto : photosList[index],
+            width: 79.0,
+            height:  79.0,
+            fit: BoxFit.fill,),
+        )
+      ),
+    );
   }
 
   /// tipsItem
