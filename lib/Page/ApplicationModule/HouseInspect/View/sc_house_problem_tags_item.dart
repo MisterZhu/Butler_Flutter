@@ -42,8 +42,6 @@ class SCHouseProblemTagsCellState extends State<SCHouseProblemTagsCell> {
     if (selectedList.contains(name)) {
       isSelected = true;
     }
-    /// 背景颜色
-    Color bgColor = isSelected == true ? SCColors.color_FFFFFF : SCColors.color_FFFFFF;
     /// 边框颜色
     Color borderColor = isSelected == true ? SCColors.color_4285F4 : SCColors.color_E3E3E5;
     /// title字体颜色
@@ -57,7 +55,6 @@ class SCHouseProblemTagsCellState extends State<SCHouseProblemTagsCell> {
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2.0),
-            color: bgColor,
             border: Border.all(color: borderColor, width: 0.5)
         ),
         padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 4.0),

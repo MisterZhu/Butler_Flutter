@@ -6,12 +6,21 @@ import 'package:sc_uikit/sc_uikit.dart';
 /// 选择房号-幢
 
 class SCSelectHouseBuildingView extends StatefulWidget {
+
+  const SCSelectHouseBuildingView({
+    Key? key,
+    this.moreAction
+  }) : super(key: key);
+
+  /// 更多
+  final Function? moreAction;
+
   @override
   SCSelectHouseBuildingViewState createState() =>
       SCSelectHouseBuildingViewState();
 }
 
-class SCSelectHouseBuildingViewState extends State {
+class SCSelectHouseBuildingViewState extends State<SCSelectHouseBuildingView> {
   int currentIndex = 0;
 
   @override
@@ -37,7 +46,9 @@ class SCSelectHouseBuildingViewState extends State {
         fontSize: SCFonts.f12,
         fontWeight: FontWeight.w400,
         color: SCColors.color_1B1D33
-      ),), onPressed: (){}),
+      ),), onPressed: (){
+          widget.moreAction?.call();
+      }),
     );
   }
 

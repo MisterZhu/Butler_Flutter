@@ -9,7 +9,14 @@ import '../../Constant/sc_house_inspect_default.dart';
 
 class SCSelectHouseRoomView extends StatelessWidget {
 
-  const SCSelectHouseRoomView({Key? key, required this.list}) : super(key: key);
+  const SCSelectHouseRoomView({
+    Key? key,
+    required this.list,
+    this.onTap
+  }) : super(key: key);
+
+  /// cell点击
+  final Function(int index)? onTap;
 
   /// 数据源
   final List list;
@@ -50,20 +57,29 @@ class SCSelectHouseRoomView extends StatelessWidget {
     Color textColor =
         SCHouseInspectDefault().getDeliveryStatusTextColor(status);
 
-    return Container(
-      height: 30.0,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-          color: bgColor, borderRadius: BorderRadius.circular(4.0)),
-      child: Text(
-        title,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-            fontSize: SCFonts.f14,
-            fontWeight: FontWeight.w400,
-            color: textColor),
+    return GestureDetector(
+      onTap: (){
+        detailAction(index);
+      },
+      child: Container(
+        height: 30.0,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: bgColor, borderRadius: BorderRadius.circular(4.0)),
+        child: Text(
+          title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+              fontSize: SCFonts.f14,
+              fontWeight: FontWeight.w400,
+              color: textColor),
+        ),
       ),
     );
+  }
+
+  detailAction(int index) {
+    onTap?.call(index);
   }
 }

@@ -159,7 +159,7 @@ class SCHouseInspectProblemDescriptionState extends State<SCHouseInspectProblemD
           child:Image.asset(
             index == photosList.length ? SCAsset.iconInspectProblemAddPhoto : photosList[index],
             width: 79.0,
-            height:  79.0,
+            height: 79.0,
             fit: BoxFit.fill,),
         )
       ),
@@ -172,7 +172,7 @@ class SCHouseInspectProblemDescriptionState extends State<SCHouseInspectProblemD
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset(SCAsset.iconInspectProblemTips, width: 22.0, height:  22.0,),
+        Image.asset(SCAsset.iconInspectProblemTips, width: 22.0, height: 22.0,),
         const SizedBox(width: 4.0,),
         const Expanded(child: Text(
           '请拍摄清晰的照片，并标记问题的部位',

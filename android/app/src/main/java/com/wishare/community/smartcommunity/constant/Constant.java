@@ -22,5 +22,15 @@ public class Constant {
 
     public static class FlutterChannelMethodEnum {
         public static String android_webview = "android_webview";
+        public static String android_baidu_ocr = "android_baidu_ocr";
+    }
+
+
+    /**
+     * ocr识别类型
+     */
+    public static class OCRTypeEnum {
+        public static String ID_CARD = "0";
+        public static String LICENSE_PLATE = "1";
     }
 }

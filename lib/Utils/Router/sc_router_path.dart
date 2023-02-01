@@ -47,6 +47,9 @@ class SCRouterPath {
   /// 选择房号
   static String houseInspectSelectPath = "/lib/Page/ApplicationModule/Page/sc_house_inspect_select_page";
 
+  /// 入伙验房
+  static String enterHouseInspectPage = "/lib/Page/HouseInspect/Page/sc_enter_house_inspect_page";
+
   /// 正式验房
   static String formalHouseInspectPage = "/lib/Page/HouseInspect/Page/sc_formal_house_inspect_page";
 
@@ -58,5 +61,9 @@ class SCRouterPath {
 
   /// 问题
   static String houseInspectProblemPage = "/lib/Page/HouseInspect/Page/sc_house_inspect_problem_page";
+
+  /// 待上传事项
+  static String toBeUploadPage = "/lib/Page/HouseInspect/Page/sc_to_be_upload_page";
+
 
 }

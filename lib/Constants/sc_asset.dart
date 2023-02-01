@@ -165,4 +165,16 @@ class SCAsset {
   static const String iconInspectProblemTips = "images/houseInspect/icon_inspect_problem_tips.png";
   /// 问题-添加图片icon
   static const String iconInspectProblemAddPhoto = "images/houseInspect/icon_inspect_problem_add_photo.png";
+  /// 验房-未完成icon
+  static const String iconInspectUndone = "images/houseInspect/icon_inspect_undone.png";
+  /// 验房-已完成icon
+  static const String iconInspectDone = "images/houseInspect/icon_inspect_done.png";
+  /// 签名icon
+  static const String iconInspectSign = "images/houseInspect/icon_inspect_sign.png";
+  /// 更多楼幢-关闭icon
+  static const String iconMoreBuildingsClose = "images/houseInspect/icon_more_buildings_close.png";
+  /// 待上传事项-房屋icon
+  static const String iconToBeUploadHouse = "images/houseInspect/icon_to_be_upload_house.png";
+
+
 }

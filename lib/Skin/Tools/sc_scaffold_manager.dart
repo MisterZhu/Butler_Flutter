@@ -63,6 +63,7 @@ class SCScaffoldManager {
 
   /// flutter调用原生的channel 方法名
   static String android_webview = "android_webview";
+  static String android_baidu_ocr = "android_baidu_ocr";
 
   SCScaffoldManager._internal() {
     _scaffoldModel = SCScaffoldModel();
