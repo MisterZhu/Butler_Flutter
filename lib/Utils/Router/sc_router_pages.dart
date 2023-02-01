@@ -15,6 +15,7 @@ import '../../Page/ApplicationModule/HouseInspect/Page/sc_formal_house_inspect_d
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_formal_house_inspect_page.dart';
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_form_page.dart';
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_problem_page.dart';
+import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_select_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
 import 'sc_router_path.dart';
 
@@ -48,6 +49,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.switchIdentityPath, page: () => SCSwitchTenantPage()),
     /*个人资料*/
     GetPage(name: SCRouterPath.personalInfoPath, page: () => SCPersonalInfoPage()),
+    /*入伙验房-选择房号*/
+    GetPage(name: SCRouterPath.houseInspectSelectPath, page: () => SCHouseInspectSelectPage()),
     /*正式验房*/
     GetPage(name: SCRouterPath.formalHouseInspectPage, page: () => SCFormalHouseInspectPage()),
     /*正式验房-详情*/

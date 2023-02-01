@@ -44,6 +44,9 @@ class SCRouterPath {
 
   /// *************************** 入伙验房 ******************************/
 
+  /// 选择房号
+  static String houseInspectSelectPath = "/lib/Page/ApplicationModule/Page/sc_house_inspect_select_page";
+
   /// 正式验房
   static String formalHouseInspectPage = "/lib/Page/HouseInspect/Page/sc_formal_house_inspect_page";
 

@@ -98,11 +98,11 @@ class SCMineListView extends StatelessWidget {
       },);
     } else if (index == 2) {
       return SCSettingCell(
-        title: '我的收益',
+        title: '选择房号',
         showLeftIcon: true,
         leftIcon: SCAsset.iconMineService,
         onTap: () {
-
+          SCRouterHelper.pathPage(SCRouterPath.houseInspectSelectPath, null);
       },);
     } else if (index == 3) {
       return SCSettingCell(
