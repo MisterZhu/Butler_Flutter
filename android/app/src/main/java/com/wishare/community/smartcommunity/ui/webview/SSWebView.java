@@ -4,8 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,9 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.widget.ImageView;
@@ -32,18 +28,14 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.smtt.export.external.interfaces.PermissionRequest;
 import com.tencent.smtt.sdk.WebView;
 import com.wishare.community.smartcommunity.R;
-import com.wishare.community.smartcommunity.ui.webview.helper.BridgeHandler;
 import com.wishare.community.smartcommunity.ui.webview.helper.BridgeWebChromeClient;
 import com.wishare.community.smartcommunity.ui.webview.helper.BridgeWebView;
 import com.wishare.community.smartcommunity.ui.webview.helper.BridgeWebViewClient;
-import com.wishare.community.smartcommunity.ui.webview.helper.CallBackFunction;
-import com.wishare.community.smartcommunity.utils.CacheFileUtils;
 import com.wishare.community.smartcommunity.utils.ImageUtil;
 
 import java.io.File;
 import java.util.List;
 
-import io.flutter.embedding.android.FlutterActivity;
 import io.reactivex.functions.Consumer;
 
 /**
