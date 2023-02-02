@@ -20,7 +20,6 @@ class SCHouseInspectSignaturePageState extends State<SCHouseInspectSignaturePage
   @override
   initState() {
     super.initState();
-    SCUtils().hideTopStatusBar();
     controller = SignatureController(
       penStrokeWidth: 3,
       penColor: SCColors.color_1B1D33,
