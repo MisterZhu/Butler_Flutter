@@ -234,4 +234,9 @@ class SCUtils {
       return newUrl;
     }
   }
+
+  /*隐藏顶部状态栏*/
+  hideTopStatusBar() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,overlays: [SystemUiOverlay.bottom]);
+  }
 }

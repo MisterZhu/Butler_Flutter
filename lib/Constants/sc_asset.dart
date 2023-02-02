@@ -175,6 +175,7 @@ class SCAsset {
   static const String iconMoreBuildingsClose = "images/houseInspect/icon_more_buildings_close.png";
   /// 待上传事项-房屋icon
   static const String iconToBeUploadHouse = "images/houseInspect/icon_to_be_upload_house.png";
-
+  /// 签名-返回按钮
+  static const String iconInspectBack = "images/houseInspect/icon_circle_back.png";
 
 }

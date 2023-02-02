@@ -65,5 +65,7 @@ class SCRouterPath {
   /// 待上传事项
   static String toBeUploadPage = "/lib/Page/HouseInspect/Page/sc_to_be_upload_page";
 
+  // 签名
+  static String signaturePage = "/lib/Page/HouseInspect/Page/sc_house_inspect_signature_page";
 
 }

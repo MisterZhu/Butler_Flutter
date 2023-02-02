@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_bottom_button_item.dart';
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_inspect_form_info_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_inspect_score_cell.dart';
@@ -38,7 +39,7 @@ class SCHouseInspectFormListView extends StatelessWidget {
   showAlert(BuildContext context) {
     SCDialogUtils.instance.showMiddleDialog(
       context: context,
-      content: '请将手机转交给业主，先由业主签署后您在签署',
+      content: SCDefaultValue.houseInspectSignatureTip,
       customWidgetButtons: [
         defaultCustomButton(context,
             text: '取消',
@@ -51,7 +52,7 @@ class SCHouseInspectFormListView extends StatelessWidget {
             onTap: () {
               /// 去签名
 
-              SCRouterHelper.pathPage(SCRouterPath.toBeUploadPage, null);
+              SCRouterHelper.pathPage(SCRouterPath.signaturePage, null);
 
             }
         ),

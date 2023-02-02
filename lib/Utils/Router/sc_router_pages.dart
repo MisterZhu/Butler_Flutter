@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:smartcommunity/Page/AddressBook/Home/Page/sc_addressbook_page.dart';
 import 'package:smartcommunity/Page/Application/Home/Page/sc_application_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_signature_page.dart';
 import 'package:smartcommunity/Page/Base/Scan/Page/sc_scan_page.dart';
 import 'package:smartcommunity/Page/Login/Home/Page/sc_login_page.dart';
 import 'package:smartcommunity/Page/Login/Privacy/Page/sc_privacy_alert_page.dart';
@@ -65,7 +66,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.houseInspectProblemPage, page: () => SCHouseInspectProblemPage()),
     /*待上传事项*/
     GetPage(name: SCRouterPath.toBeUploadPage, page: () => SCToBeUploadPage()),
-
+    /*签名*/
+    GetPage(name: SCRouterPath.signaturePage, page: () => SCHouseInspectSignaturePage()),
   ];
 
   /*根据code使用路由*/

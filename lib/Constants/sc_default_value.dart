@@ -110,6 +110,9 @@ class SCDefaultValue {
   /// 功能开发中
   static const String developingTip = "功能开发中";
 
+  /// 验房-签署弹窗文案
+  static const String houseInspectSignatureTip = "请将手机转交给业主，先由业主签署后您在签署";
+
   /// 图片路径
   static const files = "/files/";
 }
