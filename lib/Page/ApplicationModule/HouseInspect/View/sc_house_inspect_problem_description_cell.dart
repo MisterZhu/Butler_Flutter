@@ -81,12 +81,12 @@ class SCHouseInspectProblemDescriptionState extends State<SCHouseInspectProblemD
     return SizedBox(
       width: double.infinity,
       height: 66.0,
-      child: roomTextField(),
+      child: textField(),
     );
   }
 
   /// textField
-  Widget roomTextField() {
+  Widget textField() {
     return TextField(
       controller: controller,
       maxLines: null,
