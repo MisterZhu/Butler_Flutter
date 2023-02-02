@@ -6,7 +6,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
 
-import '../../../../Constants/sc_asset.dart';
+import '../../../../../Constants/sc_asset.dart';
 
 ///物资入库-筛选
 

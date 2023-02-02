@@ -1,6 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
-import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/sc_material_entry_cell.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_entry_cell.dart';
 
 /// 物资入库listview
 

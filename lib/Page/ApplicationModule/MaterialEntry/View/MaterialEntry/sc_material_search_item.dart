@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 
-import '../../../../Constants/sc_asset.dart';
+import '../../../../../Constants/sc_asset.dart';
 
 /// 物资入库-顶部搜索
 

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 
-import '../../../../Constants/sc_asset.dart';
+import '../../../../../Constants/sc_asset.dart';
 
 class SCMaterialEntryCell extends StatelessWidget {
 
