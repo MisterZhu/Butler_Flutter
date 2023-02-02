@@ -107,19 +107,7 @@ class SCEnterHouseInspectView extends StatelessWidget {
                 color: SCColors.color_4285F4,),
             ),
             onPressed: () {
-              SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-                SCDialogUtils().showCustomBottomDialog(
-                  context: context,
-                  widget: SCMoreBuildingsView(
-                    dataList: ['1幢', '2幢', '3幢', '4幢', '5幢','6幢', '7幢', '8幢', '9幢', '10幢', '11幢', '12幢', '13幢',
-                      '14幢', '15幢', '16幢', '17幢', '18幢','19幢', '20幢', '21幢', '22幢', '23幢', '24幢', '25幢', '26幢',
-                      '27幢', '28幢', '29幢', '30幢', '31幢','32幢', '33幢', '34幢', '35幢', '36幢', '37幢', '38幢', '39幢',
-                      '40幢', '41幢', '42幢', '43幢', '44幢', '45幢','46幢', '47幢', '48幢', '49幢', '50幢', '51幢', '52幢', '53幢'],
-                    tapAction: (String name) {
 
-                    },
-                  ));
-              });
             },
           )
       ),

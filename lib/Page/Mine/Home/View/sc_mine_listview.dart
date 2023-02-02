@@ -106,11 +106,11 @@ class SCMineListView extends StatelessWidget {
       },);
     } else if (index == 3) {
       return SCSettingCell(
-        title: '正式验房',
+        title: '物资入库',
         showLeftIcon: true,
         leftIcon: SCAsset.iconMineService,
         onTap: () {
-          SCRouterHelper.pathPage(SCRouterPath.enterHouseInspectPage, null);
+          SCRouterHelper.pathPage(SCRouterPath.materialEntryPage, null);
       },);
     } else {
       return const SizedBox(height: 100.0,);

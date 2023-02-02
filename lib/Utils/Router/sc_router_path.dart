@@ -65,5 +65,9 @@ class SCRouterPath {
   /// 待上传事项
   static String toBeUploadPage = "/lib/Page/HouseInspect/Page/sc_to_be_upload_page";
 
+  /// *************************** 物资入库 ******************************/
+
+  /// 物资入库
+  static String materialEntryPage = "/lib/Page/materialEntry/Page/sc_material_entry_page";
 
 }
