@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-
 import '../../../../Constants/sc_asset.dart';
 import '../../../../Utils/Permission/sc_permission_utils.dart';
 import '../../../../Utils/sc_utils.dart';
@@ -29,6 +28,9 @@ class SCDeliverEvidenceCell extends StatefulWidget {
 class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
 
   List photosList = [];
+
+  /// 最多可以传8张图片
+  int maxCount = 8;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +72,7 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
         crossAxisSpacing: 8,
         crossAxisCount: 4,
         shrinkWrap: true,
-        itemCount: photosList.length >= 9 ? 9 : photosList.length + 1,
+        itemCount: photosList.length >= maxCount ? maxCount : photosList.length + 1,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           return photoItem(index);
@@ -98,7 +100,7 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
           width: 79.0,
           height:  79.0,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(4.0),
+            borderRadius: BorderRadius.circular(index == photosList.length ? 0.0 : 4.0),
             child:Image.asset(
               index == photosList.length ? widget.addIcon : photosList[index],
               width: 79.0,

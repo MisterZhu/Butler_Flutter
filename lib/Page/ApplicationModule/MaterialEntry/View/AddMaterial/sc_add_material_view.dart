@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/sc_utils.dart';
+import '../Alert/sc_reject_alert.dart';
 import '../MaterialEntry/sc_material_search_item.dart';
 import '../MaterialEntry/sc_material_sift_item.dart';
 
@@ -55,9 +56,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
   }
 
   Widget getCell(int index) {
-
     return Container(color: SCColors.color_FFFFFF, height: 40,);
-
   }
 
   /// bottomItem
@@ -123,13 +122,27 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
                     color: SCColors.color_FFFFFF,),
                 ),
                 onPressed: () {
-
+                  showAlert();
                 },
               )
           )
         ],
       ),
     );
+  }
+
+  /// 展示驳回弹窗
+  showAlert() {
+    SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+      SCDialogUtils().showCustomBottomDialog(
+          isDismissible: true,
+          context: context,
+          widget: SCRejectAlert(
+            title: '审批拒绝',
+            tagList: ['流程不合理', '图片不清晰', '名称错误', '审批不合规'],
+            showNode: false,
+          ));
+    });
   }
 
 }

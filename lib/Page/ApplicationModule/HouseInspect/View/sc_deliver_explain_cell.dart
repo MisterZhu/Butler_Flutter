@@ -10,11 +10,14 @@ class SCDeliverExplainCell extends StatefulWidget {
   /// 标题
   final String title;
 
+  /// 输入框的内容
+  final String? content;
+
   final double inputHeight;
   /// 输入内容
   final Function(String content)? inputAction;
 
-  SCDeliverExplainCell({ Key? key, required this.title, this.inputHeight = 86.0, this.inputAction}) : super(key: key);
+  SCDeliverExplainCell({ Key? key, required this.title, this.content, this.inputHeight = 86.0, this.inputAction}) : super(key: key);
 
   @override
   SCDeliverExplainCellState createState() => SCDeliverExplainCellState();
@@ -26,7 +29,20 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
   FocusNode node = FocusNode();
 
   @override
+  initState() {
+    super.initState();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (widget.content != null) {
+      controller.value = controller.value.copyWith(
+        text: widget.content,
+        selection: TextSelection(baseOffset: widget.content?.length ?? 0, extentOffset: widget.content?.length ?? 0),
+        composing: TextRange.empty,
+      );
+    }
     return body();
   }
 

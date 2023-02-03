@@ -11,18 +11,28 @@ import '../../../HouseInspect/View/sc_deliver_explain_cell.dart';
 
 class SCPickupInfoCell extends StatelessWidget {
 
+  /// 仓库名称
+  final String? warehouseName;
+  /// 类型
+  final String? type;
   /// 选择仓库名称
   final Function? selectNameAction;
 
   /// 选择类型
   final Function? selectTypeAction;
 
+  /// 输入内容
+  final Function(String content)? inputAction;
+
   /// 添加图片
-  final Function? addPhotoAction;
+  final Function(List list)? addPhotoAction;
 
   SCPickupInfoCell({Key? key,
+    this.warehouseName,
+    this.type,
     this.selectNameAction,
     this.selectTypeAction,
+    this.inputAction,
     this.addPhotoAction,
   }) : super(key: key);
 
@@ -70,12 +80,12 @@ class SCPickupInfoCell extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SCMaterialSelectItem(title: '仓库名称', selectAction: () {
-
+          SCMaterialSelectItem(title: '仓库名称', content: warehouseName, selectAction: () {
+            selectNameAction?.call();
           },),
           line(),
-          SCMaterialSelectItem(title: '类型', selectAction: () {
-
+          SCMaterialSelectItem(title: '类型', content: type, selectAction: () {
+            selectTypeAction?.call();
           },),
           line(),
           const SizedBox(height: 12.0,),
@@ -94,7 +104,7 @@ class SCPickupInfoCell extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(4.0)),
         child: SCDeliverExplainCell(title: '备注信息', inputHeight: 92.0, inputAction: (String content) {
-
+          inputAction?.call(content);
         },)
     );
   }
@@ -106,11 +116,10 @@ class SCPickupInfoCell extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(4.0)),
         child: SCDeliverEvidenceCell(title: '上传照片', addIcon: SCAsset.iconMaterialAddPhoto, addPhotoAction: (List list) {
-
+          addPhotoAction?.call(list);
         },)
     );
   }
-
 
   /// line
   Widget line() {
