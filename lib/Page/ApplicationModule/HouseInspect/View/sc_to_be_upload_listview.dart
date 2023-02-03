@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_problem_cell.dart';
+import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/Problems/sc_house_problem_cell.dart';
 import '../../../../Constants/sc_asset.dart';
 
 /// 待上传事项page

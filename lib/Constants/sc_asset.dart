@@ -186,6 +186,13 @@ class SCAsset {
   static const String iconMaterialArrowDown = "images/materialEntry/icon_material_arrow_down.png";
   /// 新增入库icon
   static const String iconAddReceipt = "images/materialEntry/icon_add_receipt.png";
-
+  /// 新增入库-添加图片icon
+  static const String iconMaterialAddPhoto = "images/materialEntry/icon_material_add_photo.png";
+  /// 新增入库-添加物资icon
+  static const String iconMaterialAdd = "images/materialEntry/icon_material_add.png";
+  /// 添加物资-未选择icon
+  static const String iconMaterialUnselect = "images/materialEntry/icon_material_unselect.png";
+  /// 添加物资-已选择icon
+  static const String iconMaterialSelected = "images/materialEntry/icon_material_selected.png";
 
 }

@@ -12,21 +12,14 @@ import '../../../../../Constants/sc_asset.dart';
 
 class SCMaterialSiftItem extends StatelessWidget {
 
-  /// 状态点击
-  final Function? stateTapAction;
+  /// 按钮点击
+  final Function(int index)? tapAction;
 
-  /// 类型点击
-  final Function? typeTapAction;
-
-  /// 排序点击
-  final Function? sortTapAction;
-
-  List list = ['状态', '类型', '排序'];
+  final List tagList;
 
   SCMaterialSiftItem({Key? key,
-    this.stateTapAction,
-    this.typeTapAction,
-    this.sortTapAction,
+    required this.tagList,
+    this.tapAction,
   }) : super(key: key);
 
   @override
@@ -36,30 +29,34 @@ class SCMaterialSiftItem extends StatelessWidget {
 
   /// body
   Widget body() {
-    double space = (SCUtils().getScreenWidth() - 150.0 - 32.0) / 2;
     return Container(
       color: SCColors.color_FFFFFF,
       width: double.infinity,
       height: 44.0,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          siftItem(0),
-          SizedBox(width: space,),
-          siftItem(1),
-          SizedBox(width: space,),
-          siftItem(2),
-        ],
-      )
+      child: listView()
     );
+  }
+
+  Widget listView() {
+    double space = (SCUtils().getScreenWidth() - 150.0 - 32.0) / 2;
+    return ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0,),
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (BuildContext context, int index) {
+          return siftItem(index);
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return SizedBox(width: space,);
+        },
+        itemCount: tagList.length);
   }
 
   Widget siftItem(int index) {
     return GestureDetector(
       onTap: () {
-
+        tapAction?.call(index);
       },
       behavior: HitTestBehavior.opaque,
       child: SizedBox(
@@ -70,7 +67,7 @@ class SCMaterialSiftItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              list[index],
+              tagList[index],
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(

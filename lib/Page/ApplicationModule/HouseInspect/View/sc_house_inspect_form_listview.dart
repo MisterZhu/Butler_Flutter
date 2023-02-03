@@ -1,12 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Constants/sc_default_value.dart';
+import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/Problems/sc_house_problem_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_bottom_button_item.dart';
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_inspect_form_info_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_inspect_score_cell.dart';
-import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_problem_cell.dart';
-
+import 'package:smartcommunity/constants/sc_default_value.dart';
 import '../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../Utils/Router/sc_router_path.dart';
 
@@ -51,9 +50,7 @@ class SCHouseInspectFormListView extends StatelessWidget {
             fontWeight: FontWeight.w400,
             onTap: () {
               /// 去签名
-
               SCRouterHelper.pathPage(SCRouterPath.signaturePage, null);
-
             }
         ),
       ],

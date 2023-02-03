@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../../Utils/sc_utils.dart';
-import '../View/sc_house_inspect_problem_listview.dart';
+import '../View/Problems/sc_house_inspect_problem_listview.dart';
 
 /// 验房-问题page
 

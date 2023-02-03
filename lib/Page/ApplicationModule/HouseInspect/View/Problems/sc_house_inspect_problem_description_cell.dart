@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import '../../../../Constants/sc_asset.dart';
-import '../../../../Utils/Permission/sc_permission_utils.dart';
-import '../../../../Utils/sc_utils.dart';
+import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Utils/Permission/sc_permission_utils.dart';
+import '../../../../../Utils/sc_utils.dart';
 
 /// 验房-问题-问题说明
 class SCHouseInspectProblemDescriptionCell extends StatefulWidget {

@@ -4,10 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 
-/// 交付说明cell
+/// 标题+输入框 cell
 class SCDeliverExplainCell extends StatefulWidget {
 
-  SCDeliverExplainCell({ Key? key,}) : super(key: key);
+  /// 标题
+  final String title;
+
+  final double inputHeight;
+  /// 输入内容
+  final Function(String content)? inputAction;
+
+  SCDeliverExplainCell({ Key? key, required this.title, this.inputHeight = 86.0, this.inputAction}) : super(key: key);
 
   @override
   SCDeliverExplainCellState createState() => SCDeliverExplainCellState();
@@ -25,29 +32,24 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
 
   /// body
   Widget body() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(4.0)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          titleItem(),
-          const SizedBox(height: 12.0,),
-          inputItem(),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        titleItem(),
+        const SizedBox(height: 12.0,),
+        inputItem(),
+      ],
     );
   }
 
   /// title
   Widget titleItem() {
-    return const Text(
-        '交付说明',
+    return Text(
+        widget.title,
         textAlign: TextAlign.left,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: SCFonts.f16,
           color: SCColors.color_1B1D33,
           fontWeight: FontWeight.w500,
@@ -59,7 +61,7 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
   Widget inputItem() {
     return Container(
       width: double.infinity,
-      height: 86.0,
+      height: widget.inputHeight,
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
       decoration: BoxDecoration(
         color: SCColors.color_F7F8FA, borderRadius: BorderRadius.circular(4.0)),
@@ -94,7 +96,7 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
         isCollapsed: true,
       ),
       onChanged: (value) {
-
+        widget.inputAction?.call(value);
       },
       keyboardType: TextInputType.text,
       keyboardAppearance: Brightness.light,

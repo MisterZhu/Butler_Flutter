@@ -54,12 +54,32 @@ class SCFormalHouseInspectListView extends StatelessWidget {
     } else if (index == 1) {
       return SCHouseInspectInfoCell();
     } else if (index == 2) {
-      return SCDeliverExplainCell();
+      return inputItem();
     } else if (index == 3) {
-      return SCDeliverEvidenceCell();
+      return photosItem();
     } else {
       return const SizedBox(height: 20.0,);
     }
+  }
+
+  /// 输入框
+  Widget inputItem() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+      child: SCDeliverExplainCell(title: '交付说明', inputAction: (String content) {
+
+      },)
+    );
+  }
+
+  /// 图片
+  Widget photosItem() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+      child: SCDeliverEvidenceCell(title: '交付凭证', addPhotoAction: (List list) {
+
+      },)
+    );
   }
 
   /// line

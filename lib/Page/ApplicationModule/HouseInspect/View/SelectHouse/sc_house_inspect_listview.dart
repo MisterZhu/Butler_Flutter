@@ -7,7 +7,7 @@ import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/SelectHo
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
-import '../sc_more_buildings_view.dart';
+import 'sc_more_buildings_view.dart';
 import 'sc_select_house_tip_view.dart';
 
 /// 选择房号-listView

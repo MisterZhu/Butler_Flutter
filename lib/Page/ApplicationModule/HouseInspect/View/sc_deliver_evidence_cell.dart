@@ -7,10 +7,20 @@ import '../../../../Constants/sc_asset.dart';
 import '../../../../Utils/Permission/sc_permission_utils.dart';
 import '../../../../Utils/sc_utils.dart';
 
-/// 交付凭证cell
+/// 标题+添加图片cell
+
 class SCDeliverEvidenceCell extends StatefulWidget {
 
-  SCDeliverEvidenceCell({ Key? key,}) : super(key: key);
+  /// 标题
+  final String title;
+
+  /// 添加图片icon
+  final String addIcon;
+
+  /// 添加图片
+  final Function(List list)? addPhotoAction;
+
+  SCDeliverEvidenceCell({ Key? key, required this.title, this.addIcon = SCAsset.iconInspectProblemAddPhoto, this.addPhotoAction}) : super(key: key);
 
   @override
   SCDeliverEvidenceCellState createState() => SCDeliverEvidenceCellState();
@@ -27,36 +37,30 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
 
   /// body
   Widget body() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(4.0)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          titleItem(),
-          const SizedBox(height: 12.0,),
-          photosItem(),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        titleItem(),
+        const SizedBox(height: 12.0,),
+        photosItem(),
+      ],
     );
   }
 
   /// title
   Widget titleItem() {
-    return const Text(
-        '交付凭证',
+    return Text(
+        widget.title,
         textAlign: TextAlign.left,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: SCFonts.f16,
           color: SCColors.color_1B1D33,
           fontWeight: FontWeight.w500,
         ),
     );
   }
-
 
   /// photosItem
   Widget photosItem() {
@@ -85,6 +89,7 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
           SCPermissionUtils.takePhoto((String path){
             setState(() {
               photosList.add(path);
+              widget.addPhotoAction?.call(photosList);
             });
           });
         }
@@ -95,7 +100,7 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(4.0),
             child:Image.asset(
-              index == photosList.length ? SCAsset.iconInspectProblemAddPhoto : photosList[index],
+              index == photosList.length ? widget.addIcon : photosList[index],
               width: 79.0,
               height: 79.0,
               fit: BoxFit.fill,),
