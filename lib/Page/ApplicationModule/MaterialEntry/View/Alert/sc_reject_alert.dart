@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Alert/sc_reject_node_alert.dart';
 import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../../WorkBench/Home/View/Alert/sc_alert_header_view.dart';
 import '../../../HouseInspect/View/sc_bottom_button_item.dart';
@@ -162,8 +163,12 @@ class SCRejectAlertState extends State<SCRejectAlert> {
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(4.0)),
-        child: SCDeliverEvidenceCell(title: '上传照片', addIcon: SCAsset.iconMaterialAddPhoto, addPhotoAction: (List list) {
-          photosList = list;
+        child: SCDeliverEvidenceCell(
+          title: '上传照片',
+          addIcon: SCAsset.iconMaterialAddPhoto,
+          addPhotoType: SCAddPhotoType.all,
+          addPhotoAction: (List list) {
+            photosList = list;
         },)
     );
   }

@@ -140,7 +140,7 @@ class SCPermissionUtils {
               SCSpUtil.setBool(SCKey.kIsShowPhotoAlert, true);
               PermissionStatus permissionStatus;
               /// android权限为Permission.storage对应iOS的Permission.photos
-              if(Platform.isAndroid) {
+              if (Platform.isAndroid) {
                 permissionStatus = await Permission.storage.request();
               } else {
                 permissionStatus = await Permission.photos.request();

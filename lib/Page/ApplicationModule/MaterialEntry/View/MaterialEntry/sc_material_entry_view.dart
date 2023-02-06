@@ -1,5 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_entry_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_search_item.dart';
@@ -8,10 +10,36 @@ import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
+import '../Alert/sc_sift_alert.dart';
+import '../Alert/sc_sort_alert.dart';
 
 /// 物资入库view
 
-class SCMaterialEntryView extends StatelessWidget {
+class SCMaterialEntryView extends StatefulWidget {
+
+  @override
+  SCMaterialEntryViewState createState() => SCMaterialEntryViewState();
+}
+
+class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
+
+  List siftList =  ['状态', '类型', '排序'];
+
+  List statusList = ['全部', '待提交', '审批中', '已拒绝', '已驳回', '已撤回', '已入库'];
+
+  List typeList = ['全部', '采购入库', '调拨入库', '盘盈入库', '领料归还入库', '借用归还入库', '退货入库', '其他入库'];
+
+  int selectStatus = 0;
+
+  int selectType = 0;
+
+  int sortIndex = 0;
+
+  bool showStatusAlert = false;
+
+  bool showTypeAlert = false;
+
+  bool showSortAlert = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +52,29 @@ class SCMaterialEntryView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SCMaterialSearchItem(),
-        SCMaterialSiftItem(tagList: ['状态', '类型', '排序'], tapAction: (index) {
-
+        SCMaterialSearchItem(searchAction: () {
+          SCRouterHelper.pathPage(SCRouterPath.materialSearchPage, null);
+        },),
+        SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
+          if (index == 0) {
+            setState(() {
+              showStatusAlert = !showStatusAlert;
+              showTypeAlert = false;
+              showSortAlert = false;
+            });
+          } else if (index == 1) {
+            setState(() {
+              showStatusAlert = false;
+              showTypeAlert = !showTypeAlert;
+              showSortAlert = false;
+            });
+          } else if (index == 2) {
+            setState(() {
+              showStatusAlert = false;
+              showTypeAlert = false;
+              showSortAlert = !showSortAlert;
+            });
+          }
         },),
         Expanded(child: contentItem())
       ],
@@ -48,7 +96,28 @@ class SCMaterialEntryView extends StatelessWidget {
           bottom: SCUtils().getBottomSafeArea() + 40,
           width: 60.0,
           height: 60.0,
-          child: addItem(),)
+          child: addItem(),),
+        Positioned(
+          left: 0.0,
+          right: 0.0,
+          top: 0.0,
+          bottom: 0.0,
+          child: statusAlert(),
+        ),
+        Positioned(
+          left: 0.0,
+          right: 0.0,
+          top: 0.0,
+          bottom: 0.0,
+          child: typeAlert(),
+        ),
+        Positioned(
+          left: 0.0,
+          right: 0.0,
+          top: 0.0,
+          bottom: 0.0,
+          child: sortAlert(),
+        ),
       ],
     );
   }
@@ -89,8 +158,7 @@ class SCMaterialEntryView extends StatelessWidget {
     );
   }
 
-
-  /// listView
+  /// listview
   Widget listview() {
     return ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
@@ -108,9 +176,59 @@ class SCMaterialEntryView extends StatelessWidget {
         itemCount: 3);
   }
 
+
   /// 详情
   detailAction(int index) {
     SCRouterHelper.pathPage(SCRouterPath.materialDetailPage, null);
+  }
+
+  /// 入库状态弹窗
+  Widget statusAlert() {
+    return Offstage(
+      offstage: !showStatusAlert,
+      child: SCSiftAlert(
+        title: '入库状态',
+        list: statusList,
+        selectIndex: selectStatus,
+        tapAction: (value) {
+          setState(() {
+            showStatusAlert = false;
+            selectStatus = value;
+            siftList[0] = value == 0 ? '状态' : statusList[value];
+          });
+        },),
+    );
+  }
+
+  /// 入库类型弹窗
+  Widget typeAlert() {
+    return Offstage(
+      offstage: !showTypeAlert,
+      child: SCSiftAlert(
+        title: '入库类型',
+        list: typeList,
+        selectIndex: selectType,
+        tapAction: (value) {
+          setState(() {
+            showTypeAlert = false;
+            selectType = value;
+            siftList[1] = value == 0 ? '类型' : typeList[value];
+          });
+        },),
+    );
+  }
+
+  /// 排序弹窗
+  Widget sortAlert() {
+    return Offstage(
+      offstage: !showSortAlert,
+      child: SCSortAlert(selectIndex: sortIndex, tapAction: (index) {
+        setState(() {
+          showSortAlert = false;
+          sortIndex = index;
+        });
+      },),
+    );
   }
 
 }

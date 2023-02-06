@@ -1,34 +1,28 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/sc_alert_header_view.dart';
-import 'package:smartcommunity/utils/sc_utils.dart';
-import '../../Model/sc_home_task_model.dart';
 
-/// 任务板块弹窗
+/// 标签选择view
 
-class SCTaskModuleAlert extends StatefulWidget {
-  SCTaskModuleAlert({Key? key,
-    required this.title,
+class SCTagSelectView extends StatefulWidget {
+
+  SCTagSelectView({Key? key,
     required this.list,
     required this.currentIndex,
-    this.radius = 13.0,
-    this.tagHeight = 26.0,
-    this.columnCount = 4,
-    this.mainSpacing = 14.0,
+    this.radius = 2.0,
+    this.tagHeight = 32.0,
+    this.columnCount = 3,
+    this.mainSpacing = 8.0,
     this.crossSpacing = 8.0,
-    this.topSpacing = 17.0,
-    this.bottomSpacing = 6.0,
-    this.closeTap,
+    this.topSpacing = 8.0,
+    this.tapAction,
   }) : super(key: key);
 
-  final String title;
-  /// 关闭
-  final Function(SCHomeTaskModel model, int index)? closeTap;
-
   /// 数据源
-  final List<SCHomeTaskModel> list;
+  final List list;
 
   /// 当前选中的index
   final int currentIndex;
@@ -48,62 +42,36 @@ class SCTaskModuleAlert extends StatefulWidget {
   /// 左右的间距
   final double crossSpacing;
 
-  /// gridview顶面的距离
+  /// gridview上面的距离
   final double topSpacing;
 
-  /// gridview底面的距离
-  final double bottomSpacing;
+  final Function(int value)? tapAction;
 
   @override
-  SCTaskModuleAlertState createState() => SCTaskModuleAlertState();
+  SCTagSelectViewState createState() => SCTagSelectViewState();
 }
 
-class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
+class SCTagSelectViewState extends State<SCTagSelectView> {
 
   /// 选中的标签
-  List<SCHomeTaskModel> selectList = [];
+  List selectList = [];
 
   /// 默认index
-  int normalIndex = 0;
+  int currentIndex = 0;
 
   @override
   initState() {
     super.initState();
-    normalIndex = widget.currentIndex;
+    currentIndex = widget.currentIndex;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-          color: SCColors.color_FFFFFF,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12.0),
-              topRight: Radius.circular(12.0))
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          titleItem(context),
-          gridView(),
-          Container(
-            color: SCColors.color_FFFFFF,
-            height: SCUtils().getBottomSafeArea(),
-          )
-        ],
-      ),
-    );
+    return body();
   }
 
-  /// title
-  Widget titleItem(BuildContext context) {
-    return SCAlertHeaderView(
-      title: widget.title,
-      closeTap: () {
-        Navigator.of(context).pop();
-      },
-    );
+  Widget body() {
+    return gridView();
   }
 
   /// gridView
@@ -111,7 +79,7 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
     int maxCount = widget.columnCount * 8;
     ScrollPhysics physics = widget.list.length > maxCount ? const ClampingScrollPhysics() : const NeverScrollableScrollPhysics();
     Widget gridView = StaggeredGridView.countBuilder(
-        padding: EdgeInsets.only(left: 16.0, right: 16.0, top: widget.topSpacing, bottom: widget.bottomSpacing),
+        padding: EdgeInsets.zero,
         mainAxisSpacing: widget.mainSpacing,
         crossAxisSpacing: widget.crossSpacing,
         crossAxisCount: widget.columnCount,
@@ -119,8 +87,7 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
         itemCount: widget.list.length,
         physics: physics,
         itemBuilder: (context, index) {
-          SCHomeTaskModel model = widget.list[index];
-          return cell(model, index);
+          return cell(index);
         },
         staggeredTileBuilder: (int index) {
           return const StaggeredTile.fit(1);
@@ -129,7 +96,7 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
     if (widget.list.length > maxCount) {
       return SizedBox(
         width: double.infinity,
-        height: (widget.tagHeight + widget.mainSpacing) * 8 + widget.topSpacing + widget.bottomSpacing,
+        height: 320.0,
         child: gridView,
       );
     } else {
@@ -138,22 +105,22 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
   }
 
   /// cell
-  Widget cell(SCHomeTaskModel model, int index) {
-    String name = model.name ?? '';
-    bool isSelect = index == normalIndex;
+  Widget cell(int index) {
+    String name = widget.list[index] ?? '';
+    bool isSelect = index == currentIndex;
     /// 背景颜色
-    Color bgColor = isSelect == true ? SCColors.color_EBF2FF : SCColors.color_EDEDF0;
+    Color bgColor = isSelect == true ? SCColors.color_EBF2FF : SCColors.color_F7F8FA;
     /// 边框颜色
     Color borderColor = isSelect == true ? SCColors.color_4285F4 : Colors.transparent;
     /// 边框宽度
-    double borderWidth = isSelect == true ? 0.5 : 0;
+    double borderWidth = isSelect == true ? 1 : 0;
     /// title字体颜色
-    Color textColor = isSelect == true ? SCColors.color_4285F4 : SCColors.color_1B1D33;
+    Color textColor = isSelect == true ? SCColors.color_0849B5 : SCColors.color_1B1D33;
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        tagAction(model, index);
+        tagAction(index);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 6.0),
@@ -170,9 +137,9 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            fontSize: SCFonts.f12,
-            fontWeight: FontWeight.w400,
-            color: textColor),
+              fontSize: SCFonts.f12,
+              fontWeight: FontWeight.w400,
+              color: textColor),
           strutStyle: const StrutStyle(
             fontSize: SCFonts.f12,
             height: 1.25,
@@ -184,11 +151,11 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
   }
 
   /// 标签点击
-  tagAction(SCHomeTaskModel model, int index) {
+  tagAction(int index) {
     setState(() {
-      normalIndex = index;
+      currentIndex = index;
     });
-    widget.closeTap?.call(model, index);
-    Navigator.of(context).pop();
+    widget.tapAction?.call(index);
   }
+
 }

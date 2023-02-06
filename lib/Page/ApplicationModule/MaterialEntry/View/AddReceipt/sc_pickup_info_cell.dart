@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Constants/sc_enum.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddReceipt/sc_material_select_item.dart';
 
 import '../../../../../Constants/sc_asset.dart';
@@ -115,8 +116,12 @@ class SCPickupInfoCell extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(4.0)),
-        child: SCDeliverEvidenceCell(title: '上传照片', addIcon: SCAsset.iconMaterialAddPhoto, addPhotoAction: (List list) {
-          addPhotoAction?.call(list);
+        child: SCDeliverEvidenceCell(
+          title: '上传照片',
+          addIcon: SCAsset.iconMaterialAddPhoto,
+          addPhotoType: SCAddPhotoType.all,
+          addPhotoAction: (List list) {
+            addPhotoAction?.call(list);
         },)
     );
   }

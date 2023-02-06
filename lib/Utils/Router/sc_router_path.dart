@@ -82,5 +82,7 @@ class SCRouterPath {
   /// 添加物资
   static String addMaterialPage = "/lib/Page/materialEntry/Page/sc_add_material_page";
 
+  /// 搜索物资
+  static String materialSearchPage = "/lib/Page/materialEntry/Page/sc_material_search_page";
 
 }

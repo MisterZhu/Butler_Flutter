@@ -53,3 +53,13 @@ enum SCPickerType {
   // 日期picker
   date
 }
+
+/// 添加照片类型
+enum SCAddPhotoType {
+  // 拍照+从相册选择
+  all,
+  // 拍照
+  takePhoto,
+  // 从相册选择
+  photoPicker
+}

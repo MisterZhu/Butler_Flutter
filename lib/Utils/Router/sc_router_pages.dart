@@ -23,6 +23,7 @@ import '../../Page/ApplicationModule/HouseInspect/Page/sc_to_be_upload_page.dart
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_add_material_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_add_receipt_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_material_entry_page.dart';
+import '../../Page/ApplicationModule/MaterialEntry/Page/sc_material_search_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
 import 'sc_router_path.dart';
 
@@ -80,6 +81,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.materialDetailPage, page: () => SCMaterialEntryDetailPage()),
     /*添加物资*/
     GetPage(name: SCRouterPath.addMaterialPage, page: () => SCAddMaterialPage()),
+    /*搜索物资*/
+    GetPage(name: SCRouterPath.materialSearchPage, page: () => SCMaterialSearchPage()),
   ];
 
   /*根据code使用路由*/
