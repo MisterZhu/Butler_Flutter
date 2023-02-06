@@ -90,12 +90,17 @@ class SCMaterialEntryView extends StatelessWidget {
   }
 
 
+  /// listView
   Widget listview() {
     return ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
-          return SCMaterialEntryCell();
+          return SCMaterialEntryCell(
+            detailTapAction: () {
+              detailAction(index);
+            },
+          );
         },
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 10.0,);
@@ -103,5 +108,9 @@ class SCMaterialEntryView extends StatelessWidget {
         itemCount: 3);
   }
 
+  /// 详情
+  detailAction(int index) {
+    SCRouterHelper.pathPage(SCRouterPath.materialDetailPage, null);
+  }
 
 }

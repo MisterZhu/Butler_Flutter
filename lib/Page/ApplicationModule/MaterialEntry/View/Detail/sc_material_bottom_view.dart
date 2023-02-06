@@ -6,16 +6,16 @@ import 'package:smartcommunity/Utils/sc_utils.dart';
 /// 底部通用按钮
 
 /// 默认样式按钮，白色背景，边框蓝色按钮
-const int sc_materialBottomViewTypeNormal = 0;
+const int scMaterialBottomViewTypeNormal = 0;
 
 /// 白色背景，边框蓝色按钮
-const int sc_materialBottomViewType1 = 1;
+const int scMaterialBottomViewType1 = 1;
 
 /// 蓝色背景按钮
-const int sc_materialBottomViewType2 = 2;
+const int scMaterialBottomViewType2 = 2;
 
 /// 自定义按钮
-const int sc_materialBottomViewTypeCustom = 3;
+const int scMaterialBottomViewTypeCustom = 3;
 
 class SCMaterialDetailBottomView extends StatelessWidget {
 
@@ -48,11 +48,11 @@ class SCMaterialDetailBottomView extends StatelessWidget {
       var map = list[i];
       int type = map['type'];
       String text = map['title'];
-      if (type == sc_materialBottomViewType1) {
+      if (type == scMaterialBottomViewType1) {
         widgetList.add(button1(text));
-      } else if (type == sc_materialBottomViewType2) {
+      } else if (type == scMaterialBottomViewType2) {
         widgetList.add(button2(text));
-      } else if (type == sc_materialBottomViewTypeCustom) {
+      } else if (type == scMaterialBottomViewTypeCustom) {
         Widget item = map['widget'];
         widgetList.add(item);
       } else {

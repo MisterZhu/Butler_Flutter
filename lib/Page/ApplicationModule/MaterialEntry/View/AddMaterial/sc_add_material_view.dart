@@ -6,6 +6,7 @@ import '../../../../../Utils/sc_utils.dart';
 import '../Alert/sc_reject_alert.dart';
 import '../MaterialEntry/sc_material_search_item.dart';
 import '../MaterialEntry/sc_material_sift_item.dart';
+import 'sc_add_material_listview.dart';
 
 /// 添加物资view
 
@@ -43,16 +44,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
 
   /// listview
   Widget listview(BuildContext context) {
-    return ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          return getCell(index);
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox();
-        },
-        itemCount: 4);
+    return SCAddMaterialListView();
   }
 
   Widget getCell(int index) {

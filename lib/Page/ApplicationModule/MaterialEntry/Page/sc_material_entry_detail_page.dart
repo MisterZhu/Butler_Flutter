@@ -50,20 +50,20 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
     );
     List list = [
       {
-        "type" : sc_materialBottomViewTypeCustom,
+        "type" : scMaterialBottomViewTypeCustom,
         "title" : "",
         "widget" : moreBtn
       },
       {
-        "type" : sc_materialBottomViewType1,
+        "type" : scMaterialBottomViewType1,
         "title" : "驳回",
       },
       {
-        "type" : sc_materialBottomViewType1,
+        "type" : scMaterialBottomViewType1,
         "title" : "拒绝",
       },
       {
-        "type" : sc_materialBottomViewType2,
+        "type" : scMaterialBottomViewType2,
         "title" : "通过",
       },
     ];
