@@ -186,6 +186,14 @@ class SCAsset {
   static const String iconMaterialArrowDown = "images/materialEntry/icon_material_arrow_down.png";
   /// 新增入库icon
   static const String iconAddReceipt = "images/materialEntry/icon_add_receipt.png";
+  /// 展开
+  static const String iconMaterialUnfold = "images/materialEntry/icon_material_unfold.png";
+  /// 折叠
+  static const String iconMaterialFold = "images/materialEntry/icon_material_fold.png";
+  /// 复制
+  static const String iconMaterialCopy = "images/materialEntry/icon_material_copy.png";
+  /// 更多选项
+  static const String iconMaterialMore = "images/materialEntry/icon_material_more.png";
   /// 新增入库-添加图片icon
   static const String iconMaterialAddPhoto = "images/materialEntry/icon_material_add_photo.png";
   /// 新增入库-添加物资icon
@@ -199,4 +207,6 @@ class SCAsset {
   /// 排序-已选择icon
   static const String iconSortSelected = "images/materialEntry/icon_sort_selected.png";
 
+  /// 测试图片
+  static const String iconTestMaterial = "images/materialEntry/icon_test_material.png";
 }
