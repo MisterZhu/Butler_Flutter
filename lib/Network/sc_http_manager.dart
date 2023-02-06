@@ -54,9 +54,13 @@ class SCHttpManager {
       _dio!.options = _baseOptions!;
       (_dio!.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
           (client) {
-        //抓Https包设置  信任所有https证书
+        // 抓Https包设置  信任所有https证书
         client.badCertificateCallback =
             (X509Certificate cert, String host, int port) => true;
+        // 设置抓包代理，ip+端口号
+        // client.findProxy = (uri) {
+        //   return "PROXY 172.16.175.159:13920";
+        // };
         return null;
       };
       _dio?.interceptors
