@@ -1,9 +1,7 @@
 
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-
 import '../../../../../Constants/sc_asset.dart';
 
 /// 物资搜索view
@@ -18,8 +16,11 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
 
   final TextEditingController controller = TextEditingController();
 
-  /// focusNode
   final FocusNode node = FocusNode();
+
+  List resultList = [];
+
+  String tips = '';
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           headerItem(),
-          Expanded(child: listView())
+          Expanded(child: contentView())
         ]
     );
   }
@@ -64,6 +65,7 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
     );
   }
 
+  /// 搜索框
   Widget searchItem() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -123,10 +125,11 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
           isCollapsed: true,
         ),
         onChanged: (value) {
-
+          loadData();
         },
         onSubmitted: (value) {
           node.unfocus();
+          loadData();
         },
     ));
   }
@@ -148,6 +151,15 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
         });
   }
 
+  /// contentView
+  Widget contentView() {
+    if (resultList.isNotEmpty) {
+      return listView();
+    } else {
+      return emptyItem();
+    }
+  }
+
   /// 结果列表
   Widget listView() {
     return ListView.separated(
@@ -162,7 +174,32 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
         itemCount: 4);
   }
 
+  /// cell
   Widget getCell(int index) {
     return Container(color: SCColors.color_FFFFFF, height: 60,);
+  }
+
+  /// 无搜索结果
+  Widget emptyItem() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.only(top: 104.0),
+      child: Text(
+          tips,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+              fontSize: SCFonts.f14,
+              fontWeight: FontWeight.w400,
+              color: SCColors.color_8D8E99)),
+    );
+  }
+
+  /// loadData
+  loadData() {
+    setState(() {
+      tips = '暂无搜索结果';
+    });
   }
 }
