@@ -194,9 +194,15 @@ class SCAsset {
   static const String iconMaterialCopy = "images/materialEntry/icon_material_copy.png";
   /// 更多选项
   static const String iconMaterialMore = "images/materialEntry/icon_material_more.png";
+  /// 新增入库-添加图片icon
+  static const String iconMaterialAddPhoto = "images/materialEntry/icon_material_add_photo.png";
+  /// 新增入库-添加物资icon
+  static const String iconMaterialAdd = "images/materialEntry/icon_material_add.png";
+  /// 添加物资-未选择icon
+  static const String iconMaterialUnselect = "images/materialEntry/icon_material_unselect.png";
+  /// 添加物资-已选择icon
+  static const String iconMaterialSelected = "images/materialEntry/icon_material_selected.png";
 
   /// 测试图片
   static const String iconTestMaterial = "images/materialEntry/icon_test_material.png";
-
-
 }

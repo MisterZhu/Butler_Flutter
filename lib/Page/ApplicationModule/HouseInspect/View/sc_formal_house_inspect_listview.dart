@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_bottom_button_item.dart';
+import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_deliver_evidence_cell.dart';
+import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_deliver_explain_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_info_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_inspect_info_cell.dart';
 
@@ -42,7 +44,7 @@ class SCFormalHouseInspectListView extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 10.0,);
         },
-        itemCount: 2);
+        itemCount: 4);
   }
 
   /// cell
@@ -51,9 +53,33 @@ class SCFormalHouseInspectListView extends StatelessWidget {
       return SCHouseInfoCell();
     } else if (index == 1) {
       return SCHouseInspectInfoCell();
+    } else if (index == 2) {
+      return inputItem();
+    } else if (index == 3) {
+      return photosItem();
     } else {
       return const SizedBox(height: 20.0,);
     }
+  }
+
+  /// 输入框
+  Widget inputItem() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+      child: SCDeliverExplainCell(title: '交付说明', inputAction: (String content) {
+
+      },)
+    );
+  }
+
+  /// 图片
+  Widget photosItem() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+      child: SCDeliverEvidenceCell(title: '交付凭证', addPhotoAction: (List list) {
+
+      },)
+    );
   }
 
   /// line

@@ -2,10 +2,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_problem_photos_item.dart';
-import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_house_problem_tags_item.dart';
-
-import '../../../../Constants/sc_asset.dart';
+import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/Problems/sc_house_problem_photos_item.dart';
+import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/Problems/sc_house_problem_tags_item.dart';
+import '../../../../../Constants/sc_asset.dart';
 
 /// 正式验房-问题cell
 

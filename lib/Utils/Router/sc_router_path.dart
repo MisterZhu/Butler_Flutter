@@ -79,4 +79,8 @@ class SCRouterPath {
   /// 入库详情
   static String materialDetailPage = "/lib/Page/MaterialEntry/Page/sc_material_entry_detail_page";
 
+  /// 添加物资
+  static String addMaterialPage = "/lib/Page/materialEntry/Page/sc_add_material_page";
+
+
 }

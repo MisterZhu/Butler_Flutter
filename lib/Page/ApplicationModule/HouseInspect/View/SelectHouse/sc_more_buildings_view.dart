@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import '../../../../Constants/sc_asset.dart';
-import '../../../../Utils/sc_utils.dart';
+import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Utils/sc_utils.dart';
 
 /// 更多楼幢
 class SCMoreBuildingsView extends StatefulWidget {

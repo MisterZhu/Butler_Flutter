@@ -10,11 +10,19 @@ import '../../Model/sc_home_task_model.dart';
 
 class SCTaskModuleAlert extends StatefulWidget {
   SCTaskModuleAlert({Key? key,
+    required this.title,
     required this.list,
     required this.currentIndex,
+    this.radius = 13.0,
+    this.tagHeight = 26.0,
+    this.columnCount = 4,
+    this.mainSpacing = 14.0,
+    this.crossSpacing = 8.0,
+    this.topSpacing = 17.0,
     this.closeTap,
   }) : super(key: key);
 
+  final String title;
   /// 关闭
   final Function(SCHomeTaskModel model, int index)? closeTap;
 
@@ -23,6 +31,24 @@ class SCTaskModuleAlert extends StatefulWidget {
 
   /// 最多选几个
   final int currentIndex;
+
+  /// 标签的圆角
+  final double radius;
+
+  /// 单个标签的高度
+  final double tagHeight;
+
+  /// 每一行有几个
+  final int columnCount;
+
+  /// 上下的间距
+  final double mainSpacing;
+
+  /// 左右的间距
+  final double crossSpacing;
+
+  /// gridview上面的距离
+  final double topSpacing;
 
   @override
   SCTaskModuleAlertState createState() => SCTaskModuleAlertState();
@@ -49,8 +75,8 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
       decoration: const BoxDecoration(
           color: SCColors.color_FFFFFF,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16.0),
-              topRight: Radius.circular(16.0))
+              topLeft: Radius.circular(12.0),
+              topRight: Radius.circular(12.0))
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -69,7 +95,7 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
   /// title
   Widget titleItem(BuildContext context) {
     return SCAlertHeaderView(
-      title: '任务板块',
+      title: widget.title,
       closeTap: () {
         Navigator.of(context).pop();
       },
@@ -78,13 +104,13 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
 
   /// gridView
   Widget gridView() {
-    int maxCount = 4 * 8;
+    int maxCount = widget.columnCount * 8;
     ScrollPhysics physics = widget.list.length > maxCount ? const ClampingScrollPhysics() : const NeverScrollableScrollPhysics();
     Widget gridView = StaggeredGridView.countBuilder(
-        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 17.0, bottom: 18.0),
-        mainAxisSpacing: 14.0,
-        crossAxisSpacing: 8.0,
-        crossAxisCount: 4,
+        padding: EdgeInsets.only(left: 16.0, right: 16.0, top: widget.topSpacing, bottom: 6.0),
+        mainAxisSpacing: widget.mainSpacing,
+        crossAxisSpacing: widget.crossSpacing,
+        crossAxisCount: widget.columnCount,
         shrinkWrap: true,
         itemCount: widget.list.length,
         physics: physics,
@@ -128,9 +154,9 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 6.0),
         alignment: Alignment.center,
-        height: 26.0,
+        height: widget.tagHeight,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(13.0),
+            borderRadius: BorderRadius.circular(widget.radius),
             color: bgColor,
             border: Border.all(color: borderColor, width: borderWidth)
         ),

@@ -197,6 +197,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
           isDismissible: true,
           context: context,
           widget: SCTaskModuleAlert(
+            title: '任务板块',
             list: list,
             currentIndex: workBenchController.currentPlateIndex,
             closeTap: (SCHomeTaskModel model, int index) {

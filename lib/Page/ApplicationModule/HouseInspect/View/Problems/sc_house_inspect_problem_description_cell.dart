@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import '../../../../Constants/sc_asset.dart';
-import '../../../../Utils/Permission/sc_permission_utils.dart';
-import '../../../../Utils/sc_utils.dart';
+import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Utils/Permission/sc_permission_utils.dart';
+import '../../../../../Utils/sc_utils.dart';
 
 /// 验房-问题-问题说明
 class SCHouseInspectProblemDescriptionCell extends StatefulWidget {
@@ -81,12 +81,12 @@ class SCHouseInspectProblemDescriptionState extends State<SCHouseInspectProblemD
     return SizedBox(
       width: double.infinity,
       height: 66.0,
-      child: roomTextField(),
+      child: textField(),
     );
   }
 
   /// textField
-  Widget roomTextField() {
+  Widget textField() {
     return TextField(
       controller: controller,
       maxLines: null,
