@@ -2,6 +2,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Utils/Router/sc_router_helper.dart';
+import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../Alert/sc_reject_alert.dart';
 import '../MaterialEntry/sc_material_search_item.dart';
@@ -30,7 +32,9 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SCMaterialSearchItem(),
+        SCMaterialSearchItem(searchAction: () {
+          SCRouterHelper.pathPage(SCRouterPath.materialSearchPage, null);
+        },),
         SCMaterialSiftItem(tagList: ['分类'], tapAction: (index) {
 
         },),

@@ -83,7 +83,7 @@ class SCAddReceiptListViewState extends State<SCAddReceiptListView> {
     }
   }
 
-  /// 弹出任务模块弹窗
+  /// 弹出类型弹窗
   showTypeAlert() {
     List typeList = ['采购入库', '调拨入库', '盘盈入库', '领料归还入库', '借用归还入库', '退货入库', '其他入库'];
     List<SCHomeTaskModel> list = [];

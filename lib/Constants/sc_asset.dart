@@ -194,5 +194,9 @@ class SCAsset {
   static const String iconMaterialUnselect = "images/materialEntry/icon_material_unselect.png";
   /// 添加物资-已选择icon
   static const String iconMaterialSelected = "images/materialEntry/icon_material_selected.png";
+  /// 删除照片
+  static const String iconDeletePhoto = "images/materialEntry/icon_delete_photo.png";
+  /// 排序-已选择icon
+  static const String iconSortSelected = "images/materialEntry/icon_sort_selected.png";
 
 }

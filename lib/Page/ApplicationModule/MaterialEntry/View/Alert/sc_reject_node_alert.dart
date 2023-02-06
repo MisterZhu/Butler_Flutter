@@ -100,7 +100,7 @@ class SCRejectNodeAlertState extends State<SCRejectNodeAlert> {
           children: [
             Text(
               name,
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontSize: 17,

@@ -97,7 +97,7 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 数量
   Widget numItem() {
     return Text(
-        '共 2 种物资  总数量 10共 2 种物资  总数量 20共 3 种物资  总数量 30共 4 种物资  总数量 40共 5 种物资  总数量 50',
+        '共 2 种  总数量 10',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
