@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import '../../../../Constants/sc_asset.dart';
 import '../../../../Constants/sc_enum.dart';
 import '../../../../Utils/Permission/sc_permission_utils.dart';
@@ -91,37 +92,7 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
     if (index == photosList.length) {
       return GestureDetector(
         onTap: () {
-          SCUtils().hideKeyboard(context: context);
-          if (index == photosList.length) {
-            if (widget.addPhotoType == SCAddPhotoType.photoPicker) {
-              SCPermissionUtils.photoPicker(
-                  maxLength: widget.maxCount - photosList.length,
-                  completionHandler: (imageList) {
-                print('从相册选择=============$imageList');
-                setState(() {
-                  photosList.addAll(imageList);
-                  widget.addPhotoAction?.call(photosList);
-                });
-              });
-            } else if (widget.addPhotoType == SCAddPhotoType.takePhoto) {
-              SCPermissionUtils.takePhoto((String path){
-                setState(() {
-                  photosList.add(path);
-                  widget.addPhotoAction?.call(photosList);
-                });
-              });
-            } else {
-              SCPermissionUtils.showImagePicker(
-                  maxLength: widget.maxCount - photosList.length,
-                  completionHandler: (imageList) {
-                    print('添加照片=============$imageList');
-                    setState(() {
-                      photosList.addAll(imageList);
-                      widget.addPhotoAction?.call(photosList);
-                    });
-                  });
-            }
-          }
+          addPhotoAction(index);
         },
         child: SizedBox(
           width: 79.0,
@@ -166,6 +137,42 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
           )
         )
       );
+    }
+  }
+
+  /// 添加图片
+  addPhotoAction(int index) {
+    SCUtils().hideKeyboard(context: context);
+    if (index == photosList.length) {
+      if (widget.addPhotoType == SCAddPhotoType.photoPicker) {//只能从相册选择图片
+        SCPermissionUtils.photoPicker(
+            maxLength: widget.maxCount - photosList.length,
+            requestType: RequestType.image,
+            completionHandler: (imageList) {
+              setState(() {
+                photosList.addAll(imageList);
+                widget.addPhotoAction?.call(photosList);
+              });
+            });
+      } else if (widget.addPhotoType == SCAddPhotoType.takePhoto) {//只能拍照
+        SCPermissionUtils.takePhoto((String path){
+          setState(() {
+            photosList.add(path);
+            widget.addPhotoAction?.call(photosList);
+          });
+        });
+      } else {
+        //从相册选择+拍照
+        SCPermissionUtils.showImagePicker(
+            maxLength: widget.maxCount - photosList.length,
+            requestType: RequestType.image,
+            completionHandler: (imageList) {
+              setState(() {
+                photosList.addAll(imageList);
+                widget.addPhotoAction?.call(photosList);
+              });
+            });
+      }
     }
   }
 }

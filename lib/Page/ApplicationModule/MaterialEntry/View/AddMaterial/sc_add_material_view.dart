@@ -35,7 +35,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
         SCMaterialSearchItem(searchAction: () {
           SCRouterHelper.pathPage(SCRouterPath.materialSearchPage, null);
         },),
-        SCMaterialSiftItem(tagList: ['分类'], tapAction: (index) {
+        SCMaterialSiftItem(tagList: const ['分类'], tapAction: (index) {
 
         },),
         Expanded(child: listview(context)),

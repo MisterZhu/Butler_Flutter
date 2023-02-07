@@ -43,18 +43,18 @@ class SCMaterialSiftItem extends StatelessWidget {
         crossAxisSpacing: 10.0,
         crossAxisCount: 3,
         shrinkWrap: true,
-        itemCount: 3,
+        itemCount: tagList.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
-          return siftItem(index);
+          return cell(index);
         },
         staggeredTileBuilder: (int index) {
           return const StaggeredTile.fit(1);
         });
   }
 
-  /// siftItem
-  Widget siftItem(int index) {
+  /// cell
+  Widget cell(int index) {
     AlignmentGeometry alignment = Alignment.centerLeft;
     if (index == 1) {
       alignment = Alignment.center;
@@ -71,16 +71,17 @@ class SCMaterialSiftItem extends StatelessWidget {
         alignment: alignment,
         child: Row(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              tagList[index],
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: SCFonts.f14,
-                fontWeight: FontWeight.w400,
-                color: SCColors.color_8D8E99)),
+                tagList[index],
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    fontSize: SCFonts.f14,
+                    fontWeight: FontWeight.w400,
+                    color: SCColors.color_8D8E99)),
             const SizedBox(width: 4.0,),
             Image.asset(SCAsset.iconMaterialArrowDown, width: 14.0, height: 14.0,),
           ],
