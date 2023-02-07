@@ -19,10 +19,13 @@ const int scMaterialBottomViewTypeCustom = 3;
 
 class SCMaterialDetailBottomView extends StatelessWidget {
 
-  const SCMaterialDetailBottomView({Key? key, required this.list}) : super(key: key);
+  const SCMaterialDetailBottomView({Key? key, required this.list, this.onTap}) : super(key: key);
 
   /// 数据源 [{"type" : 0, "title" : "确定", "widget" : Container()}]
   final List list;
+
+  /// 点击
+  final Function(String value)? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +73,7 @@ class SCMaterialDetailBottomView extends StatelessWidget {
   Widget button1(String text) {
     return Expanded(
       flex: 1,
-        child: Container(
+      child: Container(
       height: 40.0,
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -89,7 +92,9 @@ class SCMaterialDetailBottomView extends StatelessWidget {
                 fontWeight: FontWeight.w400,
                 color: SCColors.color_4285F4),
           ),
-          onPressed: () {}),),
+          onPressed: () {
+            onTap?.call(text);
+          }),),
     )
     );
   }
@@ -114,7 +119,9 @@ class SCMaterialDetailBottomView extends StatelessWidget {
                 fontWeight: FontWeight.w400,
                 color: SCColors.color_FFFFFF),
           ),
-          onPressed: () {}),),
+          onPressed: () {
+            onTap?.call(text);
+          }),),
     ));
   }
 

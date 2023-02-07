@@ -5,6 +5,8 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_detail_listview.dart';
 import 'package:smartcommunity/Skin/View/sc_custom_scaffold.dart';
+import '../../../../Utils/sc_utils.dart';
+import '../View/Alert/sc_reject_alert.dart';
 
 /// 入库详情
 
@@ -43,17 +45,7 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
   }
   /// bottomView
   Widget bottomView() {
-    Widget moreBtn = SizedBox(
-      width: 61.0,
-      height: 40.0,
-      child: CupertinoButton(alignment: Alignment.centerLeft,minSize: 22.0, padding: EdgeInsets.zero, child: Image.asset(SCAsset.iconMaterialMore, width: 22.0, height: 22.0,), onPressed: (){moreAction();}),
-    );
     List list = [
-      {
-        "type" : scMaterialBottomViewTypeCustom,
-        "title" : "",
-        "widget" : moreBtn
-      },
       {
         "type" : scMaterialBottomViewType1,
         "title" : "驳回",
@@ -67,11 +59,44 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
         "title" : "通过",
       },
     ];
-    return SCMaterialDetailBottomView(list: list);
-  }
-
-  /// 更多选项
-  moreAction() {
-
+    return SCMaterialDetailBottomView(list: list, onTap: (value) {
+      if (value == "驳回") {
+        SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+          SCDialogUtils().showCustomBottomDialog(
+              isDismissible: true,
+              context: context,
+              widget: SCRejectAlert(
+                title: '驳回',
+                reason: '驳回理由',
+                tagList: const [],
+                showNode: true,
+              ));
+        });
+      } else if (value == "拒绝") {
+        SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+          SCDialogUtils().showCustomBottomDialog(
+              isDismissible: true,
+              context: context,
+              widget: SCRejectAlert(
+                title: '审批拒绝',
+                reason: '拒绝理由',
+                tagList: ['流程不合理', '图片不清晰', '名称错误', '审批不合规'],
+                showNode: false,
+              ));
+        });
+      } else if (value == "通过") {
+        SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+          SCDialogUtils().showCustomBottomDialog(
+              isDismissible: true,
+              context: context,
+              widget: SCRejectAlert(
+                title: '审批通过',
+                reason: '通过理由',
+                tagList: ['批准通过', '入库批准通过'],
+                showNode: false,
+              ));
+        });
+      }
+    },);
   }
 }

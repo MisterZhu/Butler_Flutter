@@ -26,7 +26,9 @@ class SCMaterialDetailListView extends StatelessWidget {
     if (index == 0) {// 所有物资
       return SCAllMaterialCell();
     } else if(index == 1) {// 审批流程
-      return const SCMaterialApproveFlowCell(title: '审批流程');
+      return SCMaterialApproveFlowCell(title: '审批流程', onTap: () {
+        
+      },);
     } else {// 入库信息
       return SCMaterialEntryInfoCell();
     }

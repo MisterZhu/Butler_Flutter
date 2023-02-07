@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
@@ -17,11 +18,17 @@ class SCRejectAlert extends StatefulWidget {
   /// 标题
   final String title;
 
-  final List? tagList;
+  final String reason;
+
+  final List tagList;
 
   final bool showNode;
 
-  SCRejectAlert({Key? key, required this.title, this.tagList, required this.showNode}) : super(key: key);
+  SCRejectAlert({Key? key,
+    required this.title,
+    required this.reason,
+    required this.tagList,
+    required this.showNode}) : super(key: key);
 
   @override
   SCRejectAlertState createState() => SCRejectAlertState();
@@ -51,7 +58,7 @@ class SCRejectAlertState extends State<SCRejectAlert> {
       },
       child: Container(
         width: double.infinity,
-        height: 400.0 + 54.0 + SCUtils().getBottomSafeArea(),
+        height: 395.0 + 54.0 + SCUtils().getBottomSafeArea(),
         decoration: const BoxDecoration(
           color: SCColors.color_F2F3F5,
           borderRadius: BorderRadius.only(
@@ -63,7 +70,7 @@ class SCRejectAlertState extends State<SCRejectAlert> {
           children: [
             titleItem(context),
             Expanded(child: listView()),
-            const SizedBox(height: 10.0,),
+            const SizedBox(height: 20.0,),
             SCBottomButtonItem(list: const ['取消', '确定'], buttonType: 1, leftTapAction: () {
               Navigator.of(context).pop();
             }, rightTapAction: () {
@@ -151,7 +158,7 @@ class SCRejectAlertState extends State<SCRejectAlert> {
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(4.0)),
-        child: SCDeliverExplainCell(title: '驳回理由', content: input, inputHeight: 92.0, inputAction: (String content) {
+        child: SCDeliverExplainCell(title: widget.reason, content: input, inputHeight: 92.0, inputAction: (String content) {
           input = content;
         },)
     );
@@ -175,18 +182,19 @@ class SCRejectAlertState extends State<SCRejectAlert> {
 
   /// tagsView
   Widget tagsView() {
-    return Offstage(
-      offstage: widget.tagList != null ? false : true,
-      child: Padding(
+    if (widget.tagList.isNotEmpty) {
+      return Padding(
         padding: const EdgeInsets.only(top: 10.0, left: 12.0, right: 12.0),
         child: Wrap(
           alignment: WrapAlignment.start,
           spacing: 7.0,
           runSpacing: 10.0,
-          children: widget.tagList!.asMap().keys.map((index) => cell(widget.tagList![index])).toList(),
+          children: widget.tagList.asMap().keys.map((index) => cell(widget.tagList[index])).toList(),
         ),
-      ),
-    );
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   /// cell

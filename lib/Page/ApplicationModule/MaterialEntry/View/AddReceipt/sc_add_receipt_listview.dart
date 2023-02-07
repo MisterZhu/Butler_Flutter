@@ -40,7 +40,7 @@ class SCAddReceiptListViewState extends State<SCAddReceiptListView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(child: listview(context)),
-        SCBottomButtonItem(list: const ['保存', '提交'], buttonType: 1, leftTapAction: () {
+        SCBottomButtonItem(list: const ['暂存', '提交'], buttonType: 1, leftTapAction: () {
           /// 保存
         }, rightTapAction: () {
           /// 提交

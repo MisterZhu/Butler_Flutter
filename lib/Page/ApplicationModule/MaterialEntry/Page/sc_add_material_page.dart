@@ -16,7 +16,7 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> {
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: "添加物资",
+        title: "新增物资",
         centerTitle: true,
         elevation: 0,
         resizeToAvoidBottomInset: false,
