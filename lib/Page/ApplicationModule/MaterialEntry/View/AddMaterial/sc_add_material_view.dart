@@ -4,9 +4,9 @@ import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
-import '../Alert/sc_reject_alert.dart';
 import '../MaterialEntry/sc_material_search_item.dart';
 import '../MaterialEntry/sc_material_sift_item.dart';
+import '../SelectCategoryAlert/sc_add_material_selectcategory_alert.dart';
 import 'sc_add_material_listview.dart';
 
 /// 添加物资view
@@ -36,8 +36,10 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
           },
         ),
         SCMaterialSiftItem(
-          tagList: ['分类'],
-          tapAction: (index) {},
+          tagList: const ['分类'],
+          tapAction: (index) {
+            showCategoryAlert();
+          },
         ),
         Expanded(child: listview(context)),
         bottomItem(),
@@ -130,26 +132,18 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
                     color: SCColors.color_FFFFFF,
                   ),
                 ),
-                onPressed: () {
-                  showAlert();
-                },
+                onPressed: () {},
               ))
         ],
       ),
     );
   }
 
-  /// 展示驳回弹窗
-  showAlert() {
-    SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-      SCDialogUtils().showCustomBottomDialog(
-          isDismissible: true,
-          context: context,
-          widget: SCRejectAlert(
-            title: '审批拒绝',
-            tagList: ['流程不合理', '图片不清晰', '名称错误', '审批不合规'],
-            showNode: false,
-          ));
-    });
+  /// 分类弹窗
+  showCategoryAlert() {
+    SCDialogUtils().showCustomBottomDialog(
+        context: context,
+        isDismissible: true,
+        widget: SCSelectCategoryAlert());
   }
 }

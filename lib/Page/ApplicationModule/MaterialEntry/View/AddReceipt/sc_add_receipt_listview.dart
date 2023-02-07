@@ -25,7 +25,6 @@ class SCAddReceiptListViewState extends State<SCAddReceiptListView> {
   String warehouseName = '';
   /// 类型
   String type = '';
-
   /// 类型index
   int typeIndex = -1;
 
@@ -41,7 +40,7 @@ class SCAddReceiptListViewState extends State<SCAddReceiptListView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(child: listview(context)),
-        SCBottomButtonItem(list: const ['保存', '提交'], buttonType: 1, leftTapAction: () {
+        SCBottomButtonItem(list: const ['暂存', '提交'], buttonType: 1, leftTapAction: () {
           /// 保存
           save();
         }, rightTapAction: () {
@@ -119,10 +118,7 @@ class SCAddReceiptListViewState extends State<SCAddReceiptListView> {
 
   /// 保存
   save() {
-    SCDialogUtils().showCustomBottomDialog(
-        context: context,
-        isDismissible: true,
-        widget: SCSelectCategoryAlert());
+
   }
 
   /// 提交

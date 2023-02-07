@@ -22,9 +22,16 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
 
   String tips = '';
 
+  bool showCancel = true;
+
+  @override
+  initState() {
+    super.initState();
+    showKeyboard(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    showKeyboard(context);
     return body();
   }
 
@@ -52,7 +59,7 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
     return Container(
       color: SCColors.color_FFFFFF,
       height: 44.0,
-      padding: const EdgeInsets.only(left: 16.0),
+      padding: EdgeInsets.only(left: 16.0, right: showCancel ? 0 : 16.0),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -128,27 +135,40 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
           loadData();
         },
         onSubmitted: (value) {
-          node.unfocus();
           loadData();
+          node.unfocus();
+        },
+        onTap: () {
+          if (!showCancel) {
+            setState(() {
+              showCancel = true;
+            });
+          }
         },
     ));
   }
 
   /// 取消按钮
   Widget cancelBtn() {
-    return CupertinoButton(
-      minSize: 64.0,
-      padding: EdgeInsets.zero,
-      child: const Text(
-        '取消',
-        style: TextStyle(
-          fontSize: SCFonts.f16,
-          fontWeight: FontWeight.w400,
-          color: SCColors.color_1B1D33),
-        ),
-        onPressed: () {
-          node.unfocus();
-        });
+    return Offstage(
+      offstage: !showCancel,
+      child: CupertinoButton(
+          minSize: 64.0,
+          padding: EdgeInsets.zero,
+          child: const Text(
+            '取消',
+            style: TextStyle(
+                fontSize: SCFonts.f16,
+                fontWeight: FontWeight.w400,
+                color: SCColors.color_1B1D33),
+          ),
+          onPressed: () {
+            node.unfocus();
+            setState(() {
+              showCancel = false;
+            });
+          }),
+    );
   }
 
   /// contentView
