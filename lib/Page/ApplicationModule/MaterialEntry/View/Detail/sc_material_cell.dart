@@ -5,8 +5,6 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 
 import '../AddMaterial/sc_material_stepper.dart';
 
-/// 物资cell
-
 /// 详情cell
 const int scMaterialCellTypeNormal = 0;
 
@@ -16,6 +14,7 @@ const int scMaterialCellTypeRadio = 1;
 /// 删除cell
 const int scMaterialCellTypeDelete = 2;
 
+/// 物资cell
 class SCMaterialCell extends StatefulWidget {
   const SCMaterialCell({Key? key, required this.type, this.onTap})
       : super(key: key);
@@ -66,7 +65,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
           const SizedBox(
             width: 8.0,
           ),
-          detailInfolView(),
+          detailInfoView(),
           const SizedBox(
             width: 10.0,
           ),
@@ -104,21 +103,26 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// 删除cell
   Widget deleteCell() {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          imageView(),
-          const SizedBox(
-            width: 8.0,
-          ),
-          deleteInfoView(),
-          const SizedBox(
-            width: 10.0,
-          ),
-          numView()
-        ],
+    return DecoratedBox(
+      decoration: BoxDecoration(
+          color: SCColors.color_FFFFFF,
+          borderRadius: BorderRadius.circular(4.0)),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            deleteView(),
+            const SizedBox(
+              width: 8.0,
+            ),
+            imageView(),
+            const SizedBox(
+              width: 8.0,
+            ),
+            selectInfoView(),
+          ],
+        ),
       ),
     );
   }
@@ -140,7 +144,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
   }
 
   /// 物资信息-详情
-  Widget detailInfolView() {
+  Widget detailInfoView() {
     return Expanded(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,11 +183,28 @@ class SCMaterialCellState extends State<SCMaterialCell> {
   /// 物资信息-删除
   Widget deleteInfoView() {
     return Expanded(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [nameLabel(), infoLabel(10)],
-    ));
+        child: SizedBox(
+          height: 80.0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              nameLabel(),
+              Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(child: infoLabel(2)),
+                      Column(
+                        children: [
+                          Expanded(child: Container(),),
+                          SCStepper()
+                        ],
+                      )
+                    ],
+                  ))
+            ],
+          ),
+        ));
   }
 
   /// 物资名称label
@@ -236,6 +257,26 @@ class SCMaterialCellState extends State<SCMaterialCell> {
         setState(() {
           isSelect = !isSelect;
         });
+      },
+      child: Container(
+        alignment: Alignment.center,
+        width: 22.0,
+        height: 80.0,
+        child: Image.asset(
+          path,
+          width: 22.0,
+          height: 22.0,
+        ),
+      ),
+    );
+  }
+
+  /// 删除view
+  Widget deleteView() {
+    String path = SCAsset.iconDeleteMaterial;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
       },
       child: Container(
         alignment: Alignment.center,

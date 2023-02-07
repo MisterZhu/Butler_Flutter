@@ -63,6 +63,7 @@ class SCWorkBenchChangeSpaceAlert extends StatelessWidget {
   /// header
   Widget headerView() {
     return SCChangeSpaceAlertHeader(
+      title: '修改空间',
       onCancel: () {
         onCancel?.call();
       },

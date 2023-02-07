@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddReceipt/sc_add_receipt_allmaterial_view.dart';
 
 import '../../../../../Constants/sc_asset.dart';
 
@@ -107,6 +108,7 @@ class SCMaterialInfoCell extends StatelessWidget {
   }
 
   Widget listview() {
+    return SCAddReceiptAllMaterialView(list: ['' , '', '', '', '']);
     return ListView.separated(
         padding: EdgeInsets.zero,
         shrinkWrap: true,

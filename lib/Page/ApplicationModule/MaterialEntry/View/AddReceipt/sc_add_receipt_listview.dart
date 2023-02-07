@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddReceipt/sc_material_info_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddReceipt/sc_pickup_info_cell.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/SelectCategoryAlert/sc_add_material_selectcategory_alert.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
@@ -42,6 +43,7 @@ class SCAddReceiptListViewState extends State<SCAddReceiptListView> {
         Expanded(child: listview(context)),
         SCBottomButtonItem(list: const ['保存', '提交'], buttonType: 1, leftTapAction: () {
           /// 保存
+          save();
         }, rightTapAction: () {
           /// 提交
         },),
@@ -52,6 +54,7 @@ class SCAddReceiptListViewState extends State<SCAddReceiptListView> {
   /// listview
   Widget listview(BuildContext context) {
     return ListView.separated(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
@@ -114,4 +117,16 @@ class SCAddReceiptListViewState extends State<SCAddReceiptListView> {
     });
   }
 
+  /// 保存
+  save() {
+    SCDialogUtils().showCustomBottomDialog(
+        context: context,
+        isDismissible: true,
+        widget: SCSelectCategoryAlert());
+  }
+
+  /// 提交
+  submit() {
+
+  }
 }

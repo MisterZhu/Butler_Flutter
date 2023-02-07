@@ -206,6 +206,8 @@ class SCAsset {
   static const String iconDeletePhoto = "images/materialEntry/icon_delete_photo.png";
   /// 排序-已选择icon
   static const String iconSortSelected = "images/materialEntry/icon_sort_selected.png";
+  /// 删除物资icon
+  static const String iconDeleteMaterial = "images/materialEntry/icon_material_delete.png";
 
   /// 测试图片
   static const String iconTestMaterial = "images/materialEntry/icon_test_material.png";
