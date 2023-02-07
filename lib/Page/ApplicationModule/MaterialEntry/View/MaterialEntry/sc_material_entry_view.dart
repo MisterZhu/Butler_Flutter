@@ -1,5 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_entry_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_search_item.dart';
@@ -162,12 +164,22 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
-          return SCMaterialEntryCell();
+          return SCMaterialEntryCell(
+            detailTapAction: () {
+              detailAction(index);
+            },
+          );
         },
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 10.0,);
         },
         itemCount: 3);
+  }
+
+
+  /// 详情
+  detailAction(int index) {
+    SCRouterHelper.pathPage(SCRouterPath.materialDetailPage, null);
   }
 
   /// 入库状态弹窗

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_cell.dart';
 
 /// 入库详情-所有物资listview
@@ -51,6 +52,7 @@ class SCAllMaterialListView extends StatelessWidget {
   /// cell
   Widget cell(int index) {
     return SCMaterialCell(
+      type: scMaterialCellTypeNormal,
       onTap: () {
         onTap?.call(index);
       },

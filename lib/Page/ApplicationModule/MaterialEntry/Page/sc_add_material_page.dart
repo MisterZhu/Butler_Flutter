@@ -19,6 +19,7 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> {
         title: "添加物资",
         centerTitle: true,
         elevation: 0,
+        resizeToAvoidBottomInset: false,
         body: body());
   }
 
