@@ -57,7 +57,7 @@ class SCMaterialUnfoldBtn extends StatelessWidget {
     if (isUnfold) {
       return "展开";
     } else {
-      return "收起";;
+      return "收起";
     }
   }
 }
