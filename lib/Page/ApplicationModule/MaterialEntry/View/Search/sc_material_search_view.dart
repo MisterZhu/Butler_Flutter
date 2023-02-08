@@ -222,4 +222,10 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
       tips = '暂无搜索结果';
     });
   }
+
+  @override
+  dispose() {
+    super.dispose();
+    controller.dispose();
+  }
 }
