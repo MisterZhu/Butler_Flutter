@@ -33,11 +33,11 @@ class SCBottomButtonItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return body();
+    return body(MediaQuery.of(context).viewInsets.bottom);
   }
 
   /// body
-  Widget body() {
+  Widget body(double bottom) {
     return Container(
       width: double.infinity,
       height: 54.0 + SCUtils().getBottomSafeArea(),

@@ -39,6 +39,9 @@ class SCDefaultValue {
   /// 身份证正则表达式
   static const String idCardReg = r'^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$';
 
+  /// 正数正则表达式-不允许小数点
+  static const String positiveNumberReg = r'^[1-9][0-9]*';
+
   /// 网络加载中
   static const String loadingMessage = '加载中...';
 
