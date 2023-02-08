@@ -30,6 +30,7 @@ class SCMaterialEntryListView extends StatelessWidget {
   /// cell
   Widget cell(int index) {
     return SCMaterialEntryCell(
+      type: 0,
       detailTapAction: () {
         SCRouterHelper.pathPage(SCRouterPath.materialDetailPage, null);
       },

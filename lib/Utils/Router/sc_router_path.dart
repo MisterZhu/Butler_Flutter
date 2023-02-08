@@ -85,4 +85,18 @@ class SCRouterPath {
   /// 搜索物资
   static String materialSearchPage = "/lib/Page/materialEntry/Page/sc_material_search_page";
 
+  /// *************************** 物资出库 ******************************/
+
+  /// 物资出库
+  static String materialOutboundPage = "/lib/Page/MaterialOutbound/Page/sc_material_outbound_page";
+
+  /// 新增出库
+  static String addOutboundPage = "/lib/Page/MaterialOutbound/Page/sc_add_outbound_page";
+
+  /// 选择领用人
+  static String selectReceiverPage = "/lib/Page/MaterialOutbound/Page/sc_select_receiver_page";
+
+  /// 出库详情
+  static String outboundDetailPage = "/lib/Page/MaterialOutbound/Page/sc_material_outbound_detail_page";
+
 }

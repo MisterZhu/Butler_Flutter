@@ -3,21 +3,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../../Utils/sc_utils.dart';
-import '../View/AddReceipt/sc_add_receipt_view.dart';
+import '../View/AddOutbound/sc_add_outbound_view.dart';
 
-/// 新增入库page
+/// 新增出库page
 
-class SCAddReceiptPage extends StatefulWidget {
+class SCAddOutboundPage extends StatefulWidget {
   @override
-  SCAddReceiptPageState createState() => SCAddReceiptPageState();
+  SCAddOutboundPageState createState() => SCAddOutboundPageState();
 }
 
-class SCAddReceiptPageState extends State<SCAddReceiptPage> {
+class SCAddOutboundPageState extends State<SCAddOutboundPage> {
 
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: "新增入库",
+        title: "新增出库",
         centerTitle: true,
         elevation: 0,
         resizeToAvoidBottomInset: false, /// 页面不会随着键盘上移
@@ -34,7 +34,7 @@ class SCAddReceiptPageState extends State<SCAddReceiptPage> {
         width: double.infinity,
         height: double.infinity,
         color: SCColors.color_F2F3F5,
-        child: SCAddReceiptView(),
+        child: SCAddOutboundView(),
       ),
     );
   }

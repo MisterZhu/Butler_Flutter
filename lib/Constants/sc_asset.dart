@@ -182,6 +182,8 @@ class SCAsset {
 
   /// 物资icon
   static const String iconMaterialIcon = "images/materialEntry/icon_material_icon.png";
+  /// 物资入库icon
+  static const String iconMaterialEntry = "images/materialEntry/icon_material_Entry.png";
   /// 筛选-向下箭头icon
   static const String iconMaterialArrowDown = "images/materialEntry/icon_material_arrow_down.png";
   /// 新增入库icon
@@ -211,4 +213,20 @@ class SCAsset {
 
   /// 测试图片
   static const String iconTestMaterial = "images/materialEntry/icon_test_material.png";
+
+
+  /// ****************  物资出库 ****************/
+
+  /// 物资出库icon
+  static const String iconMaterialOutbound = "images/materialOutbound/icon_material_outbound.png";
+
+  /// 领用人-未选择icon
+  static const String iconReceiverUnselect = "images/materialOutbound/icon_receiver_unselect.png";
+
+  /// 领用人-已选择icon
+  static const String iconReceiverSelected = "images/materialOutbound/icon_receiver_selected.png";
+
+  /// 联系领用人icon
+  static const String iconReceiverCall = "images/materialOutbound/icon_receiver_call.png";
+
 }

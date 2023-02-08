@@ -3,6 +3,7 @@ import 'package:smartcommunity/Page/AddressBook/Home/Page/sc_addressbook_page.da
 import 'package:smartcommunity/Page/Application/Home/Page/sc_application_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_signature_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_material_entry_detail_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialOutbound/Page/sc_add_outbound_page.dart';
 import 'package:smartcommunity/Page/Base/Scan/Page/sc_scan_page.dart';
 import 'package:smartcommunity/Page/Login/Home/Page/sc_login_page.dart';
 import 'package:smartcommunity/Page/Login/Privacy/Page/sc_privacy_alert_page.dart';
@@ -24,6 +25,9 @@ import '../../Page/ApplicationModule/MaterialEntry/Page/sc_add_material_page.dar
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_add_receipt_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_material_entry_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_material_search_page.dart';
+import '../../Page/ApplicationModule/MaterialOutbound/Page/sc_material_outbound_detail_page.dart';
+import '../../Page/ApplicationModule/MaterialOutbound/Page/sc_material_outbound_page.dart';
+import '../../Page/ApplicationModule/MaterialOutbound/Page/sc_select_receiver_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
 import 'sc_router_path.dart';
 
@@ -83,6 +87,15 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.addMaterialPage, page: () => SCAddMaterialPage()),
     /*搜索物资*/
     GetPage(name: SCRouterPath.materialSearchPage, page: () => SCMaterialSearchPage()),
+    /*新增出库*/
+    GetPage(name: SCRouterPath.addOutboundPage, page: () => SCAddOutboundPage()),
+    /*选择领用人*/
+    GetPage(name: SCRouterPath.selectReceiverPage, page: () => SCSelectReceiverPage()),
+    /*物资出库*/
+    GetPage(name: SCRouterPath.materialOutboundPage, page: () => SCMaterialOutboundPage()),
+    /*出库详情*/
+    GetPage(name: SCRouterPath.outboundDetailPage, page: () => SCMaterialOutboundDetailPage()),
+
   ];
 
   /*根据code使用路由*/

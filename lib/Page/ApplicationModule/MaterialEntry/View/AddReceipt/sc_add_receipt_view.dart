@@ -2,8 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddReceipt/sc_material_info_cell.dart';
-import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddReceipt/sc_pickup_info_cell.dart';
-import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/SelectCategoryAlert/sc_add_material_selectcategory_alert.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddReceipt/sc_basic_info_cell.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
@@ -11,20 +10,21 @@ import '../../../../WorkBench/Home/Model/sc_home_task_model.dart';
 import '../../../../WorkBench/Home/View/Alert/sc_task_module_alert.dart';
 import '../../../HouseInspect/View/sc_bottom_button_item.dart';
 
-/// 新增入库listview
+/// 新增入库view
 
-class SCAddReceiptListView extends StatefulWidget {
+class SCAddReceiptView extends StatefulWidget {
 
   @override
-  SCAddReceiptListViewState createState() => SCAddReceiptListViewState();
+  SCAddReceiptViewState createState() => SCAddReceiptViewState();
 }
 
-class SCAddReceiptListViewState extends State<SCAddReceiptListView> {
+class SCAddReceiptViewState extends State<SCAddReceiptView> {
 
-  /// 仓库名称
-  String warehouseName = '';
-  /// 类型
-  String type = '';
+  /// 基础信息数组
+  List baseInfoList = [
+    {'isRequired': true, 'title': '仓库名称', 'content': ''},
+    {'isRequired': true, 'title': '类型', 'content': ''}];
+
   /// 类型index
   int typeIndex = -1;
 
@@ -67,10 +67,15 @@ class SCAddReceiptListViewState extends State<SCAddReceiptListView> {
 
   Widget getCell(int index) {
     if (index == 0) {
-      return SCPickupInfoCell(warehouseName: warehouseName, type: type, selectNameAction: () {
-
-      }, selectTypeAction: () {
-        showTypeAlert();
+      return SCBasicInfoCell(
+        list: baseInfoList,
+        selectAction: (index) {
+          if (index == 0) {
+            //仓库名称
+          } else if (index == 1) {
+            //类型
+            showTypeAlert();
+          }
       }, inputAction: (content) {
 
       }, addPhotoAction: (list) {
@@ -108,7 +113,7 @@ class SCAddReceiptListViewState extends State<SCAddReceiptListView> {
             topSpacing: 8.0,
             closeTap: (SCHomeTaskModel model, int index) {
               setState(() {
-                type = model.name!;
+                baseInfoList[1]['content'] = model.name!;
                 typeIndex = index;
               });
             },
@@ -116,7 +121,7 @@ class SCAddReceiptListViewState extends State<SCAddReceiptListView> {
     });
   }
 
-  /// 保存
+  /// 暂存
   save() {
 
   }

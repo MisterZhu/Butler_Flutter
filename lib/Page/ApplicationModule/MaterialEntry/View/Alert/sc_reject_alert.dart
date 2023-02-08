@@ -143,7 +143,7 @@ class SCRejectAlertState extends State<SCRejectAlert> {
       offstage: !widget.showNode,
       child: Column(
         children: [
-          SCMaterialSelectItem(title: '驳回节点', content: node, selectAction: () {
+          SCMaterialSelectItem(isRequired: true, title: '驳回节点', content: node, selectAction: () {
             showNodeAlert();
           },),
           line(),

@@ -7,6 +7,9 @@ import '../../../../../Constants/sc_asset.dart';
 
 class SCMaterialEntryCell extends StatelessWidget {
 
+  /// 类型，0 入库，1 出库
+  final int type;
+
   /// 打电话
   final Function(String phone)? callAction;
 
@@ -17,6 +20,7 @@ class SCMaterialEntryCell extends StatelessWidget {
   final Function? detailTapAction;
 
   SCMaterialEntryCell({Key? key,
+    required this.type,
     this.callAction,
     this.btnTapAction,
     this.detailTapAction,
@@ -78,7 +82,7 @@ class SCMaterialEntryCell extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(SCAsset.iconMaterialIcon, width: 18.0, height: 18.0,),
+          Image.asset(type == 0 ? SCAsset.iconMaterialEntry : SCAsset.iconMaterialOutbound, width: 18.0, height: 18.0,),
           const SizedBox(width: 6.0,),
           Expanded(child: Text(
             '采购入库',
