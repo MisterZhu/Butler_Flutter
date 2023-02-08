@@ -63,8 +63,8 @@ class SCHttpManager {
         // };
         return null;
       };
-      _dio?.interceptors
-          .add(LogInterceptor(responseBody: true, requestBody: true)); // 日志打印
+      // _dio?.interceptors
+      //     .add(LogInterceptor(responseBody: true, requestBody: true)); // 日志打印
       // print("options.headers-->" + options.headers.toString());
 
     }

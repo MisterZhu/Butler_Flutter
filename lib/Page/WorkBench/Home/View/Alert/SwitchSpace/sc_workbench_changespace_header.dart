@@ -5,8 +5,12 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 /// 切换空间alert-header
 
 class SCChangeSpaceAlertHeader extends StatelessWidget {
-  const SCChangeSpaceAlertHeader({Key? key, this.onCancel, this.onSure})
+  const SCChangeSpaceAlertHeader(
+      {Key? key, required this.title, this.onCancel, this.onSure})
       : super(key: key);
+
+  /// title
+  final String title;
 
   /// 取消
   final Function? onCancel;
@@ -32,13 +36,13 @@ class SCChangeSpaceAlertHeader extends StatelessWidget {
                 Navigator.of(context).pop();
                 onCancel?.call();
               }),
-          const Expanded(
+          Expanded(
               child: Text(
-            '修改空间',
+            title,
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: SCFonts.f16,
                 fontWeight: FontWeight.w500,
                 color: SCColors.color_1B1C35),
