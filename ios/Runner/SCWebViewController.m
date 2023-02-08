@@ -176,13 +176,17 @@
 
 /// 处理网页回调
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-    //处理电话打断Progress
+    // 处理电话打断Progress
     NSURL *URL = navigationAction.request.URL;
     NSString *scheme = [URL scheme];
-    if ([scheme isEqualToString:@"tel"]) {  //处理电话
+    if ([scheme isEqualToString:@"tel"]) {// 处理电话
         [self.progressView setProgress:0 animated:NO];
         self.progressView.hidden = YES;
-
+        NSString *resourceSpecifier = [URL resourceSpecifier];
+        NSString *callPhone = [NSString stringWithFormat:@"telprompt://%@", resourceSpecifier];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:callPhone]];
+        });
     }
     decisionHandler(WKNavigationActionPolicyAllow);
 }
@@ -264,6 +268,8 @@
         _wkWebView= [[WKWebView alloc] initWithFrame:self.view.bounds];
         _wkWebView.backgroundColor = [UIColor whiteColor];
         _wkWebView.scrollView.showsVerticalScrollIndicator = NO;
+        _wkWebView.navigationDelegate = self;
+        _wkWebView.UIDelegate = self;
     }
     return _wkWebView;
 }

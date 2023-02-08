@@ -239,4 +239,9 @@ class SCUtils {
   hideTopStatusBar() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,overlays: [SystemUiOverlay.bottom]);
   }
+
+  /*是否是正数*/
+  bool isPositiveNumber(String value) {
+    return RegExp(SCDefaultValue.positiveNumberReg).hasMatch(value);
+  }
 }

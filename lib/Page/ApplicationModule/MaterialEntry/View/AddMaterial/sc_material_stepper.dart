@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Constants/sc_default_value.dart';
+import 'package:smartcommunity/Utils/sc_utils.dart';
 
 /// 数量步进器
 
@@ -23,7 +25,7 @@ class SCStepperState extends State<SCStepper> {
   @override
   initState() {
     super.initState();
-    textFiledController = TextEditingController(text: '$num');
+    textFiledController = TextEditingController.fromValue(TextEditingValue(text: '$num', selection: TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length))));
   }
 
   @override
@@ -108,6 +110,9 @@ class SCStepperState extends State<SCStepper> {
       cursorColor: SCColors.color_5E5F66,
       cursorWidth: 2,
       focusNode: node,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp(SCDefaultValue.positiveNumberReg))
+      ],
       style:
           const TextStyle(fontSize: SCFonts.f12, color: SCColors.color_5E5F66),
       decoration: const InputDecoration(
@@ -139,20 +144,31 @@ class SCStepperState extends State<SCStepper> {
     setState(() {
       num++;
       textFiledController.text = '$num';
+      textFiledController.selection = TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length));
     });
   }
 
   /// 减
   delete() {
     setState(() {
-      if (num > 0) {
+      if (num > 1) {
         num--;
         textFiledController.text = '$num';
+        textFiledController.selection = TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length));
       }
     });
   }
 
   /// 更新输入框
   updateText(String value) {
+    if (value.isEmpty) {
+      num = 1;
+      textFiledController.text = '$num';
+      textFiledController.selection = TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length));
+    } else {
+      if (SCUtils().isPositiveNumber(value)) {
+        num = int.parse(value);
+      }
+    }
   }
 }

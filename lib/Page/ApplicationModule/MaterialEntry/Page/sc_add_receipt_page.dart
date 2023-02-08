@@ -20,7 +20,7 @@ class SCAddReceiptPageState extends State<SCAddReceiptPage> {
         title: "新增入库",
         centerTitle: true,
         elevation: 0,
-        resizeToAvoidBottomInset: false, /// 页面不会随着键盘上移
+        resizeToAvoidBottomInset: true, /// 页面不会随着键盘上移
         body: body());
   }
 
