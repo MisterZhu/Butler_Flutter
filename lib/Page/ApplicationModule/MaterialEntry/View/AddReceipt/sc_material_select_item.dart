@@ -1,5 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../../Constants/sc_asset.dart';
 
@@ -7,6 +8,8 @@ import '../../../../../Constants/sc_asset.dart';
 
 class SCMaterialSelectItem extends StatelessWidget {
 
+  /// 是否必填
+  bool isRequired;
   /// 标题
   final String title;
 
@@ -17,6 +20,7 @@ class SCMaterialSelectItem extends StatelessWidget {
   final Function? selectAction;
 
   SCMaterialSelectItem({Key? key,
+    required this.isRequired,
     required this.title,
     this.content,
     this.selectAction,
@@ -41,15 +45,18 @@ class SCMaterialSelectItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(width: 6.0,),
-            const Text(
+            Container(
+              width: 12.0,
+              alignment: Alignment.centerRight,
+              child: Text(
                 '*',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.right,
                 style: TextStyle(
                     fontSize: SCFonts.f16,
                     fontWeight: FontWeight.w400,
-                    color: SCColors.color_FF4040)),
+                    color: isRequired ? SCColors.color_FF4040 : Colors.transparent)),),
             SizedBox(
               width: 100.0,
               child: Text(

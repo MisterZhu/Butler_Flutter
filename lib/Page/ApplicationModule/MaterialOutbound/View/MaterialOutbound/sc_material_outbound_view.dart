@@ -1,7 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_entry_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_search_item.dart';
@@ -10,22 +9,22 @@ import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
-import '../Alert/sc_sift_alert.dart';
-import '../Alert/sc_sort_alert.dart';
+import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
+import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
 
-/// 物资入库view
+/// 物资出库view
 
-class SCMaterialEntryView extends StatefulWidget {
+class SCMaterialOutboundView extends StatefulWidget {
 
   @override
-  SCMaterialEntryViewState createState() => SCMaterialEntryViewState();
+  SCMaterialOutboundViewState createState() => SCMaterialOutboundViewState();
 }
 
-class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
+class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
 
   List siftList =  ['状态', '类型', '排序'];
 
-  List statusList = ['全部', '待提交', '审批中', '已拒绝', '已驳回', '已撤回', '已入库'];
+  List statusList = ['全部', '待提交', '审批中', '已拒绝', '已驳回', '已撤回', '已出库'];
 
   List typeList = ['全部', '采购入库', '调拨入库', '盘盈入库', '领料归还入库', '借用归还入库', '退货入库', '其他入库'];
 
@@ -122,7 +121,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
     );
   }
 
-  /// 新增入库按钮
+  /// 新增出库按钮
   Widget addItem() {
     return Container(
       width: 60.0,
@@ -135,7 +134,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
       child: CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: () {
-          SCRouterHelper.pathPage(SCRouterPath.addReceiptPage, null);
+          SCRouterHelper.pathPage(SCRouterPath.addOutboundPage, null);
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -144,7 +143,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
             Image.asset(SCAsset.iconAddReceipt, width: 20.0, height: 20.0,),
             const SizedBox(width: 2.0,),
             const Text(
-                '新增入库',
+                '新增出库',
                 maxLines: 1,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
@@ -165,7 +164,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return SCMaterialEntryCell(
-            type: 0,
+            type: 1,
             detailTapAction: () {
               detailAction(index);
             },
@@ -180,15 +179,15 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
 
   /// 详情
   detailAction(int index) {
-    SCRouterHelper.pathPage(SCRouterPath.materialDetailPage, null);
+    SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, null);
   }
 
-  /// 入库状态弹窗
+  /// 出库状态弹窗
   Widget statusAlert() {
     return Offstage(
       offstage: !showStatusAlert,
       child: SCSiftAlert(
-        title: '入库状态',
+        title: '出库状态',
         list: statusList,
         selectIndex: selectStatus,
         tapAction: (value) {
@@ -201,12 +200,12 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
     );
   }
 
-  /// 入库类型弹窗
+  /// 出库类型弹窗
   Widget typeAlert() {
     return Offstage(
       offstage: !showTypeAlert,
       child: SCSiftAlert(
-        title: '入库类型',
+        title: '出库类型',
         list: typeList,
         selectIndex: selectType,
         tapAction: (value) {

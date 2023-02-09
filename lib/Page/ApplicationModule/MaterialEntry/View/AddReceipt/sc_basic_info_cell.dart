@@ -7,19 +7,14 @@ import '../../../../../Constants/sc_asset.dart';
 import '../../../HouseInspect/View/sc_deliver_evidence_cell.dart';
 import '../../../HouseInspect/View/sc_deliver_explain_cell.dart';
 
-/// 取货信息cell
+/// 基础信息cell
 
-class SCPickupInfoCell extends StatelessWidget {
+class SCBasicInfoCell extends StatelessWidget {
 
-  /// 仓库名称
-  final String? warehouseName;
-  /// 类型
-  final String? type;
-  /// 选择仓库名称
-  final Function? selectNameAction;
+  final List list;
 
-  /// 选择类型
-  final Function? selectTypeAction;
+  /// 点击选择
+  final Function(int index)? selectAction;
 
   /// 输入内容
   final Function(String content)? inputAction;
@@ -27,11 +22,9 @@ class SCPickupInfoCell extends StatelessWidget {
   /// 添加图片
   final Function(List list)? addPhotoAction;
 
-  SCPickupInfoCell({Key? key,
-    this.warehouseName,
-    this.type,
-    this.selectNameAction,
-    this.selectTypeAction,
+  SCBasicInfoCell({Key? key,
+    required this.list,
+    this.selectAction,
     this.inputAction,
     this.addPhotoAction,
   }) : super(key: key);
@@ -58,7 +51,7 @@ class SCPickupInfoCell extends StatelessWidget {
     return const Padding(
       padding: EdgeInsets.only(top: 10.0, bottom: 11.0),
       child: Text(
-          '取货信息',
+          '基础信息',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
@@ -80,13 +73,7 @@ class SCPickupInfoCell extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SCMaterialSelectItem(title: '仓库名称', content: warehouseName, selectAction: () {
-            selectNameAction?.call();
-          },),
-          line(),
-          SCMaterialSelectItem(title: '类型', content: type, selectAction: () {
-            selectTypeAction?.call();
-          },),
+          selectListView(),
           line(),
           const SizedBox(height: 12.0,),
           inputItem(),
@@ -95,6 +82,28 @@ class SCPickupInfoCell extends StatelessWidget {
           const SizedBox(height: 12.0,),
         ])
     );
+  }
+
+  /// selectListView
+  Widget selectListView() {
+    return ListView.separated(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          var dic = list[index];
+          return SCMaterialSelectItem(
+            isRequired: dic['isRequired'],
+            title: dic['title'],
+            content: dic['content'],
+            selectAction: () {
+              selectAction?.call(index);
+          },);
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return line();
+        },
+        itemCount: list.length);
   }
 
   /// 输入框
