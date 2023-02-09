@@ -314,11 +314,9 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
 
   /// 通知
   addNotification() {
-    print("11111111");
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
       if (key == SCKey.kSwitchEnterprise) {
-        print("2222222");
         workBenchController.loadData();
       }
     });

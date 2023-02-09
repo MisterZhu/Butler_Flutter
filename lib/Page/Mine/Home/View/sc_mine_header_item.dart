@@ -175,7 +175,6 @@ class SCMineHeaderItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(21.0),
             child: SCImage(
               url: avatar,
-              placeholder: SCAsset.iconUserDefault,
               fit: BoxFit.cover,
               width: 42.0,
               height: 42.0,
