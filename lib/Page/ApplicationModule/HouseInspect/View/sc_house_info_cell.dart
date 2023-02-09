@@ -88,6 +88,11 @@ class SCHouseInfoCell extends StatelessWidget {
                 color: SCColors.color_5E5F66,
                 fontWeight: FontWeight.w400,
               ),
+              strutStyle: const StrutStyle(
+                fontSize: SCFonts.f14,
+                height: 1.55,
+                forceStrutHeight: true,
+              ),
             ),
           ),
           Expanded(child: Text(
@@ -97,6 +102,11 @@ class SCHouseInfoCell extends StatelessWidget {
               fontSize: SCFonts.f16,
               color: SCColors.color_5E5F66,
               fontWeight: FontWeight.w400,
+            ),
+            strutStyle: const StrutStyle(
+              fontSize: SCFonts.f14,
+              height: 1.55,
+              forceStrutHeight: true,
             ),
           ),)
         ],

@@ -103,7 +103,10 @@ class SCSignatureViewState extends State<SCSignatureView> {
           const SizedBox(
             width: 16.0,
           ),
-          sureBtn()
+          sureBtn(),
+          const SizedBox(
+            width: 5.0,
+          ),
         ],
       ),
     );
@@ -162,6 +165,7 @@ class SCSignatureViewState extends State<SCSignatureView> {
       width: 96.0,
       height: 40.0,
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4.0),
           border: Border.all(color: SCColors.color_4285F4, width: 1.0)),
       child: CupertinoButton(
           minSize: 40.0,
