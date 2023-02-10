@@ -195,6 +195,7 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
 
   /// 出库时间弹窗
   showTimeAlert (BuildContext context) {
+    DateTime now = DateTime.now();
     SCPickerUtils pickerUtils = SCPickerUtils();
     pickerUtils.title = '出库时间';
     pickerUtils.cancelText = '上一步';
@@ -207,7 +208,10 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
     };
     pickerUtils.showDatePicker(
       context: context,
-      dateType: PickerDateTimeType.kYMDHM);
+      dateType: PickerDateTimeType.kYMDHM,
+      minValue: now,
+      maxValue: DateTime(now.year + 10, 12, 31, 23, 59)
+    );
   }
 
   /// line
