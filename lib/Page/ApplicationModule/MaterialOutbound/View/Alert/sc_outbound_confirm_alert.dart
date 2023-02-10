@@ -209,8 +209,8 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
     pickerUtils.showDatePicker(
       context: context,
       dateType: PickerDateTimeType.kYMDHM,
-      minValue: now,
-      maxValue: DateTime(now.year + 10, 12, 31, 23, 59)
+      minValue: DateTime(now.year - 1, 1, 1, 00, 00),
+      maxValue: DateTime(now.year + 9, 12, 31, 23, 59)
     );
   }
 
