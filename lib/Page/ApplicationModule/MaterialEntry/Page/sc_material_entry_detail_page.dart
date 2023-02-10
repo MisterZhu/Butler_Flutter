@@ -33,7 +33,7 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
       child: Column(
         children: [
           Expanded(child: topView()),
-          bottomView()
+          //bottomView()
         ],
       ),
     );

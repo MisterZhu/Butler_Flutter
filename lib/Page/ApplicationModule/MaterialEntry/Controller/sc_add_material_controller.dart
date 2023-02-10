@@ -1,19 +1,20 @@
+
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
-import '../Model/sc_material_entry_model.dart';
+import '../Model/sc_material_list_model.dart';
 
-/// 物资入库controller
+/// 新增物资controller
 
-class SCMaterialEntryController extends GetxController {
+class SCAddMaterialController extends GetxController {
 
   int pageNum = 1;
 
-  List<SCMaterialEntryModel> dataList = [];
+  List<SCMaterialListModel> materialList = [];
 
-  /// 入库列表数据
-  loadEntryListData({bool? isMore}) {
+  /// 物资列表数据
+  loadMaterialListData({bool? isMore}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       pageNum++;
@@ -22,34 +23,35 @@ class SCMaterialEntryController extends GetxController {
     }
     var params = {
       "conditions": {
-        "fields": [{"map": {}, "method": 0, "name": "", "value": {}}],
+        "fields": [
+          {"map": {}, "method": 0, "name": "", "value": {}}],
         "specialMap": {}
       },
       "count": false,
       "last": false,
-      "orderBy": [{"asc": true, "field": "gmtModify"}],
+      "orderBy": [],
       "pageNum": pageNum,
       "pageSize": 20
     };
     print('params===========$params');
     SCHttpManager.instance.post(
-        url: SCUrl.kMaterialEntryListUrl,
+        url: SCUrl.kMaterialListUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
-          print('入库列表数据======================================$value');
+          print('物资列表数据======================================$value');
           if (value is Map) {
             List list = value['records'];
             if (isLoadMore == true) {
-              dataList.addAll(List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+              materialList.addAll(List<SCMaterialListModel>.from(
+                  list.map((e) => SCMaterialListModel.fromJson(e)).toList()));
             } else {
-              dataList = List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+              materialList = List<SCMaterialListModel>.from(
+                  list.map((e) => SCMaterialListModel.fromJson(e)).toList());
             }
           } else {
             if (isLoadMore == false) {
-              dataList = [];
+              materialList = [];
             }
           }
           update();

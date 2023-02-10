@@ -4,6 +4,7 @@ import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
+import '../../Controller/sc_add_material_controller.dart';
 import '../MaterialEntry/sc_material_search_item.dart';
 import '../MaterialEntry/sc_material_sift_item.dart';
 import '../SelectCategoryAlert/sc_add_material_selectcategory_alert.dart';
@@ -12,6 +13,12 @@ import 'sc_add_material_listview.dart';
 /// 添加物资view
 
 class SCAddMaterialView extends StatefulWidget {
+
+  /// SCAddMaterialController
+  final SCAddMaterialController state;
+
+  SCAddMaterialView({Key? key, required this.state}) : super(key: key);
+
   @override
   SCAddMaterialViewState createState() => SCAddMaterialViewState();
 }
@@ -49,7 +56,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
 
   /// listview
   Widget listview(BuildContext context) {
-    return SCAddMaterialListView();
+    return SCAddMaterialListView(state: widget.state,);
   }
 
   Widget getCell(int index) {

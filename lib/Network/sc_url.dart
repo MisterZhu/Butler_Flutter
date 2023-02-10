@@ -88,4 +88,19 @@ class SCUrl {
 
   /// 修改用户信息
   static const String kModifyUserInfoUrl = "/api/user/info/modifyAccount";
+
+
+  /************************* 物资入库 *************************/
+  /// 入库列表
+  static const String kMaterialEntryListUrl = "/api/warehouse/manage/in/selectWareHouseInList";
+
+  /// 选择搜索仓库列表
+  static const String kWareHouseListUrl = "/api/warehouse/manage/warehouse/chooseWareHouseList";
+
+  /// 选择搜索仓库类型
+  static const String kWareHouseTypeUrl = "/api/config/dictionary/listTree";
+
+  /// 物资列表
+  static const String kMaterialListUrl = "/api/warehouse/manage/material/selectMaterialListByPage";
+
 }

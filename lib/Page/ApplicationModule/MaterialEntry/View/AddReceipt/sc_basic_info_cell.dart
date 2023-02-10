@@ -78,8 +78,8 @@ class SCBasicInfoCell extends StatelessWidget {
           const SizedBox(height: 12.0,),
           inputItem(),
           const SizedBox(height: 10.0,),
-          photosItem(),
-          const SizedBox(height: 12.0,),
+          //photosItem(),
+          //const SizedBox(height: 12.0,),
         ])
     );
   }

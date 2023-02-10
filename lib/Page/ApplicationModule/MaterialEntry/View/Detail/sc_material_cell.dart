@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
-
+import '../../../../../Network/sc_config.dart';
+import '../../Model/sc_material_list_model.dart';
 import '../AddMaterial/sc_material_stepper.dart';
 
 /// 详情cell
@@ -16,9 +17,10 @@ const int scMaterialCellTypeDelete = 2;
 
 /// 物资cell
 class SCMaterialCell extends StatefulWidget {
-  const SCMaterialCell({Key? key, required this.type, this.onTap})
-      : super(key: key);
 
+  const SCMaterialCell({Key? key, required this.type, this.model, this.onTap}) : super(key: key);
+
+  final SCMaterialListModel? model;
   /// cell点击
   final Function? onTap;
 
@@ -129,27 +131,24 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// 物资图片
   Widget imageView() {
+    String url = SCConfig.getImageUrl(widget.model?.pic ?? '');
     return Container(
       width: 80.0,
       height: 80.0,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(2.0),
           color: SCColors.color_D9D9D9),
-      child: Image.asset(
-        SCAsset.iconTestMaterial,
-        width: 80.0,
-        height: 80.0,
-      ),
+      child: SCImage(url: url, width: 80.0, height: 80.0, fit: BoxFit.cover,)
     );
   }
 
   /// 物资信息-详情
   Widget detailInfoView() {
     return Expanded(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [nameLabel(), infoLabel(10)],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [nameLabel(), infoLabel(10)],
     ));
   }
 
@@ -209,11 +208,11 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// 物资名称label
   Widget nameLabel() {
-    return const Text(
-      '物资名称物资名称物资名称物资名称物资名称物资名称物资名称物资名称物资名称',
+    return Text(
+      widget.model?.name ?? '',
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
-      style: TextStyle(
+      style: const TextStyle(
           fontSize: SCFonts.f14,
           fontWeight: FontWeight.w500,
           color: SCColors.color_1B1D33),
@@ -223,7 +222,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
   /// 物资信息label
   Widget infoLabel(int maxLength) {
     return Text(
-      '型号:TG368 单位:个\n条码:87974389787',
+      '单位:${widget.model?.unitName} 条形码:${widget.model?.barCode}\n规格:${widget.model?.norms}',
       maxLines: maxLength,
       overflow: TextOverflow.ellipsis,
       style: const TextStyle(

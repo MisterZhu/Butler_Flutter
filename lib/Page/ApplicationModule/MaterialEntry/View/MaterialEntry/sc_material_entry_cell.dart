@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 
 import '../../../../../Constants/sc_asset.dart';
+import '../../Model/sc_material_entry_model.dart';
 
 class SCMaterialEntryCell extends StatelessWidget {
 
   /// 类型，0 入库，1 出库
   final int type;
 
+  final SCMaterialEntryModel? model;
   /// 打电话
   final Function(String phone)? callAction;
 
@@ -21,6 +23,7 @@ class SCMaterialEntryCell extends StatelessWidget {
 
   SCMaterialEntryCell({Key? key,
     required this.type,
+    this.model,
     this.callAction,
     this.btnTapAction,
     this.detailTapAction,
@@ -76,6 +79,8 @@ class SCMaterialEntryCell extends StatelessWidget {
 
   /// title
   Widget titleView() {
+    List statusList = ['待提交', '待审批', '审批中', '已拒绝', '已驳回', '已撤回', '已入库'];
+    List statusColorList = [SCColors.color_FF7F09, SCColors.color_FF7F09, SCColors.color_0849B5, SCColors.color_FF4040, SCColors.color_FF4040, SCColors.color_B0B1B8, SCColors.color_B0B1B8];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
@@ -85,7 +90,7 @@ class SCMaterialEntryCell extends StatelessWidget {
           Image.asset(type == 0 ? SCAsset.iconMaterialEntry : SCAsset.iconMaterialOutbound, width: 18.0, height: 18.0,),
           const SizedBox(width: 6.0,),
           Expanded(child: Text(
-            '采购入库',
+            model?.typeName ?? '',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
@@ -94,14 +99,13 @@ class SCMaterialEntryCell extends StatelessWidget {
               color: SCColors.color_1B1D33)),),
           const SizedBox(width: 6.0,),
           Text(
-              '待提交',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                  fontSize: SCFonts.f14,
-                  fontWeight: FontWeight.w400,
-                  color: SCColors.color_5E5F66)),
-
+            statusList[model?.status ?? 0],
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: SCFonts.f14,
+              fontWeight: FontWeight.w400,
+              color: statusColorList[model?.status ?? 0])),
         ],
       ),
     );
@@ -138,7 +142,7 @@ class SCMaterialEntryCell extends StatelessWidget {
           ),
           Expanded(
               child: Text(
-                '慧享科技：仓库1',
+                model?.wareHouseName ?? '',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -161,7 +165,7 @@ class SCMaterialEntryCell extends StatelessWidget {
                     width: 8.0,
                   ),
                   Text(
-                    '李大大',
+                    model?.creatorName ?? '',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -192,6 +196,7 @@ class SCMaterialEntryCell extends StatelessWidget {
 
   /// bottomItem
   Widget bottomItem() {
+    List list = ['提交', '撤回', '撤回', '编辑', '编辑', '编辑', ''];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0), 
       child: Row(
@@ -199,7 +204,7 @@ class SCMaterialEntryCell extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(child: Text(
-            '2022-09-09 12:00:00',
+            model?.gmtCreate ?? '',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
@@ -210,22 +215,25 @@ class SCMaterialEntryCell extends StatelessWidget {
           SizedBox(
             width: 100.0,
             height: 40.0,
-            child: CupertinoButton(
-                alignment: Alignment.center,
-                borderRadius: BorderRadius.circular(4.0),
-                minSize: 40.0,
-                color: SCColors.color_4285F4,
-                padding: EdgeInsets.zero,
-                child: Text(
-                  '提交',
-                  style: const TextStyle(
-                      fontSize: SCFonts.f16,
-                      fontWeight: FontWeight.w400,
-                      color: SCColors.color_FFFFFF),
-                ),
-                onPressed: () {
-                  btnTapAction?.call();
-                }),
+            child: Offstage(
+              offstage: model?.status == 6 ? true : false,
+              child: CupertinoButton(
+                  alignment: Alignment.center,
+                  borderRadius: BorderRadius.circular(4.0),
+                  minSize: 40.0,
+                  color: SCColors.color_4285F4,
+                  padding: EdgeInsets.zero,
+                  child: Text(
+                    list[model?.status ?? 0],
+                    style: const TextStyle(
+                        fontSize: SCFonts.f16,
+                        fontWeight: FontWeight.w400,
+                        color: SCColors.color_FFFFFF),
+                  ),
+                  onPressed: () {
+                    btnTapAction?.call();
+                  }),
+            ),
           )
         ],
       )

@@ -18,17 +18,17 @@ class SCMaterialDetailListView extends StatelessWidget {
       return cell(index);
     }, separatorBuilder: (BuildContext context, int index){
       return line(index);
-    }, itemCount: 3);
+    }, itemCount: 2);
   }
 
   /// cell
   Widget cell(int index) {
     if (index == 0) {// 所有物资
       return SCAllMaterialCell();
-    } else if(index == 1) {// 审批流程
-      return SCMaterialApproveFlowCell(title: '审批流程', onTap: () {
-        
-      },);
+    // } else if(index == 1) {// 审批流程
+    //   return SCMaterialApproveFlowCell(title: '审批流程', onTap: () {
+    //
+    //   },);
     } else {// 入库信息
       return SCMaterialEntryInfoCell();
     }

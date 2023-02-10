@@ -26,8 +26,8 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
     super.initState();
     entryControllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCMaterialEntryPage).toString());
-    entryController =
-        Get.put(SCMaterialEntryController(), tag: entryControllerTag);
+    entryController = Get.put(SCMaterialEntryController(), tag: entryControllerTag);
+    entryController.loadEntryListData(isMore: false);
   }
 
   @override
@@ -46,7 +46,7 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
           tag: entryControllerTag,
           init: entryController,
           builder: (state) {
-            return SCMaterialEntryView();
+            return SCMaterialEntryView(state: state,);
           }),
     );
   }

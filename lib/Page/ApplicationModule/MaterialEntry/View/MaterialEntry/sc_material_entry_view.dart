@@ -1,7 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_entry_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_search_item.dart';
@@ -10,12 +9,19 @@ import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
+import '../../Controller/sc_material_entry_controller.dart';
+import '../../Model/sc_material_entry_model.dart';
 import '../Alert/sc_sift_alert.dart';
 import '../Alert/sc_sort_alert.dart';
 
 /// 物资入库view
 
 class SCMaterialEntryView extends StatefulWidget {
+
+  /// SCMaterialEntryController
+  final SCMaterialEntryController state;
+
+  SCMaterialEntryView({Key? key, required this.state}) : super(key: key);
 
   @override
   SCMaterialEntryViewState createState() => SCMaterialEntryViewState();
@@ -164,7 +170,9 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
+          SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
+            model: model,
             type: 0,
             detailTapAction: () {
               detailAction(index);
@@ -174,7 +182,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 10.0,);
         },
-        itemCount: 3);
+        itemCount: widget.state.dataList.length);
   }
 
 

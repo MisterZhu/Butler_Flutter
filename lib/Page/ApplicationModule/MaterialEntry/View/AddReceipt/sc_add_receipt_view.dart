@@ -10,10 +10,16 @@ import '../../../../../Utils/sc_utils.dart';
 import '../../../../WorkBench/Home/Model/sc_home_task_model.dart';
 import '../../../../WorkBench/Home/View/Alert/sc_task_module_alert.dart';
 import '../../../HouseInspect/View/sc_bottom_button_item.dart';
+import '../../Controller/sc_add_receipt_controller.dart';
 
 /// 新增入库view
 
 class SCAddReceiptView extends StatefulWidget {
+
+  /// SCAddReceiptController
+  final SCAddReceiptController state;
+
+  SCAddReceiptView({Key? key, required this.state}) : super(key: key);
 
   @override
   SCAddReceiptViewState createState() => SCAddReceiptViewState();
@@ -29,6 +35,9 @@ class SCAddReceiptViewState extends State<SCAddReceiptView> {
   /// 仓库名称
   String warehouseName = '';
 
+  /// 仓库index
+  int nameIndex = -1;
+
   /// 类型
   String type = '';
 
@@ -43,11 +52,9 @@ class SCAddReceiptViewState extends State<SCAddReceiptView> {
   @override
   void initState() {
     super.initState();
-
     var keyboardVisibilityController = KeyboardVisibilityController();
     isShowKeyboard = keyboardVisibilityController.isVisible;
-    keyboardSubscription =
-        keyboardVisibilityController.onChange.listen((bool visible) {
+    keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
       setState(() {
         isShowKeyboard = visible;
       });
@@ -112,9 +119,14 @@ class SCAddReceiptViewState extends State<SCAddReceiptView> {
         selectAction: (index) {
           if (index == 0) {
             //仓库名称
+            List list = widget.state.wareHouseList.map((e) => e.name).toList();
+            print('仓库名称list============$list');
+            showAlert(0, '仓库名称', list);
           } else if (index == 1) {
             //类型
-            showTypeAlert();
+            List list = widget.state.typeList.map((e) => e.label).toList();
+            print('类型list============$list');
+            showAlert(1, '类型', list);
           }
       }, inputAction: (content) {
 
@@ -135,39 +147,40 @@ class SCAddReceiptViewState extends State<SCAddReceiptView> {
   }
 
   /// 弹出类型弹窗
-  showTypeAlert() {
-    List typeList = [
-      '采购入库',
-      '调拨入库',
-      '盘盈入库',
-      '领料归还入库',
-      '借用归还入库',
-      '退货入库',
-      '其他入库'
-    ];
-    List<SCHomeTaskModel> list = [];
-    for (int i = 0; i < typeList.length; i++) {
-      list.add(SCHomeTaskModel.fromJson(
-          {"name": typeList[i], "id": "$i", "isSelect": false}));
+  showAlert(int index, String title, List list) {
+    List<SCHomeTaskModel> modelList = [];
+    for (int i = 0; i < list.length; i++) {
+      modelList.add(SCHomeTaskModel.fromJson(
+          {"name": list[i], "id": "$i", "isSelect": false}));
+    }
+    int currentIndex = -1;
+    if (index == 0) {//仓库名称
+      currentIndex = nameIndex;
+    } else if (index == 1) {//类型
+      currentIndex = typeIndex;
     }
     SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
       SCDialogUtils().showCustomBottomDialog(
           isDismissible: true,
           context: context,
           widget: SCTaskModuleAlert(
-            title: '类型',
-            list: list,
-            currentIndex: typeIndex,
+            title: title,
+            list: modelList,
+            currentIndex: currentIndex,
             radius: 2.0,
             tagHeight: 32.0,
             columnCount: 3,
             mainSpacing: 8.0,
             crossSpacing: 8.0,
             topSpacing: 8.0,
-            closeTap: (SCHomeTaskModel model, int index) {
+            closeTap: (SCHomeTaskModel model, int selectIndex) {
               setState(() {
-                baseInfoList[1]['content'] = model.name!;
-                typeIndex = index;
+                baseInfoList[index]['content'] = model.name!;
+                if (index == 0) {//仓库名称
+                  nameIndex = selectIndex;
+                } else if (index == 1) {//类型
+                  typeIndex = selectIndex;
+                }
               });
             },
           ));
