@@ -77,7 +77,7 @@ dependencies:
   # 相册选择照片 https://pub.dev/packages/wechat_assets_picker/install
   wechat_assets_picker: ^8.1.3
   # picker https://pub.dev/packages/flutter_picker/install
-  flutter_picker: ^2.0.5
+  flutter_picker: ^2.1.0
   # 日期格式转换 https://pub.flutter-io.cn/packages/date_format/install
   date_format: ^2.0.7
   # 微信sdk https://pub.dev/packages/fluwx/install
@@ -116,7 +116,7 @@ dependencies:
   sc_uikit:
     git:
       url: http://10.100.10.22/jizuo-flutter/flutter_library/sc_uikit.git
-      ref: '0.0.1'
+      ref: '0.0.2'
 
 
 dev_dependencies:
