@@ -46,14 +46,6 @@ enum SCHomeCellBottomContentType {
   bottomContent,
 }
 
-/// picker类型
-enum SCPickerType {
-  // 普通的picker
-  normal,
-  // 日期picker
-  date
-}
-
 /// 添加照片类型
 enum SCAddPhotoType {
   // 拍照+从相册选择

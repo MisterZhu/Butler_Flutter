@@ -13,7 +13,7 @@ class SCMaterialDetailListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       shrinkWrap: true,
-        padding: const EdgeInsets.only(top: 12.0, left: 16.0, right: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
         itemBuilder: (BuildContext context, int index){
       return cell(index);
     }, separatorBuilder: (BuildContext context, int index){

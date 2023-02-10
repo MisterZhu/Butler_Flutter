@@ -233,6 +233,7 @@ class SCPersonalInfoListView extends StatelessWidget {
   /// 选择出生日期
   selectBirthdayAction(BuildContext context) {
     SCPickerUtils pickerUtils = SCPickerUtils();
+    pickerUtils.title = '出生日期';
     pickerUtils.pickerType = SCPickerType.date;
     pickerUtils.completionHandler = (selectedValues, selecteds) {
       String dateString = SCDateUtils.transformDate(
@@ -242,7 +243,6 @@ class SCPersonalInfoListView extends StatelessWidget {
     };
     pickerUtils.showDatePicker(
         context: context,
-        dateType: PickerDateTimeType.kYMD,
-        columnFlex: [1, 1, 1]);
+        dateType: PickerDateTimeType.kYMD);
   }
 }

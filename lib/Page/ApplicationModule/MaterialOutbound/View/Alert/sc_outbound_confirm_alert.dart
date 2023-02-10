@@ -1,8 +1,11 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Constants/sc_enum.dart';
+import '../../../../../Utils/Date/sc_date_utils.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../../WorkBench/Home/View/Alert/sc_alert_header_view.dart';
 import '../../../HouseInspect/View/sc_bottom_button_item.dart';
@@ -66,6 +69,7 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
     );
   }
 
+  /// listView
   Widget listView() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -125,7 +129,7 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
     return Column(
       children: [
         SCMaterialSelectItem(isRequired: false, title: '出库时间', content: time, selectAction: () {
-          showTimeAlert();
+          showTimeAlert(context);
         },),
         line(),
       ],
@@ -190,8 +194,20 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
   }
 
   /// 出库时间弹窗
-  showTimeAlert () {
-
+  showTimeAlert (BuildContext context) {
+    SCPickerUtils pickerUtils = SCPickerUtils();
+    pickerUtils.title = '出库时间';
+    pickerUtils.cancelText = '上一步';
+    pickerUtils.pickerType = SCPickerType.date;
+    pickerUtils.completionHandler = (selectedValues, selecteds) {
+      DateTime value = selectedValues.first;
+      setState(() {
+        time = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+      });
+    };
+    pickerUtils.showDatePicker(
+      context: context,
+      dateType: PickerDateTimeType.kYMDHM);
   }
 
   /// line
