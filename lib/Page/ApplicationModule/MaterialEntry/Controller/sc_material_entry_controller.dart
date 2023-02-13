@@ -12,10 +12,10 @@ class SCMaterialEntryController extends GetxController {
   int pageNum = 1;
 
   /// 选中的状态，默认显示全部
-  String selectStatus = '全部';
+  int selectStatusId = -1;
 
   /// 选中的类型，默认显示全部
-  String selectType = '全部';
+  int selectTypeId = -1;
 
   /// 排序，true操作时间正序，false操作时间倒序
   bool sort = true;
@@ -31,16 +31,16 @@ class SCMaterialEntryController extends GetxController {
   }
 
   /// 选择状态，刷新页面数据
-  updateStatus(String value) {
-    selectStatus = value;
+  updateStatus(int value) {
+    selectStatusId = value;
     pageNum = 1;
     /// 重新获取数据
     loadEntryListData(isMore: false);
   }
 
   /// 选择类型，刷新页面数据
-  updateType(String value) {
-    selectType = value;
+  updateType(int value) {
+    selectTypeId = value;
     pageNum = 1;
     /// 重新获取数据
     loadEntryListData(isMore: false);
@@ -62,9 +62,28 @@ class SCMaterialEntryController extends GetxController {
     } else {
       SCLoadingUtils.show();
     }
+    List fields = [];
+    if (selectTypeId >= 0) {
+      var dic = {
+        "map": {},
+        "method": 1,
+        "name": "type",
+        "value": selectTypeId
+      };
+      fields.add(dic);
+    }
+    if (selectStatusId >= 0) {
+      var dic = {
+        "map": {},
+        "method": 1,
+        "name": "status",
+        "value": selectStatusId
+      };
+      fields.add(dic);
+    }
     var params = {
       "conditions": {
-        "fields": [{"map": {}, "method": 0, "name": "", "value": {}}],
+        "fields": fields,
         "specialMap": {}
       },
       "count": false,

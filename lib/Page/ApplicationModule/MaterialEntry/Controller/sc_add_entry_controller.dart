@@ -25,6 +25,46 @@ class SCAddEntryController extends GetxController {
     loadWareHouseType();
   }
 
+
+  /// 新增入库, status=0暂存，1提交
+  addEntry({required int status}) {
+    var params = {
+      "materials": [{
+        "barCode": "",
+        "code": "",
+        "locations": "",
+        "materialId": "",
+        "materialName": "",
+        "norms": "",
+        "num": 0,
+        "referPrice": 0,
+        "thirdCode": "",
+        "totalPrice": 0,
+        "unitId": "",
+        "unitName": ""
+        }
+      ],
+      "remark": "",
+      "status": status,
+      "type": 0,
+      "typeName": "",
+      "wareHouseId": "",
+      "wareHouseName": ""
+    };
+    print('params===========$params');
+    SCHttpManager.instance.post(
+        url: SCUrl.kAddEntryUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+
+          update();
+        },
+        failure: (value) {
+        });
+  }
+
+
   /// 仓库列表
   loadWareHouseList() {
     SCLoadingUtils.show();

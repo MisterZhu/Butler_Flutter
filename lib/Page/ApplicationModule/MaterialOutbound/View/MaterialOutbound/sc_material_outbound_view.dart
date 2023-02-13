@@ -31,9 +31,17 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
 
   List siftList =  ['状态', '类型', '排序'];
 
-  List statusList = ['全部', '待提交', '待审批', '审批中', '已拒绝', '已驳回', '已撤回', '已出库'];
-
-  List typeList = ['全部', '采购入库', '调拨入库', '盘盈入库', '领料归还入库', '借用归还入库', '退货入库', '其他入库'];
+  List statusList = [
+    {'name': '全部', 'code': -1},
+    {'name': '待提交', 'code': 0},
+    {'name': '待审批', 'code': 1},
+    {'name': '审批中', 'code': 2},
+    {'name': '已拒绝', 'code': 3},
+    {'name': '已驳回', 'code': 4},
+    {'name': '已撤回', 'code': 5},
+    {'name': '已出库', 'code': 6},
+  ];
+  List typeList = ['全部'];
 
   int selectStatus = 0;
 
@@ -139,7 +147,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
     );
   }
 
-  /// 新增出库按钮
+  /// 新增入库按钮
   Widget addItem() {
     return Container(
       width: 60.0,
@@ -152,7 +160,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
       child: CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: () {
-          SCRouterHelper.pathPage(SCRouterPath.addOutboundPage, null);
+          SCRouterHelper.pathPage(SCRouterPath.addEntryPage, null);
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -161,7 +169,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
             Image.asset(SCAsset.iconAddReceipt, width: 20.0, height: 20.0,),
             const SizedBox(width: 2.0,),
             const Text(
-                '新增出库',
+                '新增入库',
                 maxLines: 1,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
@@ -184,7 +192,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
           SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
             model: model,
-            type: 1,
+            type: 0,
             detailTapAction: () {
               detailAction(index);
             },
@@ -196,27 +204,37 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
         itemCount: widget.state.dataList.length);
   }
 
-
   /// 详情
   detailAction(int index) {
     SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, null);
   }
 
-  /// 出库状态弹窗
+  /// 入库状态弹窗
   Widget statusAlert() {
+    List list = [];
+    for (int i = 0; i < statusList.length; i++) {
+      list.add(statusList[i]['name']);
+    }
     return Offstage(
       offstage: !showStatusAlert,
       child: SCSiftAlert(
-        title: '出库状态',
-        list: statusList,
+        title: '入库状态',
+        list: list,
         selectIndex: selectStatus,
-        tapAction: (value) {
+        closeAction: () {
           setState(() {
             showStatusAlert = false;
-            selectStatus = value;
-            siftList[0] = value == 0 ? '状态' : statusList[value];
-            widget.state.updateStatus(statusList[value]);
           });
+        },
+        tapAction: (value) {
+          if (selectStatus != value) {
+            setState(() {
+              showStatusAlert = false;
+              selectStatus = value;
+              siftList[0] = value == 0 ? '状态' : statusList[value]['name'];
+              widget.state.updateStatus(statusList[value]['code']);
+            });
+          }
         },),
     );
   }
@@ -229,13 +247,20 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
         title: '出库类型',
         list: typeList,
         selectIndex: selectType,
-        tapAction: (value) {
+        closeAction: () {
           setState(() {
             showTypeAlert = false;
-            selectType = value;
-            siftList[1] = value == 0 ? '类型' : typeList[value];
-            widget.state.updateType(typeList[value]);
           });
+        },
+        tapAction: (value) {
+          if (selectType != value) {
+            setState(() {
+              showTypeAlert = false;
+              selectType = value;
+              siftList[1] = value == 0 ? '类型' : typeList[value];
+              widget.state.updateType(value == 0 ? -1 : widget.state.outboundList[value - 1].code ?? -1);
+            });
+          }
         },),
     );
   }
@@ -244,13 +269,22 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
   Widget sortAlert() {
     return Offstage(
       offstage: !showSortAlert,
-      child: SCSortAlert(selectIndex: sortIndex, tapAction: (index) {
-        setState(() {
-          showSortAlert = false;
-          sortIndex = index;
-          widget.state.updateSort(index == 0 ? true : false);
-        });
-      },),
+      child: SCSortAlert(
+        selectIndex: sortIndex,
+        closeAction: () {
+          setState(() {
+            showSortAlert = false;
+          });
+        },
+        tapAction: (index) {
+          if (sortIndex != index) {
+            setState(() {
+              showSortAlert = false;
+              sortIndex = index;
+              widget.state.updateSort(index == 0 ? true : false);
+            });
+          }
+        },),
     );
   }
 

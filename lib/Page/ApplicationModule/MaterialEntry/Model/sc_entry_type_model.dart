@@ -22,7 +22,7 @@ class SCEntryTypeModel {
       String? parentName, 
       String? parentId, 
       String? name,
-      String? code,
+      int? code,
       int? level, 
       int? sort, 
       String? remarks, 
@@ -49,7 +49,7 @@ class SCEntryTypeModel {
     _parentName = json['parentName'];
     _parentId = json['parentId'];
     _name = json['name'];
-    _code = json['code'];
+    _code = (json['code'] is int) ? json['code'] : int.parse(json['code']);
     _level = json['level'];
     _sort = json['sort'];
     _remarks = json['remarks'];
@@ -62,7 +62,7 @@ class SCEntryTypeModel {
   String? _parentName;
   String? _parentId;
   String? _name;
-  String? _code;
+  int? _code;
   int? _level;
   int? _sort;
   String? _remarks;
@@ -74,7 +74,7 @@ class SCEntryTypeModel {
   String? parentName,
   String? parentId,
   String? name,
-  String? code,
+  int? code,
   int? level,
   int? sort,
   String? remarks,
@@ -99,7 +99,7 @@ class SCEntryTypeModel {
   String? get parentName => _parentName;
   String? get parentId => _parentId;
   String? get name => _name;
-  String? get code => _code;
+  int? get code => _code;
   int? get level => _level;
   int? get sort => _sort;
   String? get remarks => _remarks;

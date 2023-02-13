@@ -10,6 +10,7 @@ import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../Controller/sc_material_entry_controller.dart';
+import '../../Model/sc_entry_type_model.dart';
 import '../../Model/sc_material_entry_model.dart';
 import '../Alert/sc_sift_alert.dart';
 import '../Alert/sc_sort_alert.dart';
@@ -31,8 +32,16 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
 
   List siftList =  ['状态', '类型', '排序'];
 
-  List statusList = ['全部', '待提交', '待审批', '审批中', '已拒绝', '已驳回', '已撤回', '已入库'];
-
+  List statusList = [
+    {'name': '全部', 'code': -1},
+    {'name': '待提交', 'code': 0},
+    {'name': '待审批', 'code': 1},
+    {'name': '审批中', 'code': 2},
+    {'name': '已拒绝', 'code': 3},
+    {'name': '已驳回', 'code': 4},
+    {'name': '已撤回', 'code': 5},
+    {'name': '已入库', 'code': 6},
+  ];
   List typeList = ['全部'];
 
   int selectStatus = 0;
@@ -51,9 +60,9 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
   void initState() {
     super.initState();
     widget.state.loadWareHouseType(() {
-      List entryList = widget.state.entryList.map((e) => e.name).toList();
+      List list = widget.state.entryList.map((e) => e.name).toList();
       setState(() {
-        typeList.addAll(entryList);
+        typeList.addAll(list);
       });
     });
   }
@@ -203,19 +212,30 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
 
   /// 入库状态弹窗
   Widget statusAlert() {
+    List list = [];
+    for (int i = 0; i < statusList.length; i++) {
+      list.add(statusList[i]['name']);
+    }
     return Offstage(
       offstage: !showStatusAlert,
       child: SCSiftAlert(
         title: '入库状态',
-        list: statusList,
+        list: list,
         selectIndex: selectStatus,
-        tapAction: (value) {
+        closeAction: () {
           setState(() {
             showStatusAlert = false;
-            selectStatus = value;
-            siftList[0] = value == 0 ? '状态' : statusList[value];
-            widget.state.updateStatus(statusList[value]);
           });
+        },
+        tapAction: (value) {
+          if (selectStatus != value) {
+            setState(() {
+              showStatusAlert = false;
+              selectStatus = value;
+              siftList[0] = value == 0 ? '状态' : statusList[value]['name'];
+              widget.state.updateStatus(statusList[value]['code']);
+            });
+          }
         },),
     );
   }
@@ -228,13 +248,20 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
         title: '入库类型',
         list: typeList,
         selectIndex: selectType,
-        tapAction: (value) {
+        closeAction: () {
           setState(() {
             showTypeAlert = false;
-            selectType = value;
-            siftList[1] = value == 0 ? '类型' : typeList[value];
-            widget.state.updateType(typeList[value]);
           });
+        },
+        tapAction: (value) {
+          if (selectType != value) {
+            setState(() {
+              showTypeAlert = false;
+              selectType = value;
+              siftList[1] = value == 0 ? '类型' : typeList[value];
+              widget.state.updateType(value == 0 ? -1 : widget.state.entryList[value - 1].code ?? -1);
+            });
+          }
         },),
     );
   }
@@ -243,12 +270,21 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
   Widget sortAlert() {
     return Offstage(
       offstage: !showSortAlert,
-      child: SCSortAlert(selectIndex: sortIndex, tapAction: (index) {
-        setState(() {
-          showSortAlert = false;
-          sortIndex = index;
-          widget.state.updateSort(index == 0 ? true : false);
-        });
+      child: SCSortAlert(
+        selectIndex: sortIndex,
+        closeAction: () {
+          setState(() {
+            showSortAlert = false;
+          });
+        },
+        tapAction: (index) {
+          if (sortIndex != index) {
+            setState(() {
+              showSortAlert = false;
+              sortIndex = index;
+              widget.state.updateSort(index == 0 ? true : false);
+            });
+          }
       },),
     );
   }
