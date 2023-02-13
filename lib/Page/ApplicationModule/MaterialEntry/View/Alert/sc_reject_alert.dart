@@ -10,7 +10,7 @@ import '../../../../WorkBench/Home/View/Alert/sc_alert_header_view.dart';
 import '../../../HouseInspect/View/sc_bottom_button_item.dart';
 import '../../../HouseInspect/View/sc_deliver_evidence_cell.dart';
 import '../../../HouseInspect/View/sc_deliver_explain_cell.dart';
-import '../AddReceipt/sc_material_select_item.dart';
+import '../AddEntry/sc_material_select_item.dart';
 
 /// 驳回弹窗
 

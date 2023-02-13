@@ -3,9 +3,9 @@ import '../Detail/sc_material_cell.dart';
 
 /// 新增入库-所有物资列表view
 
-class SCAddReceiptAllMaterialView extends StatelessWidget {
+class SCAddEntryAllMaterialView extends StatelessWidget {
 
-  const SCAddReceiptAllMaterialView({Key? key, required this.list}) : super(key: key);
+  const SCAddEntryAllMaterialView({Key? key, required this.list}) : super(key: key);
 
   /// 数据源
   final List list;

@@ -100,7 +100,12 @@ class SCUrl {
   /// 选择搜索仓库类型
   static const String kWareHouseTypeUrl = "/api/config/dictionary/listTree";
 
-  /// 物资列表
-  static const String kMaterialListUrl = "/api/warehouse/manage/material/selectMaterialListByPage";
+  /// 物资列表-不分页
+  static const String kMaterialListUrl = "/api/warehouse/manage/material/chooseMaterialList";
+
+  /************************* 物资出库 *************************/
+
+  /// 出库列表
+  static const String kMaterialOutboundListUrl = "/api/warehouse/manage/out/selectWareHouseOutList";
 
 }

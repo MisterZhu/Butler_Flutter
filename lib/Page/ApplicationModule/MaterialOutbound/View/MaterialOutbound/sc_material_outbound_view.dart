@@ -9,12 +9,19 @@ import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
+import '../../../MaterialEntry/Model/sc_material_entry_model.dart';
 import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
 import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
+import '../../Controller/sc_material_outbound_controller.dart';
 
 /// 物资出库view
 
 class SCMaterialOutboundView extends StatefulWidget {
+
+  /// SCMaterialOutboundController
+  final SCMaterialOutboundController state;
+
+  SCMaterialOutboundView({Key? key, required this.state}) : super(key: key);
 
   @override
   SCMaterialOutboundViewState createState() => SCMaterialOutboundViewState();
@@ -24,7 +31,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
 
   List siftList =  ['状态', '类型', '排序'];
 
-  List statusList = ['全部', '待提交', '审批中', '已拒绝', '已驳回', '已撤回', '已出库'];
+  List statusList = ['全部', '待提交', '待审批', '审批中', '已拒绝', '已驳回', '已撤回', '已出库'];
 
   List typeList = ['全部', '采购入库', '调拨入库', '盘盈入库', '领料归还入库', '借用归还入库', '退货入库', '其他入库'];
 
@@ -39,6 +46,17 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
   bool showTypeAlert = false;
 
   bool showSortAlert = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.state.loadOutboundType(() {
+      List list = widget.state.outboundList.map((e) => e.name).toList();
+      setState(() {
+        typeList.addAll(list);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +181,9 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
+          SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
+            model: model,
             type: 1,
             detailTapAction: () {
               detailAction(index);
@@ -173,7 +193,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 10.0,);
         },
-        itemCount: 3);
+        itemCount: widget.state.dataList.length);
   }
 
 
@@ -195,6 +215,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
             showStatusAlert = false;
             selectStatus = value;
             siftList[0] = value == 0 ? '状态' : statusList[value];
+            widget.state.updateStatus(statusList[value]);
           });
         },),
     );
@@ -213,6 +234,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
             showTypeAlert = false;
             selectType = value;
             siftList[1] = value == 0 ? '类型' : typeList[value];
+            widget.state.updateType(typeList[value]);
           });
         },),
     );
@@ -226,6 +248,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
         setState(() {
           showSortAlert = false;
           sortIndex = index;
+          widget.state.updateSort(index == 0 ? true : false);
         });
       },),
     );

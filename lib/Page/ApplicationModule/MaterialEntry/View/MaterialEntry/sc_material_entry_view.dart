@@ -31,9 +31,9 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
 
   List siftList =  ['状态', '类型', '排序'];
 
-  List statusList = ['全部', '待提交', '审批中', '已拒绝', '已驳回', '已撤回', '已入库'];
+  List statusList = ['全部', '待提交', '待审批', '审批中', '已拒绝', '已驳回', '已撤回', '已入库'];
 
-  List typeList = ['全部', '采购入库', '调拨入库', '盘盈入库', '领料归还入库', '借用归还入库', '退货入库', '其他入库'];
+  List typeList = ['全部'];
 
   int selectStatus = 0;
 
@@ -46,6 +46,17 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
   bool showTypeAlert = false;
 
   bool showSortAlert = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.state.loadWareHouseType(() {
+      List entryList = widget.state.entryList.map((e) => e.name).toList();
+      setState(() {
+        typeList.addAll(entryList);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +152,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
       child: CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: () {
-          SCRouterHelper.pathPage(SCRouterPath.addReceiptPage, null);
+          SCRouterHelper.pathPage(SCRouterPath.addEntryPage, null);
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -185,7 +196,6 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
         itemCount: widget.state.dataList.length);
   }
 
-
   /// 详情
   detailAction(int index) {
     SCRouterHelper.pathPage(SCRouterPath.materialDetailPage, null);
@@ -204,6 +214,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
             showStatusAlert = false;
             selectStatus = value;
             siftList[0] = value == 0 ? '状态' : statusList[value];
+            widget.state.updateStatus(statusList[value]);
           });
         },),
     );
@@ -222,6 +233,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
             showTypeAlert = false;
             selectType = value;
             siftList[1] = value == 0 ? '类型' : typeList[value];
+            widget.state.updateType(typeList[value]);
           });
         },),
     );
@@ -235,6 +247,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
         setState(() {
           showSortAlert = false;
           sortIndex = index;
+          widget.state.updateSort(index == 0 ? true : false);
         });
       },),
     );

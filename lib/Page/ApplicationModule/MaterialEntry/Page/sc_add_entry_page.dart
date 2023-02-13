@@ -6,30 +6,29 @@ import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../../Utils/sc_utils.dart';
-import '../Controller/sc_add_receipt_controller.dart';
-import '../View/AddReceipt/sc_add_receipt_view.dart';
+import '../Controller/sc_add_entry_controller.dart';
+import '../View/AddEntry/sc_add_entry_view.dart';
 
 /// 新增入库page
 
-class SCAddReceiptPage extends StatefulWidget {
+class SCAddEntryPage extends StatefulWidget {
   @override
-  SCAddReceiptPageState createState() => SCAddReceiptPageState();
+  SCAddEntryPageState createState() => SCAddEntryPageState();
 }
 
-class SCAddReceiptPageState extends State<SCAddReceiptPage> {
+class SCAddEntryPageState extends State<SCAddEntryPage> {
 
-  /// SCAddReceiptController
-  late SCAddReceiptController addController;
+  /// SCAddEntryController
+  late SCAddEntryController addController;
 
-  /// SCAddReceiptController - tag
+  /// SCAddEntryController - tag
   String addControllerTag = '';
 
   @override
   initState() {
     super.initState();
-    addControllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddReceiptPage).toString());
-    addController = Get.put(SCAddReceiptController(), tag: addControllerTag);
-    addController.loadWareHouseList();
+    addControllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddEntryPage).toString());
+    addController = Get.put(SCAddEntryController(), tag: addControllerTag);
   }
 
   @override
@@ -52,11 +51,11 @@ class SCAddReceiptPageState extends State<SCAddReceiptPage> {
         width: double.infinity,
         height: double.infinity,
         color: SCColors.color_F2F3F5,
-        child: GetBuilder<SCAddReceiptController>(
+        child: GetBuilder<SCAddEntryController>(
             tag: addControllerTag,
             init: addController,
             builder: (state) {
-              return SCAddReceiptView(state: state,);
+              return SCAddEntryView(state: state,);
             }),
       ),
     );

@@ -80,6 +80,9 @@ class SCMaterialEntryCell extends StatelessWidget {
   /// title
   Widget titleView() {
     List statusList = ['待提交', '待审批', '审批中', '已拒绝', '已驳回', '已撤回', '已入库'];
+    if (type == 1) {
+      statusList = ['待提交', '待审批', '审批中', '已拒绝', '已驳回', '已撤回', '已出库'];
+    }
     List statusColorList = [SCColors.color_FF7F09, SCColors.color_FF7F09, SCColors.color_0849B5, SCColors.color_FF4040, SCColors.color_FF4040, SCColors.color_B0B1B8, SCColors.color_B0B1B8];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),

@@ -74,7 +74,7 @@ class SCRouterPath {
   static String materialEntryPage = "/lib/Page/MaterialEntry/Page/sc_material_entry_page";
 
   /// 新增入库
-  static String addReceiptPage = "/lib/Page/MaterialEntry/Page/sc_add_receipt_page";
+  static String addEntryPage = "/lib/Page/MaterialEntry/Page/sc_add_entry_page";
 
   /// 入库详情
   static String materialDetailPage = "/lib/Page/MaterialEntry/Page/sc_material_entry_detail_page";

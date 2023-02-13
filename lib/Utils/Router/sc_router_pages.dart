@@ -22,7 +22,7 @@ import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_problem_
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_select_page.dart';
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_to_be_upload_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_add_material_page.dart';
-import '../../Page/ApplicationModule/MaterialEntry/Page/sc_add_receipt_page.dart';
+import '../../Page/ApplicationModule/MaterialEntry/Page/sc_add_entry_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_material_entry_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_material_search_page.dart';
 import '../../Page/ApplicationModule/MaterialOutbound/Page/sc_material_outbound_detail_page.dart';
@@ -80,7 +80,7 @@ class SCRouterPages {
     /*物资入库*/
     GetPage(name: SCRouterPath.materialEntryPage, page: () => SCMaterialEntryPage()),
     /*新增入库*/
-    GetPage(name: SCRouterPath.addReceiptPage, page: () => SCAddReceiptPage()),
+    GetPage(name: SCRouterPath.addEntryPage, page: () => SCAddEntryPage()),
     /*入库详情*/
     GetPage(name: SCRouterPath.materialDetailPage, page: () => SCMaterialEntryDetailPage()),
     /*添加物资*/

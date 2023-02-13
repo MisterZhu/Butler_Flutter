@@ -28,7 +28,7 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> {
     super.initState();
     addControllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddMaterialPageState).toString());
     addController = Get.put(SCAddMaterialController(), tag: addControllerTag);
-    addController.loadMaterialListData(isMore: false);
+    addController.loadMaterialListData();
   }
 
   @override

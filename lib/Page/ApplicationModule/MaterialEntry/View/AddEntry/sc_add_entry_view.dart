@@ -2,30 +2,30 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddReceipt/sc_material_info_cell.dart';
-import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddReceipt/sc_basic_info_cell.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_basic_info_cell.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_material_info_cell.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../../WorkBench/Home/Model/sc_home_task_model.dart';
 import '../../../../WorkBench/Home/View/Alert/sc_task_module_alert.dart';
 import '../../../HouseInspect/View/sc_bottom_button_item.dart';
-import '../../Controller/sc_add_receipt_controller.dart';
+import '../../Controller/sc_add_entry_controller.dart';
 
 /// 新增入库view
 
-class SCAddReceiptView extends StatefulWidget {
+class SCAddEntryView extends StatefulWidget {
 
-  /// SCAddReceiptController
-  final SCAddReceiptController state;
+  /// SCAddEntryController
+  final SCAddEntryController state;
 
-  SCAddReceiptView({Key? key, required this.state}) : super(key: key);
+  SCAddEntryView({Key? key, required this.state}) : super(key: key);
 
   @override
   SCAddReceiptViewState createState() => SCAddReceiptViewState();
 }
 
-class SCAddReceiptViewState extends State<SCAddReceiptView> {
+class SCAddReceiptViewState extends State<SCAddEntryView> {
 
   /// 基础信息数组
   List baseInfoList = [
@@ -120,12 +120,10 @@ class SCAddReceiptViewState extends State<SCAddReceiptView> {
           if (index == 0) {
             //仓库名称
             List list = widget.state.wareHouseList.map((e) => e.name).toList();
-            print('仓库名称list============$list');
             showAlert(0, '仓库名称', list);
           } else if (index == 1) {
             //类型
-            List list = widget.state.typeList.map((e) => e.label).toList();
-            print('类型list============$list');
+            List list = widget.state.entryList.map((e) => e.name).toList();
             showAlert(1, '类型', list);
           }
       }, inputAction: (content) {

@@ -2,12 +2,12 @@ import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
-import '../Model/sc_entry_type_model.dart';
-import '../Model/sc_material_entry_model.dart';
+import '../../MaterialEntry/Model/sc_entry_type_model.dart';
+import '../../MaterialEntry/Model/sc_material_entry_model.dart';
 
-/// 物资入库controller
+/// 物资出库controller
 
-class SCMaterialEntryController extends GetxController {
+class SCMaterialOutboundController extends GetxController {
 
   int pageNum = 1;
 
@@ -22,8 +22,8 @@ class SCMaterialEntryController extends GetxController {
 
   List<SCMaterialEntryModel> dataList = [];
 
-  /// 入库类型数组
-  List<SCEntryTypeModel> entryList = [];
+  /// 出库类型数组
+  List<SCEntryTypeModel> outboundList = [];
 
   @override
   onInit() {
@@ -35,7 +35,7 @@ class SCMaterialEntryController extends GetxController {
     selectStatus = value;
     pageNum = 1;
     /// 重新获取数据
-    loadEntryListData(isMore: false);
+    loadOutboundListData(isMore: false);
   }
 
   /// 选择类型，刷新页面数据
@@ -43,7 +43,7 @@ class SCMaterialEntryController extends GetxController {
     selectType = value;
     pageNum = 1;
     /// 重新获取数据
-    loadEntryListData(isMore: false);
+    loadOutboundListData(isMore: false);
   }
 
   /// 更新排序，刷新页面数据
@@ -51,11 +51,11 @@ class SCMaterialEntryController extends GetxController {
     sort = value;
     pageNum = 1;
     /// 重新获取数据
-    loadEntryListData(isMore: false);
+    loadOutboundListData(isMore: false);
   }
 
-  /// 入库列表数据
-  loadEntryListData({bool? isMore}) {
+  /// 出库列表数据
+  loadOutboundListData({bool? isMore}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       pageNum++;
@@ -75,7 +75,7 @@ class SCMaterialEntryController extends GetxController {
     };
     print('params===========$params');
     SCHttpManager.instance.post(
-        url: SCUrl.kMaterialEntryListUrl,
+        url: SCUrl.kMaterialOutboundListUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
@@ -99,17 +99,21 @@ class SCMaterialEntryController extends GetxController {
         });
   }
 
-  /// 入库类型
-  loadWareHouseType(Function? resultHandler) {
+  /// 出库类型
+  loadOutboundType(Function? resultHandler) {
+    SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kWareHouseTypeUrl,
-        params: {'dictionaryCode' : 'WAREHOUSING'},
+        params: {'dictionaryCode' : 'OUTBOUND'},
         success: (value) {
-          entryList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
+          SCLoadingUtils.hide();
+          print('出库类型======================================$value');
+          outboundList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
           update();
           resultHandler?.call();
         },
         failure: (value) {
+          print('出库类型=====================================$value');
         });
   }
 

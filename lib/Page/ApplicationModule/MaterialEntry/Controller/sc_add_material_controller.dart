@@ -9,51 +9,18 @@ import '../Model/sc_material_list_model.dart';
 
 class SCAddMaterialController extends GetxController {
 
-  int pageNum = 1;
+  String wareHouseName = '';
 
   List<SCMaterialListModel> materialList = [];
 
   /// 物资列表数据
-  loadMaterialListData({bool? isMore}) {
-    bool isLoadMore = isMore ?? false;
-    if (isLoadMore == true) {
-      pageNum++;
-    } else {
-      SCLoadingUtils.show();
-    }
-    var params = {
-      "conditions": {
-        "fields": [
-          {"map": {}, "method": 0, "name": "", "value": {}}],
-        "specialMap": {}
-      },
-      "count": false,
-      "last": false,
-      "orderBy": [],
-      "pageNum": pageNum,
-      "pageSize": 20
-    };
-    print('params===========$params');
-    SCHttpManager.instance.post(
+  loadMaterialListData() {
+    SCHttpManager.instance.get(
         url: SCUrl.kMaterialListUrl,
-        params: params,
+        params: {'materialName': wareHouseName},
         success: (value) {
           SCLoadingUtils.hide();
-          print('物资列表数据======================================$value');
-          if (value is Map) {
-            List list = value['records'];
-            if (isLoadMore == true) {
-              materialList.addAll(List<SCMaterialListModel>.from(
-                  list.map((e) => SCMaterialListModel.fromJson(e)).toList()));
-            } else {
-              materialList = List<SCMaterialListModel>.from(
-                  list.map((e) => SCMaterialListModel.fromJson(e)).toList());
-            }
-          } else {
-            if (isLoadMore == false) {
-              materialList = [];
-            }
-          }
+          materialList = List<SCMaterialListModel>.from(value.map((e) => SCMaterialListModel.fromJson(e)).toList());
           update();
         },
         failure: (value) {

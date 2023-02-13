@@ -1,20 +1,26 @@
 
-import 'dart:developer';
-
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddReceipt/sc_material_info_cell.dart';
-import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddReceipt/sc_basic_info_cell.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../../WorkBench/Home/Model/sc_home_task_model.dart';
 import '../../../../WorkBench/Home/View/Alert/sc_task_module_alert.dart';
 import '../../../HouseInspect/View/sc_bottom_button_item.dart';
+import '../../../MaterialEntry/View/AddEntry/sc_basic_info_cell.dart';
+import '../../../MaterialEntry/View/AddEntry/sc_material_info_cell.dart';
+import '../../Controller/sc_add_outbound_controller.dart';
 
 /// 新增出库view
 
 class SCAddOutboundView extends StatefulWidget {
+
+  /// SCAddOutboundController
+  final SCAddOutboundController state;
+
+  SCAddOutboundView({Key? key, required this.state}) : super(key: key);
 
   @override
   SCAddOutboundViewState createState() => SCAddOutboundViewState();
@@ -22,10 +28,24 @@ class SCAddOutboundView extends StatefulWidget {
 
 class SCAddOutboundViewState extends State<SCAddOutboundView> {
 
+  /// 基础信息数组
+  List baseInfoList = [{'isRequired': true, 'title': '仓库名称', 'content': ''},
+    {'isRequired': true, 'title': '类型', 'content': ''},
+    {'isRequired': false, 'title': '领用部门', 'content': ''},
+    {'isRequired': false, 'title': '领用人', 'content': ''},
+  ];
+
   /// 仓库名称
   String warehouseName = '';
+  /// 仓库index
+  int nameIndex = -1;
+
   /// 类型
   String type = '';
+
+  /// 类型index
+  int typeIndex = -1;
+
   /// 领用部门
   String department = '';
   /// 领用人
@@ -34,15 +54,27 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
   /// 领用人index
   int receiverIndex = -1;
 
-  /// 基础信息数组
-  List baseInfoList = [];
+  late StreamSubscription<bool> keyboardSubscription;
 
-  /// 类型index
-  int typeIndex = -1;
-
+  /// 是否弹起键盘
+  bool isShowKeyboard = false;
 
   @override
-  initState() {
+  void initState() {
+    super.initState();
+    var keyboardVisibilityController = KeyboardVisibilityController();
+    isShowKeyboard = keyboardVisibilityController.isVisible;
+    keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
+      setState(() {
+        isShowKeyboard = visible;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    keyboardSubscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -85,20 +117,19 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
   Widget getCell(int index) {
     if (index == 0) {
       return SCBasicInfoCell(
-        list: [{'isRequired': true, 'title': '仓库名称', 'content': warehouseName},
-          {'isRequired': true, 'title': '类型', 'content': type},
-          {'isRequired': false, 'title': '领用部门', 'content': department},
-          {'isRequired': false, 'title': '领用人', 'content': receiver},
-        ],
+        list: baseInfoList,
         selectAction: (index) async {
           if (index == 0) {
             //仓库名称
+            List list = widget.state.wareHouseList.map((e) => e.name).toList();
+            showAlert(0, '仓库名称', list);
           } else if (index == 1) {
             //类型
-            showTypeAlert();
+            List list = widget.state.outboundList.map((e) => e.name).toList();
+            showAlert(1, '类型', list);
           } else if (index == 2) {
             //领用部门
-            showTypeAlert();
+
           } else if (index == 3) {
             //领用人
             var params = {
@@ -126,30 +157,40 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
   }
 
   /// 弹出类型弹窗
-  showTypeAlert() {
-    List typeList = ['采购入库', '调拨入库', '盘盈入库', '领料归还入库', '借用归还入库', '退货入库', '其他入库'];
-    List<SCHomeTaskModel> list = [];
-    for (int i = 0; i < typeList.length; i++) {
-      list.add(SCHomeTaskModel.fromJson({"name" : typeList[i], "id" : "$i", "isSelect" : false}));
+  showAlert(int index, String title, List list) {
+    List<SCHomeTaskModel> modelList = [];
+    for (int i = 0; i < list.length; i++) {
+      modelList.add(SCHomeTaskModel.fromJson(
+          {"name": list[i], "id": "$i", "isSelect": false}));
+    }
+    int currentIndex = -1;
+    if (index == 0) {//仓库名称
+      currentIndex = nameIndex;
+    } else if (index == 1) {//类型
+      currentIndex = typeIndex;
     }
     SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
       SCDialogUtils().showCustomBottomDialog(
           isDismissible: true,
           context: context,
           widget: SCTaskModuleAlert(
-            title: '类型',
-            list: list,
-            currentIndex: typeIndex,
+            title: title,
+            list: modelList,
+            currentIndex: currentIndex,
             radius: 2.0,
             tagHeight: 32.0,
             columnCount: 3,
             mainSpacing: 8.0,
             crossSpacing: 8.0,
             topSpacing: 8.0,
-            closeTap: (SCHomeTaskModel model, int index) {
+            closeTap: (SCHomeTaskModel model, int selectIndex) {
               setState(() {
-                type = model.name!;
-                typeIndex = index;
+                baseInfoList[index]['content'] = model.name!;
+                if (index == 0) {//仓库名称
+                  nameIndex = selectIndex;
+                } else if (index == 1) {//类型
+                  typeIndex = selectIndex;
+                }
               });
             },
           ));
