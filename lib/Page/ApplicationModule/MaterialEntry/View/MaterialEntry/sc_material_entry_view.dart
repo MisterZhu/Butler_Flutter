@@ -197,6 +197,9 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
             detailTapAction: () {
               detailAction(model.id ?? '');
             },
+            btnTapAction: () {
+              submit(index);
+            },
           );
         },
         separatorBuilder: (BuildContext context, int index) {
@@ -287,6 +290,12 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
           }
       },),
     );
+  }
+
+  /// 提交
+  submit(int index) {
+    SCMaterialEntryModel model = widget.state.dataList[index];
+    widget.state.submit(model.id ?? '');
   }
 
 }

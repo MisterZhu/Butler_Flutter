@@ -132,4 +132,22 @@ class SCMaterialEntryController extends GetxController {
         });
   }
 
+  /// 提交入库
+  submit(String wareHouseInId) {
+    var params = {
+      "wareHouseInId": wareHouseInId,
+    };
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kSubmitMaterialUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          loadEntryListData(isMore: false);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
 }

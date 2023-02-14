@@ -33,6 +33,13 @@ class SCAddEntryPageState extends State<SCAddEntryPage> {
   }
 
   @override
+  dispose() {
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCAddEntryPage).toString(), addControllerTag);
+    addController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
         title: "新增入库",

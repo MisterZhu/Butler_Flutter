@@ -109,6 +109,9 @@ class SCUrl {
   /// 入库详情
   static const String kMaterialEntryDetailUrl = "/api/warehouse/app/in/detailWareHouseIn";
 
+  /// 提交入库
+  static const String kSubmitMaterialUrl = "/api/warehouse/app/in/submitWareHouseIn";
+
 
   /************************* 物资出库 *************************/
 

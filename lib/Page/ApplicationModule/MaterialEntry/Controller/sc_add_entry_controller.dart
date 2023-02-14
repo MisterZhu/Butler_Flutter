@@ -47,7 +47,8 @@ class SCAddEntryController extends GetxController {
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
-          SCScaffoldManager.instance.eventBus.fire({'key' : SCKey.kRefreshMaterialEntryPage});
+          SCScaffoldManager.instance.eventBus
+              .fire({'key': SCKey.kRefreshMaterialEntryPage});
           SCRouterHelper.back(null);
         },
         failure: (value) {

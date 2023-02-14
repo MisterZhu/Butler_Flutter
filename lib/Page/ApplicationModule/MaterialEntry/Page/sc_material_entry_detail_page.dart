@@ -16,7 +16,8 @@ import '../View/Alert/sc_reject_alert.dart';
 
 class SCMaterialEntryDetailPage extends StatefulWidget {
   @override
-  SCMaterialEntryDetailPageState createState() => SCMaterialEntryDetailPageState();
+  SCMaterialEntryDetailPageState createState() =>
+      SCMaterialEntryDetailPageState();
 }
 
 class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
@@ -29,7 +30,8 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
   @override
   initState() {
     super.initState();
-    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCMaterialEntryDetailPage).toString());
+    controllerTag = SCScaffoldManager.instance
+        .getXControllerTag((SCMaterialEntryDetailPage).toString());
     controller = Get.put(SCMaterialEntryDetailController(), tag: controllerTag);
     var params = Get.arguments;
     print('上个页面传过来的参数:$params');
@@ -37,12 +39,11 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
     controller.loadMaterialEntryDetail();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
-    return SCCustomScaffold(
-      title: '入库详情',
-        body: body()
-    );
+    return SCCustomScaffold(title: '入库详情', body: body());
   }
 
   /// body
@@ -66,63 +67,70 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
         tag: controllerTag,
         init: controller,
         builder: (state) {
-          return SCMaterialDetailListView(state: controller, type: 0,);
+          return SCMaterialDetailListView(
+            state: controller,
+            type: 0,
+          );
         });
   }
+
   /// bottomView
   Widget bottomView() {
     List list = [
       {
-        "type" : scMaterialBottomViewType1,
-        "title" : "驳回",
+        "type": scMaterialBottomViewType1,
+        "title": "驳回",
       },
       {
-        "type" : scMaterialBottomViewType1,
-        "title" : "拒绝",
+        "type": scMaterialBottomViewType1,
+        "title": "拒绝",
       },
       {
-        "type" : scMaterialBottomViewType2,
-        "title" : "通过",
+        "type": scMaterialBottomViewType2,
+        "title": "通过",
       },
     ];
-    return SCMaterialDetailBottomView(list: list, onTap: (value) {
-      if (value == "驳回") {
-        SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-          SCDialogUtils().showCustomBottomDialog(
-              isDismissible: true,
-              context: context,
-              widget: SCRejectAlert(
-                title: '驳回',
-                reason: '驳回理由',
-                tagList: const [],
-                showNode: true,
-              ));
-        });
-      } else if (value == "拒绝") {
-        SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-          SCDialogUtils().showCustomBottomDialog(
-              isDismissible: true,
-              context: context,
-              widget: SCRejectAlert(
-                title: '审批拒绝',
-                reason: '拒绝理由',
-                tagList: ['流程不合理', '图片不清晰', '名称错误', '审批不合规'],
-                showNode: false,
-              ));
-        });
-      } else if (value == "通过") {
-        SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-          SCDialogUtils().showCustomBottomDialog(
-              isDismissible: true,
-              context: context,
-              widget: SCRejectAlert(
-                title: '审批通过',
-                reason: '通过理由',
-                tagList: ['批准通过', '入库批准通过'],
-                showNode: false,
-              ));
-        });
-      }
-    },);
+    return SCMaterialDetailBottomView(
+      list: list,
+      onTap: (value) {
+        if (value == "驳回") {
+          SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+            SCDialogUtils().showCustomBottomDialog(
+                isDismissible: true,
+                context: context,
+                widget: SCRejectAlert(
+                  title: '驳回',
+                  reason: '驳回理由',
+                  tagList: const [],
+                  showNode: true,
+                ));
+          });
+        } else if (value == "拒绝") {
+          SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+            SCDialogUtils().showCustomBottomDialog(
+                isDismissible: true,
+                context: context,
+                widget: SCRejectAlert(
+                  title: '审批拒绝',
+                  reason: '拒绝理由',
+                  tagList: ['流程不合理', '图片不清晰', '名称错误', '审批不合规'],
+                  showNode: false,
+                ));
+          });
+        } else if (value == "通过") {
+          SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+            SCDialogUtils().showCustomBottomDialog(
+                isDismissible: true,
+                context: context,
+                widget: SCRejectAlert(
+                  title: '审批通过',
+                  reason: '通过理由',
+                  tagList: ['批准通过', '入库批准通过'],
+                  showNode: false,
+                ));
+          });
+        }
+      },
+    );
   }
 }

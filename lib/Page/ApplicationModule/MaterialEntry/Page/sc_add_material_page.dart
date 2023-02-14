@@ -34,6 +34,13 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> {
     addController.loadMaterialListData();
   }
 
+  @override
+  dispose() {
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCAddMaterialPageState).toString(), addControllerTag);
+    addController.dispose();
+    super.dispose();
+  }
+
   /// 页面传递过来的数据
   initPageData() {
     var params = Get.arguments;

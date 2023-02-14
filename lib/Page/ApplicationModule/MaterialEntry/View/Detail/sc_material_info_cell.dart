@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
+import 'package:smartcommunity/Utils/sc_utils.dart';
 import '../../Model/sc_material_entry_detail_model.dart';
 
 /// 入库信息cell
@@ -110,7 +111,9 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
           ],
         )
       ],
-    ), onPressed: () {}));
+    ), onPressed: () {
+
+    }));
   }
 
   /// 单号
