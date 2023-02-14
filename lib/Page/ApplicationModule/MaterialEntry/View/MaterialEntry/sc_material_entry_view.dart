@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_entry_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_search_item.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_sift_item.dart';
@@ -10,8 +11,6 @@ import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../Controller/sc_material_entry_controller.dart';
-import '../../Model/sc_entry_type_model.dart';
-import '../../Model/sc_material_entry_model.dart';
 import '../Alert/sc_sift_alert.dart';
 import '../Alert/sc_sort_alert.dart';
 
@@ -59,6 +58,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
   @override
   void initState() {
     super.initState();
+    sortIndex = widget.state.sort == true ? 0 : 1;
     widget.state.loadWareHouseType(() {
       List list = widget.state.entryList.map((e) => e.name).toList();
       setState(() {
