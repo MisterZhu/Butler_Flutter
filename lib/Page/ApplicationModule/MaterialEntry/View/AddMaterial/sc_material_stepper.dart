@@ -8,6 +8,15 @@ import 'package:smartcommunity/Utils/sc_utils.dart';
 /// 数量步进器
 
 class SCStepper extends StatefulWidget {
+
+  const SCStepper({Key? key, this.numChangeAction, this.num = 1}) : super(key: key);
+
+  /// 数量改变回调
+  final Function(int num)? numChangeAction;
+
+  /// 默认数量
+  final int? num;
+
   @override
   SCStepperState createState() => SCStepperState();
 }
@@ -25,7 +34,14 @@ class SCStepperState extends State<SCStepper> {
   @override
   initState() {
     super.initState();
+    num = widget.num ?? 1;
     textFiledController = TextEditingController.fromValue(TextEditingValue(text: '$num', selection: TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length))));
+  }
+
+  @override
+  dispose() {
+    textFiledController.dispose();
+    super.dispose();
   }
 
   @override
@@ -145,6 +161,7 @@ class SCStepperState extends State<SCStepper> {
       num++;
       textFiledController.text = '$num';
       textFiledController.selection = TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length));
+      widget.numChangeAction?.call(num);
     });
   }
 
@@ -155,6 +172,7 @@ class SCStepperState extends State<SCStepper> {
         num--;
         textFiledController.text = '$num';
         textFiledController.selection = TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length));
+        widget.numChangeAction?.call(num);
       }
     });
   }
@@ -165,9 +183,11 @@ class SCStepperState extends State<SCStepper> {
       num = 1;
       textFiledController.text = '$num';
       textFiledController.selection = TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length));
+      widget.numChangeAction?.call(num);
     } else {
       if (SCUtils().isPositiveNumber(value)) {
         num = int.parse(value);
+        widget.numChangeAction?.call(num);
       }
     }
   }

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_add_entry_allmaterial_view.dart';
 import '../../../../../Constants/sc_asset.dart';
+import '../../Model/sc_material_list_model.dart';
 
 /// 物资信息cell
 
@@ -17,10 +18,18 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 点击新增
   final Function? addAction;
 
+  /// 删除物资
+  final Function(int index)? deleteAction;
+
+  /// 物资数据源
+  final List<SCMaterialListModel> list;
+
   SCMaterialInfoCell({Key? key,
     this.selectNameAction,
     this.selectTypeAction,
     this.addAction,
+    required this.list,
+    this.deleteAction
   }) : super(key: key);
 
   @override
@@ -97,7 +106,7 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 数量
   Widget numItem() {
     return Text(
-        '共 2 种  总数量 10',
+        '共 ${getTypeNumber()} 种  总数量 ${getNumber()}',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
@@ -107,7 +116,9 @@ class SCMaterialInfoCell extends StatelessWidget {
   }
 
   Widget listview() {
-    return SCAddEntryAllMaterialView(list: ['' , '', '', '', '']);
+    return SCAddEntryAllMaterialView(list: list, deleteAction: (int index){
+      deleteAction?.call(index);
+    },);
     return ListView.separated(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
@@ -123,5 +134,20 @@ class SCMaterialInfoCell extends StatelessWidget {
 
   Widget cell() {
     return Container(height: 100, color: SCColors.color_FFFFFF,);
+  }
+
+  /// 获取种类
+  int getTypeNumber() {
+    int count = list.length;
+    return count;
+  }
+
+  /// 获取数量
+  int getNumber() {
+    int count = 0;
+    for (SCMaterialListModel model in list) {
+      count += model.num ?? 0;
+    }
+    return count;
   }
 }

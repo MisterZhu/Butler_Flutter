@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Constants/sc_default_value.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
@@ -14,10 +16,13 @@ import 'sc_add_material_listview.dart';
 
 class SCAddMaterialView extends StatefulWidget {
 
+  SCAddMaterialView({Key? key, required this.state, this.sureAction}) : super(key: key);
+
   /// SCAddMaterialController
   final SCAddMaterialController state;
 
-  SCAddMaterialView({Key? key, required this.state}) : super(key: key);
+  /// 确定
+  final Function(List<SCMaterialListModel> list)? sureAction;
 
   @override
   SCAddMaterialViewState createState() => SCAddMaterialViewState();
@@ -56,7 +61,12 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
 
   /// listview
   Widget listview(BuildContext context) {
-    return SCAddMaterialListView(state: widget.state,);
+    return SCAddMaterialListView(
+      list: widget.state.materialList,
+      radioTap: () {
+        setState((){});
+      },
+    );
   }
 
   Widget getCell(int index) {
@@ -82,9 +92,14 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               setState(() {
                 allSelected = !allSelected;
+                for (SCMaterialListModel model in widget.state.materialList) {
+                  model.isSelect = allSelected;
+                }
+                widget.state.update();
               });
             },
             child: Container(
@@ -103,18 +118,18 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text('全选',
+            children: [
+              const Text('全选',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontSize: SCFonts.f14,
                       fontWeight: FontWeight.w400,
                       color: SCColors.color_1B1D33)),
-              Text('已选0项',
+              Text('已选${getSelectedNumber()}项',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: SCFonts.f12,
                       fontWeight: FontWeight.w400,
                       color: SCColors.color_5E5F66))
@@ -139,7 +154,9 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
                     color: SCColors.color_FFFFFF,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  sureAction();
+                },
               ))
         ],
       ),
@@ -153,4 +170,33 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
         isDismissible: true,
         widget: SCSelectCategoryAlert());
   }
+
+  /// 获取已选数量
+  int getSelectedNumber() {
+    int num = 0;
+    for (SCMaterialListModel model in widget.state.materialList) {
+      bool isSelect = model.isSelect ?? false;
+      if (isSelect) {
+        num+=1;
+      }
+    }
+    return num;
+  }
+
+  /// 确定
+  sureAction() {
+    List<SCMaterialListModel> list = [];
+    for (SCMaterialListModel model in widget.state.materialList) {
+      bool isSelect = model.isSelect ?? false;
+      if (isSelect) {
+        list.add(model);
+      }
+    }
+    if (list.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectMaterialTip);
+    } else {
+      widget.sureAction?.call(list);
+    }
+  }
+
 }

@@ -148,7 +148,9 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
 
         },);
     } else if (index == 1) {
-      return SCMaterialInfoCell(addAction: () {
+      return SCMaterialInfoCell(
+        list: [],
+        addAction: () {
         SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, null);
       },);
     } else {

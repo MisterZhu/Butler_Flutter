@@ -133,8 +133,12 @@ class SCAddReceiptViewState extends State<SCAddEntryView> {
       },);
     } else if (index == 1) {
       return SCMaterialInfoCell(
+        list: widget.state.selectedList,
         addAction: () {
-          SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, null);
+          addAction();
+        },
+        deleteAction: (int subIndex) {
+          deleteAction(subIndex);
         },
       );
     } else {
@@ -183,6 +187,17 @@ class SCAddReceiptViewState extends State<SCAddEntryView> {
             },
           ));
     });
+  }
+
+  /// 添加物资
+  addAction() async{
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, null);
+    widget.state.updateSelectedMaterial(list);
+  }
+
+  /// 删除物资
+  deleteAction(int index) {
+    widget.state.deleteMaterial(index);
   }
 
   /// 暂存

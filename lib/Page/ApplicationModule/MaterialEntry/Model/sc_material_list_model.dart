@@ -34,7 +34,10 @@ class SCMaterialListModel {
       String? remark, 
       String? thirdCode, 
       String? unitId, 
-      String? unitName,}){
+      String? unitName,
+      int? num,/// 数量
+      bool? isSelect,/// 是否选中
+  }){
     _barCode = barCode;
     _classifyId = classifyId;
     _classifyName = classifyName;
@@ -51,6 +54,8 @@ class SCMaterialListModel {
     _thirdCode = thirdCode;
     _unitId = unitId;
     _unitName = unitName;
+    _num = num;
+    _isSelect = isSelect;
 }
 
   SCMaterialListModel.fromJson(dynamic json) {
@@ -70,6 +75,8 @@ class SCMaterialListModel {
     _thirdCode = json['thirdCode'];
     _unitId = json['unitId'];
     _unitName = json['unitName'];
+    _num = 1;
+    _isSelect = json['isSelect'];
   }
   String? _barCode;
   String? _classifyId;
@@ -87,6 +94,8 @@ class SCMaterialListModel {
   String? _thirdCode;
   String? _unitId;
   String? _unitName;
+  int? _num;
+  bool? _isSelect;
   SCMaterialListModel copyWith({  String? barCode,
   String? classifyId,
   String? classifyName,
@@ -102,6 +111,8 @@ class SCMaterialListModel {
   String? thirdCode,
   String? unitId,
   String? unitName,
+    int? num,
+    bool? isSelect,
 }) => SCMaterialListModel(  barCode: barCode ?? _barCode,
   classifyId: classifyId ?? _classifyId,
   classifyName: classifyName ?? _classifyName,
@@ -117,6 +128,8 @@ class SCMaterialListModel {
   thirdCode: thirdCode ?? _thirdCode,
   unitId: unitId ?? _unitId,
   unitName: unitName ?? _unitName,
+    num: num  ?? _num,
+      isSelect: isSelect ?? _isSelect,
 );
   String? get barCode => _barCode;
   String? get classifyId => _classifyId;
@@ -134,6 +147,18 @@ class SCMaterialListModel {
   String? get thirdCode => _thirdCode;
   String? get unitId => _unitId;
   String? get unitName => _unitName;
+  int? get num => _num;
+  bool? get isSelect => _isSelect;
+
+  /// set num
+  set num(int? value) {
+    _num = value;
+  }
+
+  /// set isSelect
+  set isSelect(bool? value) {
+    _isSelect = value;
+  }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -155,6 +180,8 @@ class SCMaterialListModel {
     map['thirdCode'] = _thirdCode;
     map['unitId'] = _unitId;
     map['unitName'] = _unitName;
+    map['num'] = _num;
+    map['isSelect'] = _isSelect;
     return map;
   }
 
