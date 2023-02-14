@@ -13,7 +13,10 @@ class SCSortAlert extends StatefulWidget {
   /// 点击
   final Function(int index)? tapAction;
 
-  SCSortAlert({Key? key, required this.selectIndex, this.tapAction}) : super(key: key);
+  /// 弹窗收起
+  final Function()? closeAction;
+
+  SCSortAlert({Key? key, required this.selectIndex, this.closeAction, this.tapAction}) : super(key: key);
 
   @override
   SCSortAlertState createState() => SCSortAlertState();
@@ -45,7 +48,7 @@ class SCSortAlertState extends State<SCSortAlert> {
           Expanded(child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                widget.tapAction?.call(currentIndex);
+                widget.closeAction?.call();
               }, child: Container(color: Colors.transparent,)),
           )
         ],

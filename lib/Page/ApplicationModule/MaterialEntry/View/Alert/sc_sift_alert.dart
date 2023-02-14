@@ -14,11 +14,15 @@ class SCSiftAlert extends StatefulWidget {
   /// 点击
   final Function(int selectIndex)? tapAction;
 
+  /// 弹窗收起
+  final Function()? closeAction;
+
   SCSiftAlert({Key? key,
     required this.title,
     required this.list,
     required this.selectIndex,
-    this.tapAction }) : super(key: key);
+    this.closeAction,
+    this.tapAction}) : super(key: key);
 
   @override
   SCSiftAlertState createState() => SCSiftAlertState();
@@ -46,7 +50,7 @@ class SCSiftAlertState extends State<SCSiftAlert> {
           Expanded(child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              widget.tapAction?.call(widget.selectIndex);
+              widget.closeAction?.call();
             }, child: Container(color: Colors.transparent,)),
           )
         ],

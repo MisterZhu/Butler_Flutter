@@ -92,7 +92,7 @@ class SCUrl {
 
   /************************* 物资入库 *************************/
   /// 入库列表
-  static const String kMaterialEntryListUrl = "/api/warehouse/manage/in/selectWareHouseInList";
+  static const String kMaterialEntryListUrl = "/api/warehouse/app/in/selectWareHouseInList";
 
   /// 选择搜索仓库列表
   static const String kWareHouseListUrl = "/api/warehouse/manage/warehouse/chooseWareHouseList";
@@ -103,9 +103,13 @@ class SCUrl {
   /// 物资列表-不分页
   static const String kMaterialListUrl = "/api/warehouse/manage/material/chooseMaterialList";
 
+  /// 新增入库
+  static const String kAddEntryUrl = "/api/warehouse/app/in/addWareHouseIn";
+
+
   /************************* 物资出库 *************************/
 
   /// 出库列表
-  static const String kMaterialOutboundListUrl = "/api/warehouse/manage/out/selectWareHouseOutList";
+  static const String kMaterialOutboundListUrl = "/api/warehouse/app/out/selectWareHouseOutList";
 
 }
