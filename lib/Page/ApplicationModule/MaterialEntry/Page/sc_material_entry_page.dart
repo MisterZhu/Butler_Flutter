@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Controller/sc_material_entry_controller.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
+import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../View/MaterialEntry/sc_material_entry_view.dart';
 
@@ -21,6 +24,9 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
   /// SCMaterialEntryController - tag
   String entryControllerTag = '';
 
+  /// notify
+  late StreamSubscription subscription;
+
   @override
   initState() {
     super.initState();
@@ -28,6 +34,15 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
         .getXControllerTag((SCMaterialEntryPage).toString());
     entryController = Get.put(SCMaterialEntryController(), tag: entryControllerTag);
     entryController.loadEntryListData(isMore: false);
+    addNotification();
+  }
+
+  @override
+  dispose() {
+    subscription.cancel();
+    SCScaffoldManager.instance.deleteGetXControllerTag(pageName(), entryControllerTag);
+    entryController.dispose();
+    super.dispose();
   }
 
   @override
@@ -54,5 +69,15 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
   /// pageName
   String pageName() {
     return (SCMaterialEntryPage).toString();
+  }
+
+  /// 通知
+  addNotification() {
+    subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
+      String key = event['key'];
+      if (key == SCKey.kRefreshMaterialEntryPage) {
+        entryController.loadEntryListData(isMore: false);
+      }
+    });
   }
 }

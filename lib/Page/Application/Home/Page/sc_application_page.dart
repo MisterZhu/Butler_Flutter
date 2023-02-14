@@ -37,6 +37,7 @@ class SCApplicationPageState extends State<SCApplicationPage>
   /// pageName
   late String pageName;
 
+  /// notify
   late StreamSubscription subscription;
 
   RefreshController refreshController =

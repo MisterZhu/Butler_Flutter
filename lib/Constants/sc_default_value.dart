@@ -116,8 +116,17 @@ class SCDefaultValue {
   /// 验房-签署弹窗文案
   static const String houseInspectSignatureTip = "请将手机转交给业主，先由业主签署后您在签署";
 
-  /// 仓储-入库
+  /// 仓储-入库-选择物资
   static const String selectMaterialTip = "请选择物资";
+
+  /// 仓储-入库-选择仓库名称
+  static const String selectWareHouseNameTip = "请选择仓库名称";
+
+  /// 仓储-入库-选择仓库名称
+  static const String selectWareHouseTypeTip = "请选择仓库类型";
+
+  /// 仓储-入库-添加物资信息
+  static const String addMaterialInfoTip = "请添加物资信息";
 
   /// 图片路径
   static const files = "/files/";
