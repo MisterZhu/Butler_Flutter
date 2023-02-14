@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_entry_cell.dart';
@@ -55,6 +56,9 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
 
   bool showSortAlert = false;
 
+  /// RefreshController
+  RefreshController refreshController = RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +69,12 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
         typeList.addAll(list);
       });
     });
+  }
+
+  @override
+  dispose() {
+    refreshController.dispose();
+    super.dispose();
   }
 
   @override
@@ -186,7 +196,14 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
 
   /// listview
   Widget listview() {
-    return ListView.separated(
+    return SmartRefresher(
+      controller: refreshController,
+      enablePullUp: true,
+      enablePullDown: true,
+      header: const SCCustomHeader(
+        style: SCCustomHeaderStyle.noNavigation,
+      ),
+      onRefresh: onRefresh, onLoading: loadMore, child: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
@@ -205,7 +222,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 10.0,);
         },
-        itemCount: widget.state.dataList.length);
+        itemCount: widget.state.dataList.length),);
   }
 
   /// 详情
@@ -296,6 +313,25 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
     widget.state.submit(model.id ?? '');
+  }
+
+  /// 下拉刷新
+  Future onRefresh() async {
+    widget.state.loadEntryListData(isMore: false, completeHandler: (bool success, bool last){
+      refreshController.refreshCompleted();
+      refreshController.loadComplete();
+    });
+  }
+
+  /// 上拉加载
+  void loadMore() async{
+    widget.state.loadEntryListData(isMore: true, completeHandler: (bool success, bool last){
+      if (last) {
+        refreshController.loadNoData();
+      } else {
+        refreshController.loadComplete();
+      }
+    });
   }
 
 }
