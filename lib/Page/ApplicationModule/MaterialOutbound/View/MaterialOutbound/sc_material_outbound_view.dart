@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_entry_cell.dart';
@@ -56,6 +57,9 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
 
   bool showSortAlert = false;
 
+  /// RefreshController
+  RefreshController refreshController = RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     super.initState();
@@ -66,6 +70,12 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
         typeList.addAll(list);
       });
     });
+  }
+
+  @override
+  dispose() {
+    refreshController.dispose();
+    super.dispose();
   }
 
   @override
@@ -187,7 +197,14 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
 
   /// listview
   Widget listview() {
-    return ListView.separated(
+    return SmartRefresher(
+      controller: refreshController,
+      enablePullUp: true,
+      enablePullDown: true,
+      header: const SCCustomHeader(
+        style: SCCustomHeaderStyle.noNavigation,
+      ),
+      onRefresh: onRefresh, onLoading: loadMore, child: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
@@ -207,7 +224,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 10.0,);
         },
-        itemCount: widget.state.dataList.length);
+        itemCount: widget.state.dataList.length));
   }
 
   /// 出库状态弹窗
@@ -293,6 +310,25 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
     widget.state.submit(model.id ?? '');
+  }
+
+  /// 下拉刷新
+  Future onRefresh() async {
+    widget.state.loadOutboundListData(isMore: false, completeHandler: (bool success, bool last){
+      refreshController.refreshCompleted();
+      refreshController.loadComplete();
+    });
+  }
+
+  /// 上拉加载
+  void loadMore() async{
+    widget.state.loadOutboundListData(isMore: true, completeHandler: (bool success, bool last){
+      if (last) {
+        refreshController.loadNoData();
+      } else {
+        refreshController.loadComplete();
+      }
+    });
   }
 
 }

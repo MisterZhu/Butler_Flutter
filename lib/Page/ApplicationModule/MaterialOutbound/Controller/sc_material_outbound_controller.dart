@@ -55,11 +55,12 @@ class SCMaterialOutboundController extends GetxController {
   }
 
   /// 出库列表数据
-  loadOutboundListData({bool? isMore}) {
+  loadOutboundListData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       pageNum++;
     } else {
+      pageNum = 1;
       SCLoadingUtils.show();
     }
     List fields = [];
@@ -113,8 +114,18 @@ class SCMaterialOutboundController extends GetxController {
             }
           }
           update();
+          bool last = false;
+          if (isLoadMore) {
+            last = value['last'];
+          }
+          completeHandler?.call(true, last);
         },
         failure: (value) {
+          if (isLoadMore) {
+            pageNum--;
+          }
+          SCToast.showTip(value['message']);
+          completeHandler?.call(false, false);
         });
   }
 
