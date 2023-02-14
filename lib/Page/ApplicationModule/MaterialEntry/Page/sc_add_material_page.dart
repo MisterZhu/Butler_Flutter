@@ -30,7 +30,19 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> {
     super.initState();
     addControllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddMaterialPageState).toString());
     addController = Get.put(SCAddMaterialController(), tag: addControllerTag);
+    initPageData();
     addController.loadMaterialListData();
+  }
+
+  /// 页面传递过来的数据
+  initPageData() {
+    var params = Get.arguments;
+    if (params != null) {
+      var originalSelectList = params['data'];
+      if (originalSelectList != null) {
+        addController.originalList = originalSelectList;
+      }
+    }
   }
 
   @override

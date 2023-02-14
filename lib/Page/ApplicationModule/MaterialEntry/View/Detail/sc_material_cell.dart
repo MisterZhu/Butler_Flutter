@@ -201,6 +201,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// 物资信息-删除
   Widget deleteInfoView() {
+    print("aaa===$num");
     return Expanded(
         child: SizedBox(
           height: 80.0,

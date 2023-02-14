@@ -9,7 +9,11 @@ import '../Model/sc_material_list_model.dart';
 class SCAddMaterialController extends GetxController {
   String wareHouseName = '';
 
+  /// 数据源
   List<SCMaterialListModel> materialList = [];
+
+  /// 默认已选的数据
+  List<SCMaterialListModel> originalList = [];
 
   /// 物资列表数据
   loadMaterialListData() {
@@ -21,6 +25,14 @@ class SCAddMaterialController extends GetxController {
           SCLoadingUtils.hide();
           materialList = List<SCMaterialListModel>.from(
               value.map((e) => SCMaterialListModel.fromJson(e)).toList());
+          for (SCMaterialListModel model in materialList) {
+            for (SCMaterialListModel subModel in originalList) {
+              if (model.id == subModel.id) {
+                model.num = subModel.num;
+                model.isSelect = true;
+              }
+            }
+          }
           update();
         },
         failure: (value) {

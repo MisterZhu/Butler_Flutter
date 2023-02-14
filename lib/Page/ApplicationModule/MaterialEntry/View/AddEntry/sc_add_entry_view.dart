@@ -191,7 +191,8 @@ class SCAddReceiptViewState extends State<SCAddEntryView> {
 
   /// 添加物资
   addAction() async{
-    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, null);
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage,
+        {'data' : widget.state.selectedList});
     widget.state.updateSelectedMaterial(list);
   }
 
