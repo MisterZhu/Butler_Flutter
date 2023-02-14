@@ -22,4 +22,6 @@ class SCKey {
   static const String kSwitchEnterprise = "kSwitchEnterprise";
   /// h5渠道key
   static const String kH5Channel = "SCCHANNEL";
+  /// 仓储-刷新物资入库页面
+  static const String kRefreshMaterialEntryPage = "kRefreshMaterialEntryPage";
 }

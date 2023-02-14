@@ -35,6 +35,13 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
   }
 
   @override
+  dispose() {
+    controller.dispose();
+    node.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (widget.content != null) {
       controller.value = controller.value.copyWith(

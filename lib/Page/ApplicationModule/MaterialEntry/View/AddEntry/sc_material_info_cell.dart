@@ -117,22 +117,10 @@ class SCMaterialInfoCell extends StatelessWidget {
 
   Widget listview() {
     for (SCMaterialListModel model in list) {
-      print("数量a===${model.toJson()}");
     }
     return SCAddEntryAllMaterialView(list: list, deleteAction: (int index){
       deleteAction?.call(index);
     },);
-    return ListView.separated(
-        padding: EdgeInsets.zero,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) {
-          return cell();
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(height: 10.0,);
-        },
-        itemCount: 4);
   }
 
   Widget cell() {
