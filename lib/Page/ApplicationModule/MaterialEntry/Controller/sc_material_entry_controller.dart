@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../Model/sc_entry_type_model.dart';
-import '../Model/sc_material_entry_model.dart';
 
 /// 物资入库controller
 
@@ -18,7 +18,7 @@ class SCMaterialEntryController extends GetxController {
   int selectTypeId = -1;
 
   /// 排序，true操作时间正序，false操作时间倒序
-  bool sort = true;
+  bool sort = false;
 
   List<SCMaterialEntryModel> dataList = [];
 

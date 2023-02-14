@@ -2,9 +2,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import '../../../../../Constants/sc_asset.dart';
-import '../../Model/sc_material_entry_model.dart';
 
 class SCMaterialEntryCell extends StatelessWidget {
 
@@ -54,11 +53,11 @@ class SCMaterialEntryCell extends StatelessWidget {
             const SizedBox(
               height: 12.0,
             ),
-            nameItem('拖吧毛巾拖吧、毛巾拖吧毛巾拖吧毛拖吧'),
+            nameItem(model?.materialNames ?? ''),
             const SizedBox(
               height: 4.0,
             ),
-            nameItem('入库数量：200'),
+            nameItem('入库数量：${model?.materialNums}'),
             const SizedBox(
               height: 6.0,
             ),
@@ -219,7 +218,7 @@ class SCMaterialEntryCell extends StatelessWidget {
             width: 100.0,
             height: 40.0,
             child: Offstage(
-              offstage: model?.status == 6 ? true : false,
+              offstage: model?.status == 0 ? false : true,
               child: CupertinoButton(
                   alignment: Alignment.center,
                   borderRadius: BorderRadius.circular(4.0),
