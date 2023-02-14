@@ -13,6 +13,7 @@
 /// thirdCode : ""
 /// unitId : ""
 /// unitName : ""
+/// "num": 0,  数量
 
 /// 物资列表model
 
@@ -28,7 +29,8 @@ class SCMaterialListModel {
       String? norms, 
       String? pic, 
       PicFileVo? picFileVo, 
-      double? referPrice,
+      num? referPrice,
+      int? number,
       String? remark, 
       String? thirdCode, 
       String? unitId, 
@@ -44,6 +46,7 @@ class SCMaterialListModel {
     _pic = pic;
     _picFileVo = picFileVo;
     _referPrice = referPrice;
+    _number = number;
     _remark = remark;
     _thirdCode = thirdCode;
     _unitId = unitId;
@@ -62,6 +65,7 @@ class SCMaterialListModel {
     _pic = json['pic'];
     _picFileVo = json['picFileVo'] != null ? PicFileVo.fromJson(json['picFileVo']) : null;
     _referPrice = json['referPrice'];
+    _number = json['num'];
     _remark = json['remark'];
     _thirdCode = json['thirdCode'];
     _unitId = json['unitId'];
@@ -77,7 +81,8 @@ class SCMaterialListModel {
   String? _norms;
   String? _pic;
   PicFileVo? _picFileVo;
-  double? _referPrice;
+  num? _referPrice;
+  int? _number;
   String? _remark;
   String? _thirdCode;
   String? _unitId;
@@ -123,7 +128,8 @@ class SCMaterialListModel {
   String? get norms => _norms;
   String? get pic => _pic;
   PicFileVo? get picFileVo => _picFileVo;
-  double? get referPrice => _referPrice;
+  num? get referPrice => _referPrice;
+  int? get number => _number;
   String? get remark => _remark;
   String? get thirdCode => _thirdCode;
   String? get unitId => _unitId;
@@ -144,6 +150,7 @@ class SCMaterialListModel {
       map['picFileVo'] = _picFileVo?.toJson();
     }
     map['referPrice'] = _referPrice;
+    map['number'] = _number;
     map['remark'] = _remark;
     map['thirdCode'] = _thirdCode;
     map['unitId'] = _unitId;

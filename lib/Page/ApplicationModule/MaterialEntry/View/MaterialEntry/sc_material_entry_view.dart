@@ -195,7 +195,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
             model: model,
             type: 0,
             detailTapAction: () {
-              detailAction(index);
+              detailAction(model.id ?? '');
             },
           );
         },
@@ -206,8 +206,8 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
   }
 
   /// 详情
-  detailAction(int index) {
-    SCRouterHelper.pathPage(SCRouterPath.materialDetailPage, null);
+  detailAction(String id) {
+    SCRouterHelper.pathPage(SCRouterPath.materialDetailPage, {'wareHouseInId': id});
   }
 
   /// 入库状态弹窗

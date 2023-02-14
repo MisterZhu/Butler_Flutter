@@ -2,10 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
+import '../../Model/sc_material_entry_detail_model.dart';
 
 /// 入库信息cell
 
 class SCMaterialEntryInfoCell extends StatelessWidget {
+  final SCMaterialEntryDetailModel? model;
+
+  SCMaterialEntryInfoCell({Key? key, this.model}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(decoration: BoxDecoration(
@@ -35,7 +40,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
     return Row(
       children: [
         desLabel('入库人'),
-        contactView('刘大美')
+        contactView('${model?.creatorName}')
       ],
     );
   }
@@ -45,7 +50,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
     return Row(
       children: [
         desLabel('入库单号'),
-        numView('UY138947184618164716')
+        numView('${model?.number}')
       ],
     );
   }
@@ -55,7 +60,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
     return Row(
       children: [
         desLabel('入库时间'),
-        textView(1, '2022-12-12 12:00:00')
+        textView(1, '${model?.gmtCreate}')
       ],
     );
   }
@@ -66,7 +71,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         desLabel('备注'),
-        textView(10, '慧享生活馆8幢2单元101室慧享生活馆8幢2单元101室')
+        textView(10, '${model?.remark}')
       ],
     );
   }

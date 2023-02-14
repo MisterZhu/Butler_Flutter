@@ -234,11 +234,11 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// 物资数量
   Widget numView() {
-    return const Padding(
-      padding: EdgeInsets.only(top: 22.0),
+    return Padding(
+      padding: const EdgeInsets.only(top: 22.0),
       child: Text(
-        'x200',
-        style: TextStyle(
+        'x${widget.model?.number}',
+        style: const TextStyle(
             fontSize: SCFonts.f14,
             fontWeight: FontWeight.w400,
             color: SCColors.color_8D8E99),
@@ -248,8 +248,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// radio
   Widget radioView() {
-    String path =
-        isSelect ? SCAsset.iconMaterialSelected : SCAsset.iconMaterialUnselect;
+    String path = isSelect ? SCAsset.iconMaterialSelected : SCAsset.iconMaterialUnselect;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
