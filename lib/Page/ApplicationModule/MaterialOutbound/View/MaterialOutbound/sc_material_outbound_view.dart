@@ -14,6 +14,7 @@ import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
 import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
 import '../../Controller/sc_material_outbound_controller.dart';
 
+
 /// 物资出库view
 
 class SCMaterialOutboundView extends StatefulWidget {
@@ -58,6 +59,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
   @override
   void initState() {
     super.initState();
+    sortIndex = widget.state.sort == true ? 0 : 1;
     widget.state.loadOutboundType(() {
       List list = widget.state.outboundList.map((e) => e.name).toList();
       setState(() {
@@ -147,7 +149,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
     );
   }
 
-  /// 新增入库按钮
+  /// 新增出库按钮
   Widget addItem() {
     return Container(
       width: 60.0,
@@ -169,7 +171,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
             Image.asset(SCAsset.iconAddReceipt, width: 20.0, height: 20.0,),
             const SizedBox(width: 2.0,),
             const Text(
-                '新增入库',
+                '新增出库',
                 maxLines: 1,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
@@ -192,9 +194,13 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
           SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
             model: model,
-            type: 0,
+            type: 1,
             detailTapAction: () {
-              detailAction(index);
+              /// 详情
+              SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, {'wareHouseInId': model.id, 'status': model.status});
+            },
+            btnTapAction: () {
+              submit(index);
             },
           );
         },
@@ -202,11 +208,6 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
           return const SizedBox(height: 10.0,);
         },
         itemCount: widget.state.dataList.length);
-  }
-
-  /// 详情
-  detailAction(int index) {
-    SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, null);
   }
 
   /// 出库状态弹窗
@@ -286,6 +287,12 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
           }
         },),
     );
+  }
+
+  /// 提交
+  submit(int index) {
+    SCMaterialEntryModel model = widget.state.dataList[index];
+    widget.state.submit(model.id ?? '');
   }
 
 }

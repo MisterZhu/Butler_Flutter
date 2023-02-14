@@ -29,6 +29,14 @@ class SCMaterialOutboundPageState extends State<SCMaterialOutboundPage> {
     controller = Get.put(SCMaterialOutboundController(), tag: controllerTag);
     controller.loadOutboundListData(isMore: false);
   }
+
+  @override
+  dispose() {
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialOutboundPage).toString(), controllerTag);
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(

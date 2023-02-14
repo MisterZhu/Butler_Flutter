@@ -31,9 +31,20 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
   @override
   initState() {
     super.initState();
-    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCMaterialEntryDetailPage).toString());
+    controllerTag = SCScaffoldManager.instance
+        .getXControllerTag((SCMaterialEntryDetailPage).toString());
     controller = Get.put(SCMaterialEntryDetailController(), tag: controllerTag);
-    controller.loadMaterialEntryDetail();
+    var params = Get.arguments;
+    controller.wareHouseInId = params['wareHouseInId'];
+    controller.status = params['status'];
+    controller.loadMaterialOutboundDetail();
+  }
+
+  @override
+  dispose() {
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialOutboundDetailPage).toString(), controllerTag);
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,29 +72,45 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
 
   /// topView
   Widget topView() {
-    return SCMaterialDetailListView(state: controller, type: 1,);
+    return GetBuilder<SCMaterialEntryDetailController>(
+        tag: controllerTag,
+        init: controller,
+        builder: (state) {
+          return SCMaterialDetailListView(
+            state: controller,
+            type: 1,
+          );
+        });
   }
+
   /// bottomView
   Widget bottomView() {
     List list = [
       {
         "type" : scMaterialBottomViewType1,
-        "title" : "打印",
+        "title" : "编辑",
       },
       {
         "type" : scMaterialBottomViewType2,
-        "title" : "出库确认",
+        "title" : "提交",
       },
     ];
-    return SCMaterialDetailBottomView(list: list, onTap: (value) {
-      if (value == "出库确认") {
-        SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-          SCDialogUtils().showCustomBottomDialog(
-              isDismissible: true,
-              context: context,
-              widget: SCOutboundConfirmAlert());
-        });
-      }
-    },);
+    return Offstage(
+      offstage: controller.status != 0,
+      child: SCMaterialDetailBottomView(list: list, onTap: (value) {
+        if (value == "编辑") {
+
+        } else if (value == "提交") {
+
+        } else if (value == "出库确认") {
+          SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+            SCDialogUtils().showCustomBottomDialog(
+                isDismissible: true,
+                context: context,
+                widget: SCOutboundConfirmAlert());
+          });
+        }
+      },),
+    );
   }
 }

@@ -39,8 +39,6 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
     controller.loadMaterialEntryDetail();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(title: '入库详情', body: body());
