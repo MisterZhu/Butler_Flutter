@@ -18,14 +18,24 @@ const int scMaterialCellTypeDelete = 2;
 /// 物资cell
 class SCMaterialCell extends StatefulWidget {
 
-  const SCMaterialCell({Key? key, required this.type, this.model, this.onTap}) : super(key: key);
+  const SCMaterialCell({Key? key, required this.type, this.model, this.onTap, this.numChangeAction, this.radioTap, this.deleteAction}) : super(key: key);
 
   final SCMaterialListModel? model;
+
   /// cell点击
   final Function? onTap;
 
+  /// radio点击
+  final Function? radioTap;
+
+  /// 数量改变回调
+  final Function(int num)? numChangeAction;
+
   /// type
   final int type;
+
+  /// 删除物资
+  final Function? deleteAction;
 
   @override
   SCMaterialCellState createState() => SCMaterialCellState();
@@ -34,6 +44,11 @@ class SCMaterialCell extends StatefulWidget {
 class SCMaterialCellState extends State<SCMaterialCell> {
   /// 是否选中
   bool isSelect = false;
+
+  @override
+  initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +184,12 @@ class SCMaterialCellState extends State<SCMaterialCell> {
                       Column(
                         children: [
                           Expanded(child: Container(color: Colors.orange,),),
-                          SCStepper()
+                          SCStepper(
+                            num: widget.model?.num,
+                            numChangeAction: (int value) {
+                              widget.numChangeAction?.call(value);
+                            },
+                          )
                         ],
                       )
                     ],
@@ -196,7 +216,12 @@ class SCMaterialCellState extends State<SCMaterialCell> {
                       Column(
                         children: [
                           Expanded(child: Container(),),
-                          SCStepper()
+                          SCStepper(
+                            num: widget.model?.num,
+                            numChangeAction: (int value) {
+                              widget.numChangeAction?.call(value);
+                            },
+                          )
                         ],
                       )
                     ],
@@ -248,6 +273,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// radio
   Widget radioView() {
+    isSelect = widget.model?.isSelect ?? false;
     String path =
         isSelect ? SCAsset.iconMaterialSelected : SCAsset.iconMaterialUnselect;
     return GestureDetector(
@@ -255,6 +281,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
       onTap: () {
         setState(() {
           isSelect = !isSelect;
+          widget.radioTap?.call(isSelect);
         });
       },
       child: Container(
@@ -276,6 +303,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
+        widget.deleteAction?.call();
       },
       child: Container(
         alignment: Alignment.center,

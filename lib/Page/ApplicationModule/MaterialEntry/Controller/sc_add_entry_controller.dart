@@ -4,6 +4,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../Model/sc_entry_type_model.dart';
+import '../Model/sc_material_list_model.dart';
 import '../Model/sc_wareHouse_model.dart';
 
 
@@ -17,6 +18,9 @@ class SCAddEntryController extends GetxController {
 
   /// 入库类型数组
   List<SCEntryTypeModel> entryList = [];
+
+  /// 已选择的物资数据
+  List<SCMaterialListModel> selectedList = [];
 
   @override
   onInit() {
@@ -54,6 +58,20 @@ class SCAddEntryController extends GetxController {
         },
         failure: (value) {
         });
+  }
+
+  /// 更新已选的物资数据
+  updateSelectedMaterial(List<SCMaterialListModel> list) {
+    selectedList = list;
+    update();
+  }
+
+  /// 删除物资
+  deleteMaterial(int index) {
+    if (index < selectedList.length) {
+      selectedList.removeAt(index);
+      update();
+    }
   }
 
 }

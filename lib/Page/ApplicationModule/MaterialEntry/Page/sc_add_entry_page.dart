@@ -7,6 +7,7 @@ import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../Controller/sc_add_entry_controller.dart';
+import '../Model/sc_material_list_model.dart';
 import '../View/AddEntry/sc_add_entry_view.dart';
 
 /// 新增入库page
