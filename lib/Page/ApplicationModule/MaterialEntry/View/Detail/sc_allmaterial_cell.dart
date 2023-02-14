@@ -2,12 +2,20 @@ import 'package:flutter/widgets.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_allmaterial_titleview.dart';
 
+import '../../Model/sc_material_entry_detail_model.dart';
 import 'sc_allmaterial_listview.dart';
 import 'sc_material_unfold_btn.dart';
 
 /// 入库详情-所有物资cell
 
 class SCAllMaterialCell extends StatefulWidget {
+  final SCMaterialEntryDetailModel? model;
+
+  /// 类型，type=0入库详情，type=1出库详情
+  final int type;
+
+  SCAllMaterialCell({Key? key, required this.type, this.model}) : super(key: key);
+
   @override
   SCAllMaterialCellState createState() => SCAllMaterialCellState();
 }
@@ -16,14 +24,15 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
   /// 是否显示所有的数据
   bool isShowAll = false;
 
-  /// 数据源
-  List list = ['', '', '', '', ''];
-
   /// 超过4个折叠显示
   int maxLength = 4;
 
   @override
   Widget build(BuildContext context) {
+    bool hiddenUnfold = true;
+    if (widget.model?.materials != null && widget.model!.materials!.length > maxLength) {
+      hiddenUnfold = false;
+    }
     return DecoratedBox(
       decoration: BoxDecoration(
           color: SCColors.color_FFFFFF,
@@ -31,13 +40,13 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SCAllMaterialTitleView(),
+          SCAllMaterialTitleView(type: widget.type, model: widget.model,),
           SCAllMaterialListView(
             list: getRealList(),
             onTap: (int index) {},
           ),
           Offstage(
-            offstage: list.length > maxLength ? false : true,
+            offstage: hiddenUnfold,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Column(
@@ -62,15 +71,15 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
   }
 
   /// 数据
-  List getRealList() {
-    if (list.length > maxLength) {
+  getRealList() {
+    if (widget.model?.materials != null && widget.model!.materials!.length > maxLength) {
       if (!isShowAll) {
-        return list.sublist(0, maxLength);
+        return widget.model!.materials!.sublist(0, maxLength);
       } else {
-        return list;
+        return widget.model!.materials!;
       }
     } else {
-      return list;
+      return widget.model?.materials;
     }
   }
 

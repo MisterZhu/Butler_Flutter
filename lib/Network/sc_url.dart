@@ -106,6 +106,9 @@ class SCUrl {
   /// 新增入库
   static const String kAddEntryUrl = "/api/warehouse/app/in/addWareHouseIn";
 
+  /// 入库详情
+  static const String kMaterialEntryDetailUrl = "/api/warehouse/app/in/detailWareHouseIn";
+
 
   /************************* 物资出库 *************************/
 

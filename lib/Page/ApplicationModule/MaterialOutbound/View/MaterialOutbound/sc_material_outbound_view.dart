@@ -209,7 +209,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
     SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, null);
   }
 
-  /// 入库状态弹窗
+  /// 出库状态弹窗
   Widget statusAlert() {
     List list = [];
     for (int i = 0; i < statusList.length; i++) {
@@ -218,7 +218,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
     return Offstage(
       offstage: !showStatusAlert,
       child: SCSiftAlert(
-        title: '入库状态',
+        title: '出库状态',
         list: list,
         selectIndex: selectStatus,
         closeAction: () {
