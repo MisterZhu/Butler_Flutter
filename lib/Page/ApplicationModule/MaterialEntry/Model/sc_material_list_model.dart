@@ -35,7 +35,7 @@ class SCMaterialListModel {
       String? thirdCode, 
       String? unitId, 
       String? unitName,
-      int? num,/// 数量
+      int? localNum,/// 本地物资数量，默认1
       bool? isSelect,/// 是否选中
   }){
     _barCode = barCode;
@@ -54,7 +54,7 @@ class SCMaterialListModel {
     _thirdCode = thirdCode;
     _unitId = unitId;
     _unitName = unitName;
-    _num = num;
+    _localNum = localNum;
     _isSelect = isSelect;
 }
 
@@ -75,7 +75,7 @@ class SCMaterialListModel {
     _thirdCode = json['thirdCode'];
     _unitId = json['unitId'];
     _unitName = json['unitName'];
-    _num = 1;
+    _localNum = 1;
     _isSelect = json['isSelect'];
   }
   String? _barCode;
@@ -94,7 +94,7 @@ class SCMaterialListModel {
   String? _thirdCode;
   String? _unitId;
   String? _unitName;
-  int? _num;
+  int? _localNum;
   bool? _isSelect;
   SCMaterialListModel copyWith({  String? barCode,
   String? classifyId,
@@ -111,7 +111,7 @@ class SCMaterialListModel {
   String? thirdCode,
   String? unitId,
   String? unitName,
-    int? num,
+    int? localNum,
     bool? isSelect,
 }) => SCMaterialListModel(  barCode: barCode ?? _barCode,
   classifyId: classifyId ?? _classifyId,
@@ -128,7 +128,7 @@ class SCMaterialListModel {
   thirdCode: thirdCode ?? _thirdCode,
   unitId: unitId ?? _unitId,
   unitName: unitName ?? _unitName,
-    num: num  ?? _num,
+    localNum: localNum  ?? _localNum,
       isSelect: isSelect ?? _isSelect,
 );
   String? get barCode => _barCode;
@@ -147,12 +147,12 @@ class SCMaterialListModel {
   String? get thirdCode => _thirdCode;
   String? get unitId => _unitId;
   String? get unitName => _unitName;
-  int? get num => _num;
+  int? get localNum => _localNum;
   bool? get isSelect => _isSelect;
 
   /// set num
-  set num(int? value) {
-    _num = value;
+  set localNum(int? value) {
+    _localNum = value;
   }
 
   /// set isSelect
@@ -180,7 +180,7 @@ class SCMaterialListModel {
     map['thirdCode'] = _thirdCode;
     map['unitId'] = _unitId;
     map['unitName'] = _unitName;
-    map['num'] = _num;
+    map['localNum'] = _localNum;
     map['isSelect'] = _isSelect;
     return map;
   }

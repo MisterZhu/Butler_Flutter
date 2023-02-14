@@ -9,13 +9,13 @@ import 'package:smartcommunity/Utils/sc_utils.dart';
 
 class SCStepper extends StatefulWidget {
 
-  const SCStepper({Key? key, this.numChangeAction, this.num = 1}) : super(key: key);
+  SCStepper({Key? key, this.numChangeAction, this.num = 1}) : super(key: key);
 
   /// 数量改变回调
   final Function(int num)? numChangeAction;
 
   /// 默认数量
-  final int? num;
+  int? num;
 
   @override
   SCStepperState createState() => SCStepperState();
@@ -28,13 +28,10 @@ class SCStepperState extends State<SCStepper> {
   /// focusNode
   FocusNode node = FocusNode();
 
-  /// 数量
-  int num = 1;
-
   @override
   initState() {
     super.initState();
-    num = widget.num ?? 1;
+    int num = widget.num ?? 1;
     textFiledController = TextEditingController.fromValue(TextEditingValue(text: '$num', selection: TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length))));
   }
 
@@ -42,6 +39,12 @@ class SCStepperState extends State<SCStepper> {
   dispose() {
     textFiledController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(SCStepper oldWidget) {
+    textFiledController.text = '${widget.num}';
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -158,27 +161,32 @@ class SCStepperState extends State<SCStepper> {
   /// 加
   add() {
     setState(() {
+      int num = widget.num ?? 1;
       num++;
       textFiledController.text = '$num';
       textFiledController.selection = TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length));
       widget.numChangeAction?.call(num);
+      widget.num = num;
     });
   }
 
   /// 减
   delete() {
     setState(() {
+      int num = widget.num ?? 1;
       if (num > 1) {
         num--;
         textFiledController.text = '$num';
         textFiledController.selection = TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length));
         widget.numChangeAction?.call(num);
+        widget.num = num;
       }
     });
   }
 
   /// 更新输入框
   updateText(String value) {
+    int num = widget.num ?? 1;
     if (value.isEmpty) {
       num = 1;
       textFiledController.text = '$num';
@@ -190,5 +198,6 @@ class SCStepperState extends State<SCStepper> {
         widget.numChangeAction?.call(num);
       }
     }
+    widget.num = num;
   }
 }

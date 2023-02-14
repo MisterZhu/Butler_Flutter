@@ -185,7 +185,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
                         children: [
                           Expanded(child: Container(color: Colors.orange,),),
                           SCStepper(
-                            num: widget.model?.num,
+                            num: widget.model?.localNum,
                             numChangeAction: (int value) {
                               widget.numChangeAction?.call(value);
                             },
@@ -201,6 +201,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// 物资信息-删除
   Widget deleteInfoView() {
+    print("aaa===$num");
     return Expanded(
         child: SizedBox(
           height: 80.0,
@@ -217,7 +218,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
                         children: [
                           Expanded(child: Container(),),
                           SCStepper(
-                            num: widget.model?.num,
+                            num: widget.model?.localNum,
                             numChangeAction: (int value) {
                               widget.numChangeAction?.call(value);
                             },

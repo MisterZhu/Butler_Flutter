@@ -109,13 +109,16 @@ class SCMaterialInfoCell extends StatelessWidget {
         '共 ${getTypeNumber()} 种  总数量 ${getNumber()}',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
+        style: const TextStyle(
             fontSize: SCFonts.f14,
             fontWeight: FontWeight.w400,
             color: SCColors.color_5E5F66));
   }
 
   Widget listview() {
+    for (SCMaterialListModel model in list) {
+      print("数量a===${model.toJson()}");
+    }
     return SCAddEntryAllMaterialView(list: list, deleteAction: (int index){
       deleteAction?.call(index);
     },);
@@ -146,7 +149,7 @@ class SCMaterialInfoCell extends StatelessWidget {
   int getNumber() {
     int count = 0;
     for (SCMaterialListModel model in list) {
-      count += model.num ?? 0;
+      count += model.localNum ?? 0;
     }
     return count;
   }
