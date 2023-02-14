@@ -149,7 +149,7 @@ class SCMaterialInfoCell extends StatelessWidget {
   int getNumber() {
     int count = 0;
     for (SCMaterialListModel model in list) {
-      count += model.num ?? 0;
+      count += model.localNum ?? 0;
     }
     return count;
   }
