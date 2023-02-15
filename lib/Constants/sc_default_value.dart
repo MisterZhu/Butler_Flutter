@@ -128,6 +128,10 @@ class SCDefaultValue {
   /// 仓储-入库-添加物资信息
   static const String addMaterialInfoTip = "请添加物资信息";
 
+  /// 仓储-入库-复制粘贴板
+  static const String pasteBoardSuccessTip = "复制成功";
+
+
   /// 图片路径
   static const files = "/files/";
 }

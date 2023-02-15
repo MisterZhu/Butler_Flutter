@@ -186,7 +186,6 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
       "type" : type,
       "remark" : remark,
     })?.then((value) {
-      print("=========");
       controller.loadMaterialEntryDetail();
     });
   }

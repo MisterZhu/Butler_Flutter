@@ -334,4 +334,13 @@ class SCUtils {
         return SCColors.color_B0B1B8;
     }
   }
+
+  /// 复制粘贴板
+  static pasteData(String data) {
+    if (data.isNotEmpty && data != '') {
+      Clipboard.setData(ClipboardData(text: data)).then((value) {
+        SCToast.showTip(SCDefaultValue.pasteBoardSuccessTip);
+      });
+    }
+  }
 }

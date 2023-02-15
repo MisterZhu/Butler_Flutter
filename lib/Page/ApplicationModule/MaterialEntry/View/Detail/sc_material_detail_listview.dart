@@ -38,6 +38,8 @@ class SCMaterialDetailListView extends StatelessWidget {
     } else {// 入库信息
       return SCMaterialEntryInfoCell(model: state.model, type: type, callAction: (String phone) {
         callAction(phone);
+      }, pasteAction: (String value) {
+        pasteAction(value);
       },);
     }
   }
@@ -45,6 +47,11 @@ class SCMaterialDetailListView extends StatelessWidget {
   /// 打电话
   callAction(String phone) {
     SCUtils.call(phone);
+  }
+
+  /// 复制粘贴板
+  pasteAction(String value) {
+    SCUtils.pasteData(value);
   }
 
   /// line

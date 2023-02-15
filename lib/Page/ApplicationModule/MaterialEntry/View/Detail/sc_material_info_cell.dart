@@ -17,7 +17,10 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 打电话
   final Function(String phone)? callAction;
 
-  SCMaterialEntryInfoCell({Key? key, this.model, required this.type, this.callAction})
+  /// 复制粘贴板
+  final Function(String value)? pasteAction;
+
+  SCMaterialEntryInfoCell({Key? key, this.model, required this.type, this.callAction, this.pasteAction})
       : super(key: key);
 
   @override
@@ -205,7 +208,9 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
                 ),
               ],
             ),
-            onPressed: () {}));
+            onPressed: () {
+              pasteAction?.call(num);
+            }));
   }
 
   /// 普通label
