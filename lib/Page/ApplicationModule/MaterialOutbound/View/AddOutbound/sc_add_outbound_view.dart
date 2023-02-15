@@ -12,6 +12,7 @@ import '../../../HouseInspect/View/sc_bottom_button_item.dart';
 import '../../../MaterialEntry/View/AddEntry/sc_basic_info_cell.dart';
 import '../../../MaterialEntry/View/AddEntry/sc_material_info_cell.dart';
 import '../../Controller/sc_add_outbound_controller.dart';
+import '../../Model/sc_receiver_model.dart';
 
 /// 新增出库view
 
@@ -49,10 +50,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
   /// 领用部门
   String department = '';
   /// 领用人
-  String receiver = '';
-
-  /// 领用人index
-  int receiverIndex = -1;
+  SCReceiverModel receiverModel = SCReceiverModel();
 
   late StreamSubscription<bool> keyboardSubscription;
 
@@ -133,13 +131,11 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
           } else if (index == 3) {
             //领用人
             var params = {
-              'receiver': receiver,
-              'receiverIndex': receiverIndex
+              'receiverModel': receiverModel,
             };
             var backParams = await SCRouterHelper.pathPage(SCRouterPath.selectReceiverPage, params);
             setState(() {
-              receiver = backParams['receiver'] ?? '';
-              receiverIndex = backParams['receiverIndex'] ?? -1;
+              receiverModel = backParams['receiverModel'];
             });
           }
         }, inputAction: (content) {

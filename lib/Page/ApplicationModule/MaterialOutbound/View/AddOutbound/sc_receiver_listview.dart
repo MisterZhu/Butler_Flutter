@@ -3,20 +3,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 
 import '../../../../../Constants/sc_asset.dart';
+import '../../Model/sc_receiver_model.dart';
 
 /// 选择领用人listview
 class SCReceiverListView extends StatefulWidget {
 
   /// 领用人数组
-  final List list;
+  final List<SCReceiverModel>? list;
 
-  /// 当前领用人
-  final int? currentIndex;
+  /// 当前领用人model
+  final SCReceiverModel? currentModel;
 
   /// 点击
-  final Function(int index)? tapAction;
+  final Function(SCReceiverModel model)? tapAction;
 
-  SCReceiverListView({Key? key, required this.list, this.currentIndex, this.tapAction}) : super(key: key);
+  /// 打电话
+  final Function(String mobile)? callAction;
+
+  SCReceiverListView({Key? key, required this.list, this.currentModel, this.tapAction, this.callAction}) : super(key: key);
 
   @override
   SCReceiverListViewState createState() => SCReceiverListViewState();
@@ -37,19 +41,23 @@ class SCReceiverListViewState extends State<SCReceiverListView> {
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              return cell(index);
+              if (widget.list != null) {
+                return cell(widget.list![index]);
+              } else {
+                return const SizedBox();
+              }
             },
             separatorBuilder: (BuildContext context, int index) {
               return const SizedBox(height: 10.0,);
             },
-            itemCount: widget.list.length));
+            itemCount: widget.list?.length ?? 0));
   }
 
   /// cell
-  Widget cell(int index) {
+  Widget cell(SCReceiverModel model) {
     return GestureDetector(
       onTap: () {
-        widget.tapAction?.call(index);
+        widget.tapAction?.call(model);
       },
       behavior: HitTestBehavior.opaque,
       child: Container(
@@ -62,13 +70,13 @@ class SCReceiverListViewState extends State<SCReceiverListView> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(index == widget.currentIndex ? SCAsset.iconReceiverSelected : SCAsset.iconReceiverUnselect, width: 18.0, height: 18.0),
+            Image.asset(model.personId == widget.currentModel?.personId ? SCAsset.iconReceiverSelected : SCAsset.iconReceiverUnselect, width: 18.0, height: 18.0),
             const SizedBox(width: 10.0,),
-            Expanded(child: middleItem(name: widget.list[index])),
+            Expanded(child: middleItem(name: model.personName ?? '')),
             const SizedBox(width: 16.0,),
             line(),
             const SizedBox(width: 16.0,),
-            callItem(),
+            callItem(model.phone ?? ''),
           ],
         ),
       ),
@@ -116,10 +124,12 @@ class SCReceiverListViewState extends State<SCReceiverListView> {
   }
 
   /// 联系他
-  Widget callItem() {
+  Widget callItem(String mobile) {
     return GestureDetector(
       onTap: () {
-
+        if (mobile.isNotEmpty) {
+          widget.callAction?.call(mobile);
+        }
       },
       behavior: HitTestBehavior.opaque,
       child: Row(
