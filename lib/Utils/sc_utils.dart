@@ -244,4 +244,13 @@ class SCUtils {
   bool isPositiveNumber(String value) {
     return RegExp(SCDefaultValue.positiveNumberReg).hasMatch(value);
   }
+
+  /// 复制粘贴板
+  static pasteData(String data) {
+    if (data.isNotEmpty && data != '') {
+      Clipboard.setData(ClipboardData(text: data)).then((value) {
+        SCToast.showTip(SCDefaultValue.pasteBoardSuccessTip);
+      });
+    }
+  }
 }

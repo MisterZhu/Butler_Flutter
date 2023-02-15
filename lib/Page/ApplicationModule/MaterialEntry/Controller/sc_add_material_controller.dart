@@ -40,4 +40,17 @@ class SCAddMaterialController extends GetxController {
           SCLoadingUtils.hide();
         });
   }
+
+  /// 处理搜索的数据
+  dealSearchData(List<SCMaterialListModel> list) {
+    for (SCMaterialListModel model in list) {
+      for (SCMaterialListModel subModel in materialList) {
+        if (model.id == subModel.id) {
+          subModel.localNum = model.localNum;
+          subModel.isSelect = true;
+        }
+      }
+    }
+    update();
+  }
 }
