@@ -20,6 +20,10 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_mat
 /// wareHouseAddress : ""    仓库地址
 /// wareHouseId : ""    关联仓库ID
 /// wareHouseName : ""    关联仓库名称
+/// fetchOrgId : ""      领用组织ID
+/// fetchOrgName : ""    领用组织名称
+/// fetchUserId : ""    领用人ID
+/// fetchUserName : ""   领用人名称
 
 /// 入库列表model
 
@@ -45,7 +49,11 @@ class SCMaterialEntryModel {
       String? typeName, 
       String? wareHouseAddress, 
       String? wareHouseId, 
-      String? wareHouseName,}){
+      String? wareHouseName,
+      String? fetchOrgId,
+      String? fetchOrgName,
+      String? fetchUserId,
+      String? fetchUserName,}){
     _creator = creator;
     _creatorName = creatorName;
     _gmtCreate = gmtCreate;
@@ -67,6 +75,10 @@ class SCMaterialEntryModel {
     _wareHouseAddress = wareHouseAddress;
     _wareHouseId = wareHouseId;
     _wareHouseName = wareHouseName;
+    _fetchOrgId = fetchOrgId;
+    _fetchOrgName = fetchOrgName;
+    _fetchUserId = fetchUserId;
+    _fetchUserName = fetchUserName;
 }
 
   SCMaterialEntryModel.fromJson(dynamic json) {
@@ -96,6 +108,10 @@ class SCMaterialEntryModel {
     _wareHouseAddress = json['wareHouseAddress'];
     _wareHouseId = json['wareHouseId'];
     _wareHouseName = json['wareHouseName'];
+    _fetchOrgId = json['fetchOrgId'];
+    _fetchOrgName = json['fetchOrgName'];
+    _fetchUserId = json['fetchUserId'];
+    _fetchUserName = json['fetchUserName'];
   }
   String? _creator;
   String? _creatorName;
@@ -118,6 +134,10 @@ class SCMaterialEntryModel {
   String? _wareHouseAddress;
   String? _wareHouseId;
   String? _wareHouseName;
+  String? _fetchOrgId;
+  String? _fetchOrgName;
+  String? _fetchUserId;
+  String? _fetchUserName;
   SCMaterialEntryModel copyWith({  String? creator,
   String? creatorName,
   String? gmtCreate,
@@ -138,6 +158,10 @@ class SCMaterialEntryModel {
   String? wareHouseAddress,
   String? wareHouseId,
   String? wareHouseName,
+  String? fetchOrgId,
+  String? fetchOrgName,
+  String? fetchUserId,
+  String? fetchUserName,
 }) => SCMaterialEntryModel(  creator: creator ?? _creator,
   creatorName: creatorName ?? _creatorName,
   gmtCreate: gmtCreate ?? _gmtCreate,
@@ -159,6 +183,10 @@ class SCMaterialEntryModel {
   wareHouseAddress: wareHouseAddress ?? _wareHouseAddress,
   wareHouseId: wareHouseId ?? _wareHouseId,
   wareHouseName: wareHouseName ?? _wareHouseName,
+  fetchOrgId: fetchOrgId ?? _fetchOrgId,
+  fetchOrgName: fetchOrgName ?? _fetchOrgName,
+  fetchUserId: fetchUserId ?? _fetchUserId,
+  fetchUserName: fetchUserName ?? _fetchUserName,
 );
   String? get creator => _creator;
   String? get creatorName => _creatorName;
@@ -181,6 +209,10 @@ class SCMaterialEntryModel {
   String? get wareHouseAddress => _wareHouseAddress;
   String? get wareHouseId => _wareHouseId;
   String? get wareHouseName => _wareHouseName;
+  String? get fetchOrgId => _fetchOrgId;
+  String? get fetchOrgName => _fetchOrgName;
+  String? get fetchUserId => _fetchUserId;
+  String? get fetchUserName => _fetchUserName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -207,6 +239,10 @@ class SCMaterialEntryModel {
     map['wareHouseAddress'] = _wareHouseAddress;
     map['wareHouseId'] = _wareHouseId;
     map['wareHouseName'] = _wareHouseName;
+    map['fetchOrgId'] = _fetchOrgId;
+    map['fetchOrgName'] = _fetchOrgName;
+    map['fetchUserId'] = _fetchUserId;
+    map['fetchUserName'] = _fetchUserName;
     return map;
   }
 }

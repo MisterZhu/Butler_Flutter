@@ -53,6 +53,12 @@ class SCAddOutboundController extends GetxController {
   /// 备注
   String remark = '';
 
+  /// 领用人ID（只有出库类型为领料出库时才传）
+  String fetchUserId = '';
+
+  /// 领用组织(或部门)ID（只有出库类型为领料出库时才传）
+  String fetchOrgId = '';
+
   @override
   onInit() {
     super.onInit();
@@ -93,6 +99,7 @@ class SCAddOutboundController extends GetxController {
 
   /// 新增出库, status=0暂存，1提交
   addEntry({required int status, required dynamic data}) {
+
     var params = {
       "materials": data['materialList'],
       "remark": data['remark'],
@@ -102,6 +109,13 @@ class SCAddOutboundController extends GetxController {
       "wareHouseId": data['wareHouseId'],
       "wareHouseName": data['wareHouseName']
     };
+    if (fetchUserId.isNotEmpty) {
+      params.addAll({"fetchOrgId": fetchUserId});
+    }
+    if (fetchUserId.isNotEmpty) {
+      params.addAll({"fetchUserId": fetchUserId});
+    }
+
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kAddOutboundUrl,
@@ -126,6 +140,7 @@ class SCAddOutboundController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           wareHouseList = List<SCWareHouseModel>.from(value.map((e) => SCWareHouseModel.fromJson(e)).toList());
+          initEditParams();
           update();
         },
         failure: (value) {
@@ -141,6 +156,7 @@ class SCAddOutboundController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           outboundList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
+          initEditParams();
           update();
         },
         failure: (value) {

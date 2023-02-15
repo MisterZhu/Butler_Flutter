@@ -72,7 +72,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
     return Row(
       children: [
         desLabel('领用人'),
-        contactView('${model?.creatorName}')
+        contactView(model?.fetchUserName ?? '')
       ],
     );
   }
@@ -82,7 +82,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
     return Row(
       children: [
         desLabel('领用部门'),
-        textView(1, '${model?.orgName}')
+        textView(1, model?.fetchOrgName ?? '')
       ],
     );
   }
