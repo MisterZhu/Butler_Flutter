@@ -11,60 +11,106 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// model
   final SCMaterialEntryDetailModel? model;
 
+  /// type=0入库详情，type=1出库详情
+  final int type;
+
   /// 打电话
   final Function(String phone)? callAction;
 
-  SCMaterialEntryInfoCell({Key? key, this.model, this.callAction})
+  SCMaterialEntryInfoCell({Key? key, this.model, required this.type, this.callAction})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: SCColors.color_FFFFFF,
-        borderRadius: BorderRadius.circular(4.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            entryUserView(),
-            const SizedBox(
-              height: 10.0,
-            ),
-            entryNumView(),
-            const SizedBox(
-              height: 10.0,
-            ),
-            entryTimeView(),
-            const SizedBox(
-              height: 10.0,
-            ),
-            entryRemarkView()
-          ],
+    return DecoratedBox(decoration: BoxDecoration(
+      color: SCColors.color_FFFFFF,
+      borderRadius: BorderRadius.circular(4.0),
+    ), child: Padding(padding: const EdgeInsets.all(12.0), child: Column(
+      children: [
+        entryNumView(),
+        const SizedBox(
+          height: 10.0,
         ),
-      ),
+        entryUserView(),
+        const SizedBox(
+          height: 10.0,
+        ),
+        entryTimeView(),
+        const SizedBox(
+          height: 10.0,
+        ),
+        receiveView(),
+        entryRemarkView()
+      ],
+    ),),);
+  }
+
+  Widget receiveView() {
+    if (type == 0) {
+      return const SizedBox();
+    } else {
+      return Column(
+          children: [
+            userView(),
+            const SizedBox(
+              height: 10.0,
+            ),
+            userDepartmentView(),
+            const SizedBox(
+              height: 10.0,
+            ),
+          ]
+      );
+    }
+  }
+
+  /// 领用人view
+  Widget userView() {
+    return Row(
+      children: [
+        desLabel('领用人'),
+        contactView('${model?.creatorName}')
+      ],
     );
   }
 
-  /// 入库人view
+  /// 领用部门view
+  Widget userDepartmentView() {
+    return Row(
+      children: [
+        desLabel('领用部门'),
+        textView(1, '${model?.orgName}')
+      ],
+    );
+  }
+
+  /// 操作人view
   Widget entryUserView() {
     return Row(
-      children: [desLabel('入库人'), contactView('${model?.creatorName}')],
+      children: [
+        desLabel('操作人'),
+        contactView('${model?.creatorName}')
+      ],
     );
   }
 
-  /// 入库单号
+  /// 单号
   Widget entryNumView() {
     return Row(
-      children: [desLabel('入库单号'), numView('${model?.number}')],
+      children: [
+        desLabel('单号'),
+        numView('${model?.number}')
+      ],
     );
   }
 
-  /// 入库时间
+  /// 操作时间
   Widget entryTimeView() {
     return Row(
-      children: [desLabel('入库时间'), textView(1, '${model?.gmtCreate}')],
+      children: [
+        desLabel('操作时间'),
+        textView(1, '${model?.gmtCreate}')
+      ],
     );
   }
 

@@ -131,6 +131,9 @@ class SCAddReceiptViewState extends State<SCAddEntryView> {
         deleteAction: (int subIndex) {
           deleteAction(subIndex);
         },
+        updateNumAction: (int value) {
+          widget.state.update();
+        },
       );
     } else {
       return const SizedBox(

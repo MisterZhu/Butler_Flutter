@@ -23,6 +23,7 @@ import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_select_p
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_to_be_upload_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_add_material_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_add_entry_page.dart';
+import '../../Page/ApplicationModule/MaterialEntry/Page/sc_entry_search_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_material_entry_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_material_search_page.dart';
 import '../../Page/ApplicationModule/MaterialOutbound/Page/sc_material_outbound_detail_page.dart';
@@ -82,7 +83,7 @@ class SCRouterPages {
     /*新增入库*/
     GetPage(name: SCRouterPath.addEntryPage, page: () => SCAddEntryPage()),
     /*入库详情*/
-    GetPage(name: SCRouterPath.materialDetailPage, page: () => SCMaterialEntryDetailPage()),
+    GetPage(name: SCRouterPath.entryDetailPage, page: () => SCMaterialEntryDetailPage()),
     /*添加物资*/
     GetPage(name: SCRouterPath.addMaterialPage, page: () => SCAddMaterialPage()),
     /*搜索物资*/
@@ -95,7 +96,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.materialOutboundPage, page: () => SCMaterialOutboundPage()),
     /*出库详情*/
     GetPage(name: SCRouterPath.outboundDetailPage, page: () => SCMaterialOutboundDetailPage()),
-
+    /*搜索出入库*/
+    GetPage(name: SCRouterPath.entrySearchPage, page: () => SCEntrySearchPage()),
   ];
 
   /*根据code使用路由*/

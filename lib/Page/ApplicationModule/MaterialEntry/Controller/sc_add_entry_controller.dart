@@ -118,7 +118,7 @@ class SCAddEntryController extends GetxController {
     SCLoadingUtils.show();
     SCHttpManager.instance.get(
         url: SCUrl.kWareHouseListUrl,
-        params: {'wareHouseName': warehouseName},
+        params: null,
         success: (value) {
           SCLoadingUtils.hide();
           wareHouseList = List<SCWareHouseModel>.from(

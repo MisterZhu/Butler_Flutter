@@ -28,7 +28,7 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> {
   @override
   initState() {
     super.initState();
-    addControllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddMaterialPageState).toString());
+    addControllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddMaterialPage).toString());
     addController = Get.put(SCAddMaterialController(), tag: addControllerTag);
     initPageData();
     addController.loadMaterialListData();
@@ -36,7 +36,7 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> {
 
   @override
   dispose() {
-    SCScaffoldManager.instance.deleteGetXControllerTag((SCAddMaterialPageState).toString(), addControllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCAddMaterialPage).toString(), addControllerTag);
     addController.dispose();
     super.dispose();
   }

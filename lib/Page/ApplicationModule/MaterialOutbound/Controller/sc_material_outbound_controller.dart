@@ -11,7 +11,6 @@ class SCMaterialOutboundController extends GetxController {
 
   int pageNum = 1;
 
-
   /// 选中的状态，默认显示全部
   int selectStatusId = -1;
 
@@ -19,7 +18,7 @@ class SCMaterialOutboundController extends GetxController {
   int selectTypeId = -1;
 
   /// 排序，true操作时间正序，false操作时间倒序
-  bool sort = true;
+  bool sort = false;
 
   List<SCMaterialEntryModel> dataList = [];
 
@@ -56,11 +55,12 @@ class SCMaterialOutboundController extends GetxController {
   }
 
   /// 出库列表数据
-  loadOutboundListData({bool? isMore}) {
+  loadOutboundListData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       pageNum++;
     } else {
+      pageNum = 1;
       SCLoadingUtils.show();
     }
     List fields = [];
@@ -93,7 +93,6 @@ class SCMaterialOutboundController extends GetxController {
       "pageNum": pageNum,
       "pageSize": 20
     };
-    print('params===========$params');
     SCHttpManager.instance.post(
         url: SCUrl.kMaterialOutboundListUrl,
         params: params,
@@ -114,8 +113,18 @@ class SCMaterialOutboundController extends GetxController {
             }
           }
           update();
+          bool last = false;
+          if (isLoadMore) {
+            last = value['last'];
+          }
+          completeHandler?.call(true, last);
         },
         failure: (value) {
+          if (isLoadMore) {
+            pageNum--;
+          }
+          SCToast.showTip(value['message']);
+          completeHandler?.call(false, false);
         });
   }
 
@@ -127,13 +136,29 @@ class SCMaterialOutboundController extends GetxController {
         params: {'dictionaryCode' : 'OUTBOUND'},
         success: (value) {
           SCLoadingUtils.hide();
-          print('出库类型======================================$value');
           outboundList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
           update();
           resultHandler?.call();
         },
         failure: (value) {
-          print('出库类型=====================================$value');
+        });
+  }
+
+  /// 提交出库
+  submit(String wareHouseInId) {
+    var params = {
+      "wareHouseInId": wareHouseInId,
+    };
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kSubmitOutboundUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          loadOutboundListData(isMore: false);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
         });
   }
 

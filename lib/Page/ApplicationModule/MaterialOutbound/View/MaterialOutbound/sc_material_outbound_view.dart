@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_entry_cell.dart';
@@ -13,6 +14,7 @@ import '../../../../../Utils/sc_utils.dart';
 import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
 import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
 import '../../Controller/sc_material_outbound_controller.dart';
+
 
 /// 物资出库view
 
@@ -55,15 +57,25 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
 
   bool showSortAlert = false;
 
+  /// RefreshController
+  RefreshController refreshController = RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     super.initState();
+    sortIndex = widget.state.sort == true ? 0 : 1;
     widget.state.loadOutboundType(() {
       List list = widget.state.outboundList.map((e) => e.name).toList();
       setState(() {
         typeList.addAll(list);
       });
     });
+  }
+
+  @override
+  dispose() {
+    refreshController.dispose();
+    super.dispose();
   }
 
   @override
@@ -78,7 +90,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SCMaterialSearchItem(searchAction: () {
-          SCRouterHelper.pathPage(SCRouterPath.materialSearchPage, null);
+          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': 1});
         },),
         SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
           if (index == 0) {
@@ -147,7 +159,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
     );
   }
 
-  /// 新增入库按钮
+  /// 新增出库按钮
   Widget addItem() {
     return Container(
       width: 60.0,
@@ -160,7 +172,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
       child: CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: () {
-          SCRouterHelper.pathPage(SCRouterPath.addEntryPage, null);
+          SCRouterHelper.pathPage(SCRouterPath.addOutboundPage, null);
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -169,7 +181,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
             Image.asset(SCAsset.iconAddReceipt, width: 20.0, height: 20.0,),
             const SizedBox(width: 2.0,),
             const Text(
-                '新增入库',
+                '新增出库',
                 maxLines: 1,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
@@ -185,28 +197,34 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
 
   /// listview
   Widget listview() {
-    return ListView.separated(
+    return SmartRefresher(
+      controller: refreshController,
+      enablePullUp: true,
+      enablePullDown: true,
+      header: const SCCustomHeader(
+        style: SCCustomHeaderStyle.noNavigation,
+      ),
+      onRefresh: onRefresh, onLoading: loadMore, child: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
             model: model,
-            type: 0,
+            type: 1,
             detailTapAction: () {
-              detailAction(index);
+              /// 详情
+              SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, {'wareHouseInId': model.id, 'status': model.status});
+            },
+            btnTapAction: () {
+              submit(index);
             },
           );
         },
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 10.0,);
         },
-        itemCount: widget.state.dataList.length);
-  }
-
-  /// 详情
-  detailAction(int index) {
-    SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, null);
+        itemCount: widget.state.dataList.length));
   }
 
   /// 出库状态弹窗
@@ -286,6 +304,31 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
           }
         },),
     );
+  }
+
+  /// 提交
+  submit(int index) {
+    SCMaterialEntryModel model = widget.state.dataList[index];
+    widget.state.submit(model.id ?? '');
+  }
+
+  /// 下拉刷新
+  Future onRefresh() async {
+    widget.state.loadOutboundListData(isMore: false, completeHandler: (bool success, bool last){
+      refreshController.refreshCompleted();
+      refreshController.loadComplete();
+    });
+  }
+
+  /// 上拉加载
+  void loadMore() async{
+    widget.state.loadOutboundListData(isMore: true, completeHandler: (bool success, bool last){
+      if (last) {
+        refreshController.loadNoData();
+      } else {
+        refreshController.loadComplete();
+      }
+    });
   }
 
 }

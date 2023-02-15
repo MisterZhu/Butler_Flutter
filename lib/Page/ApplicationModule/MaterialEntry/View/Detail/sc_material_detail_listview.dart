@@ -36,7 +36,7 @@ class SCMaterialDetailListView extends StatelessWidget {
     //
     //   },);
     } else {// 入库信息
-      return SCMaterialEntryInfoCell(model: state.model, callAction: (String phone) {
+      return SCMaterialEntryInfoCell(model: state.model, type: type, callAction: (String phone) {
         callAction(phone);
       },);
     }

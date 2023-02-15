@@ -14,6 +14,9 @@ class SCMaterialEntryDetailController extends GetxController {
 
   String wareHouseInId = '';
 
+  /// 单据状态(0：待提交，1：待审批，2：审批中，3：已拒绝，4：已驳回，5：已撤回，6：已入库)
+  int status = 0;
+
   SCMaterialEntryDetailModel model = SCMaterialEntryDetailModel();
 
   @override
@@ -25,6 +28,20 @@ class SCMaterialEntryDetailController extends GetxController {
   loadMaterialEntryDetail() {
     SCHttpManager.instance.get(
         url: SCUrl.kMaterialEntryDetailUrl,
+        params: {'wareHouseInId': wareHouseInId},
+        success: (value) {
+          model = SCMaterialEntryDetailModel.fromJson(value);
+          update();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 出库详情
+  loadMaterialOutboundDetail() {
+    SCHttpManager.instance.get(
+        url: SCUrl.kMaterialOutboundDetailUrl,
         params: {'wareHouseInId': wareHouseInId},
         success: (value) {
           model = SCMaterialEntryDetailModel.fromJson(value);

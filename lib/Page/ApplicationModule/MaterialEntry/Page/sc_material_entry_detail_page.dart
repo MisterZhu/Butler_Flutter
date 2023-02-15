@@ -43,7 +43,6 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
     controller = Get.put(SCMaterialEntryDetailController(), tag: controllerTag);
     Map<String, dynamic> params = Get.arguments;
     if (params.isNotEmpty) {
-      print('上个页面传过来的参数:$params');
       if (params.containsKey("canEdit")) {
         canEdit = params['canEdit'];
       }
@@ -52,7 +51,12 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
     }
   }
 
-
+  @override
+  dispose() {
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialEntryDetailPage).toString(), controllerTag);
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +156,7 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
   }
 
   /// 编辑
-  editAction() {
+  editAction() async{
     String wareHouseName = controller.model.wareHouseName ?? '';
     String wareHouseId = controller.model.wareHouseId ?? '';
     String typeName = controller.model.typeName ?? '';
@@ -173,6 +177,9 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
       "typeName" : typeName,
       "type" : type,
       "remark" : remark,
+    })?.then((value) {
+      print("=========");
+      controller.loadMaterialEntryDetail();
     });
   }
 

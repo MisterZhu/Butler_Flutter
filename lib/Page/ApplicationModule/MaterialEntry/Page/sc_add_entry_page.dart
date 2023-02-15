@@ -38,7 +38,6 @@ class SCAddEntryPageState extends State<SCAddEntryPage> {
     var arguments = Get.arguments;
     if (arguments is Map) {
       Map<String, dynamic> params = Get.arguments;
-      print("入库参数：${params}");
       if (params.isNotEmpty) {
         var selectedList = params['data'];
         if (params.containsKey('isEdit')) {

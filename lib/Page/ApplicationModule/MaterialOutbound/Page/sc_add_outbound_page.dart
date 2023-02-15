@@ -19,17 +19,24 @@ class SCAddOutboundPage extends StatefulWidget {
 class SCAddOutboundPageState extends State<SCAddOutboundPage> {
 
   /// SCAddOutboundController
-  late SCAddOutboundController addController;
+  late SCAddOutboundController controller;
 
-  /// SCAddEntryController - tag
-  String addControllerTag = '';
+  /// SCAddOutboundController - tag
+  String controllerTag = '';
 
   @override
   initState() {
     super.initState();
-    addControllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddOutboundPage).toString());
-    addController = Get.put(SCAddOutboundController(), tag: addControllerTag);
+    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddOutboundPage).toString());
+    controller = Get.put(SCAddOutboundController(), tag: controllerTag);
 
+  }
+
+  @override
+  dispose() {
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCAddOutboundPage).toString(), controllerTag);
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -53,8 +60,8 @@ class SCAddOutboundPageState extends State<SCAddOutboundPage> {
         height: double.infinity,
         color: SCColors.color_F2F3F5,
         child: GetBuilder<SCAddOutboundController>(
-            tag: addControllerTag,
-            init: addController,
+            tag: controllerTag,
+            init: controller,
             builder: (state) {
               return SCAddOutboundView(state: state,);
             }),

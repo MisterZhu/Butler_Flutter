@@ -89,7 +89,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SCMaterialSearchItem(searchAction: () {
-          SCRouterHelper.pathPage(SCRouterPath.materialSearchPage, null);
+          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': 0});
         },),
         SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
           if (index == 0) {
@@ -232,7 +232,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
   detailAction(SCMaterialEntryModel model) {
     int status = model.status ?? -1;
     bool canEdit = (status == 0);
-    SCRouterHelper.pathPage(SCRouterPath.materialDetailPage, {'wareHouseInId': model.id ?? '', 'canEdit' : canEdit});
+    SCRouterHelper.pathPage(SCRouterPath.entryDetailPage, {'wareHouseInId': model.id, 'status': model.status, 'canEdit' : canEdit});
   }
 
   /// 入库状态弹窗
