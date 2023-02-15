@@ -33,7 +33,8 @@ class SCMaterialEntryModel {
       String? materialNames, 
       int? materialNums, 
       List<SCMaterialListModel>? materials,
-      String? number, 
+      String? number,
+      String? mobileNum,
       String? operator, 
       String? operatorName, 
       String? orgId, 
@@ -54,6 +55,7 @@ class SCMaterialEntryModel {
     _materialNums = materialNums;
     _materials = materials;
     _number = number;
+    _mobileNum = mobileNum;
     _operator = operator;
     _operatorName = operatorName;
     _orgId = orgId;
@@ -82,6 +84,7 @@ class SCMaterialEntryModel {
       });
     }
     _number = json['number'];
+    _mobileNum = json['mobileNum'];
     _operator = json['operator'];
     _operatorName = json['operatorName'];
     _orgId = json['orgId'];
@@ -103,6 +106,7 @@ class SCMaterialEntryModel {
   int? _materialNums;
   List<SCMaterialListModel>? _materials;
   String? _number;
+  String? _mobileNum;
   String? _operator;
   String? _operatorName;
   String? _orgId;
@@ -143,6 +147,7 @@ class SCMaterialEntryModel {
   materialNums: materialNums ?? _materialNums,
   materials: materials ?? _materials,
   number: number ?? _number,
+    mobileNum: mobileNum ?? _mobileNum,
   operator: operator ?? _operator,
   operatorName: operatorName ?? _operatorName,
   orgId: orgId ?? _orgId,
@@ -164,6 +169,7 @@ class SCMaterialEntryModel {
   int? get materialNums => _materialNums;
   List<SCMaterialListModel>? get materials => _materials;
   String? get number => _number;
+  String? get mobileNum => _mobileNum;
   String? get operator => _operator;
   String? get operatorName => _operatorName;
   String? get orgId => _orgId;
@@ -189,6 +195,7 @@ class SCMaterialEntryModel {
       map['materials'] = _materials?.map((v) => v.toJson()).toList();
     }
     map['number'] = _number;
+    map['mobileNum'] = _mobileNum;
     map['operator'] = _operator;
     map['operatorName'] = _operatorName;
     map['orgId'] = _orgId;

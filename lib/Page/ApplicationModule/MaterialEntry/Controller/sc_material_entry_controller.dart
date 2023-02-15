@@ -93,7 +93,6 @@ class SCMaterialEntryController extends GetxController {
       "pageNum": pageNum,
       "pageSize": 20
     };
-    print('params===========$params');
     SCHttpManager.instance.post(
         url: SCUrl.kMaterialEntryListUrl,
         params: params,
@@ -144,7 +143,7 @@ class SCMaterialEntryController extends GetxController {
   }
 
   /// 提交入库
-  submit(String wareHouseInId) {
+  submit({required String wareHouseInId, Function(bool success)? completeHandler}) async{
     var params = {
       "wareHouseInId": wareHouseInId,
     };
@@ -154,9 +153,10 @@ class SCMaterialEntryController extends GetxController {
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
-          loadEntryListData(isMore: false);
+          completeHandler?.call(true);
         },
         failure: (value) {
+          completeHandler?.call(false);
           SCToast.showTip(value['message']);
         });
   }

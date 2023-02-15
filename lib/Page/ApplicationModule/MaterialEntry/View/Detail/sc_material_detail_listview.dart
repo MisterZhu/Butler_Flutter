@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_info_cell.dart';
+import '../../../../../Utils/sc_utils.dart';
 import '../../Controller/sc_material_entry_detail_controller.dart';
 import 'sc_allmaterial_cell.dart';
 
@@ -35,8 +36,15 @@ class SCMaterialDetailListView extends StatelessWidget {
     //
     //   },);
     } else {// 入库信息
-      return SCMaterialEntryInfoCell(model: state.model,);
+      return SCMaterialEntryInfoCell(model: state.model, callAction: (String phone) {
+        callAction(phone);
+      },);
     }
+  }
+
+  /// 打电话
+  callAction(String phone) {
+    SCUtils.call(phone);
   }
 
   /// line

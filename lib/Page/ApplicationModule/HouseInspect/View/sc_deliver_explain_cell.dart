@@ -13,7 +13,9 @@ class SCDeliverExplainCell extends StatefulWidget {
   /// 输入框的内容
   final String? content;
 
+  /// 输入框高度
   final double inputHeight;
+
   /// 输入内容
   final Function(String content)? inputAction;
 

@@ -11,7 +11,11 @@ import '../../../HouseInspect/View/sc_deliver_explain_cell.dart';
 
 class SCBasicInfoCell extends StatelessWidget {
 
+  /// 数据源
   final List list;
+
+  /// 备注
+  final String? remark;
 
   /// 点击选择
   final Function(int index)? selectAction;
@@ -24,6 +28,7 @@ class SCBasicInfoCell extends StatelessWidget {
 
   SCBasicInfoCell({Key? key,
     required this.list,
+    this.remark,
     this.selectAction,
     this.inputAction,
     this.addPhotoAction,
@@ -112,7 +117,11 @@ class SCBasicInfoCell extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(4.0)),
-        child: SCDeliverExplainCell(title: '备注信息', inputHeight: 92.0, inputAction: (String content) {
+        child: SCDeliverExplainCell(
+          title: '备注信息',
+          content: remark ?? '',
+          inputHeight: 92.0,
+          inputAction: (String content) {
           inputAction?.call(content);
         },)
     );

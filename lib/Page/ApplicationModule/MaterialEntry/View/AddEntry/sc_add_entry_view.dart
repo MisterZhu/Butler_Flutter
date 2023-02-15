@@ -30,37 +30,11 @@ class SCAddEntryView extends StatefulWidget {
 }
 
 class SCAddReceiptViewState extends State<SCAddEntryView> {
-  /// 基础信息数组
-  List baseInfoList = [
-    {'isRequired': true, 'title': '仓库名称', 'content': ''},
-    {'isRequired': true, 'title': '类型', 'content': ''}
-  ];
-
-  /// 仓库名称
-  String warehouseName = '';
-
-  /// 仓库id
-  String warehouseID = '';
-
-  /// 仓库index
-  int nameIndex = -1;
-
-  /// 类型
-  String type = '';
-
-  /// 仓库类型id
-  int typeID = 0;
-
-  /// 类型index
-  int typeIndex = -1;
 
   late StreamSubscription<bool> keyboardSubscription;
 
   /// 是否弹起键盘
   bool isShowKeyboard = false;
-
-  /// 备注
-  String remark = '';
 
   @override
   void initState() {
@@ -130,20 +104,21 @@ class SCAddReceiptViewState extends State<SCAddEntryView> {
   Widget getCell(int index) {
     if (index == 0) {
       return SCBasicInfoCell(
-        list: baseInfoList,
+        list: getBaseInfoList(),
+        remark: widget.state.remark,
         selectAction: (index) {
           if (index == 0) {
-            //仓库名称
+            // 仓库名称
             List list = widget.state.wareHouseList.map((e) => e.name).toList();
             showAlert(0, '仓库名称', list);
           } else if (index == 1) {
-            //类型
+            // 类型
             List list = widget.state.entryList.map((e) => e.name).toList();
             showAlert(1, '类型', list);
           }
         },
         inputAction: (content) {
-          remark = content;
+          widget.state.remark = content;
         },
         addPhotoAction: (list) {},
       );
@@ -174,10 +149,10 @@ class SCAddReceiptViewState extends State<SCAddEntryView> {
     int currentIndex = -1;
     if (index == 0) {
       // 仓库名称
-      currentIndex = nameIndex;
+      currentIndex = widget.state.nameIndex;
     } else if (index == 1) {
       // 类型
-      currentIndex = typeIndex;
+      currentIndex = widget.state.typeIndex;
     }
     SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
       SCDialogUtils().showCustomBottomDialog(
@@ -195,24 +170,33 @@ class SCAddReceiptViewState extends State<SCAddEntryView> {
             topSpacing: 8.0,
             closeTap: (SCHomeTaskModel model, int selectIndex) {
               setState(() {
-                baseInfoList[index]['content'] = model.name!;
                 if (index == 0) {
-                  //仓库名称
+                  // 仓库名称
                   SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
-                  nameIndex = selectIndex;
-                  warehouseName = model.name ?? '';
-                  warehouseID = subModel.id ?? '';
+                  widget.state.nameIndex = selectIndex;
+                  widget.state.warehouseName = model.name ?? '';
+                  widget.state.warehouseID = subModel.id ?? '';
                 } else if (index == 1) {
-                  //类型
+                  // 类型
                   SCEntryTypeModel subModel = widget.state.entryList[selectIndex];
-                  typeIndex = selectIndex;
-                  type = model.name ?? '';
-                  typeID =  subModel.code ?? 0;
+                  widget.state.typeIndex = selectIndex;
+                  widget.state.type = model.name ?? '';
+                  widget.state.typeID =  subModel.code ?? 0;
                 }
               });
             },
           ));
     });
+  }
+
+  /// 获取基础信息
+  List getBaseInfoList() {
+    /// 基础信息数组
+    List baseInfoList = [
+      {'isRequired': true, 'title': '仓库名称', 'content': widget.state.warehouseName},
+      {'isRequired': true, 'title': '类型', 'content': widget.state.type}
+    ];
+    return baseInfoList;
   }
 
   /// 添加物资
@@ -239,12 +223,12 @@ class SCAddReceiptViewState extends State<SCAddEntryView> {
 
   /// 检查物资数据
   checkMaterialData(int status) {
-    if (warehouseID.isEmpty) {
+    if (widget.state.warehouseID.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
       return;
     }
 
-    if (typeID <= 0) {
+    if (widget.state.typeID <= 0) {
       SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
       return;
     }
@@ -264,14 +248,13 @@ class SCAddReceiptViewState extends State<SCAddEntryView> {
     }
 
     var params = {
-      "wareHouseName" : warehouseName,
-      "wareHouseId" : warehouseID,
-      "typeName" : type,
-      "typeId" : typeID,
-      "remark" : remark,
+      "wareHouseName" : widget.state.warehouseName,
+      "wareHouseId" : widget.state.warehouseID,
+      "typeName" : widget.state.type,
+      "typeId" : widget.state.typeID,
+      "remark" : widget.state.remark,
       "materialList" : materialList
     };
-    print("数据===${jsonEncode(params)}");
     widget.state.addEntry(status: status, data: params);
   }
 }

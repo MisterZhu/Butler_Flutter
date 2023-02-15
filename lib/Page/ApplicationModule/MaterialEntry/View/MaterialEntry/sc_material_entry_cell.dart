@@ -10,7 +10,9 @@ class SCMaterialEntryCell extends StatelessWidget {
   /// 类型，0 入库，1 出库
   final int type;
 
+  /// model
   final SCMaterialEntryModel? model;
+
   /// 打电话
   final Function(String phone)? callAction;
 
@@ -178,7 +180,7 @@ class SCMaterialEntryCell extends StatelessWidget {
                 ],
               ),
               onPressed: () {
-                callAction?.call('1555555555');
+                callAction?.call(model?.mobileNum ?? '');
               })
         ],
       ),
