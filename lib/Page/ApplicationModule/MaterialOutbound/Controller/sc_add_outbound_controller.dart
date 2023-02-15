@@ -31,7 +31,7 @@ class SCAddOutboundController extends GetxController {
     SCLoadingUtils.show();
     SCHttpManager.instance.get(
         url: SCUrl.kWareHouseListUrl,
-        params: {'wareHouseName' : wareHouseName},
+        params: null,
         success: (value) {
           SCLoadingUtils.hide();
           wareHouseList = List<SCWareHouseModel>.from(value.map((e) => SCWareHouseModel.fromJson(e)).toList());

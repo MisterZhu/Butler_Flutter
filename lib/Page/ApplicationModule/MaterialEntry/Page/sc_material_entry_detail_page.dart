@@ -35,8 +35,20 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
     controller = Get.put(SCMaterialEntryDetailController(), tag: controllerTag);
     var params = Get.arguments;
     print('上个页面传过来的参数:$params');
-    controller.wareHouseInId = params['wareHouseInId'];
+    if (params != null) {
+      var wareHouseInId = params['wareHouseInId'];
+      if (wareHouseInId != null) {
+        controller.wareHouseInId = wareHouseInId;
+      }
+    }
     controller.loadMaterialEntryDetail();
+  }
+
+  @override
+  dispose() {
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialEntryDetailPage).toString(), controllerTag);
+    controller.dispose();
+    super.dispose();
   }
 
   @override

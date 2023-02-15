@@ -43,8 +43,11 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SCMaterialSearchItem(
-          searchAction: () {
-            SCRouterHelper.pathPage(SCRouterPath.materialSearchPage, null);
+          searchAction: () async {
+            var backParams = await SCRouterHelper.pathPage(SCRouterPath.materialSearchPage, null);
+            print('搜索物资选中返回的参数:$backParams');
+            List list = backParams['list'] ?? [];
+
           },
         ),
         SCMaterialSiftItem(

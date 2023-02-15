@@ -89,7 +89,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SCMaterialSearchItem(searchAction: () {
-          SCRouterHelper.pathPage(SCRouterPath.materialSearchPage, null);
+          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': 0});
         },),
         SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
           if (index == 0) {
@@ -212,7 +212,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
             model: model,
             type: 0,
             detailTapAction: () {
-              detailAction(model.id ?? '');
+              SCRouterHelper.pathPage(SCRouterPath.entryDetailPage, {'wareHouseInId': model.id, 'status': model.status});
             },
             btnTapAction: () {
               submit(index);
@@ -223,11 +223,6 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
           return const SizedBox(height: 10.0,);
         },
         itemCount: widget.state.dataList.length),);
-  }
-
-  /// 详情
-  detailAction(String id) {
-    SCRouterHelper.pathPage(SCRouterPath.materialDetailPage, {'wareHouseInId': id});
   }
 
   /// 入库状态弹窗

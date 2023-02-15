@@ -8,27 +8,25 @@ import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
+import '../../Controller/sc_entry_search_controller.dart';
 import '../../Controller/sc_material_entry_controller.dart';
-import '../../Controller/sc_material_search_controller.dart';
 import '../../Model/sc_material_entry_model.dart';
-import '../../Model/sc_material_list_model.dart';
-import '../Detail/sc_material_cell.dart';
 import '../MaterialEntry/sc_material_entry_cell.dart';
 
-/// 物资搜索view
+/// 出入库搜索view
 
-class SCMaterialSearchView extends StatefulWidget {
+class SCEntrySearchView extends StatefulWidget {
 
-  /// SCMaterialSearchController
-  final SCMaterialSearchController state;
+  /// SCEntrySearchController
+  final SCEntrySearchController state;
 
-  SCMaterialSearchView({Key? key, required this.state}) : super(key: key);
+  SCEntrySearchView({Key? key, required this.state}) : super(key: key);
 
   @override
-  SCMaterialSearchViewState createState() => SCMaterialSearchViewState();
+  SCEntrySearchViewState createState() => SCEntrySearchViewState();
 }
 
-class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
+class SCEntrySearchViewState extends State<SCEntrySearchView> {
 
   final TextEditingController controller = TextEditingController();
 
@@ -116,52 +114,52 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
   /// 输入框
   Widget textField() {
     return Expanded(
-      child: TextField(
-        controller: controller,
-        maxLines: 1,
-        cursorColor: SCColors.color_1B1C33,
-        cursorWidth: 2,
-        focusNode: node,
-        style: const TextStyle(
-          fontSize: SCFonts.f14,
-          fontWeight: FontWeight.w400,
-          color: SCColors.color_1B1C33),
-        keyboardType: TextInputType.text,
-        keyboardAppearance: Brightness.light,
-        textInputAction: TextInputAction.search,
-        decoration: const InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 4),
-          hintText: "搜索物资名称",
-          hintStyle: TextStyle(
-            fontSize: SCFonts.f14,
-            fontWeight: FontWeight.w400,
-            color: SCColors.color_B0B1B8),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 0, color: Colors.transparent)),
-          disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 0, color: Colors.transparent)),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 0, color: Colors.transparent)),
-          border: OutlineInputBorder(
-              borderSide: BorderSide(width: 0, color: Colors.transparent)),
-          isCollapsed: true,
-        ),
-        onChanged: (value) {
+        child: TextField(
+          controller: controller,
+          maxLines: 1,
+          cursorColor: SCColors.color_1B1C33,
+          cursorWidth: 2,
+          focusNode: node,
+          style: const TextStyle(
+              fontSize: SCFonts.f14,
+              fontWeight: FontWeight.w400,
+              color: SCColors.color_1B1C33),
+          keyboardType: TextInputType.text,
+          keyboardAppearance: Brightness.light,
+          textInputAction: TextInputAction.search,
+          decoration: const InputDecoration(
+            contentPadding: EdgeInsets.symmetric(vertical: 4),
+            hintText: "搜索物资名称",
+            hintStyle: TextStyle(
+                fontSize: SCFonts.f14,
+                fontWeight: FontWeight.w400,
+                color: SCColors.color_B0B1B8),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 0, color: Colors.transparent)),
+            disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 0, color: Colors.transparent)),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 0, color: Colors.transparent)),
+            border: OutlineInputBorder(
+                borderSide: BorderSide(width: 0, color: Colors.transparent)),
+            isCollapsed: true,
+          ),
+          onChanged: (value) {
 
-        },
-        onSubmitted: (value) {
-          widget.state.updateSearchString(value);
-          widget.state.searchData();
-          node.unfocus();
-        },
-        onTap: () {
-          if (!showCancel) {
-            setState(() {
-              showCancel = true;
-            });
-          }
-        },
-    ));
+          },
+          onSubmitted: (value) {
+            widget.state.updateSearchString(value);
+            widget.state.searchData(isMore: false);
+            node.unfocus();
+          },
+          onTap: () {
+            if (!showCancel) {
+              setState(() {
+                showCancel = true;
+              });
+            }
+          },
+        ));
   }
 
   /// 取消按钮
@@ -198,33 +196,39 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
 
   /// listview
   Widget listview() {
-    return ListView.separated(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 11.0),
+    return SmartRefresher(
+      controller: refreshController,
+      enablePullUp: true,
+      enablePullDown: true,
+      header: const SCCustomHeader(
+        style: SCCustomHeaderStyle.noNavigation,
+      ),
+      onRefresh: onRefresh, onLoading: loadMore, child: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
-          SCMaterialListModel model = widget.state.dataList[index];
-          return cell(model);
+          SCMaterialEntryModel model = widget.state.dataList[index];
+          return SCMaterialEntryCell(
+            model: model,
+            type: 0,
+            detailTapAction: () {
+              if (widget.state.type == 0) {
+                /// 入库详情
+                SCRouterHelper.pathPage(SCRouterPath.entryDetailPage, {'wareHouseInId': model.id, 'status': model.status});
+              } else {
+                /// 出库详情
+                SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, {'wareHouseInId': model.id, 'status': model.status});
+              }
+            },
+            btnTapAction: () {
+              submit(index);
+            },
+          );
         },
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 10.0,);
         },
-        itemCount: widget.state.dataList.length);
-  }
-
-  Widget cell(SCMaterialListModel model) {
-    return SCMaterialCell(
-      model: model,
-      type: scMaterialCellTypeRadio,
-      numChangeAction: (int value) {
-        model.localNum = value;
-      },
-      radioTap: (bool value) {
-        setState(() {
-          model.isSelect = value;
-        });
-      },
-    );
+        itemCount: widget.state.dataList.length),);
   }
 
   /// 无搜索结果
@@ -242,6 +246,33 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
               fontWeight: FontWeight.w400,
               color: SCColors.color_8D8E99)),
     );
+  }
+
+
+  /// 提交入库
+  submit(int index) {
+    SCMaterialEntryModel model = widget.state.dataList[index];
+    SCMaterialEntryController entryController = Get.find<SCMaterialEntryController>();
+    entryController.submit(model.id ?? '');
+  }
+
+  /// 下拉刷新
+  Future onRefresh() async {
+    widget.state.searchData(isMore: false, completeHandler: (bool success, bool last){
+      refreshController.refreshCompleted();
+      refreshController.loadComplete();
+    });
+  }
+
+  /// 上拉加载
+  void loadMore() async{
+    widget.state.searchData(isMore: true, completeHandler: (bool success, bool last){
+      if (last) {
+        refreshController.loadNoData();
+      } else {
+        refreshController.loadComplete();
+      }
+    });
   }
 
   @override

@@ -90,7 +90,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SCMaterialSearchItem(searchAction: () {
-          SCRouterHelper.pathPage(SCRouterPath.materialSearchPage, null);
+          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': 1});
         },),
         SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
           if (index == 0) {
@@ -172,7 +172,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
       child: CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: () {
-          SCRouterHelper.pathPage(SCRouterPath.addEntryPage, null);
+          SCRouterHelper.pathPage(SCRouterPath.addOutboundPage, null);
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

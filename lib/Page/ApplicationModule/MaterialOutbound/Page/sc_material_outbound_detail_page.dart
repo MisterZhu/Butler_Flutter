@@ -35,9 +35,18 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
         .getXControllerTag((SCMaterialEntryDetailPage).toString());
     controller = Get.put(SCMaterialEntryDetailController(), tag: controllerTag);
     var params = Get.arguments;
-    controller.wareHouseInId = params['wareHouseInId'];
-    controller.status = params['status'];
-    controller.loadMaterialOutboundDetail();
+    print('上个页面传过来的参数:$params');
+    if (params != null) {
+      var wareHouseInId = params['wareHouseInId'];
+      if (wareHouseInId != null) {
+        controller.wareHouseInId = wareHouseInId;
+      }
+      var status = params['status'];
+      if (status != null) {
+        controller.status = status;
+      }
+    }
+    controller.loadMaterialEntryDetail();
   }
 
   @override

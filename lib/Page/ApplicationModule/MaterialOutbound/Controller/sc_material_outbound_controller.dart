@@ -93,7 +93,6 @@ class SCMaterialOutboundController extends GetxController {
       "pageNum": pageNum,
       "pageSize": 20
     };
-    print('params===========$params');
     SCHttpManager.instance.post(
         url: SCUrl.kMaterialOutboundListUrl,
         params: params,
