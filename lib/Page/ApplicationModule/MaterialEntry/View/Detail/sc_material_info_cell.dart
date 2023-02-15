@@ -8,11 +8,17 @@ import '../../Model/sc_material_entry_detail_model.dart';
 /// 入库信息cell
 
 class SCMaterialEntryInfoCell extends StatelessWidget {
+  /// model
   final SCMaterialEntryDetailModel? model;
 
   /// type=0入库详情，type=1出库详情
   final int type;
-  SCMaterialEntryInfoCell({Key? key, this.model, required this.type}) : super(key: key);
+
+  /// 打电话
+  final Function(String phone)? callAction;
+
+  SCMaterialEntryInfoCell({Key? key, this.model, required this.type, this.callAction})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -112,78 +118,108 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   Widget entryRemarkView() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        desLabel('备注'),
-        textView(10, '${model?.remark}')
-      ],
+      children: [desLabel('备注'), textView(10, '${model?.remark}')],
     );
   }
 
   /// description-label
   Widget desLabel(String text) {
-    return SizedBox(width: 100.0, child: Text(
-      text,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: const TextStyle(
-          fontSize: SCFonts.f14,
-          fontWeight: FontWeight.w400,
-          color: SCColors.color_5E5F66),
-    ),);
+    return SizedBox(
+      width: 100.0,
+      child: Text(
+        text,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(
+            fontSize: SCFonts.f14,
+            fontWeight: FontWeight.w400,
+            color: SCColors.color_5E5F66),
+      ),
+    );
   }
 
   /// 联系人
   Widget contactView(String name) {
-    return Expanded(child: CupertinoButton(
-      minSize: 22.0,
-        padding: EdgeInsets.zero,
-        alignment: Alignment.centerRight,
-        child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          children: [
-            Image.asset(SCAsset.iconPhone, width: 20.0, height: 20.0,),
-            const SizedBox(width: 8.0,),
-            Text(name, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(
-                fontSize: SCFonts.f14,
-                fontWeight: FontWeight.w400,
-                color: SCColors.color_1B1D33
-            ),)
-          ],
-        )
-      ],
-    ), onPressed: () {
-
-    }));
+    return Expanded(
+        child: CupertinoButton(
+            minSize: 22.0,
+            padding: EdgeInsets.zero,
+            alignment: Alignment.centerRight,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Image.asset(
+                      SCAsset.iconPhone,
+                      width: 20.0,
+                      height: 20.0,
+                    ),
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    Text(
+                      name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          fontSize: SCFonts.f14,
+                          fontWeight: FontWeight.w400,
+                          color: SCColors.color_1B1D33),
+                    )
+                  ],
+                )
+              ],
+            ),
+            onPressed: () {
+              callAction?.call(model?.mobileNum ?? '');
+            }));
   }
 
   /// 单号
   Widget numView(String num) {
-    return Expanded(child: CupertinoButton(
-        minSize: 22.0,
-        padding: EdgeInsets.zero,
-        alignment: Alignment.centerRight,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(num, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(
-            fontSize: SCFonts.f14,
-            fontWeight: FontWeight.w400,
-            color: SCColors.color_1B1D33
-        ),),
-        const SizedBox(width: 8.0,),
-        Image.asset(SCAsset.iconMaterialCopy, width: 20.0, height: 20.0,),
-      ],
-    ), onPressed: () {}));
+    return Expanded(
+        child: CupertinoButton(
+            minSize: 22.0,
+            padding: EdgeInsets.zero,
+            alignment: Alignment.centerRight,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  num,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontSize: SCFonts.f14,
+                      fontWeight: FontWeight.w400,
+                      color: SCColors.color_1B1D33),
+                ),
+                const SizedBox(
+                  width: 8.0,
+                ),
+                Image.asset(
+                  SCAsset.iconMaterialCopy,
+                  width: 20.0,
+                  height: 20.0,
+                ),
+              ],
+            ),
+            onPressed: () {}));
   }
 
   /// 普通label
   Widget textView(int maxLines, String text) {
-    return Expanded(child: Text(text, textAlign: TextAlign.right, maxLines: maxLines, overflow: TextOverflow.ellipsis, style: const TextStyle(
-        fontSize: SCFonts.f14,
-        fontWeight: FontWeight.w400,
-        color: SCColors.color_1B1D33
-    ),));
+    return Expanded(
+        child: Text(
+      text,
+      textAlign: TextAlign.right,
+      maxLines: maxLines,
+      overflow: TextOverflow.ellipsis,
+      style: const TextStyle(
+          fontSize: SCFonts.f14,
+          fontWeight: FontWeight.w400,
+          color: SCColors.color_1B1D33),
+    ));
   }
 }

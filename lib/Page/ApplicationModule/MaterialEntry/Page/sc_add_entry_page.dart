@@ -30,6 +30,27 @@ class SCAddEntryPageState extends State<SCAddEntryPage> {
     super.initState();
     addControllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddEntryPage).toString());
     addController = Get.put(SCAddEntryController(), tag: addControllerTag);
+    initEditData();
+  }
+
+  /// 页面传递过来编辑的数据
+  initEditData() {
+    var arguments = Get.arguments;
+    if (arguments is Map) {
+      Map<String, dynamic> params = Get.arguments;
+      if (params.isNotEmpty) {
+        var selectedList = params['data'];
+        if (params.containsKey('isEdit')) {
+          addController.isEdit = params['isEdit'];
+          if (addController.isEdit) {
+            addController.editParams = params;
+            if (selectedList != null) {
+              addController.selectedList = selectedList;
+            }
+          }
+        }
+      }
+    }
   }
 
   @override
@@ -45,7 +66,7 @@ class SCAddEntryPageState extends State<SCAddEntryPage> {
         title: "新增入库",
         centerTitle: true,
         elevation: 0,
-        resizeToAvoidBottomInset: true, /// 页面不会随着键盘上移
+        resizeToAvoidBottomInset: true,
         body: body());
   }
 

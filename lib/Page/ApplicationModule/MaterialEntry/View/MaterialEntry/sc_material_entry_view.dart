@@ -212,10 +212,13 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
             model: model,
             type: 0,
             detailTapAction: () {
-              SCRouterHelper.pathPage(SCRouterPath.entryDetailPage, {'wareHouseInId': model.id, 'status': model.status});
+              detailAction(model);
             },
             btnTapAction: () {
               submit(index);
+            },
+            callAction: (String phone) {
+              call(phone);
             },
           );
         },
@@ -223,6 +226,13 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
           return const SizedBox(height: 10.0,);
         },
         itemCount: widget.state.dataList.length),);
+  }
+
+  /// 详情
+  detailAction(SCMaterialEntryModel model) {
+    int status = model.status ?? -1;
+    bool canEdit = (status == 0);
+    SCRouterHelper.pathPage(SCRouterPath.entryDetailPage, {'wareHouseInId': model.id, 'status': model.status, 'canEdit' : canEdit});
   }
 
   /// 入库状态弹窗
@@ -304,10 +314,17 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
     );
   }
 
+  /// 打电话
+  call(String phone) {
+    SCUtils.call(phone);
+  }
+
   /// 提交
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
-    widget.state.submit(model.id ?? '');
+    widget.state.submit(wareHouseInId: model.id ?? '', completeHandler: (bool success){
+      widget.state.loadEntryListData(isMore: false);
+    });
   }
 
   /// 下拉刷新

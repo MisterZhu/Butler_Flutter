@@ -19,21 +19,23 @@
 
 class SCMaterialListModel {
   SCMaterialListModel({
-      String? barCode, 
-      String? classifyId, 
-      String? classifyName, 
-      String? code, 
-      bool? enabled, 
-      String? id, 
-      String? name, 
-      String? norms, 
-      String? pic, 
-      PicFileVo? picFileVo, 
+      String? barCode,
+      String? classifyId,
+      String? classifyName,
+      String? code,
+      bool? enabled,
+      String? id,
+      String? materialId,
+      String? name,
+      String? materialName,
+      String? norms,
+      String? pic,
+      PicFileVo? picFileVo,
       num? referPrice,
       int? number,
-      String? remark, 
-      String? thirdCode, 
-      String? unitId, 
+      String? remark,
+      String? thirdCode,
+      String? unitId,
       String? unitName,
       int? localNum,/// 本地物资数量，默认1
       bool? isSelect,/// 是否选中
@@ -44,7 +46,9 @@ class SCMaterialListModel {
     _code = code;
     _enabled = enabled;
     _id = id;
+    _materialId = materialId;
     _name = name;
+    _materialName = materialName;
     _norms = norms;
     _pic = pic;
     _picFileVo = picFileVo;
@@ -65,7 +69,9 @@ class SCMaterialListModel {
     _code = json['code'];
     _enabled = json['enabled'];
     _id = json['id'];
+    _materialId = json['materialId'];
     _name = json['name'];
+    _materialName = json['materialName'];
     _norms = json['norms'];
     _pic = json['pic'];
     _picFileVo = json['picFileVo'] != null ? PicFileVo.fromJson(json['picFileVo']) : null;
@@ -84,7 +90,9 @@ class SCMaterialListModel {
   String? _code;
   bool? _enabled;
   String? _id;
+  String? _materialId;
   String? _name;
+  String? _materialName;
   String? _norms;
   String? _pic;
   PicFileVo? _picFileVo;
@@ -102,7 +110,9 @@ class SCMaterialListModel {
   String? code,
   bool? enabled,
   String? id,
+    String? materialId,
   String? name,
+    String? materialName,
   String? norms,
   String? pic,
   PicFileVo? picFileVo,
@@ -119,7 +129,9 @@ class SCMaterialListModel {
   code: code ?? _code,
   enabled: enabled ?? _enabled,
   id: id ?? _id,
+    materialId: materialId ?? _materialId,
   name: name ?? _name,
+    materialName: materialName ?? _materialName,
   norms: norms ?? _norms,
   pic: pic ?? _pic,
   picFileVo: picFileVo ?? _picFileVo,
@@ -137,7 +149,9 @@ class SCMaterialListModel {
   String? get code => _code;
   bool? get enabled => _enabled;
   String? get id => _id;
+  String? get materialId => _materialId;
   String? get name => _name;
+  String? get materialName => _materialName;
   String? get norms => _norms;
   String? get pic => _pic;
   PicFileVo? get picFileVo => _picFileVo;
@@ -160,6 +174,14 @@ class SCMaterialListModel {
     _isSelect = value;
   }
 
+  set name(String? value) {
+    _name = value;
+  }
+
+  set id(String? value) {
+    _id = value;
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['barCode'] = _barCode;
@@ -168,7 +190,9 @@ class SCMaterialListModel {
     map['code'] = _code;
     map['enabled'] = _enabled;
     map['id'] = _id;
+    map['materialId'] = _materialId;
     map['name'] = _name;
+    map['materialName'] = _materialName;
     map['norms'] = _norms;
     map['pic'] = _pic;
     if (_picFileVo != null) {
@@ -195,10 +219,10 @@ class SCMaterialListModel {
 
 class PicFileVo {
   PicFileVo({
-      String? fileKey, 
-      String? name, 
-      int? size, 
-      String? suffix, 
+      String? fileKey,
+      String? name,
+      int? size,
+      String? suffix,
       int? type,}){
     _fileKey = fileKey;
     _name = name;

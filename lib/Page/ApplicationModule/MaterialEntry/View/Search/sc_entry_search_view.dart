@@ -252,8 +252,12 @@ class SCEntrySearchViewState extends State<SCEntrySearchView> {
   /// 提交入库
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
-    SCMaterialEntryController entryController = Get.find<SCMaterialEntryController>();
-    entryController.submit(model.id ?? '');
+    SCMaterialEntryController entryController = SCMaterialEntryController();
+    entryController.submit(wareHouseInId:model.id ?? '', completeHandler: (bool success){
+      if (success) {
+        onRefresh();
+      }
+    });
   }
 
   /// 下拉刷新

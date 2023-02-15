@@ -6,13 +6,16 @@ import '../Detail/sc_material_cell.dart';
 
 class SCAddEntryAllMaterialView extends StatelessWidget {
 
-  const SCAddEntryAllMaterialView({Key? key, required this.list, this.deleteAction}) : super(key: key);
+  const SCAddEntryAllMaterialView({Key? key, required this.list, this.deleteAction, this.updateNumAction}) : super(key: key);
 
   /// 数据源
   final List<SCMaterialListModel> list;
 
   /// 删除物资
   final Function(int index)? deleteAction;
+
+  /// 刷新数量
+  final Function(int value)? updateNumAction;
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +39,19 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
 
   /// cell
   Widget cell(int index) {
+    SCMaterialListModel model = list[index];
     return SCMaterialCell(
       type: scMaterialCellTypeDelete,
-      model: list[index],
+      model: model,
       onTap: () {
 
       },
       deleteAction: () {
         deleteAction?.call(index);
+      },
+      numChangeAction: (int value) {
+        model.localNum = value;
+        updateNumAction?.call(value);
       },
     );
   }

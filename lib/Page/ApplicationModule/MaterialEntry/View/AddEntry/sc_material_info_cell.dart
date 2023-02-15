@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_add_entry_allmaterial_view.dart';
@@ -8,7 +7,6 @@ import '../../Model/sc_material_list_model.dart';
 /// 物资信息cell
 
 class SCMaterialInfoCell extends StatelessWidget {
-
   /// 选择仓库名称
   final Function? selectNameAction;
 
@@ -24,13 +22,18 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 物资数据源
   final List<SCMaterialListModel> list;
 
-  SCMaterialInfoCell({Key? key,
-    this.selectNameAction,
-    this.selectTypeAction,
-    this.addAction,
-    required this.list,
-    this.deleteAction
-  }) : super(key: key);
+  /// 刷新数量
+  final Function(int value)? updateNumAction;
+
+  SCMaterialInfoCell(
+      {Key? key,
+      this.selectNameAction,
+      this.selectTypeAction,
+      this.addAction,
+      required this.list,
+      this.deleteAction,
+      this.updateNumAction})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +48,9 @@ class SCMaterialInfoCell extends StatelessWidget {
       children: [
         titleItem(),
         numItem(),
-        const SizedBox(height: 6.0,),
+        const SizedBox(
+          height: 6.0,
+        ),
         listview(),
       ],
     );
@@ -54,24 +59,23 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// titleItem
   Widget titleItem() {
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0, bottom: 6.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Expanded(child: Text(
-            '物资信息',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: SCFonts.f16,
-              fontWeight: FontWeight.w500,
-              color: SCColors.color_1B1D33)),
-          ),
-          topRightItem(),
-        ],
-      )
-    );
+        padding: const EdgeInsets.only(top: 10.0, bottom: 6.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Expanded(
+              child: Text('物资信息',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: SCFonts.f16,
+                      fontWeight: FontWeight.w500,
+                      color: SCColors.color_1B1D33)),
+            ),
+            topRightItem(),
+          ],
+        ));
   }
 
   /// 新增
@@ -89,9 +93,10 @@ class SCMaterialInfoCell extends StatelessWidget {
             width: 18.0,
             height: 18.0,
           ),
-          const SizedBox(width: 6.0,),
-          const Text(
-              '新增',
+          const SizedBox(
+            width: 6.0,
+          ),
+          const Text('新增',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -105,8 +110,7 @@ class SCMaterialInfoCell extends StatelessWidget {
 
   /// 数量
   Widget numItem() {
-    return Text(
-        '共 ${getTypeNumber()} 种  总数量 ${getNumber()}',
+    return Text('共 ${getTypeNumber()} 种  总数量 ${getNumber()}',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(
@@ -116,15 +120,23 @@ class SCMaterialInfoCell extends StatelessWidget {
   }
 
   Widget listview() {
-    for (SCMaterialListModel model in list) {
-    }
-    return SCAddEntryAllMaterialView(list: list, deleteAction: (int index){
-      deleteAction?.call(index);
-    },);
+    for (SCMaterialListModel model in list) {}
+    return SCAddEntryAllMaterialView(
+      list: list,
+      deleteAction: (int index) {
+        deleteAction?.call(index);
+      },
+      updateNumAction: (int value) {
+        updateNumAction?.call(value);
+      },
+    );
   }
 
   Widget cell() {
-    return Container(height: 100, color: SCColors.color_FFFFFF,);
+    return Container(
+      height: 100,
+      color: SCColors.color_FFFFFF,
+    );
   }
 
   /// 获取种类

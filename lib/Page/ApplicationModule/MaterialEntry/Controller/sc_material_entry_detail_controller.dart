@@ -33,7 +33,9 @@ class SCMaterialEntryDetailController extends GetxController {
           model = SCMaterialEntryDetailModel.fromJson(value);
           update();
         },
-        failure: (value) {});
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
   }
 
   /// 出库详情

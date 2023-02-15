@@ -7,6 +7,7 @@ import '../Model/sc_material_list_model.dart';
 /// 新增物资controller
 
 class SCAddMaterialController extends GetxController {
+
   String wareHouseName = '';
 
   /// 数据源
