@@ -144,10 +144,11 @@ class SCMaterialOutboundController extends GetxController {
         });
   }
 
+
   /// 提交出库
-  submit(String wareHouseInId) {
+  submit({required String id, Function(bool success)? completeHandler}) async{
     var params = {
-      "wareHouseInId": wareHouseInId,
+      "wareHouseOutId": id,
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
@@ -155,9 +156,10 @@ class SCMaterialOutboundController extends GetxController {
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
-          loadOutboundListData(isMore: false);
+          completeHandler?.call(true);
         },
         failure: (value) {
+          completeHandler?.call(false);
           SCToast.showTip(value['message']);
         });
   }

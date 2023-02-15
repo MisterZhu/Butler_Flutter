@@ -212,12 +212,14 @@ class SCEntrySearchViewState extends State<SCEntrySearchView> {
             model: model,
             type: 0,
             detailTapAction: () {
+              int status = model.status ?? -1;
+              bool canEdit = (status == 0);
               if (widget.state.type == 0) {
                 /// 入库详情
-                SCRouterHelper.pathPage(SCRouterPath.entryDetailPage, {'wareHouseInId': model.id, 'status': model.status});
+                SCRouterHelper.pathPage(SCRouterPath.entryDetailPage, {'id': model.id, 'canEdit' : canEdit});
               } else {
                 /// 出库详情
-                SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, {'wareHouseInId': model.id, 'status': model.status});
+                SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, {'id': model.id, 'canEdit': canEdit});
               }
             },
             btnTapAction: () {
@@ -253,7 +255,7 @@ class SCEntrySearchViewState extends State<SCEntrySearchView> {
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
     SCMaterialEntryController entryController = SCMaterialEntryController();
-    entryController.submit(wareHouseInId:model.id ?? '', completeHandler: (bool success){
+    entryController.submit(id:model.id ?? '', completeHandler: (bool success){
       if (success) {
         onRefresh();
       }

@@ -232,7 +232,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
   detailAction(SCMaterialEntryModel model) {
     int status = model.status ?? -1;
     bool canEdit = (status == 0);
-    SCRouterHelper.pathPage(SCRouterPath.entryDetailPage, {'wareHouseInId': model.id, 'status': model.status, 'canEdit' : canEdit});
+    SCRouterHelper.pathPage(SCRouterPath.entryDetailPage, {'id': model.id, 'canEdit' : canEdit});
   }
 
   /// 入库状态弹窗
@@ -322,7 +322,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
   /// 提交
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
-    widget.state.submit(wareHouseInId: model.id ?? '', completeHandler: (bool success){
+    widget.state.submit(id: model.id ?? '', completeHandler: (bool success){
       widget.state.loadEntryListData(isMore: false);
     });
   }

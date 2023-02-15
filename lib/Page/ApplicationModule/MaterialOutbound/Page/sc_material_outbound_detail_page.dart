@@ -7,10 +7,15 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_detail_listview.dart';
 import 'package:smartcommunity/Skin/View/sc_custom_scaffold.dart';
+import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
+import '../../../../Utils/Router/sc_router_helper.dart';
+import '../../../../Utils/Router/sc_router_path.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart';
+import '../../MaterialEntry/Model/sc_material_list_model.dart';
 import '../../MaterialEntry/Page/sc_material_entry_detail_page.dart';
+import '../Controller/sc_material_outbound_controller.dart';
 import '../View/Alert/sc_outbound_confirm_alert.dart';
 
 /// 出库详情
@@ -28,6 +33,9 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
   /// SCMaterialEntryDetailController - tag
   String controllerTag = '';
 
+  /// 是否允许编辑
+  bool canEdit = false;
+
   @override
   initState() {
     super.initState();
@@ -37,16 +45,15 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
     var params = Get.arguments;
     print('上个页面传过来的参数:$params');
     if (params != null) {
-      var wareHouseInId = params['wareHouseInId'];
-      if (wareHouseInId != null) {
-        controller.wareHouseInId = wareHouseInId;
+      var id = params['id'];
+      if (id != null) {
+        controller.id = id;
       }
-      var status = params['status'];
-      if (status != null) {
-        controller.status = status;
+      if (params.containsKey("canEdit")) {
+        canEdit = params['canEdit'];
       }
     }
-    controller.loadMaterialEntryDetail();
+    controller.loadMaterialOutboundDetail();
   }
 
   @override
@@ -82,14 +89,14 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
   /// topView
   Widget topView() {
     return GetBuilder<SCMaterialEntryDetailController>(
-        tag: controllerTag,
-        init: controller,
-        builder: (state) {
-          return SCMaterialDetailListView(
-            state: controller,
-            type: 1,
-          );
-        });
+      tag: controllerTag,
+      init: controller,
+      builder: (state) {
+        return SCMaterialDetailListView(
+          state: controller,
+          type: 1,
+        );
+      });
   }
 
   /// bottomView
@@ -104,13 +111,17 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
         "title" : "提交",
       },
     ];
+    return GetBuilder<SCMaterialEntryDetailController>(
+        tag: controllerTag,
+        init: controller,
+        builder: (state) {
     return Offstage(
-      offstage: controller.status != 0,
+      offstage: !canEdit,
       child: SCMaterialDetailBottomView(list: list, onTap: (value) {
-        if (value == "编辑") {
-
-        } else if (value == "提交") {
-
+        if (value == '编辑') {
+          editAction();
+        } else if(value == '提交') {
+          submitAction();
         } else if (value == "出库确认") {
           SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
             SCDialogUtils().showCustomBottomDialog(
@@ -121,5 +132,43 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
         }
       },),
     );
+    });
+  }
+
+  /// 编辑
+  editAction() async{
+    String wareHouseName = controller.model.wareHouseName ?? '';
+    String wareHouseId = controller.model.wareHouseId ?? '';
+    String typeName = controller.model.typeName ?? '';
+    int type = controller.model.type ?? 0;
+    String remark = controller.model.remark ?? '';
+    List<SCMaterialListModel> materials = controller.model.materials ?? [];
+    for (SCMaterialListModel model in materials) {
+      model.localNum = model.number ?? 1;
+      model.isSelect = true;
+      model.name = model.materialName ?? '';
+      model.id = model.materialId;
+    }
+    SCRouterHelper.pathPage(SCRouterPath.addOutboundPage, {
+      'isEdit' : true,
+      'data' : materials,
+      "wareHouseName" : wareHouseName,
+      "wareHouseId" : wareHouseId,
+      "typeName" : typeName,
+      "type" : type,
+      "remark" : remark,
+    })?.then((value) {
+      print("=========");
+      controller.loadMaterialOutboundDetail();
+    });
+  }
+
+  /// 提交
+  submitAction() {
+    SCMaterialOutboundController materialOutboundController = SCMaterialOutboundController();
+    materialOutboundController.submit(id: controller.id, completeHandler: (bool success){
+      SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshMaterialOutboundPage});
+      SCRouterHelper.back( null);
+    });
   }
 }

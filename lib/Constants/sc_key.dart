@@ -24,4 +24,6 @@ class SCKey {
   static const String kH5Channel = "SCCHANNEL";
   /// 仓储-刷新物资入库页面
   static const String kRefreshMaterialEntryPage = "kRefreshMaterialEntryPage";
+  /// 仓储-刷新物资出库页面
+  static const String kRefreshMaterialOutboundPage = "kRefreshMaterialOutboundPage";
 }

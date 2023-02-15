@@ -29,7 +29,27 @@ class SCAddOutboundPageState extends State<SCAddOutboundPage> {
     super.initState();
     controllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddOutboundPage).toString());
     controller = Get.put(SCAddOutboundController(), tag: controllerTag);
+    initEditData();
+  }
 
+  /// 页面传递过来编辑的数据
+  initEditData() {
+    var arguments = Get.arguments;
+    if (arguments is Map) {
+      Map<String, dynamic> params = Get.arguments;
+      if (params.isNotEmpty) {
+        var selectedList = params['data'];
+        if (params.containsKey('isEdit')) {
+          controller.isEdit = params['isEdit'];
+          if (controller.isEdit) {
+            controller.editParams = params;
+            if (selectedList != null) {
+              controller.selectedList = selectedList;
+            }
+          }
+        }
+      }
+    }
   }
 
   @override
@@ -42,7 +62,7 @@ class SCAddOutboundPageState extends State<SCAddOutboundPage> {
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: "新增出库",
+        title: controller.isEdit ? "编辑" : "新增出库",
         centerTitle: true,
         elevation: 0,
         resizeToAvoidBottomInset: false, /// 页面不会随着键盘上移

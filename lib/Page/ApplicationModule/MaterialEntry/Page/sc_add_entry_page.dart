@@ -63,7 +63,7 @@ class SCAddEntryPageState extends State<SCAddEntryPage> {
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: "新增入库",
+        title: addController.isEdit ? "编辑" : "新增入库",
         centerTitle: true,
         elevation: 0,
         resizeToAvoidBottomInset: true,

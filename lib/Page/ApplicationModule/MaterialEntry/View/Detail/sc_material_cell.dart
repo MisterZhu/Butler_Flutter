@@ -234,8 +234,15 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// 物资名称label
   Widget nameLabel() {
+    String name = '';
+    if (widget.model?.materialName != null) {
+      name = widget.model?.materialName ?? '';
+    }
+    if (widget.model?.name != null) {
+      name = widget.model?.name ?? '';
+    }
     return Text(
-      widget.model?.name ?? '',
+      name,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
       style: const TextStyle(

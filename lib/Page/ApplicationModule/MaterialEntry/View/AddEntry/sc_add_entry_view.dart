@@ -26,10 +26,10 @@ class SCAddEntryView extends StatefulWidget {
   SCAddEntryView({Key? key, required this.state}) : super(key: key);
 
   @override
-  SCAddReceiptViewState createState() => SCAddReceiptViewState();
+  SCAddEntryViewState createState() => SCAddEntryViewState();
 }
 
-class SCAddReceiptViewState extends State<SCAddEntryView> {
+class SCAddEntryViewState extends State<SCAddEntryView> {
 
   late StreamSubscription<bool> keyboardSubscription;
 

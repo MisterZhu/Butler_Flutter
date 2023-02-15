@@ -41,7 +41,8 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
     {'name': '已拒绝', 'code': 3},
     {'name': '已驳回', 'code': 4},
     {'name': '已撤回', 'code': 5},
-    {'name': '已出库', 'code': 6},
+    {'name': '已通过', 'code': 6},
+    {'name': '已审批', 'code': 7},
   ];
   List typeList = ['全部'];
 
@@ -210,11 +211,11 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
         itemBuilder: (BuildContext context, int index) {
           SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
-            model: model,
             type: 1,
+            model: model,
             detailTapAction: () {
               /// 详情
-              SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, {'wareHouseInId': model.id, 'status': model.status});
+              detailAction(model);
             },
             btnTapAction: () {
               submit(index);
@@ -225,6 +226,13 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
           return const SizedBox(height: 10.0,);
         },
         itemCount: widget.state.dataList.length));
+  }
+
+  /// 详情
+  detailAction(SCMaterialEntryModel model) {
+    int status = model.status ?? -1;
+    bool canEdit = (status == 0);
+    SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, {'id': model.id, 'canEdit': canEdit});
   }
 
   /// 出库状态弹窗
@@ -306,10 +314,13 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
     );
   }
 
+
   /// 提交
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
-    widget.state.submit(model.id ?? '');
+    widget.state.submit(id: model.id ?? '', completeHandler: (bool success){
+      widget.state.loadOutboundListData(isMore: false);
+    });
   }
 
   /// 下拉刷新

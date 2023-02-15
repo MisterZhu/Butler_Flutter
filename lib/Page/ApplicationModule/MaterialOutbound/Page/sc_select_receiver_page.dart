@@ -7,6 +7,7 @@ import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../../Utils/sc_utils.dart';
+import '../Controller/sc_select_department_controller.dart';
 import '../Controller/sc_select_receiver_controller.dart';
 import '../Model/sc_receiver_model.dart';
 import '../View/AddOutbound/sc_receiver_listview.dart';
@@ -39,6 +40,9 @@ class SCSelectReceiverPageState extends State<SCSelectReceiverPage> {
     if (arguments != null) {
       receiverModel = arguments['receiverModel'];
     }
+
+    SCSelectDepartmentController departmentController = Get.put(SCSelectDepartmentController());
+    departmentController.loadDataList();
   }
 
   @override
@@ -78,8 +82,8 @@ class SCSelectReceiverPageState extends State<SCSelectReceiverPage> {
                   receiverModel = model;
                   SCRouterHelper.back({'receiverModel': model});
               }, callAction: (mobile) {
-
-              },
+                  SCUtils.call(mobile);
+                },
               );
             }),
       ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Utils/sc_utils.dart';
 
 class SCMaterialEntryCell extends StatelessWidget {
 
@@ -80,11 +81,7 @@ class SCMaterialEntryCell extends StatelessWidget {
 
   /// title
   Widget titleView() {
-    List statusList = ['待提交', '待审批', '审批中', '已拒绝', '已驳回', '已撤回', '已入库'];
-    if (type == 1) {
-      statusList = ['待提交', '待审批', '审批中', '已拒绝', '已驳回', '已撤回', '已出库'];
-    }
-    List statusColorList = [SCColors.color_FF7F09, SCColors.color_FF7F09, SCColors.color_0849B5, SCColors.color_FF4040, SCColors.color_FF4040, SCColors.color_B0B1B8, SCColors.color_B0B1B8];
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
@@ -103,13 +100,13 @@ class SCMaterialEntryCell extends StatelessWidget {
               color: SCColors.color_1B1D33)),),
           const SizedBox(width: 6.0,),
           Text(
-            statusList[model?.status ?? 0],
+            type == 0 ? SCUtils.getEntryStatusText(model?.status ?? 0) : SCUtils.getOutboundStatusText(model?.status ?? 0),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: SCFonts.f14,
               fontWeight: FontWeight.w400,
-              color: statusColorList[model?.status ?? 0])),
+              color: SCUtils.getEntryStatusTextColor(model?.status ?? 0),))
         ],
       ),
     );
@@ -200,7 +197,6 @@ class SCMaterialEntryCell extends StatelessWidget {
 
   /// bottomItem
   Widget bottomItem() {
-    List list = ['提交', '撤回', '撤回', '编辑', '编辑', '编辑', ''];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0), 
       child: Row(
@@ -228,7 +224,7 @@ class SCMaterialEntryCell extends StatelessWidget {
                   color: SCColors.color_4285F4,
                   padding: EdgeInsets.zero,
                   child: Text(
-                    list[model?.status ?? 0],
+                    SCUtils.getEntryStatusButtonText(model?.status ?? 0),
                     style: const TextStyle(
                         fontSize: SCFonts.f16,
                         fontWeight: FontWeight.w400,

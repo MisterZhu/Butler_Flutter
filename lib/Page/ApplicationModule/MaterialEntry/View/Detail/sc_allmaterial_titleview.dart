@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 
+import '../../../../../Utils/sc_utils.dart';
 import '../../Model/sc_material_entry_detail_model.dart';
 
 /// 入库详情-所有物资cell-titleview
@@ -28,10 +29,6 @@ class SCAllMaterialTitleView extends StatelessWidget {
   
   /// titleView
   Widget titleView() {
-    List statusList = ['待提交', '待审批', '审批中', '已拒绝', '已驳回', '已撤回', '已入库'];
-    if (type == 1) {
-      statusList = ['待提交', '待审批', '审批中', '已拒绝', '已驳回', '已撤回', '已出库'];
-    }
     return Container(
       height: 22.0,
       alignment: Alignment.centerLeft,
@@ -45,11 +42,12 @@ class SCAllMaterialTitleView extends StatelessWidget {
               color: SCColors.color_1B1D33
           ),)),
           const SizedBox(width: 6.0,),
-          Text(statusList[model?.status ?? 0], style: const TextStyle(
+          Text(
+            type == 0 ? SCUtils.getEntryStatusText(model?.status ?? 0) : SCUtils.getOutboundStatusText(model?.status ?? 0),
+            style: TextStyle(
               fontSize: SCFonts.f14,
               fontWeight: FontWeight.w400,
-              color: SCColors.color_FF7F09
-          ),)
+              color: SCUtils.getEntryStatusTextColor(model?.status ?? 0),))
         ],
       ),
     );

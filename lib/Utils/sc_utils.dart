@@ -244,4 +244,94 @@ class SCUtils {
   bool isPositiveNumber(String value) {
     return RegExp(SCDefaultValue.positiveNumberReg).hasMatch(value);
   }
+
+  /// 根据status获取入库单据状态text
+  static String getEntryStatusText(int status) {
+    switch (status) {
+      case 0:
+        return "待提交";
+      case 1:
+        return "待审批";
+      case 2:
+        return "审批中";
+      case 3:
+        return "已拒绝";
+      case 4:
+        return "已驳回";
+      case 5:
+        return "已撤回";
+      case 6:
+        return "已通过";
+      default:
+        return " ";
+    }
+  }
+
+  /// 根据status获取出库单据状态text
+  static String getOutboundStatusText(int status) {
+    switch (status) {
+      case 0:
+        return "待提交";
+      case 1:
+        return "待审批";
+      case 2:
+        return "审批中";
+      case 3:
+        return "已拒绝";
+      case 4:
+        return "已驳回";
+      case 5:
+        return "已撤回";
+      case 6:
+        return "已通过";
+      case 7:
+        return "已审批";
+      default:
+        return " ";
+    }
+  }
+
+  /// 根据status获取出入库单据处理按钮text
+  static String getEntryStatusButtonText(int status) {
+    switch (status) {
+      case 0:
+        return "提交";
+      case 1:
+        return "撤回";
+      case 2:
+        return "撤回";
+      case 3:
+        return "编辑";
+      case 4:
+        return "编辑";
+      case 5:
+        return "编辑";
+      default:
+        return " ";
+    }
+  }
+
+  /// 根据status获取出入库单据状态文本颜色text
+  static Color getEntryStatusTextColor(int status) {
+    switch (status) {
+      case 0:
+        return SCColors.color_FF7F09;
+      case 1:
+        return SCColors.color_FF7F09;
+      case 2:
+        return SCColors.color_0849B5;
+      case 3:
+        return SCColors.color_FF4040;
+      case 4:
+        return SCColors.color_FF4040;
+      case 5:
+        return SCColors.color_B0B1B8;
+      case 6:
+        return SCColors.color_B0B1B8;
+      case 7:
+        return SCColors.color_B0B1B8;
+      default:
+        return SCColors.color_B0B1B8;
+    }
+  }
 }

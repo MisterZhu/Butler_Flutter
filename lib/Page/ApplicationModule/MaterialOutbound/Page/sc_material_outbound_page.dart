@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../Controller/sc_material_outbound_controller.dart';
@@ -21,6 +24,9 @@ class SCMaterialOutboundPageState extends State<SCMaterialOutboundPage> {
   /// SCMaterialOutboundController - tag
   String controllerTag = '';
 
+  /// notify
+  late StreamSubscription subscription;
+
   @override
   initState() {
     super.initState();
@@ -28,11 +34,13 @@ class SCMaterialOutboundPageState extends State<SCMaterialOutboundPage> {
         .getXControllerTag((SCMaterialOutboundPage).toString());
     controller = Get.put(SCMaterialOutboundController(), tag: controllerTag);
     controller.loadOutboundListData(isMore: false);
+    addNotification();
   }
 
   @override
   dispose() {
-    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialOutboundPage).toString(), controllerTag);
+    subscription.cancel();
+    SCScaffoldManager.instance.deleteGetXControllerTag(pageName(), controllerTag);
     controller.dispose();
     super.dispose();
   }
@@ -56,6 +64,21 @@ class SCMaterialOutboundPageState extends State<SCMaterialOutboundPage> {
             return SCMaterialOutboundView(state: state,);
           }),
     );
+  }
+
+  /// pageName
+  String pageName() {
+    return (SCMaterialOutboundPage).toString();
+  }
+
+  /// 通知
+  addNotification() {
+    subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
+      String key = event['key'];
+      if (key == SCKey.kRefreshMaterialOutboundPage) {
+        controller.loadOutboundListData(isMore: false);
+      }
+    });
   }
 
 }

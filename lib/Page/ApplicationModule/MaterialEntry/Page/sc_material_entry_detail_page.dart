@@ -43,10 +43,13 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
     controller = Get.put(SCMaterialEntryDetailController(), tag: controllerTag);
     Map<String, dynamic> params = Get.arguments;
     if (params.isNotEmpty) {
+      var id = params['id'];
+      if (id != null) {
+        controller.id = id;
+      }
       if (params.containsKey("canEdit")) {
         canEdit = params['canEdit'];
       }
-      controller.wareHouseInId = params['wareHouseInId'];
       controller.loadMaterialEntryDetail();
     }
   }
@@ -103,16 +106,20 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
         "title": "提交",
       },
     ];
-    return Offstage(
-      offstage: !canEdit,
-      child: SCMaterialDetailBottomView(
-        list: list,
-        onTap: (value) {
-          if (value == '编辑') {
-            editAction();
-          } else if(value == '提交') {
-            submitAction();
-          }
+    return GetBuilder<SCMaterialEntryDetailController>(
+      tag: controllerTag,
+      init: controller,
+      builder: (state) {
+        return Offstage(
+          offstage: !canEdit,
+          child: SCMaterialDetailBottomView(
+            list: list,
+            onTap: (value) {
+              if (value == '编辑') {
+                editAction();
+              } else if(value == '提交') {
+                submitAction();
+              }
           // if (value == "驳回") {
           //   SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
           //     SCDialogUtils().showCustomBottomDialog(
@@ -153,6 +160,7 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
         },
       ),
     );
+        });
   }
 
   /// 编辑
@@ -186,7 +194,7 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
   /// 提交
   submitAction() {
     SCMaterialEntryController materialEntryController = SCMaterialEntryController();
-    materialEntryController.submit(wareHouseInId: controller.wareHouseInId, completeHandler: (bool success){
+    materialEntryController.submit(id: controller.id, completeHandler: (bool success){
       SCScaffoldManager.instance.eventBus
           .fire({'key': SCKey.kRefreshMaterialEntryPage});
       SCRouterHelper.back( null);

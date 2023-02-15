@@ -1,23 +1,27 @@
-
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Constants/sc_default_value.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_basic_info_cell.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_material_info_cell.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../../WorkBench/Home/Model/sc_home_task_model.dart';
 import '../../../../WorkBench/Home/View/Alert/sc_task_module_alert.dart';
 import '../../../HouseInspect/View/sc_bottom_button_item.dart';
-import '../../../MaterialEntry/View/AddEntry/sc_basic_info_cell.dart';
-import '../../../MaterialEntry/View/AddEntry/sc_material_info_cell.dart';
+import '../../../MaterialEntry/Model/sc_entry_type_model.dart';
+import '../../../MaterialEntry/Model/sc_wareHouse_model.dart';
 import '../../Controller/sc_add_outbound_controller.dart';
 import '../../Model/sc_receiver_model.dart';
+
 
 /// 新增出库view
 
 class SCAddOutboundView extends StatefulWidget {
-
   /// SCAddOutboundController
   final SCAddOutboundController state;
 
@@ -29,26 +33,6 @@ class SCAddOutboundView extends StatefulWidget {
 
 class SCAddOutboundViewState extends State<SCAddOutboundView> {
 
-  /// 基础信息数组
-  List baseInfoList = [{'isRequired': true, 'title': '仓库名称', 'content': ''},
-    {'isRequired': true, 'title': '类型', 'content': ''},
-    {'isRequired': false, 'title': '领用部门', 'content': ''},
-    {'isRequired': false, 'title': '领用人', 'content': ''},
-  ];
-
-  /// 仓库名称
-  String warehouseName = '';
-  /// 仓库index
-  int nameIndex = -1;
-
-  /// 类型
-  String type = '';
-
-  /// 类型index
-  int typeIndex = -1;
-
-  /// 领用部门
-  String department = '';
   /// 领用人
   SCReceiverModel receiverModel = SCReceiverModel();
 
@@ -62,11 +46,12 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     super.initState();
     var keyboardVisibilityController = KeyboardVisibilityController();
     isShowKeyboard = keyboardVisibilityController.isVisible;
-    keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
-      setState(() {
-        isShowKeyboard = visible;
-      });
-    });
+    keyboardSubscription =
+        keyboardVisibilityController.onChange.listen((bool visible) {
+          setState(() {
+            isShowKeyboard = visible;
+          });
+        });
   }
 
   @override
@@ -87,12 +72,21 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(child: listview(context)),
-        SCBottomButtonItem(list: const ['暂存', '提交'], buttonType: 1, leftTapAction: () {
-          /// 保存
-          save();
-        }, rightTapAction: () {
-          /// 提交
-        },),
+        Offstage(
+          offstage: isShowKeyboard,
+          child: SCBottomButtonItem(
+            list: const ['暂存', '提交'],
+            buttonType: 1,
+            leftTapAction: () {
+              /// 保存
+              save();
+            },
+            rightTapAction: () {
+              /// 提交
+              submit();
+            },
+          ),
+        ),
       ],
     );
   }
@@ -115,14 +109,15 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
   Widget getCell(int index) {
     if (index == 0) {
       return SCBasicInfoCell(
-        list: baseInfoList,
+        list: getBaseInfoList(),
+        remark: widget.state.remark,
         selectAction: (index) async {
           if (index == 0) {
-            //仓库名称
+            // 仓库名称
             List list = widget.state.wareHouseList.map((e) => e.name).toList();
             showAlert(0, '仓库名称', list);
           } else if (index == 1) {
-            //类型
+            // 类型
             List list = widget.state.outboundList.map((e) => e.name).toList();
             showAlert(1, '类型', list);
           } else if (index == 2) {
@@ -138,19 +133,29 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
               receiverModel = backParams['receiverModel'];
             });
           }
-        }, inputAction: (content) {
-
-        }, addPhotoAction: (list) {
-
-        },);
+        },
+        inputAction: (content) {
+          widget.state.remark = content;
+        },
+        addPhotoAction: (list) {},
+      );
     } else if (index == 1) {
       return SCMaterialInfoCell(
-        list: [],
+        list: widget.state.selectedList,
         addAction: () {
-        SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, null);
-      },);
+          addAction();
+        },
+        deleteAction: (int subIndex) {
+          deleteAction(subIndex);
+        },
+        updateNumAction: (int value) {
+          widget.state.update();
+        },
+      );
     } else {
-      return const SizedBox(height: 10,);
+      return const SizedBox(
+        height: 10,
+      );
     }
   }
 
@@ -162,10 +167,12 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
           {"name": list[i], "id": "$i", "isSelect": false}));
     }
     int currentIndex = -1;
-    if (index == 0) {//仓库名称
-      currentIndex = nameIndex;
-    } else if (index == 1) {//类型
-      currentIndex = typeIndex;
+    if (index == 0) {
+      // 仓库名称
+      currentIndex = widget.state.nameIndex;
+    } else if (index == 1) {
+      // 类型
+      currentIndex = widget.state.typeIndex;
     }
     SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
       SCDialogUtils().showCustomBottomDialog(
@@ -183,11 +190,18 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
             topSpacing: 8.0,
             closeTap: (SCHomeTaskModel model, int selectIndex) {
               setState(() {
-                baseInfoList[index]['content'] = model.name!;
-                if (index == 0) {//仓库名称
-                  nameIndex = selectIndex;
-                } else if (index == 1) {//类型
-                  typeIndex = selectIndex;
+                if (index == 0) {
+                  // 仓库名称
+                  SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
+                  widget.state.nameIndex = selectIndex;
+                  widget.state.warehouseName = model.name ?? '';
+                  widget.state.warehouseID = subModel.id ?? '';
+                } else if (index == 1) {
+                  // 类型
+                  SCEntryTypeModel subModel = widget.state.outboundList[selectIndex];
+                  widget.state.typeIndex = selectIndex;
+                  widget.state.type = model.name ?? '';
+                  widget.state.typeID =  subModel.code ?? 0;
                 }
               });
             },
@@ -195,13 +209,74 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     });
   }
 
+  /// 获取基础信息
+  List getBaseInfoList() {
+    /// 基础信息数组
+    List baseInfoList = [
+      {'isRequired': true, 'title': '仓库名称', 'content': widget.state.warehouseName},
+      {'isRequired': true, 'title': '类型', 'content': widget.state.type},
+      {'isRequired': false, 'title': '领用部门', 'content': ''},
+      {'isRequired': false, 'title': '领用人', 'content': ''},
+    ];
+    return baseInfoList;
+  }
+
+  /// 添加物资
+  addAction() async {
+    var list = await SCRouterHelper.pathPage(
+        SCRouterPath.addMaterialPage, {'data': widget.state.selectedList});
+    widget.state.updateSelectedMaterial(list);
+  }
+
+  /// 删除物资
+  deleteAction(int index) {
+    widget.state.deleteMaterial(index);
+  }
+
   /// 暂存
   save() {
-
+    checkMaterialData(0);
   }
 
   /// 提交
   submit() {
+    checkMaterialData(1);
+  }
 
+  /// 检查物资数据
+  checkMaterialData(int status) {
+    if (widget.state.warehouseID.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
+      return;
+    }
+
+    if (widget.state.typeID <= 0) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
+      return;
+    }
+
+    if (widget.state.selectedList.isEmpty) {
+      SCToast.showTip(SCDefaultValue.addMaterialInfoTip);
+      return;
+    }
+
+    List materialList = [];
+    for (SCMaterialListModel model in widget.state.selectedList) {
+      var params = model.toJson();
+      params['num'] = model.localNum;
+      params['materialId'] = model.id;
+      params['materialName'] = model.name;
+      materialList.add(params);
+    }
+
+    var params = {
+      "wareHouseName" : widget.state.warehouseName,
+      "wareHouseId" : widget.state.warehouseID,
+      "typeName" : widget.state.type,
+      "typeId" : widget.state.typeID,
+      "remark" : widget.state.remark,
+      "materialList" : materialList
+    };
+    widget.state.addEntry(status: status, data: params);
   }
 }

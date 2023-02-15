@@ -118,12 +118,14 @@ class SCUrl {
   /// 出库列表
   static const String kMaterialOutboundListUrl = "/api/warehouse/app/out/selectWareHouseOutList";
 
+  /// 新增出库
+  static const String kAddOutboundUrl = "/api/warehouse/app/out/addWareHouseOut";
 
   /// 出库详情
   static const String kMaterialOutboundDetailUrl = "/api/warehouse/app/out/detailWareHouseOut";
 
   /// 提交出库
-  static const String kSubmitOutboundUrl = "/api/warehouse/app/out/submitWareHouseIn";
+  static const String kSubmitOutboundUrl = "/api/warehouse/app/out/submitWareHouseOut";
 
   /// 领用人
   static const String kReceiverListUrl = "/api/workorder/common/query/org/persons";

@@ -143,9 +143,9 @@ class SCMaterialEntryController extends GetxController {
   }
 
   /// 提交入库
-  submit({required String wareHouseInId, Function(bool success)? completeHandler}) async{
+  submit({required String id, Function(bool success)? completeHandler}) async{
     var params = {
-      "wareHouseInId": wareHouseInId,
+      "wareHouseInId": id,
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
