@@ -119,10 +119,10 @@ class SCAddOutboundController extends GetxController {
       "wareHouseId": data['wareHouseId'],
       "wareHouseName": data['wareHouseName']
     };
-    if (fetchOrgId.isNotEmpty) {
+    if (fetchOrgId.isNotEmpty && data['typeName'] == '领料出库') {
       params.addAll({"fetchOrgId": fetchOrgId});
     }
-    if (fetchUserId.isNotEmpty) {
+    if (fetchUserId.isNotEmpty && data['typeName'] == '领料出库') {
       params.addAll({"fetchUserId": fetchUserId});
     }
 
