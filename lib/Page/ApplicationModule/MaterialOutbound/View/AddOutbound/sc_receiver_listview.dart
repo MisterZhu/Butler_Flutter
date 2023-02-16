@@ -1,15 +1,14 @@
 
 import 'package:flutter/cupertino.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 
 import '../../../../../Constants/sc_asset.dart';
+import '../../Controller/sc_select_receiver_controller.dart';
 import '../../Model/sc_receiver_model.dart';
 
 /// 选择领用人listview
 class SCReceiverListView extends StatefulWidget {
-
-  /// 领用人数组
-  final List<SCReceiverModel>? list;
 
   /// 当前领用人model
   final SCReceiverModel? currentModel;
@@ -20,7 +19,10 @@ class SCReceiverListView extends StatefulWidget {
   /// 打电话
   final Function(String mobile)? callAction;
 
-  SCReceiverListView({Key? key, required this.list, this.currentModel, this.tapAction, this.callAction}) : super(key: key);
+  /// SCSelectReceiverController
+  final SCSelectReceiverController state;
+
+  SCReceiverListView({Key? key, required this.state, this.currentModel, this.tapAction, this.callAction}) : super(key: key);
 
   @override
   SCReceiverListViewState createState() => SCReceiverListViewState();
@@ -28,29 +30,39 @@ class SCReceiverListView extends StatefulWidget {
 
 class SCReceiverListViewState extends State<SCReceiverListView> {
 
+  /// RefreshController
+  RefreshController refreshController = RefreshController(initialRefresh: false);
+
   @override
   Widget build(BuildContext context) {
     return listView();
   }
 
+  @override
+  dispose() {
+    refreshController.dispose();
+    super.dispose();
+  }
+
   /// listView
   Widget listView() {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-        child: ListView.separated(
-            padding: EdgeInsets.zero,
+    return SmartRefresher(
+        controller: refreshController,
+        enablePullUp: true,
+        enablePullDown: true,
+        header: const SCCustomHeader(
+          style: SCCustomHeaderStyle.noNavigation,
+        ),
+        onRefresh: onRefresh, onLoading: loadMore, child: ListView.separated(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              if (widget.list != null) {
-                return cell(widget.list![index]);
-              } else {
-                return const SizedBox();
-              }
+              return cell(widget.state.dataList[index]);
             },
             separatorBuilder: (BuildContext context, int index) {
               return const SizedBox(height: 10.0,);
             },
-            itemCount: widget.list?.length ?? 0));
+            itemCount: widget.state.dataList.length));
   }
 
   /// cell
@@ -150,6 +162,25 @@ class SCReceiverListViewState extends State<SCReceiverListView> {
         ],
       ),
     );
+  }
+
+  /// 下拉刷新
+  Future onRefresh() async {
+    widget.state.loadDataList(isMore: false, completeHandler: (bool success, bool last){
+      refreshController.refreshCompleted();
+      refreshController.loadComplete();
+    });
+  }
+
+  /// 上拉加载
+  void loadMore() async{
+    widget.state.loadDataList(isMore: true, completeHandler: (bool success, bool last){
+      if (last) {
+        refreshController.loadNoData();
+      } else {
+        refreshController.loadComplete();
+      }
+    });
   }
 
 }

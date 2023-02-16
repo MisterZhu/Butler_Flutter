@@ -62,6 +62,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
   /// listview
   Widget listview(BuildContext context) {
     return SCAddMaterialListView(
+      state: widget.state,
       list: widget.state.materialList,
       radioTap: () {
         setState((){});
@@ -201,7 +202,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
 
   /// 搜索
   searchAction() async{
-    var backParams = await SCRouterHelper.pathPage(SCRouterPath.materialSearchPage, null);
+    var backParams = await SCRouterHelper.pathPage(SCRouterPath.materialSearchPage, {'wareHouseId': widget.state.wareHouseId});
     List<SCMaterialListModel> list = backParams['list'] ?? [];
     widget.state.dealSearchData(list);
   }

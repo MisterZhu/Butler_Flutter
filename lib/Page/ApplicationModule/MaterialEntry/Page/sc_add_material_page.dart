@@ -49,6 +49,10 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> {
       if (originalSelectList != null) {
         addController.originalList = originalSelectList;
       }
+      var wareHouseId = params['wareHouseId'];
+      if (wareHouseId != null) {
+        addController.wareHouseId = wareHouseId;
+      }
     }
   }
 

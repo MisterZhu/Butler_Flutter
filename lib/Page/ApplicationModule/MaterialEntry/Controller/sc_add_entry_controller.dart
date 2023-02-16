@@ -32,7 +32,7 @@ class SCAddEntryController extends GetxController {
   String warehouseName = '';
 
   /// 仓库id
-  String warehouseID = '';
+  String wareHouseId = '';
 
   /// 仓库index
   int nameIndex = -1;
@@ -63,7 +63,7 @@ class SCAddEntryController extends GetxController {
       /// 仓库名称
       warehouseName = params['wareHouseName'];
       /// 仓库id
-      warehouseID = params['wareHouseId'];
+      wareHouseId = params['wareHouseId'];
       /// 类型
       type = params['typeName'];
       /// 仓库类型id
@@ -72,7 +72,7 @@ class SCAddEntryController extends GetxController {
       remark = params['remark'];
       for (int i=0; i<wareHouseList.length; i++) {
         SCWareHouseModel model = wareHouseList[i];
-        if (model.id == warehouseID) {
+        if (model.id == wareHouseId) {
           nameIndex = i;
           break;
         }

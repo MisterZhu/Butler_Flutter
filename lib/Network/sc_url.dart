@@ -100,8 +100,11 @@ class SCUrl {
   /// 选择搜索仓库类型
   static const String kWareHouseTypeUrl = "/api/config/dictionary/listTree";
 
+  /// 物资列表-分页
+  static const String kMaterialListUrl = "/api/warehouse/manage/material/chooseMaterialListByPage";
+
   /// 物资列表-不分页
-  static const String kMaterialListUrl = "/api/warehouse/manage/material/chooseMaterialList";
+  static const String kAllMaterialListUrl = "/api/warehouse/manage/material/chooseMaterialList";
 
   /// 新增入库
   static const String kAddEntryUrl = "/api/warehouse/app/in/addWareHouseIn";
@@ -111,6 +114,9 @@ class SCUrl {
 
   /// 提交入库
   static const String kSubmitMaterialUrl = "/api/warehouse/app/in/submitWareHouseIn";
+
+  /// 物资分类
+  static const String kMaterialSortUrl = "/api/warehouse/manage/materialClass/tree";
 
 
   /************************* 物资出库 *************************/
@@ -132,5 +138,8 @@ class SCUrl {
 
   /// 领用部门
   static const String kDepartmentListUrl = "/api/org/orgInfo/listTree";
+
+  /// 出库确认
+  static const String kOutboundConfirmUrl = "/api/warehouse/manage/materialOutRelation/outCheck";
 
 }

@@ -36,7 +36,7 @@ class SCAddOutboundController extends GetxController {
   String warehouseName = '';
 
   /// 仓库id
-  String warehouseID = '';
+  String wareHouseId = '';
 
   /// 仓库index
   int nameIndex = -1;
@@ -53,14 +53,17 @@ class SCAddOutboundController extends GetxController {
   /// 备注
   String remark = '';
 
+  /// 领用人（只有出库类型为领料出库时才传）
+  String fetchUserName = '';
+
   /// 领用人ID（只有出库类型为领料出库时才传）
   String fetchUserId = '';
 
-  /// 领用组织(或部门)ID（只有出库类型为领料出库时才传）
-  String fetchOrgId = '';
+  /// 领用组织(或部门)（只有出库类型为领料出库时才传）
+  String fetchOrgName = '';
 
   /// 领用组织(或部门)ID（只有出库类型为领料出库时才传）
-  String fetchOrgName = '';
+  String fetchOrgId = '';
 
   @override
   onInit() {
@@ -76,7 +79,7 @@ class SCAddOutboundController extends GetxController {
       /// 仓库名称
       warehouseName = params['wareHouseName'];
       /// 仓库id
-      warehouseID = params['wareHouseId'];
+      wareHouseId = params['wareHouseId'];
       /// 类型
       type = params['typeName'];
       /// 仓库类型id
@@ -85,7 +88,7 @@ class SCAddOutboundController extends GetxController {
       remark = params['remark'];
       for (int i=0; i<wareHouseList.length; i++) {
         SCWareHouseModel model = wareHouseList[i];
-        if (model.id == warehouseID) {
+        if (model.id == wareHouseId) {
           nameIndex = i;
           break;
         }
@@ -112,8 +115,8 @@ class SCAddOutboundController extends GetxController {
       "wareHouseId": data['wareHouseId'],
       "wareHouseName": data['wareHouseName']
     };
-    if (fetchUserId.isNotEmpty) {
-      params.addAll({"fetchOrgId": fetchUserId});
+    if (fetchOrgId.isNotEmpty) {
+      params.addAll({"fetchOrgId": fetchOrgId});
     }
     if (fetchUserId.isNotEmpty) {
       params.addAll({"fetchUserId": fetchUserId});

@@ -153,10 +153,13 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Image.asset(
-                      SCAsset.iconPhone,
-                      width: 20.0,
-                      height: 20.0,
+                    Offstage(
+                      offstage: name.isEmpty,
+                      child: Image.asset(
+                        SCAsset.iconPhone,
+                        width: 20.0,
+                        height: 20.0,
+                      ),
                     ),
                     const SizedBox(
                       width: 8.0,

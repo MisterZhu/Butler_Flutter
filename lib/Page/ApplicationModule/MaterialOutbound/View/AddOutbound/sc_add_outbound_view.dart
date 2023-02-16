@@ -132,15 +132,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
             // 领用部门
             showSelectDepartmentAlert();
           } else if (index == 3) {
-            // 领用人
-            var params = {
-              'receiverModel': receiverModel,
-            };
-            var backParams = await SCRouterHelper.pathPage(
-                SCRouterPath.selectReceiverPage, params);
-            setState(() {
-              receiverModel = backParams['receiverModel'];
-            });
+            selectRecipient();
           }
         },
         inputAction: (content) {
@@ -205,7 +197,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
                       widget.state.wareHouseList[selectIndex];
                   widget.state.nameIndex = selectIndex;
                   widget.state.warehouseName = model.name ?? '';
-                  widget.state.warehouseID = subModel.id ?? '';
+                  widget.state.wareHouseId = subModel.id ?? '';
                 } else if (index == 1) {
                   // 类型
                   SCEntryTypeModel subModel =
@@ -230,17 +222,22 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
         'content': widget.state.warehouseName
       },
       {'isRequired': true, 'title': '类型', 'content': widget.state.type},
-      {'isRequired': false, 'title': '领用部门', 'content': ''},
-      {'isRequired': false, 'title': '领用人', 'content': ''},
+      {'isRequired': false, 'title': '领用部门', 'content': widget.state.fetchOrgName},
+      {'isRequired': false, 'title': '领用人', 'content': widget.state.fetchUserName},
     ];
     return baseInfoList;
   }
 
   /// 添加物资
   addAction() async {
-    var list = await SCRouterHelper.pathPage(
-        SCRouterPath.addMaterialPage, {'data': widget.state.selectedList});
-    widget.state.updateSelectedMaterial(list);
+    if (widget.state.wareHouseId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectWarehouseTip);
+      return;
+    }
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {'data': widget.state.selectedList, 'wareHouseId': widget.state.wareHouseId});
+    if (list != null) {
+      widget.state.updateSelectedMaterial(list);
+    }
   }
 
   /// 删除物资
@@ -260,7 +257,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
 
   /// 检查物资数据
   checkMaterialData(int status) {
-    if (widget.state.warehouseID.isEmpty) {
+    if (widget.state.wareHouseId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
       return;
     }
@@ -285,12 +282,12 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     }
 
     var params = {
-      "wareHouseName": widget.state.warehouseName,
-      "wareHouseId": widget.state.warehouseID,
-      "typeName": widget.state.type,
-      "typeId": widget.state.typeID,
-      "remark": widget.state.remark,
-      "materialList": materialList
+      "wareHouseName" : widget.state.warehouseName,
+      "wareHouseId" : widget.state.wareHouseId,
+      "typeName" : widget.state.type,
+      "typeId" : widget.state.typeID,
+      "remark" : widget.state.remark,
+      "materialList" : materialList
     };
     widget.state.addEntry(status: status, data: params);
   }
@@ -353,10 +350,35 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
   sureSelectDepartment() {
     bool enable = widget.selectDepartmentController.currentDepartmentModel.enable ?? false;
     if (enable) {
-      widget.state.fetchOrgId = widget.selectDepartmentController.currentDepartmentModel.id ?? '';
-      widget.state.fetchOrgName = widget.selectDepartmentController.currentDepartmentModel.title ?? '';
-      widget.state.update();
+      if (widget.state.fetchOrgId != (widget.selectDepartmentController.currentDepartmentModel.id ?? '')) {
+        widget.state.fetchUserId = '';
+        widget.state.fetchUserName = '';
+        widget.state.fetchOrgId = widget.selectDepartmentController.currentDepartmentModel.id ?? '';
+        widget.state.fetchOrgName = widget.selectDepartmentController.currentDepartmentModel.title ?? '';
+        widget.state.update();
+      }
     } else {// 未选择数据
     }
+  }
+
+  /// 选择领用人
+  selectRecipient() async{
+    if (widget.state.fetchOrgId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectDepartmentTip);
+    } else {
+      var params = {
+        'receiverModel': receiverModel,
+        'orgId': widget.state.fetchOrgId,
+      };
+      var backParams = await SCRouterHelper.pathPage(SCRouterPath.selectReceiverPage, params);
+      if (backParams != null) {
+        setState(() {
+          receiverModel = backParams['receiverModel'];
+          widget.state.fetchUserId = receiverModel.personId ?? '';
+          widget.state.fetchUserName =  receiverModel.personName ?? '';
+        });
+      }
+    }
+
   }
 }
