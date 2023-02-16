@@ -63,7 +63,7 @@ class SCAddOutboundController extends GetxController {
   String fetchOrgName = '';
 
   /// 领用组织(或部门)ID（只有出库类型为领料出库时才传）
-  String fetchOrgId = '894';
+  String fetchOrgId = '';
 
   @override
   onInit() {
@@ -86,6 +86,10 @@ class SCAddOutboundController extends GetxController {
       typeID = params['type'];
       /// 备注
       remark = params['remark'];
+      fetchOrgId = params['fetchOrgId'];
+      fetchOrgName = params['fetchOrgName'];
+      fetchUserId = params['fetchUserId'];
+      fetchUserName = params['fetchUserName'];
       for (int i=0; i<wareHouseList.length; i++) {
         SCWareHouseModel model = wareHouseList[i];
         if (model.id == wareHouseId) {
@@ -115,8 +119,8 @@ class SCAddOutboundController extends GetxController {
       "wareHouseId": data['wareHouseId'],
       "wareHouseName": data['wareHouseName']
     };
-    if (fetchUserId.isNotEmpty) {
-      params.addAll({"fetchOrgId": fetchUserId});
+    if (fetchOrgId.isNotEmpty) {
+      params.addAll({"fetchOrgId": fetchOrgId});
     }
     if (fetchUserId.isNotEmpty) {
       params.addAll({"fetchUserId": fetchUserId});

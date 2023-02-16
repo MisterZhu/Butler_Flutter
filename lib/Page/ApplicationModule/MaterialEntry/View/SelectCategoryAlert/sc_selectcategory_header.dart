@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_selectcategory_model.dart';
 
 import 'sc_selectcategory_header_cell.dart';
 
@@ -6,10 +7,13 @@ import 'sc_selectcategory_header_cell.dart';
 
 class SCSelectCategoryHeader extends StatefulWidget {
 
-  const SCSelectCategoryHeader({Key? key, required this.list}) : super(key: key);
+  const SCSelectCategoryHeader({Key? key, required this.list, this.onTap}) : super(key: key);
 
   /// 数据源
   final List list;
+
+  /// cell点击
+  final Function(int index, SCSelectCategoryModel model)? onTap;
 
   @override
   SCSelectCategoryHeaderState createState() => SCSelectCategoryHeaderState();
@@ -67,6 +71,13 @@ class SCSelectCategoryHeaderState extends State<SCSelectCategoryHeader> {
     return SCSelectCategoryHeaderCell(
       isHiddenTopLine: isHiddenTopLine,
       isHiddenBottomLine: isHiddenBottomLine,
+      model: widget.list[index],
+      onTap: (SCSelectCategoryModel model) {
+        bool enable = model.enable ?? false;
+        if (enable) {
+          widget.onTap?.call(index, model);
+        }
+      },
     );
   }
 

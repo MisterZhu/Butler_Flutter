@@ -170,7 +170,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
     SCDialogUtils().showCustomBottomDialog(
         context: context,
         isDismissible: true,
-        widget: SCSelectCategoryAlert());
+        widget: SCSelectCategoryAlert(headerList: [], footerList: [],));
   }
 
   /// 获取已选数量

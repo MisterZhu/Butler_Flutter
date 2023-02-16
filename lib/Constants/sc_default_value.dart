@@ -137,6 +137,9 @@ class SCDefaultValue {
   /// 仓储-新增出入库-添加物资之前提示
   static const String selectWarehouseTip = "请先选择仓库";
 
+  /// 仓储-新增出入库-请选择领用部门提示
+  static const String selectDepartmentTip = "请选择领用部门";
+
   /// 图片路径
   static const files = "/files/";
 }

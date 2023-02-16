@@ -7,6 +7,7 @@ import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../Controller/sc_add_outbound_controller.dart';
+import '../Controller/sc_select_department_controller.dart';
 import '../View/AddOutbound/sc_add_outbound_view.dart';
 
 /// 新增出库page
@@ -21,14 +22,24 @@ class SCAddOutboundPageState extends State<SCAddOutboundPage> {
   /// SCAddOutboundController
   late SCAddOutboundController controller;
 
+  /// SCSelectDepartmentController
+  late SCSelectDepartmentController selectDepartmentController;
+
   /// SCAddOutboundController - tag
   String controllerTag = '';
+
+  /// SCSelectDepartmentController - tag
+  String selectDepartmentControllerTag = '';
 
   @override
   initState() {
     super.initState();
     controllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddOutboundPage).toString());
     controller = Get.put(SCAddOutboundController(), tag: controllerTag);
+    selectDepartmentControllerTag = SCScaffoldManager.instance
+        .getXControllerTag((SCAddOutboundPage).toString());
+    selectDepartmentController = Get.put(SCSelectDepartmentController(), tag: selectDepartmentControllerTag);
+    selectDepartmentController.tag = selectDepartmentControllerTag;
     initEditData();
   }
 
@@ -55,7 +66,9 @@ class SCAddOutboundPageState extends State<SCAddOutboundPage> {
   @override
   dispose() {
     SCScaffoldManager.instance.deleteGetXControllerTag((SCAddOutboundPage).toString(), controllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCAddOutboundPage).toString(), selectDepartmentControllerTag);
     controller.dispose();
+    selectDepartmentController.dispose();
     super.dispose();
   }
 
@@ -83,7 +96,7 @@ class SCAddOutboundPageState extends State<SCAddOutboundPage> {
             tag: controllerTag,
             init: controller,
             builder: (state) {
-              return SCAddOutboundView(state: state,);
+              return SCAddOutboundView(state: state, selectDepartmentController: selectDepartmentController,);
             }),
       ),
     );

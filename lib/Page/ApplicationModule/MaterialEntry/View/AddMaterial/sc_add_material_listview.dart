@@ -29,7 +29,7 @@ class SCAddMaterialListView extends StatelessWidget {
     return SmartRefresher(
         controller: refreshController,
         enablePullUp: true,
-        enablePullDown: true,
+        enablePullDown: false,
         header: const SCCustomHeader(
         style: SCCustomHeaderStyle.noNavigation,
     ),
