@@ -124,12 +124,13 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
             //领用部门
             setState(() {
               widget.state.fetchOrgId = '';
-              widget.state.fetchOrgName =  '';
+              widget.state.fetchOrgName = '';
             });
           } else if (index == 3) {
             //领用人
             var params = {
               'receiverModel': receiverModel,
+              'orgId': widget.state.fetchOrgId,
             };
             var backParams = await SCRouterHelper.pathPage(SCRouterPath.selectReceiverPage, params);
             if (backParams != null) {

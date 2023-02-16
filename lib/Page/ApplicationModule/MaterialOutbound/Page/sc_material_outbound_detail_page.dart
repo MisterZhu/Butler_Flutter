@@ -158,7 +158,6 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
       "type" : type,
       "remark" : remark,
     })?.then((value) {
-      print("=========");
       controller.loadMaterialOutboundDetail();
     });
   }

@@ -35,10 +35,15 @@ class SCSelectReceiverPageState extends State<SCSelectReceiverPage> {
     controllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCSelectReceiverPage).toString());
     controller = Get.put(SCSelectReceiverController(), tag: controllerTag);
-    controller.loadDataList(isMore: false);
     var arguments = Get.arguments;
     if (arguments != null) {
-      receiverModel = arguments['receiverModel'];
+      if (arguments['orgId'] != null) {
+        controller.orgId = arguments['orgId'];
+      }
+      if (arguments['receiverModel'] != null) {
+        receiverModel = arguments['receiverModel'];
+      }
+      controller.loadDataList(isMore: false);
     }
   }
 

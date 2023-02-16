@@ -16,7 +16,7 @@ class SCSelectReceiverController extends GetxController {
   List<SCReceiverModel> dataList = [];
 
   /// 组织id
-  String orgId = '894';
+  String orgId = '';
 
   /// 领用人列表
   loadDataList({bool? isMore, Function(bool success, bool last)? completeHandler}) {
