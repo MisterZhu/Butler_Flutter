@@ -62,6 +62,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
   /// listview
   Widget listview(BuildContext context) {
     return SCAddMaterialListView(
+      state: widget.state,
       list: widget.state.materialList,
       radioTap: () {
         setState((){});

@@ -1,6 +1,7 @@
 
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
@@ -45,5 +46,24 @@ class SCMaterialEntryDetailController extends GetxController {
           update();
         },
         failure: (value) {});
+  }
+
+  /// 出库确认
+  outboundConfirm({required String outTime, required String remark, Function? successHandler}) {
+    SCHttpManager.instance.post(
+        url: SCUrl.kOutboundConfirmUrl,
+        params: {
+          "files": "",
+          "outId": id,
+          "outTime": outTime,
+          "remark": remark
+        },
+        success: (value) {
+          SCToast.showTip(SCDefaultValue.outboundConfirmSuccessTip);
+          successHandler?.call();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
   }
 }

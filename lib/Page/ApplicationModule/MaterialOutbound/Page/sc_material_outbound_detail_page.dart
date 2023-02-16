@@ -33,9 +33,6 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
   /// SCMaterialEntryDetailController - tag
   String controllerTag = '';
 
-  /// 是否允许编辑
-  bool canEdit = false;
-
   @override
   initState() {
     super.initState();
@@ -48,9 +45,6 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
       var id = params['id'];
       if (id != null) {
         controller.id = id;
-      }
-      if (params.containsKey("canEdit")) {
-        canEdit = params['canEdit'];
       }
     }
     controller.loadMaterialOutboundDetail();
@@ -115,8 +109,20 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
         tag: controllerTag,
         init: controller,
         builder: (state) {
+          bool showBtns = false;
+          if ( state.model.status == 0) {
+            showBtns = true;
+          } else if ( state.model.status == 6) {/// 已通过
+            showBtns = true;
+            list = [
+              {
+                "type" : scMaterialBottomViewType2,
+                "title" : "出库确认",
+              },
+            ];
+          }
     return Offstage(
-      offstage: !canEdit,
+      offstage: !showBtns,
       child: SCMaterialDetailBottomView(list: list, onTap: (value) {
         if (value == '编辑') {
           editAction();
@@ -127,7 +133,9 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
             SCDialogUtils().showCustomBottomDialog(
                 isDismissible: true,
                 context: context,
-                widget: SCOutboundConfirmAlert());
+                widget: SCOutboundConfirmAlert(sureAction: (outTime, input) {
+                  outboundConfirmAction(outTime, input);
+                },));
           });
         }
       },),
@@ -166,6 +174,14 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
   submitAction() {
     SCMaterialOutboundController materialOutboundController = SCMaterialOutboundController();
     materialOutboundController.submit(id: controller.id, completeHandler: (bool success){
+      SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshMaterialOutboundPage});
+      SCRouterHelper.back( null);
+    });
+  }
+
+  /// 出库确认
+  outboundConfirmAction(String outTime, String input) {
+    controller.outboundConfirm(outTime: outTime, remark: input, successHandler: () {
       SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshMaterialOutboundPage});
       SCRouterHelper.back( null);
     });

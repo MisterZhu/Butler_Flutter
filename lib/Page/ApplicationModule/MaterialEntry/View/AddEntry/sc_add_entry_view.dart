@@ -178,7 +178,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
                   SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
                   widget.state.nameIndex = selectIndex;
                   widget.state.warehouseName = model.name ?? '';
-                  widget.state.warehouseID = subModel.id ?? '';
+                  widget.state.wareHouseId = subModel.id ?? '';
                 } else if (index == 1) {
                   // 类型
                   SCEntryTypeModel subModel = widget.state.entryList[selectIndex];
@@ -204,8 +204,11 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
 
   /// 添加物资
   addAction() async {
-    var list = await SCRouterHelper.pathPage(
-        SCRouterPath.addMaterialPage, {'data': widget.state.selectedList});
+    if (widget.state.wareHouseId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectWarehouseTip);
+      return;
+    }
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {'data': widget.state.selectedList, 'wareHouseId': widget.state.wareHouseId});
     widget.state.updateSelectedMaterial(list);
   }
 
@@ -226,7 +229,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
 
   /// 检查物资数据
   checkMaterialData(int status) {
-    if (widget.state.warehouseID.isEmpty) {
+    if (widget.state.wareHouseId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
       return;
     }
@@ -252,7 +255,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
 
     var params = {
       "wareHouseName" : widget.state.warehouseName,
-      "wareHouseId" : widget.state.warehouseID,
+      "wareHouseId" : widget.state.wareHouseId,
       "typeName" : widget.state.type,
       "typeId" : widget.state.typeID,
       "remark" : widget.state.remark,

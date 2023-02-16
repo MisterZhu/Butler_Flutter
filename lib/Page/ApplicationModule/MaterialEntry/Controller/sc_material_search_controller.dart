@@ -30,7 +30,7 @@ class SCMaterialSearchController extends GetxController {
   searchData() {
     SCLoadingUtils.show();
     SCHttpManager.instance.get(
-        url: SCUrl.kMaterialListUrl,
+        url: SCUrl.kAllMaterialListUrl,
         params: {'materialName': searchString},
         success: (value) {
           dataList = List<SCMaterialListModel>.from(

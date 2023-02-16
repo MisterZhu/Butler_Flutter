@@ -131,6 +131,11 @@ class SCDefaultValue {
   /// 仓储-入库-复制粘贴板
   static const String pasteBoardSuccessTip = "复制成功";
 
+  /// 仓储-出库-出库确认成功
+  static const String outboundConfirmSuccessTip = "出库确认成功";
+
+  /// 仓储-新增出入库-添加物资之前提示
+  static const String selectWarehouseTip = "请先选择仓库";
 
   /// 图片路径
   static const files = "/files/";

@@ -289,7 +289,7 @@ class SCUtils {
       case 6:
         return "已通过";
       case 7:
-        return "已审批";
+        return "已出库";
       default:
         return " ";
     }

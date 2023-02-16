@@ -17,13 +17,18 @@ import '../../../MaterialEntry/View/AddEntry/sc_material_select_item.dart';
 
 class SCOutboundConfirmAlert extends StatefulWidget {
 
+  /// 确定按钮点击
+  final Function(String time, String input)? sureAction;
+
+  SCOutboundConfirmAlert({Key? key, this.sureAction,}) : super(key: key);
+
   @override
   SCOutboundConfirmAlertState createState() => SCOutboundConfirmAlertState();
 }
 
 class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
 
-  /// 出库时间
+  /// 出库时间，页面展示
   String time = '';
 
   /// 输入的内容
@@ -31,6 +36,9 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
 
   /// 图片数组
   List photosList = [];
+
+  /// 出库时间，出库确认接口传参需要
+  String outTime = '';
 
   @override
   initState() {
@@ -61,6 +69,7 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
               SCBottomButtonItem(list: const ['取消', '确定'], buttonType: 1, leftTapAction: () {
                 Navigator.of(context).pop();
               }, rightTapAction: () {
+                widget.sureAction?.call(outTime, input);
                 Navigator.of(context).pop();
               },),
             ],
@@ -86,7 +95,7 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
               separatorBuilder: (BuildContext context, int index) {
                 return const SizedBox(height: 10,);
               },
-              itemCount: 2)),
+              itemCount: 1)),
     );
   }
 
@@ -204,6 +213,7 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
       DateTime value = selectedValues.first;
       setState(() {
         time = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+        outTime = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]);
       });
     };
     pickerUtils.showDatePicker(
