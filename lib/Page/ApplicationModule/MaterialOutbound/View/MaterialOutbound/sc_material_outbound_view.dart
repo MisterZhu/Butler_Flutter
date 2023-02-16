@@ -220,6 +220,9 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
             btnTapAction: () {
               submit(index);
             },
+            callAction: (String phone) {
+              call(phone);
+            },
           );
         },
         separatorBuilder: (BuildContext context, int index) {
@@ -314,6 +317,10 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
     );
   }
 
+  /// 打电话
+  call(String phone) {
+    SCUtils.call(phone);
+  }
 
   /// 提交
   submit(int index) {

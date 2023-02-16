@@ -180,6 +180,10 @@ class SCUtils {
 
   /*打电话*/
   static call(String phone) async{
+    if (phone.isEmpty) {
+      SCToast.showTip(SCDefaultValue.callFailedTip);
+      return;
+    }
     String phonePath = 'tel:$phone';
     Uri uri = Uri.parse(phonePath);
     bool success = await launchUrl(uri);
