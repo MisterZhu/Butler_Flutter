@@ -59,6 +59,9 @@ class SCAddOutboundController extends GetxController {
   /// 领用组织(或部门)ID（只有出库类型为领料出库时才传）
   String fetchOrgId = '';
 
+  /// 领用组织(或部门)ID（只有出库类型为领料出库时才传）
+  String fetchOrgName = '';
+
   @override
   onInit() {
     super.onInit();

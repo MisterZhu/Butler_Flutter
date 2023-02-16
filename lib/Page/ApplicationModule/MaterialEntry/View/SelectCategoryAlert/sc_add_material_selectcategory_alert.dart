@@ -5,10 +5,30 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/SelectC
 
 import '../../../../../Utils/sc_utils.dart';
 import '../../../../WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_header.dart';
+import '../../Model/sc_selectcategory_model.dart';
 
 /// 选择分类弹窗
 
 class SCSelectCategoryAlert extends StatefulWidget {
+
+  SCSelectCategoryAlert({Key? key, required this.headerList, required this.footerList, this.headerTap, this.footerTap, this.onSure, this.onCancel}) : super(key: key);
+
+  List<SCSelectCategoryModel> headerList;
+
+  List<SCSelectCategoryModel> footerList;
+
+  /// header点击
+  final Function(int index, SCSelectCategoryModel model)? headerTap;
+
+  /// footer点击
+  final Function(int index, SCSelectCategoryModel model)? footerTap;
+
+  /// 取消
+  final Function? onCancel;
+
+  /// 确定
+  final Function? onSure;
+
   @override
   SCSelectCategoryAlertState createState() => SCSelectCategoryAlertState();
 }
@@ -40,17 +60,19 @@ class SCSelectCategoryAlertState extends State<SCSelectCategoryAlert> {
     return SCChangeSpaceAlertHeader(
       title: '选择分类',
       onCancel: () {
-
+        widget.onCancel?.call();
       },
       onSure: () {
-
+        widget.onSure?.call();
       },
     );
   }
 
   /// top-已选择的分类
   Widget topView() {
-    return SCSelectCategoryHeader(list: ['', '', '', '']);
+    return SCSelectCategoryHeader(list: getHeaderList(), onTap: (index, model) {
+      widget.headerTap?.call(index, model);
+    },);
   }
 
   /// line
@@ -64,10 +86,33 @@ class SCSelectCategoryAlertState extends State<SCSelectCategoryAlert> {
 
   /// bottom-分类列表
   Widget bottomView() {
-    return const Expanded(child: SizedBox(
+    return Expanded(child: SizedBox(
       width: double.infinity,
-      child: SCSelectCategoryFooter(list: ['' , '' , '', '', '','' , '' , '', '', '','' , '' , '', '', '']),
+      child: SCSelectCategoryFooter(list: getFooterList(), onTap: (int index, SCSelectCategoryModel model) {
+        widget.footerTap?.call(index, model);
+      },),
     ), );
+  }
+
+  /// header数据源
+  List<SCSelectCategoryModel> getHeaderList() {
+    if (widget.headerList.isEmpty) {
+      print("数据源为空");
+      SCSelectCategoryModel model = SCSelectCategoryModel.fromJson({"enable" : false, "title" : "请选择", "id" : ""});
+      return [model];
+    } else {
+      print("数据源不为空");
+      return widget.headerList;
+    }
+  }
+
+  /// footer数据源
+  List<SCSelectCategoryModel> getFooterList() {
+    if (widget.footerList.isEmpty) {
+      return [];
+    } else {
+      return widget.footerList;
+    }
   }
 
 }
