@@ -8,11 +8,12 @@ import '../../../../../Constants/sc_asset.dart';
 
 class SCMaterialSearchItem extends StatelessWidget {
 
+  final String name;
   /// 点击
   final Function? searchAction;
 
-
   SCMaterialSearchItem({Key? key,
+    required this.name,
     this.searchAction,
   }) : super(key: key);
 
@@ -50,11 +51,11 @@ class SCMaterialSearchItem extends StatelessWidget {
                 const SizedBox(
                   width: 8.0,
                 ),
-                const Text(
-                  '搜索物资名称',
+                Text(
+                  name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: SCFonts.f14,
                       fontWeight: FontWeight.w400,
                       color: SCColors.color_B0B1B8),

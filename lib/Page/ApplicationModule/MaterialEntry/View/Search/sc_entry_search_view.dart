@@ -129,7 +129,7 @@ class SCEntrySearchViewState extends State<SCEntrySearchView> {
           textInputAction: TextInputAction.search,
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 4),
-            hintText: "搜索物资名称",
+            hintText: "搜索仓库名称",
             hintStyle: TextStyle(
                 fontSize: SCFonts.f14,
                 fontWeight: FontWeight.w400,

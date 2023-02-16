@@ -31,7 +31,6 @@ class SCEntrySearchPageState extends State<SCEntrySearchPage> {
     controllerTag = SCScaffoldManager.instance.getXControllerTag((SCEntrySearchPage).toString());
     controller = Get.put(SCEntrySearchController(), tag: controllerTag);
     var params = Get.arguments;
-    print('上个页面传过来的参数:$params');
     if (params != null) {
       var type = params['type'];
       if (type != null) {

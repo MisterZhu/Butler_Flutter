@@ -43,6 +43,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SCMaterialSearchItem(
+          name: '搜索物资名称',
           searchAction: () {
             searchAction();
           },

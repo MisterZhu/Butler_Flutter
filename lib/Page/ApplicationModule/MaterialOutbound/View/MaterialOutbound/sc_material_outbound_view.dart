@@ -90,7 +90,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SCMaterialSearchItem(searchAction: () {
+        SCMaterialSearchItem(name: '搜索仓库名称', searchAction: () {
           SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': 1});
         },),
         SCMaterialSiftItem(tagList:siftList, tapAction: (index) {

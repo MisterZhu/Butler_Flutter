@@ -88,7 +88,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SCMaterialSearchItem(searchAction: () {
+        SCMaterialSearchItem(name: '搜索仓库名称', searchAction: () {
           SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': 0});
         },),
         SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
