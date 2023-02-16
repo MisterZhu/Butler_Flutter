@@ -10,7 +10,7 @@ class SCMaterialSearchController extends GetxController {
 
   int pageNum = 1;
 
-  List<SCMaterialListModel> dataList = [];
+  List<SCMaterialListModel> materialList = [];
 
   /// 默认已选的数据
   List<SCMaterialListModel> originalList = [];
@@ -20,22 +20,51 @@ class SCMaterialSearchController extends GetxController {
   /// 搜索内容
   String searchString = '';
 
+  /// 仓库id
+  String wareHouseId = '';
+
   /// 更新搜索内容
   updateSearchString(String value) {
     searchString = value;
     update();
   }
 
-  /// 物资列表数据
-  searchData() {
-    SCLoadingUtils.show();
-    SCHttpManager.instance.get(
-        url: SCUrl.kAllMaterialListUrl,
-        params: {'materialName': searchString},
+  /// 搜索物资列表数据
+  searchData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
+    bool isLoadMore = isMore ?? false;
+    if (isLoadMore == true) {
+      pageNum++;
+    } else {
+      pageNum = 1;
+      SCLoadingUtils.show();
+    }
+    var params = {
+      "conditions": {
+        "deleted": false,
+        "enabled": true,
+        "fields": [],
+        "wareHouseId": wareHouseId,  /// 仓库ID
+        "name": searchString  /// 物资名称
+      },
+      "count": false,
+      "last": false,
+      "orderBy": [],
+      "pageNum": pageNum,
+      "pageSize": 20
+    };
+    SCHttpManager.instance.post(
+        url: SCUrl.kMaterialListUrl,
+        params: params,
         success: (value) {
-          dataList = List<SCMaterialListModel>.from(
-              value.map((e) => SCMaterialListModel.fromJson(e)).toList());
-          for (SCMaterialListModel model in dataList) {
+          List list = value['records'];
+          if (isLoadMore == true) {
+            materialList.addAll(List<SCMaterialListModel>.from(
+                list.map((e) => SCMaterialListModel.fromJson(e)).toList()));
+          } else {
+            materialList = List<SCMaterialListModel>.from(
+                list.map((e) => SCMaterialListModel.fromJson(e)).toList());
+          }
+          for (SCMaterialListModel model in materialList) {
             for (SCMaterialListModel subModel in originalList) {
               if (model.id == subModel.id) {
                 model.localNum = subModel.localNum;
@@ -43,16 +72,24 @@ class SCMaterialSearchController extends GetxController {
               }
             }
           }
-          if (dataList.isNotEmpty) {
+          if (materialList.isNotEmpty) {
             tips = '';
           } else {
             tips = '暂无搜索结果';
           }
-          SCLoadingUtils.hide();
           update();
+          bool last = false;
+          if (isLoadMore) {
+            last = value['last'];
+          }
+          completeHandler?.call(true, last);
         },
         failure: (value) {
-          SCLoadingUtils.hide();
+          if (isLoadMore) {
+            pageNum--;
+          }
+          SCToast.showTip(value['message']);
+          completeHandler?.call(false, false);
         });
   }
 

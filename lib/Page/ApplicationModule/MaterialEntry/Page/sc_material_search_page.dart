@@ -32,6 +32,18 @@ class SCMaterialSearchPageState extends State<SCMaterialSearchPage> {
     super.initState();
     controllerTag = SCScaffoldManager.instance.getXControllerTag((SCMaterialSearchPage).toString());
     controller = Get.put(SCMaterialSearchController(), tag: controllerTag);
+    initPageData();
+  }
+
+  /// 页面传递过来的数据
+  initPageData() {
+    var params = Get.arguments;
+    if (params != null) {
+      var wareHouseId = params['wareHouseId'];
+      if (wareHouseId != null) {
+        controller.wareHouseId = wareHouseId;
+      }
+    }
   }
 
   @override
@@ -86,7 +98,7 @@ class SCMaterialSearchPageState extends State<SCMaterialSearchPage> {
   /// 确定
   sureAction() {
     List<SCMaterialListModel> list = [];
-    for (SCMaterialListModel model in controller.dataList) {
+    for (SCMaterialListModel model in controller.materialList) {
       bool isSelect = model.isSelect ?? false;
       if (isSelect) {
         list.add(model);

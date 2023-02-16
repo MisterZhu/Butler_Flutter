@@ -54,7 +54,6 @@ class SCAddMaterialController extends GetxController {
       "pageNum": pageNum,
       "pageSize": 20
     };
-    print('物资列表====================$params');
     SCHttpManager.instance.post(
         url: SCUrl.kMaterialListUrl,
         params: params,

@@ -189,7 +189,7 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
 
   /// contentView
   Widget contentView() {
-    if (widget.state.dataList.isNotEmpty) {
+    if (widget.state.materialList.isNotEmpty) {
       return listview();
     } else {
       return emptyItem();
@@ -198,18 +198,25 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
 
   /// listview
   Widget listview() {
-    return ListView.separated(
+    return SmartRefresher(
+        controller: refreshController,
+        enablePullUp: true,
+        enablePullDown: true,
+        header: const SCCustomHeader(
+        style: SCCustomHeaderStyle.noNavigation,
+    ),
+    onRefresh: onRefresh, onLoading: loadMore, child: ListView.separated(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 11.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
-          SCMaterialListModel model = widget.state.dataList[index];
+          SCMaterialListModel model = widget.state.materialList[index];
           return cell(model);
         },
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 10.0,);
         },
-        itemCount: widget.state.dataList.length);
+        itemCount: widget.state.materialList.length));
   }
 
   Widget cell(SCMaterialListModel model) {
@@ -249,5 +256,24 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
     super.dispose();
     controller.dispose();
     node.dispose();
+  }
+
+  /// 下拉刷新
+  Future onRefresh() async {
+    widget.state.searchData(isMore: false, completeHandler: (bool success, bool last){
+      refreshController.refreshCompleted();
+      refreshController.loadComplete();
+    });
+  }
+
+  /// 上拉加载
+  void loadMore() async{
+    widget.state.searchData(isMore: true, completeHandler: (bool success, bool last){
+      if (last) {
+        refreshController.loadNoData();
+      } else {
+        refreshController.loadComplete();
+      }
+    });
   }
 }
