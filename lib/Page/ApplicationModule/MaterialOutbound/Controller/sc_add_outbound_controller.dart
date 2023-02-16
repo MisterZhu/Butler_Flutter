@@ -86,6 +86,10 @@ class SCAddOutboundController extends GetxController {
       typeID = params['type'];
       /// 备注
       remark = params['remark'];
+      fetchOrgId = params['fetchOrgId'];
+      fetchOrgName = params['fetchOrgName'];
+      fetchUserId = params['fetchUserId'];
+      fetchUserName = params['fetchUserName'];
       for (int i=0; i<wareHouseList.length; i++) {
         SCWareHouseModel model = wareHouseList[i];
         if (model.id == wareHouseId) {

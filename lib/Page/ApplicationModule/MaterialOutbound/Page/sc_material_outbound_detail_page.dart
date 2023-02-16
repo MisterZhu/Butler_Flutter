@@ -151,6 +151,18 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
     int type = controller.model.type ?? 0;
     String remark = controller.model.remark ?? '';
     List<SCMaterialListModel> materials = controller.model.materials ?? [];
+    /// 领用人（只有出库类型为领料出库时才传）
+    String fetchUserName = controller.model.fetchUserName ?? '';
+
+    /// 领用人ID（只有出库类型为领料出库时才传）
+    String fetchUserId = controller.model.fetchUserId ?? '';
+
+    /// 领用组织(或部门)（只有出库类型为领料出库时才传）
+    String fetchOrgName = controller.model.fetchOrgName ?? '';
+
+    /// 领用组织(或部门)ID（只有出库类型为领料出库时才传）
+    String fetchOrgId = controller.model.fetchOrgId ?? '';
+
     for (SCMaterialListModel model in materials) {
       model.localNum = model.number ?? 1;
       model.isSelect = true;
@@ -164,6 +176,10 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
       "wareHouseId" : wareHouseId,
       "typeName" : typeName,
       "type" : type,
+      "fetchOrgName" : fetchOrgName,
+      "fetchOrgId" : fetchOrgId,
+      "fetchUserName" : fetchUserName,
+      "fetchUserId" : fetchUserId,
       "remark" : remark,
     })?.then((value) {
       controller.loadMaterialOutboundDetail();
