@@ -40,9 +40,6 @@ class SCSelectReceiverPageState extends State<SCSelectReceiverPage> {
     if (arguments != null) {
       receiverModel = arguments['receiverModel'];
     }
-
-    SCSelectDepartmentController departmentController = Get.put(SCSelectDepartmentController());
-    departmentController.loadDataList();
   }
 
   @override
@@ -62,12 +59,7 @@ class SCSelectReceiverPageState extends State<SCSelectReceiverPage> {
   }
 
   Widget body() {
-    return GestureDetector(
-      onTap: () {
-        SCUtils().hideKeyboard(context: context);
-      },
-      behavior: HitTestBehavior.opaque,
-      child: Container(
+    return Container(
         width: double.infinity,
         height: double.infinity,
         color: SCColors.color_F2F3F5,
@@ -76,8 +68,8 @@ class SCSelectReceiverPageState extends State<SCSelectReceiverPage> {
             init: controller,
             builder: (state) {
               return SCReceiverListView(
+                state: state,
                 currentModel: receiverModel,
-                list: controller.dataList,
                 tapAction: (model) {
                   receiverModel = model;
                   SCRouterHelper.back({'receiverModel': model});
@@ -86,7 +78,6 @@ class SCSelectReceiverPageState extends State<SCSelectReceiverPage> {
                 },
               );
             }),
-      ),
     );
   }
 

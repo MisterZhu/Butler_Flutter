@@ -122,16 +122,23 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
             showAlert(1, '类型', list);
           } else if (index == 2) {
             //领用部门
-
+            setState(() {
+              widget.state.fetchOrgId = '';
+              widget.state.fetchOrgName =  '';
+            });
           } else if (index == 3) {
             //领用人
             var params = {
               'receiverModel': receiverModel,
             };
             var backParams = await SCRouterHelper.pathPage(SCRouterPath.selectReceiverPage, params);
-            setState(() {
-              receiverModel = backParams['receiverModel'];
-            });
+            if (backParams != null) {
+              setState(() {
+                receiverModel = backParams['receiverModel'];
+                widget.state.fetchUserId = receiverModel.personId ?? '';
+                widget.state.fetchUserName =  receiverModel.personName ?? '';
+              });
+            }
           }
         },
         inputAction: (content) {
@@ -215,8 +222,8 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     List baseInfoList = [
       {'isRequired': true, 'title': '仓库名称', 'content': widget.state.warehouseName},
       {'isRequired': true, 'title': '类型', 'content': widget.state.type},
-      {'isRequired': false, 'title': '领用部门', 'content': ''},
-      {'isRequired': false, 'title': '领用人', 'content': ''},
+      {'isRequired': false, 'title': '领用部门', 'content': widget.state.fetchOrgName},
+      {'isRequired': false, 'title': '领用人', 'content': widget.state.fetchUserName},
     ];
     return baseInfoList;
   }

@@ -53,8 +53,14 @@ class SCAddOutboundController extends GetxController {
   /// 备注
   String remark = '';
 
+  /// 领用人（只有出库类型为领料出库时才传）
+  String fetchUserName = '';
+
   /// 领用人ID（只有出库类型为领料出库时才传）
   String fetchUserId = '';
+
+  /// 领用组织(或部门)（只有出库类型为领料出库时才传）
+  String fetchOrgName = '';
 
   /// 领用组织(或部门)ID（只有出库类型为领料出库时才传）
   String fetchOrgId = '';

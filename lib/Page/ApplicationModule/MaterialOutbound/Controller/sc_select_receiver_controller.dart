@@ -15,11 +15,8 @@ class SCSelectReceiverController extends GetxController {
   /// 领用人列表数组
   List<SCReceiverModel> dataList = [];
 
-  @override
-  onInit() {
-    super.onInit();
-    loadDataList();
-  }
+  /// 组织id
+  String orgId = '894';
 
   /// 领用人列表
   loadDataList({bool? isMore, Function(bool success, bool last)? completeHandler}) {
@@ -33,17 +30,12 @@ class SCSelectReceiverController extends GetxController {
     var params = {
       "conditions": {
         "categoryId": "",
-        "orgIds": [],
+        "orgIds": [orgId],
         "symbol": "",
         "tenantId": ""
       },
-      "count": true,
-      "last": true,
-      "orderBy": [
-        {
-        "asc": true,
-        "field": ""
-        }],
+      "count": false,
+      "last": false,
       "pageNum": pageNum,
       "pageSize": 20
     };
@@ -52,11 +44,21 @@ class SCSelectReceiverController extends GetxController {
         url: SCUrl.kReceiverListUrl,
         params: params,
         success: (value) {
+          if (isLoadMore == true) {
+            dataList.addAll(List<SCReceiverModel>.from(value.map((e) => SCReceiverModel.fromJson(e)).toList()));
+          } else {
+            dataList = List<SCReceiverModel>.from(value.map((e) => SCReceiverModel.fromJson(e)).toList());
+          }
           SCLoadingUtils.hide();
-          dataList = List<SCReceiverModel>.from(value.map((e) => SCReceiverModel.fromJson(e)).toList());
           update();
+          completeHandler?.call(true, false);
         },
         failure: (value) {
+          if (isLoadMore) {
+            pageNum--;
+          }
+          SCToast.showTip(value['message']);
+          completeHandler?.call(false, false);
         });
   }
 
