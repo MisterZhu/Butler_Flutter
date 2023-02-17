@@ -55,3 +55,15 @@ enum SCAddPhotoType {
   // 从相册选择
   photoPicker
 }
+
+/// 仓储管理类型
+enum SCWarehouseManageType {
+  // 物料入库
+  entry,
+  // 物料出库
+  outbound,
+  // 物料报损
+  frmLoss,
+  // 物料调拨
+  transfer,
+}

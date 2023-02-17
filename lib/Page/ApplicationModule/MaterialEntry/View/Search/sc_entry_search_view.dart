@@ -6,6 +6,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../Controller/sc_entry_search_controller.dart';
@@ -210,16 +211,19 @@ class SCEntrySearchViewState extends State<SCEntrySearchView> {
           SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
             model: model,
-            type: 0,
+            type: SCWarehouseManageType.entry,
             detailTapAction: () {
               int status = model.status ?? -1;
               bool canEdit = (status == 0);
-              if (widget.state.type == 0) {
+              if (widget.state.type == SCWarehouseManageType.entry) {
                 /// 入库详情
                 SCRouterHelper.pathPage(SCRouterPath.entryDetailPage, {'id': model.id, 'canEdit' : canEdit});
-              } else {
+              } else if (widget.state.type == SCWarehouseManageType.outbound) {
                 /// 出库详情
                 SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, {'id': model.id, 'canEdit': canEdit});
+              } else if (widget.state.type == SCWarehouseManageType.frmLoss) {
+                /// 报损详情
+                SCRouterHelper.pathPage(SCRouterPath.frmLossDetailPage, {'id': model.id, 'canEdit': canEdit});
               }
             },
             btnTapAction: () {

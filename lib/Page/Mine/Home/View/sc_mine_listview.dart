@@ -76,7 +76,7 @@ class SCMineListView extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) {
           return line();
         },
-        itemCount: 5));
+        itemCount: 6));
   }
 
   Widget getCell(int index) {
@@ -120,7 +120,15 @@ class SCMineListView extends StatelessWidget {
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.materialOutboundPage, null);
         },);
-    }  else {
+    } else if (index == 5) {
+      return SCSettingCell(
+        title: '物资报损',
+        showLeftIcon: true,
+        leftIcon: SCAsset.iconMineService,
+        onTap: () {
+          SCRouterHelper.pathPage(SCRouterPath.materialFrmLossPage, null);
+        },);
+    } else {
       return const SizedBox(height: 100.0,);
     }
   }

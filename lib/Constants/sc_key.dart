@@ -26,4 +26,7 @@ class SCKey {
   static const String kRefreshMaterialEntryPage = "kRefreshMaterialEntryPage";
   /// 仓储-刷新物资出库页面
   static const String kRefreshMaterialOutboundPage = "kRefreshMaterialOutboundPage";
+  /// 仓储-刷新物资报损页面
+  static const String kRefreshMaterialFrmLossPage = "kRefreshMaterialFrmLossPage";
+
 }

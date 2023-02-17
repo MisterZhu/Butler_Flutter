@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 
+import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../Model/sc_material_entry_detail_model.dart';
 
@@ -12,7 +13,7 @@ class SCAllMaterialTitleView extends StatelessWidget {
   final SCMaterialEntryDetailModel? model;
 
   /// 类型，type=0入库详情，type=1出库详情
-  final int type;
+  final SCWarehouseManageType type;
 
   SCAllMaterialTitleView({Key? key, required this.type, this.model}) : super(key: key);
 
@@ -43,11 +44,11 @@ class SCAllMaterialTitleView extends StatelessWidget {
           ),)),
           const SizedBox(width: 6.0,),
           Text(
-            type == 0 ? SCUtils.getEntryStatusText(model?.status ?? 0) : SCUtils.getOutboundStatusText(model?.status ?? 0),
+            type == SCWarehouseManageType.entry ? SCUtils.getEntryStatusText(model?.status ?? 0) : SCUtils.getOutboundStatusText(model?.status ?? 0),
             style: TextStyle(
               fontSize: SCFonts.f14,
               fontWeight: FontWeight.w400,
-              color: SCUtils.getEntryStatusTextColor(model?.status ?? 0),))
+              color: type == SCWarehouseManageType.entry ? SCUtils.getEntryStatusTextColor(model?.status ?? 0) : SCUtils.getOutboundStatusTextColor(model?.status ?? 0),))
         ],
       ),
     );

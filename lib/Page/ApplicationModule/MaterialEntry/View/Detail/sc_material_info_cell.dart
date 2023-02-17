@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
+import '../../../../../Constants/sc_enum.dart';
 import '../../Model/sc_material_entry_detail_model.dart';
 
 /// 入库信息cell
@@ -11,8 +12,8 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// model
   final SCMaterialEntryDetailModel? model;
 
-  /// type=0入库详情，type=1出库详情
-  final int type;
+  /// type=entry入库详情，type=outbound出库详情
+  final SCWarehouseManageType type;
 
   /// 打电话
   final Function(String phone)? callAction;
@@ -49,9 +50,8 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   }
 
   Widget receiveView() {
-    if (type == 0) {
-      return const SizedBox();
-    } else {
+    if (type == SCWarehouseManageType.outbound && model?.typeName == '领料出库') {
+      // 领料出库才显示领用人
       return Column(
           children: [
             userView(),
@@ -64,6 +64,8 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
             ),
           ]
       );
+    } else {
+      return const SizedBox();
     }
   }
 

@@ -9,6 +9,7 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Materia
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_search_item.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_sift_item.dart';
 import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
@@ -182,7 +183,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
           SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
             model: model,
-            type: 0,
+            type: SCWarehouseManageType.entry,
             detailTapAction: () {
               detailAction(model);
             },

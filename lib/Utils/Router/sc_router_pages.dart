@@ -26,6 +26,9 @@ import '../../Page/ApplicationModule/MaterialEntry/Page/sc_add_entry_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_entry_search_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_material_entry_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_material_search_page.dart';
+import '../../Page/ApplicationModule/MaterialFrmLoss/Page/sc_add_frmLoss_page.dart';
+import '../../Page/ApplicationModule/MaterialFrmLoss/Page/sc_material_frmLoss_detail_page.dart';
+import '../../Page/ApplicationModule/MaterialFrmLoss/Page/sc_material_frmLoss_page.dart';
 import '../../Page/ApplicationModule/MaterialOutbound/Page/sc_material_outbound_detail_page.dart';
 import '../../Page/ApplicationModule/MaterialOutbound/Page/sc_material_outbound_page.dart';
 import '../../Page/ApplicationModule/MaterialOutbound/Page/sc_select_receiver_page.dart';
@@ -98,6 +101,12 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.outboundDetailPage, page: () => SCMaterialOutboundDetailPage()),
     /*搜索出入库*/
     GetPage(name: SCRouterPath.entrySearchPage, page: () => SCEntrySearchPage()),
+    /*新增报损*/
+    GetPage(name: SCRouterPath.addFrmLossPage, page: () => SCAddFrmLossPage()),
+    /*物资报损*/
+    GetPage(name: SCRouterPath.materialFrmLossPage, page: () => SCMaterialFrmLossPage()),
+    /*报损详情*/
+    GetPage(name: SCRouterPath.frmLossDetailPage, page: () => SCMaterialFrmLossDetailPage()),
   ];
 
   /*根据code使用路由*/

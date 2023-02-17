@@ -6,17 +6,17 @@ import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../../Utils/sc_utils.dart';
-import '../Controller/sc_add_entry_controller.dart';
-import '../View/AddEntry/sc_add_entry_view.dart';
+import '../../MaterialEntry/Controller/sc_add_entry_controller.dart';
+import '../../MaterialEntry/View/AddEntry/sc_add_entry_view.dart';
 
-/// 新增入库page
+/// 新增报损page
 
-class SCAddEntryPage extends StatefulWidget {
+class SCAddFrmLossPage extends StatefulWidget {
   @override
-  SCAddEntryPageState createState() => SCAddEntryPageState();
+  SCAddFrmLossPageState createState() => SCAddFrmLossPageState();
 }
 
-class SCAddEntryPageState extends State<SCAddEntryPage> {
+class SCAddFrmLossPageState extends State<SCAddFrmLossPage> {
 
   /// SCAddEntryController
   late SCAddEntryController controller;
@@ -27,7 +27,7 @@ class SCAddEntryPageState extends State<SCAddEntryPage> {
   @override
   initState() {
     super.initState();
-    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddEntryPage).toString());
+    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddFrmLossPage).toString());
     controller = Get.put(SCAddEntryController(), tag: controllerTag);
     initEditData();
   }
@@ -54,7 +54,7 @@ class SCAddEntryPageState extends State<SCAddEntryPage> {
 
   @override
   dispose() {
-    SCScaffoldManager.instance.deleteGetXControllerTag((SCAddEntryPage).toString(), controllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCAddFrmLossPage).toString(), controllerTag);
     controller.dispose();
     super.dispose();
   }
@@ -62,7 +62,7 @@ class SCAddEntryPageState extends State<SCAddEntryPage> {
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: controller.isEdit ? "编辑" : "新增入库",
+        title: controller.isEdit ? "编辑" : "新增报损",
         centerTitle: true,
         elevation: 0,
         resizeToAvoidBottomInset: true,
@@ -90,6 +90,8 @@ class SCAddEntryPageState extends State<SCAddEntryPage> {
   }
 
 }
+
+
 
 
 

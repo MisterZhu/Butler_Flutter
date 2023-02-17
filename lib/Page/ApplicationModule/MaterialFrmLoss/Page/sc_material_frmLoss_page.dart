@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
@@ -7,16 +6,16 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Controller/s
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
-import '../View/MaterialEntry/sc_material_entry_view.dart';
+import '../View/MaterialFrmLoss/sc_material_frmLoss_view.dart';
 
-/// 物资入库page
+/// 物资报损page
 
-class SCMaterialEntryPage extends StatefulWidget {
+class SCMaterialFrmLossPage extends StatefulWidget {
   @override
-  SCMaterialEntryPageState createState() => SCMaterialEntryPageState();
+  SCMaterialFrmLossPageState createState() => SCMaterialFrmLossPageState();
 }
 
-class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
+class SCMaterialFrmLossPageState extends State<SCMaterialFrmLossPage> {
 
   /// SCMaterialEntryController
   late SCMaterialEntryController controller;
@@ -31,7 +30,7 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
   initState() {
     super.initState();
     controllerTag = SCScaffoldManager.instance
-        .getXControllerTag((SCMaterialEntryPage).toString());
+        .getXControllerTag((SCMaterialFrmLossPage).toString());
     controller = Get.put(SCMaterialEntryController(), tag: controllerTag);
     controller.loadEntryListData(isMore: false);
     addNotification();
@@ -40,7 +39,7 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
   @override
   dispose() {
     subscription.cancel();
-    SCScaffoldManager.instance.deleteGetXControllerTag(pageName(), controllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialFrmLossPage).toString(), controllerTag);
     controller.dispose();
     super.dispose();
   }
@@ -48,7 +47,7 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: "物资入库", centerTitle: true, elevation: 0, body: body());
+        title: "物资报损", centerTitle: true, elevation: 0, body: body());
   }
 
   /// body
@@ -61,21 +60,16 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
           tag: controllerTag,
           init: controller,
           builder: (state) {
-            return SCMaterialEntryView(state: state,);
+            return SCMaterialFrmLossView(state: state,);
           }),
     );
-  }
-
-  /// pageName
-  String pageName() {
-    return (SCMaterialEntryPage).toString();
   }
 
   /// 通知
   addNotification() {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
-      if (key == SCKey.kRefreshMaterialEntryPage) {
+      if (key == SCKey.kRefreshMaterialFrmLossPage) {
         controller.loadEntryListData(isMore: false);
       }
     });
