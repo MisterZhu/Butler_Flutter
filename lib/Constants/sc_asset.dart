@@ -188,6 +188,8 @@ class SCAsset {
   static const String iconMaterialArrowDown = "images/materialEntry/icon_material_arrow_down.png";
   /// 新增入库icon
   static const String iconAddReceipt = "images/materialEntry/icon_add_receipt.png";
+  /// 新增入库背景图icon
+  static const String iconAddEntryBg = "images/materialEntry/icon_add_entry_bg.png";
   /// 展开
   static const String iconMaterialUnfold = "images/materialEntry/icon_material_unfold.png";
   /// 折叠

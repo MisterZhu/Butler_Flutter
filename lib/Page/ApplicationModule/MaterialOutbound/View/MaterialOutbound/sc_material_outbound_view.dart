@@ -13,6 +13,7 @@ import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
 import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
+import '../../../MaterialEntry/View/MaterialEntry/sc_add_entry_button.dart';
 import '../../Controller/sc_material_outbound_controller.dart';
 
 
@@ -132,8 +133,8 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
         Positioned(
           right: 16,
           bottom: SCUtils().getBottomSafeArea() + 40,
-          width: 60.0,
-          height: 60.0,
+          width: 71.0,
+          height: 71.0,
           child: addItem(),),
         Positioned(
           left: 0.0,
@@ -162,38 +163,9 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
 
   /// 新增出库按钮
   Widget addItem() {
-    return Container(
-      width: 60.0,
-      height: 60.0,
-      decoration: BoxDecoration(
-          color: SCColors.color_FFFFFF,
-          borderRadius: BorderRadius.circular(30.0),
-          border: Border.all(color: SCColors.color_E3E3E5, width: 0.5)
-      ),
-      child: CupertinoButton(
-        padding: EdgeInsets.zero,
-        onPressed: () {
-          SCRouterHelper.pathPage(SCRouterPath.addOutboundPage, null);
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(SCAsset.iconAddReceipt, width: 20.0, height: 20.0,),
-            const SizedBox(width: 2.0,),
-            const Text(
-                '新增出库',
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    fontSize: SCFonts.f11,
-                    fontWeight: FontWeight.w400,
-                    color: SCColors.color_1B1D33)),
-          ],
-        ),
-      ),
-    );
+    return SCAddEntryButton(name: '新增出库', tapAction: () {
+      SCRouterHelper.pathPage(SCRouterPath.addOutboundPage, null);
+    },);
   }
 
   /// listview
