@@ -187,7 +187,7 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
       "type" : type,
       "remark" : remark,
     })?.then((value) {
-      controller.loadMaterialEntryDetail();
+      SCRouterHelper.back(null);
     });
   }
 
@@ -195,9 +195,11 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
   submitAction() {
     SCMaterialEntryController materialEntryController = SCMaterialEntryController();
     materialEntryController.submit(id: controller.id, completeHandler: (bool success){
-      SCScaffoldManager.instance.eventBus
-          .fire({'key': SCKey.kRefreshMaterialEntryPage});
-      SCRouterHelper.back( null);
+      if (success) {
+        SCScaffoldManager.instance.eventBus
+            .fire({'key': SCKey.kRefreshMaterialEntryPage});
+        SCRouterHelper.back( null);
+      }
     });
   }
 }

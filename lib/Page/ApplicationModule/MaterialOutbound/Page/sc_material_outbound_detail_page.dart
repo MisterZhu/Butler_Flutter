@@ -183,7 +183,7 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
       "fetchUserId" : fetchUserId,
       "remark" : remark,
     })?.then((value) {
-      controller.loadMaterialOutboundDetail();
+      SCRouterHelper.back(null);
     });
   }
 
