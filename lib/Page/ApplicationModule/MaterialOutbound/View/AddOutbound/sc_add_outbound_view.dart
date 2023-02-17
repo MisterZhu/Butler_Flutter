@@ -315,6 +315,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
                         headerList: widget.selectDepartmentController.headerList,
                         footerList: widget.selectDepartmentController.footerList,
                         headerTap: (int index, SCSelectCategoryModel model) {
+                          headerAction(index, model);
                         },
                         footerTap: (int index, SCSelectCategoryModel model) {
                           footerAction(index, model);
@@ -328,22 +329,83 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
         });
   }
 
+  /// 点击header
+  headerAction(int index, SCSelectCategoryModel model) {
+    if (index == 0) {
+      widget.selectDepartmentController.initHeaderData();
+      widget.selectDepartmentController.childrenList = widget.selectDepartmentController.treeList;
+      List<SCSelectCategoryModel> list = [];
+      for(SCSelectCategoryTreeModel subModel in widget.selectDepartmentController.treeList) {
+        String orgName = subModel.orgName ?? '';
+        String subId = subModel.id.toString();
+        var subParams = {
+          "enable" : true,
+          "title" : orgName,
+          "id" : subId,
+          "parentList" : [],
+          "childList" :subModel.children
+        };
+        SCSelectCategoryModel selectCategoryModel = SCSelectCategoryModel.fromJson(subParams);
+        list.add(selectCategoryModel);
+      }
+      widget.selectDepartmentController.footerList = list;
+      widget.selectDepartmentController.update();
+    } else {
+      SCSelectCategoryModel subModel = widget.selectDepartmentController.headerList[index - 1];
+      List list = subModel.childList ?? [];
+      List<SCSelectCategoryModel> newList = [];
+      for (SCSelectCategoryTreeModel childModel in list) {
+        String orgName = childModel.orgName ?? '';
+        String subId = childModel.id.toString();
+        var subParams = {
+          "enable" : true,
+          "title" : orgName,
+          "id" : subId,
+          "parentList" : [],
+          "childList" :childModel.children
+        };
+        SCSelectCategoryModel selectCategoryModel = SCSelectCategoryModel.fromJson(subParams);
+        newList.add(selectCategoryModel);
+      }
+
+      List treeList = subModel.childList ?? [];
+      List<SCSelectCategoryTreeModel> newTreeList = [];
+      for (SCSelectCategoryTreeModel treeModel in treeList) {
+        newTreeList.add(treeModel);
+      }
+
+      widget.selectDepartmentController.childrenList = newTreeList;
+      widget.selectDepartmentController.footerList = newList;
+      widget.selectDepartmentController.headerList = widget.selectDepartmentController.headerList.sublist(0,index);
+      SCSelectCategoryModel model = SCSelectCategoryModel.fromJson({"enable" : false, "title" : "请选择", "id" : ""});
+      widget.selectDepartmentController.headerList.add(model);
+      widget.selectDepartmentController.update();
+
+    }
+  }
+
   /// 点击footer
   footerAction(int index, SCSelectCategoryModel model) {
     SCSelectCategoryTreeModel treeModel = widget.selectDepartmentController.childrenList[index];
     List<SCSelectCategoryTreeModel> childrenList = treeModel.children ?? [];
     List<SCSelectCategoryModel> subList = [];
+
     for(SCSelectCategoryTreeModel subChildrenModel in childrenList) {
       String orgName = subChildrenModel.orgName ?? '';
       String subId = subChildrenModel.id.toString();
       var subParams = {
         "enable" : true,
         "title" : orgName,
-        "id" : subId
+        "id" : subId,
+        "parentList" : widget.selectDepartmentController.childrenList,
+        "childList" :subChildrenModel.children
       };
+
       SCSelectCategoryModel selectCategoryModel = SCSelectCategoryModel.fromJson(subParams);
       subList.add(selectCategoryModel);
     }
+
+    model.parentList = widget.selectDepartmentController.childrenList;
     widget.selectDepartmentController.childrenList = childrenList;
     widget.selectDepartmentController
         .updateHeaderData(model);
