@@ -265,7 +265,7 @@ class SCUtils {
       case 5:
         return "已撤回";
       case 6:
-        return "已通过";
+        return "已入库";
       default:
         return " ";
     }
