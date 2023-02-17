@@ -4,34 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_add_entry_button.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_entry_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_search_item.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_sift_item.dart';
-import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
+import '../../../MaterialEntry/Controller/sc_material_entry_controller.dart';
 import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
 import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
-import '../../../MaterialEntry/View/MaterialEntry/sc_add_entry_button.dart';
-import '../../Controller/sc_material_outbound_controller.dart';
 
 
-/// 物资出库view
+/// 物资报损view
 
-class SCMaterialOutboundView extends StatefulWidget {
+class SCMaterialFrmLossView extends StatefulWidget {
 
-  /// SCMaterialOutboundController
-  final SCMaterialOutboundController state;
+  /// SCMaterialEntryController
+  final SCMaterialEntryController state;
 
-  SCMaterialOutboundView({Key? key, required this.state}) : super(key: key);
+  SCMaterialFrmLossView({Key? key, required this.state}) : super(key: key);
 
   @override
-  SCMaterialOutboundViewState createState() => SCMaterialOutboundViewState();
+  SCMaterialFrmLossViewState createState() => SCMaterialFrmLossViewState();
 }
 
-class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
+class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
 
   List siftList =  ['状态', '类型', '排序'];
 
@@ -43,8 +42,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
     {'name': '已拒绝', 'code': 3},
     {'name': '已驳回', 'code': 4},
     {'name': '已撤回', 'code': 5},
-    {'name': '已通过', 'code': 6},
-    {'name': '已出库', 'code': 7},
+    {'name': '已入库', 'code': 6},
   ];
   List typeList = ['全部'];
 
@@ -67,8 +65,8 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
   void initState() {
     super.initState();
     sortIndex = widget.state.sort == true ? 0 : 1;
-    widget.state.loadOutboundType(() {
-      List list = widget.state.outboundList.map((e) => e.name).toList();
+    widget.state.loadWareHouseType(() {
+      List list = widget.state.entryList.map((e) => e.name).toList();
       setState(() {
         typeList.addAll(list);
       });
@@ -93,7 +91,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SCMaterialSearchItem(name: '搜索仓库名称', searchAction: () {
-          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.outbound});
+          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.frmLoss});
         },),
         SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
           if (index == 0) {
@@ -162,10 +160,10 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
     );
   }
 
-  /// 新增出库按钮
+  /// 新增报损按钮
   Widget addItem() {
-    return SCAddEntryButton(name: '新增出库', tapAction: () {
-      SCRouterHelper.pathPage(SCRouterPath.addOutboundPage, null);
+    return SCAddEntryButton(name: '新增报损', tapAction: () {
+      SCRouterHelper.pathPage(SCRouterPath.addFrmLossPage, null);
     },);
   }
 
@@ -184,10 +182,9 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
         itemBuilder: (BuildContext context, int index) {
           SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
-            type: SCWarehouseManageType.outbound,
             model: model,
+            type: SCWarehouseManageType.frmLoss,
             detailTapAction: () {
-              /// 详情
               detailAction(model);
             },
             btnTapAction: () {
@@ -201,17 +198,17 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 10.0,);
         },
-        itemCount: widget.state.dataList.length));
+        itemCount: widget.state.dataList.length),);
   }
 
   /// 详情
   detailAction(SCMaterialEntryModel model) {
     int status = model.status ?? -1;
     bool canEdit = (status == 0);
-    SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, {'id': model.id, 'canEdit': canEdit});
+    SCRouterHelper.pathPage(SCRouterPath.frmLossDetailPage, {'id': model.id, 'canEdit' : canEdit});
   }
 
-  /// 出库状态弹窗
+  /// 入库状态弹窗
   Widget statusAlert() {
     List list = [];
     for (int i = 0; i < statusList.length; i++) {
@@ -220,7 +217,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
     return Offstage(
       offstage: !showStatusAlert,
       child: SCSiftAlert(
-        title: '出库状态',
+        title: '入库状态',
         list: list,
         selectIndex: selectStatus,
         closeAction: () {
@@ -241,12 +238,12 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
     );
   }
 
-  /// 出库类型弹窗
+  /// 入库类型弹窗
   Widget typeAlert() {
     return Offstage(
       offstage: !showTypeAlert,
       child: SCSiftAlert(
-        title: '出库类型',
+        title: '入库类型',
         list: typeList,
         selectIndex: selectType,
         closeAction: () {
@@ -260,7 +257,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
               showTypeAlert = false;
               selectType = value;
               siftList[1] = value == 0 ? '类型' : typeList[value];
-              widget.state.updateType(value == 0 ? -1 : widget.state.outboundList[value - 1].code ?? -1);
+              widget.state.updateType(value == 0 ? -1 : widget.state.entryList[value - 1].code ?? -1);
             });
           }
         },),
@@ -299,13 +296,13 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
     widget.state.submit(id: model.id ?? '', completeHandler: (bool success){
-      widget.state.loadOutboundListData(isMore: false);
+      widget.state.loadEntryListData(isMore: false);
     });
   }
 
   /// 下拉刷新
   Future onRefresh() async {
-    widget.state.loadOutboundListData(isMore: false, completeHandler: (bool success, bool last){
+    widget.state.loadEntryListData(isMore: false, completeHandler: (bool success, bool last){
       refreshController.refreshCompleted();
       refreshController.loadComplete();
     });
@@ -313,7 +310,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
 
   /// 上拉加载
   void loadMore() async{
-    widget.state.loadOutboundListData(isMore: true, completeHandler: (bool success, bool last){
+    widget.state.loadEntryListData(isMore: true, completeHandler: (bool success, bool last){
       if (last) {
         refreshController.loadNoData();
       } else {

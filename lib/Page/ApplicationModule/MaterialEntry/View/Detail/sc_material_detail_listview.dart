@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_info_cell.dart';
+import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../Controller/sc_material_entry_detail_controller.dart';
 import 'sc_allmaterial_cell.dart';
@@ -10,8 +11,8 @@ class SCMaterialDetailListView extends StatelessWidget {
   /// SCMaterialEntryDetailController
   final SCMaterialEntryDetailController state;
 
-  /// 类型，type=0入库详情，type=1出库详情
-  final int type;
+  /// 类型，type=entry入库详情，type=outbound出库详情
+  final SCWarehouseManageType type;
 
   SCMaterialDetailListView({Key? key, required this.state, required this.type}) : super(key: key);
 

@@ -41,7 +41,7 @@ class SCEntrySearchPageState extends State<SCEntrySearchPage> {
 
   @override
   dispose() {
-    SCScaffoldManager.instance.deleteGetXControllerTag((SCAddMaterialPageState).toString(), controllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCEntrySearchPage).toString(), controllerTag);
     controller.dispose();
     super.dispose();
   }

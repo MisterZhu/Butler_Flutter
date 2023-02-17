@@ -9,6 +9,7 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Materia
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_search_item.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_sift_item.dart';
 import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
@@ -90,7 +91,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SCMaterialSearchItem(name: '搜索仓库名称', searchAction: () {
-          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': 0});
+          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.entry});
         },),
         SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
           if (index == 0) {
@@ -182,7 +183,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
           SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
             model: model,
-            type: 0,
+            type: SCWarehouseManageType.entry,
             detailTapAction: () {
               detailAction(model);
             },

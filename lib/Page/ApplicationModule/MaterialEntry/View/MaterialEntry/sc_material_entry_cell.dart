@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/sc_utils.dart';
 
 class SCMaterialEntryCell extends StatelessWidget {
 
   /// 类型，0 入库，1 出库
-  final int type;
+  final SCWarehouseManageType type;
 
   /// model
   final SCMaterialEntryModel? model;
@@ -88,7 +89,7 @@ class SCMaterialEntryCell extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(type == 0 ? SCAsset.iconMaterialEntry : SCAsset.iconMaterialOutbound, width: 18.0, height: 18.0,),
+          Image.asset(type == SCWarehouseManageType.entry ? SCAsset.iconMaterialEntry : SCAsset.iconMaterialOutbound, width: 18.0, height: 18.0,),
           const SizedBox(width: 6.0,),
           Expanded(child: Text(
             model?.typeName ?? '',
@@ -100,13 +101,13 @@ class SCMaterialEntryCell extends StatelessWidget {
               color: SCColors.color_1B1D33)),),
           const SizedBox(width: 6.0,),
           Text(
-            type == 0 ? SCUtils.getEntryStatusText(model?.status ?? 0) : SCUtils.getOutboundStatusText(model?.status ?? 0),
+            type == SCWarehouseManageType.entry ? SCUtils.getEntryStatusText(model?.status ?? 0) : SCUtils.getOutboundStatusText(model?.status ?? 0),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: SCFonts.f14,
               fontWeight: FontWeight.w400,
-              color: SCUtils.getEntryStatusTextColor(model?.status ?? 0),))
+              color: type == SCWarehouseManageType.entry ? SCUtils.getEntryStatusTextColor(model?.status ?? 0) : SCUtils.getOutboundStatusTextColor(model?.status ?? 0),))
         ],
       ),
     );

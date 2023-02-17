@@ -7,6 +7,7 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_detail_listview.dart';
 import 'package:smartcommunity/Skin/View/sc_custom_scaffold.dart';
+import '../../../../Constants/sc_enum.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Utils/Router/sc_router_helper.dart';
@@ -88,7 +89,7 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
       builder: (state) {
         return SCMaterialDetailListView(
           state: controller,
-          type: 1,
+          type: SCWarehouseManageType.outbound,
         );
       });
   }

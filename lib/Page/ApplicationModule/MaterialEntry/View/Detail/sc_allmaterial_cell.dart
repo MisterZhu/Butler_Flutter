@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_allmaterial_titleview.dart';
 
+import '../../../../../Constants/sc_enum.dart';
 import '../../Model/sc_material_entry_detail_model.dart';
 import 'sc_allmaterial_listview.dart';
 import 'sc_material_unfold_btn.dart';
@@ -11,8 +12,8 @@ import 'sc_material_unfold_btn.dart';
 class SCAllMaterialCell extends StatefulWidget {
   final SCMaterialEntryDetailModel? model;
 
-  /// 类型，type=0入库详情，type=1出库详情
-  final int type;
+  /// 类型，type=entry入库详情，type=outbound出库详情
+  final SCWarehouseManageType type;
 
   SCAllMaterialCell({Key? key, required this.type, this.model}) : super(key: key);
 

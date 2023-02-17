@@ -265,7 +265,7 @@ class SCUtils {
       case 5:
         return "已撤回";
       case 6:
-        return "已通过";
+        return "已入库";
       default:
         return " ";
     }
@@ -315,7 +315,7 @@ class SCUtils {
     }
   }
 
-  /// 根据status获取出入库单据状态文本颜色text
+  /// 根据status获取入库单据状态文本颜色text
   static Color getEntryStatusTextColor(int status) {
     switch (status) {
       case 0:
@@ -332,8 +332,28 @@ class SCUtils {
         return SCColors.color_B0B1B8;
       case 6:
         return SCColors.color_B0B1B8;
-      case 7:
+      default:
         return SCColors.color_B0B1B8;
+    }
+  }
+
+  /// 根据status获取出库单据状态文本颜色text
+  static Color getOutboundStatusTextColor(int status) {
+    switch (status) {
+      case 0:
+        return SCColors.color_FF7F09;
+      case 1:
+        return SCColors.color_FF7F09;
+      case 2:
+        return SCColors.color_0849B5;
+      case 3:
+        return SCColors.color_FF4040;
+      case 4:
+        return SCColors.color_FF4040;
+      case 5:
+        return SCColors.color_B0B1B8;
+      case 6:
+        return SCColors.color_1B1D33;
       default:
         return SCColors.color_B0B1B8;
     }
