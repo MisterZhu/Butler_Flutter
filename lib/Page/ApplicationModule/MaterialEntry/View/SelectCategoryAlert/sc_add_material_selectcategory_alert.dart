@@ -97,11 +97,9 @@ class SCSelectCategoryAlertState extends State<SCSelectCategoryAlert> {
   /// header数据源
   List<SCSelectCategoryModel> getHeaderList() {
     if (widget.headerList.isEmpty) {
-      print("数据源为空");
       SCSelectCategoryModel model = SCSelectCategoryModel.fromJson({"enable" : false, "title" : "请选择", "id" : ""});
       return [model];
     } else {
-      print("数据源不为空");
       return widget.headerList;
     }
   }

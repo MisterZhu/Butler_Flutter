@@ -1,4 +1,4 @@
-/// 选择分类tree-model
+/// 出库-选择分类tree-model
 class SCSelectCategoryTreeModel {
   SCSelectCategoryTreeModel({
       this.id, 
@@ -19,11 +19,14 @@ class SCSelectCategoryTreeModel {
       this.gmtCreate, 
       this.operator, 
       this.gmtModify, 
-      this.iconUrl,});
+      this.iconUrl,
+      this.name,
+      this.type,
+  });
 
   SCSelectCategoryTreeModel.fromJson(dynamic json) {
-    id = json['id'];
-    pid = json['pid'];
+    id = json['id'] is int ? json['id'].toString() : json['id'];
+    pid = json['pid'] is int ? json['pid'].toString() : json['pid'];
     if (json['children'] != null) {
       children = [];
       json['children'].forEach((v) {
@@ -46,9 +49,11 @@ class SCSelectCategoryTreeModel {
     operator = json['operator'];
     gmtModify = json['gmtModify'];
     iconUrl = json['iconUrl'];
+    name = json['name'];
+    type = json['type'];
   }
-  int? id;
-  int? pid;
+  String? id;
+  String? pid;
   List<SCSelectCategoryTreeModel>? children;
   String? orgName;
   String? tenantId;
@@ -66,6 +71,8 @@ class SCSelectCategoryTreeModel {
   String? operator;
   String? gmtModify;
   String? iconUrl;
+  String? name;
+  int? type;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -90,6 +97,8 @@ class SCSelectCategoryTreeModel {
     map['operator'] = operator;
     map['gmtModify'] = gmtModify;
     map['iconUrl'] = iconUrl;
+    map['name'] = name;
+    map['type'] = type;
     return map;
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
@@ -7,6 +8,9 @@ import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../Controller/sc_add_material_controller.dart';
+import '../../Controller/sc_categoryalert_controlller.dart';
+import '../../Model/sc_selectcategory_model.dart';
+import '../../Model/sc_selectcategory_tree_model.dart';
 import '../MaterialEntry/sc_material_search_item.dart';
 import '../MaterialEntry/sc_material_sift_item.dart';
 import '../SelectCategoryAlert/sc_add_material_selectcategory_alert.dart';
@@ -16,13 +20,16 @@ import 'sc_add_material_listview.dart';
 
 class SCAddMaterialView extends StatefulWidget {
 
-  SCAddMaterialView({Key? key, required this.state, this.sureAction}) : super(key: key);
+  SCAddMaterialView({Key? key, required this.state, required this.categoryAlertController, this.sureAction}) : super(key: key);
 
   /// SCAddMaterialController
   final SCAddMaterialController state;
 
   /// 确定
   final Function(List<SCMaterialListModel> list)? sureAction;
+
+  /// SCCategoryAlertController
+  final SCCategoryAlertController categoryAlertController;
 
   @override
   SCAddMaterialViewState createState() => SCAddMaterialViewState();
@@ -167,10 +174,35 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
 
   /// 分类弹窗
   showCategoryAlert() {
-    SCDialogUtils().showCustomBottomDialog(
-        context: context,
-        isDismissible: true,
-        widget: SCSelectCategoryAlert(headerList: [], footerList: [],));
+    widget.categoryAlertController.loadMaterialSortData(
+        completeHandler: (success, list) {
+          print("数据源:$list");
+          widget.categoryAlertController.initHeaderData();
+          widget.categoryAlertController.footerList = list;
+          if (success) {
+            SCDialogUtils().showCustomBottomDialog(
+                context: context,
+                isDismissible: true,
+                widget: GetBuilder<SCCategoryAlertController>(
+                    tag: widget.categoryAlertController.tag,
+                    init: widget.categoryAlertController,
+                    builder: (value) {
+                      return SCSelectCategoryAlert(
+                        headerList: widget.categoryAlertController.headerList,
+                        footerList: widget.categoryAlertController.footerList,
+                        headerTap: (int index, SCSelectCategoryModel model) {
+                          headerAction(index, model);
+                        },
+                        footerTap: (int index, SCSelectCategoryModel model) {
+                          footerAction(index, model);
+                        },
+                        onSure: () {
+                          sureSelectDepartment();
+                        },
+                      );
+                    }));
+          }
+        });
   }
 
   /// 获取已选数量
@@ -208,4 +240,107 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
     widget.state.dealSearchData(list);
   }
 
+  /// 点击header
+  headerAction(int index, SCSelectCategoryModel model) {
+    if (index == 0) {
+      widget.categoryAlertController.initHeaderData();
+      widget.categoryAlertController.childrenList = widget.categoryAlertController.treeList;
+      List<SCSelectCategoryModel> list = [];
+      for(SCSelectCategoryTreeModel subModel in widget.categoryAlertController.treeList) {
+        String orgName = subModel.name ?? '';
+        String subId = subModel.id ?? '';
+        var subParams = {
+          "enable" : true,
+          "title" : orgName,
+          "id" : subId,
+          "parentList" : [],
+          "childList" :subModel.children
+        };
+        SCSelectCategoryModel selectCategoryModel = SCSelectCategoryModel.fromJson(subParams);
+        list.add(selectCategoryModel);
+      }
+      widget.categoryAlertController.footerList = list;
+      widget.categoryAlertController.update();
+    } else {
+      SCSelectCategoryModel subModel = widget.categoryAlertController.headerList[index - 1];
+      List list = subModel.childList ?? [];
+      List<SCSelectCategoryModel> newList = [];
+      for (SCSelectCategoryTreeModel childModel in list) {
+        String orgName = childModel.name ?? '';
+        String subId = childModel.id ?? '';
+        var subParams = {
+          "enable" : true,
+          "title" : orgName,
+          "id" : subId,
+          "parentList" : [],
+          "childList" :childModel.children
+        };
+        SCSelectCategoryModel selectCategoryModel = SCSelectCategoryModel.fromJson(subParams);
+        newList.add(selectCategoryModel);
+      }
+
+      List treeList = subModel.childList ?? [];
+      List<SCSelectCategoryTreeModel> newTreeList = [];
+      for (SCSelectCategoryTreeModel treeModel in treeList) {
+        newTreeList.add(treeModel);
+      }
+
+      widget.categoryAlertController.childrenList = newTreeList;
+      widget.categoryAlertController.footerList = newList;
+      widget.categoryAlertController.headerList = widget.categoryAlertController.headerList.sublist(0,index);
+      SCSelectCategoryModel model = SCSelectCategoryModel.fromJson({"enable" : false, "title" : "请选择", "id" : ""});
+      widget.categoryAlertController.headerList.add(model);
+      widget.categoryAlertController.update();
+
+    }
+  }
+
+  /// 点击footer
+  footerAction(int index, SCSelectCategoryModel model) {
+    SCSelectCategoryTreeModel treeModel = widget.categoryAlertController.childrenList[index];
+    List<SCSelectCategoryTreeModel> childrenList = treeModel.children ?? [];
+    List<SCSelectCategoryModel> subList = [];
+
+    for(SCSelectCategoryTreeModel subChildrenModel in childrenList) {
+      String orgName = subChildrenModel.name ?? '';
+      String subId = subChildrenModel.id ?? '';
+      var subParams = {
+        "enable" : true,
+        "title" : orgName,
+        "id" : subId,
+        "parentList" : widget.categoryAlertController.childrenList,
+        "childList" :subChildrenModel.children
+      };
+
+      SCSelectCategoryModel selectCategoryModel = SCSelectCategoryModel.fromJson(subParams);
+      subList.add(selectCategoryModel);
+    }
+
+    model.parentList = widget.categoryAlertController.childrenList;
+    widget.categoryAlertController.childrenList = childrenList;
+    widget.categoryAlertController
+        .updateHeaderData(model);
+    widget.categoryAlertController
+        .updateFooterData(subList);
+  }
+
+  /// 确定选择领用部门
+  sureSelectDepartment() {
+    bool enable = widget.categoryAlertController.currentDepartmentModel.enable ?? false;
+    if (enable) {
+      if (widget.state.classifyId != (widget.categoryAlertController.currentDepartmentModel.id ?? '')) {
+        widget.state.classifyId = widget.categoryAlertController.currentDepartmentModel.id ?? '';
+        widget.state.classifyName = widget.categoryAlertController.currentDepartmentModel.title ?? '';
+        widget.state.loadMaterialListData(isMore: false);
+      } else {
+        widget.state.classifyId = '';
+        widget.state.classifyName = '';
+        widget.state.loadMaterialListData(isMore: false);
+      }
+    } else {// 未选择数据
+      widget.state.classifyId = '';
+      widget.state.classifyName = '';
+      widget.state.loadMaterialListData(isMore: false);
+    }
+  }
 }

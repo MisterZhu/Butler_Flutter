@@ -337,7 +337,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       List<SCSelectCategoryModel> list = [];
       for(SCSelectCategoryTreeModel subModel in widget.selectDepartmentController.treeList) {
         String orgName = subModel.orgName ?? '';
-        String subId = subModel.id.toString();
+        String subId = subModel.id ?? '';
         var subParams = {
           "enable" : true,
           "title" : orgName,
@@ -356,7 +356,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       List<SCSelectCategoryModel> newList = [];
       for (SCSelectCategoryTreeModel childModel in list) {
         String orgName = childModel.orgName ?? '';
-        String subId = childModel.id.toString();
+        String subId = childModel.id ?? '';
         var subParams = {
           "enable" : true,
           "title" : orgName,
@@ -392,7 +392,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
 
     for(SCSelectCategoryTreeModel subChildrenModel in childrenList) {
       String orgName = subChildrenModel.orgName ?? '';
-      String subId = subChildrenModel.id.toString();
+      String subId = subChildrenModel.id ?? '';
       var subParams = {
         "enable" : true,
         "title" : orgName,

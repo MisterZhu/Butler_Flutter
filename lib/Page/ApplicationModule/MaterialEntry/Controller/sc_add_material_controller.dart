@@ -19,6 +19,9 @@ class SCAddMaterialController extends GetxController {
   /// 分类ID
   String classifyId = '';
 
+  /// 分类名称
+  String classifyName = '';
+
   /// 数据源
   List<SCMaterialListModel> materialList = [];
 
