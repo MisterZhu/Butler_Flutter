@@ -33,6 +33,9 @@ class SCSelectDepartmentController extends GetxController {
   /// 当前部门model
   SCSelectCategoryModel currentDepartmentModel = SCSelectCategoryModel();
 
+  /// 当前parent数据源
+  List<SCSelectCategoryModel> currentParentList = [];
+
   @override
   onInit() {
     super.onInit();
@@ -67,7 +70,9 @@ class SCSelectDepartmentController extends GetxController {
             var subParams = {
               "enable" : true,
               "title" : orgName,
-              "id" : subId
+              "id" : subId,
+              "parentList" : [],
+              "childList" :model.children
             };
             SCSelectCategoryModel selectCategoryModel = SCSelectCategoryModel.fromJson(subParams);
             list.add(selectCategoryModel);
