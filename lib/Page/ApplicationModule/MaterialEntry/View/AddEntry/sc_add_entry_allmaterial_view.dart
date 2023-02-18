@@ -15,7 +15,7 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
   final Function(int index)? deleteAction;
 
   /// 刷新数量
-  final Function(int value)? updateNumAction;
+  final Function(int index, int value)? updateNumAction;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
       },
       numChangeAction: (int value) {
         model.localNum = value;
-        updateNumAction?.call(value);
+        updateNumAction?.call(index, value);
       },
     );
   }

@@ -30,7 +30,6 @@ class SCAddEntryView extends StatefulWidget {
 }
 
 class SCAddEntryViewState extends State<SCAddEntryView> {
-
   late StreamSubscription<bool> keyboardSubscription;
 
   /// 是否弹起键盘
@@ -70,8 +69,8 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         Offstage(
           offstage: isShowKeyboard,
           child: SCBottomButtonItem(
-            list: const ['暂存', '提交'],
-            buttonType: 1,
+            list: bottomButtonList(),
+            buttonType: widget.state.isEdit ? 0 : 1,
             leftTapAction: () {
               /// 保存
               save();
@@ -79,6 +78,10 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
             rightTapAction: () {
               /// 提交
               submit();
+            },
+            tapAction: () {
+              /// 编辑
+              editAction();
             },
           ),
         ),
@@ -124,6 +127,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       );
     } else if (index == 1) {
       return SCMaterialInfoCell(
+        showAdd: widget.state.isEdit ? false : true,
         list: widget.state.selectedList,
         addAction: () {
           addAction();
@@ -131,8 +135,9 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         deleteAction: (int subIndex) {
           deleteAction(subIndex);
         },
-        updateNumAction: (int value) {
+        updateNumAction: (int index, int value) {
           widget.state.update();
+          editOneMaterial(index);
         },
       );
     } else {
@@ -175,16 +180,18 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
               setState(() {
                 if (index == 0) {
                   // 仓库名称
-                  SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
+                  SCWareHouseModel subModel =
+                      widget.state.wareHouseList[selectIndex];
                   widget.state.nameIndex = selectIndex;
                   widget.state.warehouseName = model.name ?? '';
                   widget.state.wareHouseId = subModel.id ?? '';
                 } else if (index == 1) {
                   // 类型
-                  SCEntryTypeModel subModel = widget.state.entryList[selectIndex];
+                  SCEntryTypeModel subModel =
+                      widget.state.entryList[selectIndex];
                   widget.state.typeIndex = selectIndex;
                   widget.state.type = model.name ?? '';
-                  widget.state.typeID =  subModel.code ?? 0;
+                  widget.state.typeID = subModel.code ?? 0;
                 }
               });
             },
@@ -196,7 +203,11 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
   List getBaseInfoList() {
     /// 基础信息数组
     List baseInfoList = [
-      {'isRequired': true, 'title': '仓库名称', 'content': widget.state.warehouseName},
+      {
+        'isRequired': true,
+        'title': '仓库名称',
+        'content': widget.state.warehouseName
+      },
       {'isRequired': true, 'title': '类型', 'content': widget.state.type}
     ];
     return baseInfoList;
@@ -208,13 +219,25 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       SCToast.showTip(SCDefaultValue.selectWarehouseTip);
       return;
     }
-    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {'data': widget.state.selectedList, 'wareHouseId': widget.state.wareHouseId});
-    widget.state.updateSelectedMaterial(list);
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
+      'data': widget.state.selectedList,
+      'wareHouseId': widget.state.wareHouseId
+    });
+    if (widget.state.isEdit) {
+      // 编辑
+      editAddMaterial(list);
+    } else {
+      // 添加
+      onlyAddMaterial(list);
+    }
   }
 
   /// 删除物资
   deleteAction(int index) {
+    SCMaterialListModel model = widget.state.selectedList[index];
+    print("物资id===${model.id}");
     widget.state.deleteMaterial(index);
+    widget.state.editDeleteMaterial(materialInRelationId: model.id ?? '');
   }
 
   /// 暂存
@@ -254,13 +277,141 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
     }
 
     var params = {
-      "wareHouseName" : widget.state.warehouseName,
-      "wareHouseId" : widget.state.wareHouseId,
-      "typeName" : widget.state.type,
-      "typeId" : widget.state.typeID,
-      "remark" : widget.state.remark,
-      "materialList" : materialList
+      "wareHouseName": widget.state.warehouseName,
+      "wareHouseId": widget.state.wareHouseId,
+      "typeName": widget.state.type,
+      "typeId": widget.state.typeID,
+      "remark": widget.state.remark,
+      "materialList": materialList
     };
     widget.state.addEntry(status: status, data: params);
+  }
+
+  /// 底部按钮
+  List<String> bottomButtonList() {
+    if (widget.state.isEdit) {
+      return ["确定"];
+    } else {
+      return ['暂存', '提交'];
+    }
+  }
+
+  /// 编辑
+  editAction() {
+    print("编辑");
+    if (widget.state.wareHouseId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
+      return;
+    }
+
+    if (widget.state.typeID <= 0) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
+      return;
+    }
+
+    if (widget.state.selectedList.isEmpty) {
+      SCToast.showTip(SCDefaultValue.addMaterialInfoTip);
+      return;
+    }
+
+    List materialList = [];
+    for (SCMaterialListModel model in widget.state.selectedList) {
+      var params = model.toJson();
+      params['num'] = model.localNum;
+      params['materialId'] = model.id;
+      params['materialName'] = model.name;
+      materialList.add(params);
+    }
+
+    var params = {
+      "id": widget.state.editId,
+      "wareHouseName": widget.state.warehouseName,
+      "wareHouseId": widget.state.wareHouseId,
+      "typeName": widget.state.type,
+      "typeId": widget.state.typeID,
+      "remark": widget.state.remark,
+      "materialList": materialList
+    };
+    widget.state.editMaterialBaseInfo(data: params);
+  }
+
+  /// 新增物资-添加
+  onlyAddMaterial(List<SCMaterialListModel> list) {
+    widget.state.updateSelectedMaterial(list);
+  }
+
+  /// 新增物资-编辑
+  editAddMaterial(List<SCMaterialListModel> list) {
+    print("原始数据===${widget.state.selectedList}");
+
+    print("添加===$list");
+    // 编辑的物资
+    List<SCMaterialListModel> editList = [];
+    // 新增的物资
+    List<SCMaterialListModel> addList = [];
+    for (SCMaterialListModel model in list) {
+      // 是否存在
+      bool contains = false;
+      // 是否需要更新
+      bool needUpdate = false;
+      SCMaterialListModel tempModel = SCMaterialListModel();
+
+      for (SCMaterialListModel subModel in widget.state.selectedList) {
+        if (model.id == subModel.materialId) {
+          contains = true;
+          tempModel = subModel;
+          if (model.localNum == subModel.localNum) {
+            needUpdate = false;
+          } else {
+            tempModel.localNum = model.localNum;
+            subModel.localNum = model.localNum;
+            needUpdate = true;
+          }
+          break;
+        } else {
+          contains = false;
+        }
+      }
+
+      if (contains) {
+        if (needUpdate) {
+          editList.add(tempModel);
+        }
+      } else {
+        addList.add(model);
+      }
+    }
+
+    for (SCMaterialListModel model in editList) {
+      print("编辑的物资===${model.toJson()}");
+    }
+
+    List<SCMaterialListModel> newList = widget.state.selectedList;
+    List addJsonList = [];
+    for (SCMaterialListModel model in addList) {
+      newList.add(model);
+      var subParams = model.toJson();
+      subParams['materialId'] = model.id;
+      subParams['materialName'] = model.name;
+      subParams['num'] = model.localNum;
+      addJsonList.add(subParams);
+      print("新增的物资===${subParams}");
+    }
+
+    if (editList.isNotEmpty) {
+      widget.state.editMaterial(list: editList);
+    }
+
+    if (addList.isNotEmpty) {
+      widget.state.editAddMaterial(list: addJsonList);
+    }
+
+    widget.state.updateSelectedMaterial(newList);
+  }
+
+  /// 编辑单条物资
+  editOneMaterial(int index) {
+    List<SCMaterialListModel> list = [widget.state.selectedList[index]];
+    widget.state.editMaterial(list: list);
   }
 }

@@ -71,7 +71,7 @@ class SCAddMaterialController extends GetxController {
           }
           for (SCMaterialListModel model in materialList) {
             for (SCMaterialListModel subModel in originalList) {
-              if (model.id == subModel.id) {
+              if (model.id == subModel.materialId) {
                 model.localNum = subModel.localNum;
                 model.isSelect = true;
               }

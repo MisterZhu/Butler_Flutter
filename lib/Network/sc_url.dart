@@ -106,8 +106,23 @@ class SCUrl {
   /// 物资列表-不分页
   static const String kAllMaterialListUrl = "/api/warehouse/manage/material/chooseMaterialList";
 
+  /// 编辑的物资列表
+  static const String kMaterialEditListUrl = "/api/warehouse/manage/materialInRelation/selectMaterialInRelationListByPage";
+
   /// 新增入库
   static const String kAddEntryUrl = "/api/warehouse/app/in/addWareHouseIn";
+
+  /// 编辑入库基础信息
+  static const String kEditAddEntryBaseInfoUrl = "/api/warehouse/app/in/editWareHouseIn";
+
+  /// 物资入库-编辑-新增物资
+  static const String kEditAddEntryMaterialUrl = "/api/warehouse/manage/materialInRelation/addMaterialInRelationList";
+
+  /// 物资入库-编辑-删除物资
+  static const String kEditDeleteEntryMaterialUrl = "/api/warehouse/manage/materialInRelation/deleteMaterialInRelation";
+
+  /// 物资入库-编辑-编辑物资
+  static const String kEditEntryMaterialUrl = "/api/warehouse/manage/materialInRelation/editMaterialInRelation";
 
   /// 入库详情
   static const String kMaterialEntryDetailUrl = "/api/warehouse/app/in/detailWareHouseIn";
@@ -126,6 +141,15 @@ class SCUrl {
 
   /// 新增出库
   static const String kAddOutboundUrl = "/api/warehouse/app/out/addWareHouseOut";
+
+  /// 编辑出库基础信息
+  static const String kEditOutboundBaseInfoUrl = "/api/warehouse/app/out/editWareHouseOut";
+
+  /// 物资出库-编辑-删除物资
+  static const String kEditDeleteOutEntryUrl = "/api/warehouse/manage/materialOutRelation/deleteMaterialOutRelation";
+
+  /// 物资出库-编辑-编辑物资
+  static const String kEditOutEntryUrl = "/api/warehouse/manage/materialOutRelation/editMaterialOutRelation";
 
   /// 出库详情
   static const String kMaterialOutboundDetailUrl = "/api/warehouse/app/out/detailWareHouseOut";

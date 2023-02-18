@@ -12,7 +12,6 @@ import '../Model/sc_wareHouse_model.dart';
 /// 新增入库controller
 
 class SCAddEntryController extends GetxController {
-
   /// 仓库列表数组
   List<SCWareHouseModel> wareHouseList = [];
 
@@ -49,6 +48,9 @@ class SCAddEntryController extends GetxController {
   /// 备注
   String remark = '';
 
+  /// 主键id
+  String editId = '';
+
   @override
   onInit() {
     super.onInit();
@@ -60,24 +62,32 @@ class SCAddEntryController extends GetxController {
   initEditParams() {
     if (isEdit && editParams.isNotEmpty) {
       Map<String, dynamic> params = editParams;
+
       /// 仓库名称
       warehouseName = params['wareHouseName'];
+
       /// 仓库id
       wareHouseId = params['wareHouseId'];
+
       /// 类型
       type = params['typeName'];
+
       /// 仓库类型id
       typeID = params['type'];
+
       /// 备注
       remark = params['remark'];
-      for (int i=0; i<wareHouseList.length; i++) {
+
+      /// 主键id
+      editId = params['id'];
+      for (int i = 0; i < wareHouseList.length; i++) {
         SCWareHouseModel model = wareHouseList[i];
         if (model.id == wareHouseId) {
           nameIndex = i;
           break;
         }
       }
-      for (int i=0; i<entryList.length; i++) {
+      for (int i = 0; i < entryList.length; i++) {
         SCEntryTypeModel model = entryList[i];
         if (model.code == typeID) {
           typeIndex = i;
@@ -111,6 +121,87 @@ class SCAddEntryController extends GetxController {
         failure: (value) {
           SCToast.showTip(value['message']);
         });
+  }
+
+  /// 编辑入库基础信息
+  editMaterialBaseInfo({required dynamic data}) {
+    List materialList = data['materialList'];
+    var params = {
+      "id": editId,
+      "remark": data['remark'],
+      "type": data['typeId'],
+      "typeName": data['typeName'],
+      "wareHouseId": data['wareHouseId'],
+      "wareHouseName": data['wareHouseName'],
+      "status": 0
+    };
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kEditAddEntryBaseInfoUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          SCScaffoldManager.instance.eventBus
+              .fire({'key': SCKey.kRefreshMaterialEntryPage});
+          SCRouterHelper.back(null);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 编辑-新增物资
+  editAddMaterial({required List list, Function(bool success)? completeHandler}) {
+    print("入库物资===${list}");
+    var params = {"inId": editId, "materialInRelations": list};
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kEditAddEntryMaterialUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          completeHandler?.call(true);
+        },
+        failure: (value) {
+          completeHandler?.call(false);
+        });
+  }
+
+  /// 编辑-删除物资
+  editDeleteMaterial({required String materialInRelationId, Function(bool success)? completeHandler}) {
+    var params = {"materialInRelationId": materialInRelationId};
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kEditDeleteEntryMaterialUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          completeHandler?.call(true);
+        },
+        failure: (value) {
+          completeHandler?.call(false);
+        });
+  }
+
+  /// 编辑-编辑物资
+  editMaterial({required List list, Function(bool success)? completeHandler}) {
+    for(SCMaterialListModel model in list) {
+      print("物资数据===${model.toJson()}");
+      var params = model.toJson();
+      params['num'] = model.localNum;
+      params['materialName'] = model.name;
+      SCLoadingUtils.show();
+      SCHttpManager.instance.post(
+          url: SCUrl.kEditEntryMaterialUrl,
+          params: params,
+          success: (value) {
+            SCLoadingUtils.hide();
+            print("编辑成功");
+          },
+          failure: (value) {
+            print("编辑失败");
+          });
+    }
   }
 
   /// 仓库列表

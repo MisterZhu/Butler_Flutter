@@ -65,6 +65,9 @@ class SCAddOutboundController extends GetxController {
   /// 领用组织(或部门)ID（只有出库类型为领料出库时才传）
   String fetchOrgId = '';
 
+  /// 主键id
+  String editId = '';
+
   @override
   onInit() {
     super.onInit();
@@ -90,6 +93,7 @@ class SCAddOutboundController extends GetxController {
       fetchOrgName = params['fetchOrgName'];
       fetchUserId = params['fetchUserId'];
       fetchUserName = params['fetchUserName'];
+      editId = params['id'];
       for (int i=0; i<wareHouseList.length; i++) {
         SCWareHouseModel model = wareHouseList[i];
         if (model.id == wareHouseId) {
@@ -141,6 +145,39 @@ class SCAddOutboundController extends GetxController {
         });
   }
 
+  /// 编辑出库基础信息
+  editMaterialBaseInfo({required dynamic data}) {
+    var params = {
+      "id": editId,
+      "remark": data['remark'],
+      "status": 0,
+      "type": data['typeId'],
+      "typeName": data['typeName'],
+      "wareHouseId": data['wareHouseId'],
+      "wareHouseName": data['wareHouseName']
+    };
+    if (fetchOrgId.isNotEmpty && data['typeName'] == '领料出库') {
+      params.addAll({"fetchOrgId": fetchOrgId});
+    }
+    if (fetchUserId.isNotEmpty && data['typeName'] == '领料出库') {
+      params.addAll({"fetchUserId": fetchUserId});
+    }
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kEditOutboundBaseInfoUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          SCScaffoldManager.instance.eventBus
+              .fire({'key': SCKey.kRefreshMaterialOutboundPage});
+          SCRouterHelper.back(null);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
+
   /// 仓库列表
   loadWareHouseList() {
     SCLoadingUtils.show();
@@ -186,6 +223,45 @@ class SCAddOutboundController extends GetxController {
       selectedList.removeAt(index);
       update();
     }
+  }
+
+  /// 编辑-编辑物资
+  editMaterial({required List list, Function(bool success)? completeHandler}) {
+    for(SCMaterialListModel model in list) {
+      print("物资数据===${model.toJson()}");
+      var params = model.toJson();
+      params['num'] = model.localNum;
+      params['materialName'] = model.name;
+      SCLoadingUtils.show();
+      SCHttpManager.instance.post(
+          url: SCUrl.kEditOutEntryUrl,
+          params: params,
+          success: (value) {
+            SCLoadingUtils.hide();
+            SCScaffoldManager.instance.eventBus.fire({"key" : SCKey.kRefreshMaterialOutboundPage});
+            print("编辑成功");
+          },
+          failure: (value) {
+            print("编辑失败");
+          });
+    }
+  }
+
+  /// 编辑-删除物资
+  editDeleteMaterial({required String materialInRelationId, Function(bool success)? completeHandler}) {
+    var params = {"materialInRelationId": materialInRelationId};
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kEditDeleteOutEntryUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          SCScaffoldManager.instance.eventBus.fire({"key" : SCKey.kRefreshMaterialOutboundPage});
+          completeHandler?.call(true);
+        },
+        failure: (value) {
+          completeHandler?.call(false);
+        });
   }
 
 }
