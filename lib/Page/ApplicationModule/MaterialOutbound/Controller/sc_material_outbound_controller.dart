@@ -130,12 +130,10 @@ class SCMaterialOutboundController extends GetxController {
 
   /// 出库类型
   loadOutboundType(Function? resultHandler) {
-    SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kWareHouseTypeUrl,
         params: {'dictionaryCode' : 'OUTBOUND'},
         success: (value) {
-          SCLoadingUtils.hide();
           outboundList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
           update();
           resultHandler?.call();

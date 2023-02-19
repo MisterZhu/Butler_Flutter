@@ -191,6 +191,7 @@ class SCAddOutboundController extends GetxController {
           update();
         },
         failure: (value) {
+          SCLoadingUtils.hide();
         });
   }
 
@@ -207,6 +208,7 @@ class SCAddOutboundController extends GetxController {
           update();
         },
         failure: (value) {
+          SCLoadingUtils.hide();
         });
   }
 
@@ -242,6 +244,7 @@ class SCAddOutboundController extends GetxController {
             print("编辑成功");
           },
           failure: (value) {
+            SCLoadingUtils.hide();
             print("编辑失败");
           });
     }
@@ -260,6 +263,7 @@ class SCAddOutboundController extends GetxController {
           completeHandler?.call(true);
         },
         failure: (value) {
+          SCLoadingUtils.hide();
           completeHandler?.call(false);
         });
   }

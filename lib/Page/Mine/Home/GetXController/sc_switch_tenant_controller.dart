@@ -38,11 +38,13 @@ class SCSwitchTenantController extends GetxController {
         url: SCUrl.kSwitchTenantUrl,
         params: null,
         success: (value) {
+          SCLoadingUtils.hide();
           dataList = List<SCTenantListModel>.from(
               value.map((e) => SCTenantListModel.fromJson(e)).toList());
           update();
         },
         failure: (value) {
+          SCLoadingUtils.hide();
           log('appList失败===$value');
         });
   }
@@ -54,16 +56,18 @@ class SCSwitchTenantController extends GetxController {
         url: SCUrl.kSwitchTenantUrl,
         params: {"tenantId": tenantId, "userId": userId},
         success: (value) {
+          SCLoadingUtils.hide();
           var userParams = value['userInfoV'];
           SCUserModel userModel = SCUserModel.fromJson(userParams);
           SCScaffoldManager.instance.user = userModel;
           SCScaffoldManager.instance.isLogin = true;
-          var params = {"key" : SCKey.kSwitchEnterprise};
+          var params = {"key": SCKey.kSwitchEnterprise};
           SCScaffoldManager.instance.eventBus.fire(params);
           SCRouterHelper.back(null);
           Get.forceAppUpdate();
         },
         failure: (value) {
+          SCLoadingUtils.hide();
           if (value['message'] != null) {
             String message = value['message'];
             SCToast.showTip(message);

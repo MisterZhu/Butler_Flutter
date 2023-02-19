@@ -204,7 +204,9 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
   outboundConfirmAction(String outTime, String input) {
     controller.outboundConfirm(outTime: outTime, remark: input, successHandler: () {
       SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshMaterialOutboundPage});
-      SCRouterHelper.back( null);
+      Future.delayed(const Duration(seconds: 2), (){
+        SCRouterHelper.back( null);
+      });
     });
   }
 }

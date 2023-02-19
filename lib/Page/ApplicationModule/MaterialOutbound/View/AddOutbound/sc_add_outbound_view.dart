@@ -253,10 +253,14 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
 
   /// 删除物资
   deleteAction(int index) {
-    SCMaterialListModel model = widget.state.selectedList[index];
-    print("物资id===${model.id}");
-    widget.state.deleteMaterial(index);
-    widget.state.editDeleteMaterial(materialInRelationId: model.id ?? '');
+    if (widget.state.isEdit) {
+      SCMaterialListModel model = widget.state.selectedList[index];
+      print("物资id===${model.id}");
+      widget.state.deleteMaterial(index);
+      widget.state.editDeleteMaterial(materialInRelationId: model.id ?? '');
+    } else {
+      widget.state.deleteMaterial(index);
+    }
   }
 
   /// 暂存
@@ -497,7 +501,11 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
 
   /// 编辑单条物资
   editOneMaterial(int index) {
-    List<SCMaterialListModel> list = [widget.state.selectedList[index]];
-    widget.state.editMaterial(list: list);
+    if (widget.state.isEdit) {
+      List<SCMaterialListModel> list = [widget.state.selectedList[index]];
+      widget.state.editMaterial(list: list);
+    } else {
+      widget.state.update();
+    }
   }
 }

@@ -88,6 +88,7 @@ class SCLoginController extends GetxController {
           resultHandler(true);
         },
         failure: (value) {
+          SCLoadingUtils.hide();
           if (value['message'] != null) {
             String message = value['message'];
             SCToast.showTip(message);
@@ -103,6 +104,7 @@ class SCLoginController extends GetxController {
         url: SCUrl.kPhoneCodeLoginUrl,
         params: {'mobileNum' : phone, 'code' : code, 'appCode' : SCDefaultValue.appCode},
         success: (value) {
+          SCLoadingUtils.hide();
           var userParams = value['userInfoV'];
           SCUserModel userModel = SCUserModel.fromJson(userParams);
           SCScaffoldManager.instance.user = userModel;

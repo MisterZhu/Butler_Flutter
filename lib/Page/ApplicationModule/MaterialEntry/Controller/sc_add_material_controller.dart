@@ -61,6 +61,7 @@ class SCAddMaterialController extends GetxController {
         url: SCUrl.kMaterialListUrl,
         params: params,
         success: (value) {
+          SCLoadingUtils.hide();
           List list = value['records'];
           if (isLoadMore == true) {
             materialList.addAll(List<SCMaterialListModel>.from(
@@ -71,7 +72,7 @@ class SCAddMaterialController extends GetxController {
           }
           for (SCMaterialListModel model in materialList) {
             for (SCMaterialListModel subModel in originalList) {
-              if (model.id == subModel.materialId) {
+              if (model.id == subModel.id) {
                 model.localNum = subModel.localNum;
                 model.isSelect = true;
               }

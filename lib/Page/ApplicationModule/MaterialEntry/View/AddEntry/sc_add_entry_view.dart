@@ -136,8 +136,12 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
           deleteAction(subIndex);
         },
         updateNumAction: (int index, int value) {
-          widget.state.update();
-          editOneMaterial(index);
+          if (widget.state.isEdit) {
+            widget.state.update();
+            editOneMaterial(index);
+          } else {
+            widget.state.update();
+          }
         },
       );
     } else {
@@ -234,10 +238,13 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
 
   /// 删除物资
   deleteAction(int index) {
-    SCMaterialListModel model = widget.state.selectedList[index];
-    print("物资id===${model.id}");
-    widget.state.deleteMaterial(index);
-    widget.state.editDeleteMaterial(materialInRelationId: model.id ?? '');
+    if (widget.state.isEdit) {
+      SCMaterialListModel model = widget.state.selectedList[index];
+      widget.state.deleteMaterial(index);
+      widget.state.editDeleteMaterial(materialInRelationId: model.id ?? '');
+    } else {
+      widget.state.deleteMaterial(index);
+    }
   }
 
   /// 暂存

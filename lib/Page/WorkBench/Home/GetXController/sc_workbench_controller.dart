@@ -21,7 +21,6 @@ import '../Model/sc_work_order_model.dart';
 /// 工作台Controller
 
 class SCWorkBenchController extends GetxController {
-
   String pageName = '';
 
   String tag = '';
@@ -69,9 +68,9 @@ class SCWorkBenchController extends GetxController {
 
   /// 板块数据源
   List plateList = [
-    {"type" : 0, "title" : "工单处理"},
-    {"type" : 1, "title" : "实地核验"},
-    {"type" : 2, "title" : "订单处理"},
+    {"type": 0, "title": "工单处理"},
+    {"type": 1, "title": "实地核验"},
+    {"type": 2, "title": "订单处理"},
   ];
 
   @override
@@ -79,7 +78,6 @@ class SCWorkBenchController extends GetxController {
     super.onInit();
     loadData();
   }
-
 
   /// 更新当前工单index
   updateCurrentWorkOrderIndex(int value) {
@@ -105,8 +103,9 @@ class SCWorkBenchController extends GetxController {
   }
 
   /// 加载更多
-  Future loadMore() async{
-    if (currentWorkOrderIndex == 0) {/// 待处理
+  Future loadMore() async {
+    if (currentWorkOrderIndex == 0) {
+      /// 待处理
       if (currentPlateIndex == 0) {
         return getWorkOrderList(isMore: true);
       } else if (currentPlateIndex == 1) {
@@ -114,12 +113,13 @@ class SCWorkBenchController extends GetxController {
       } else {
         return getOrderFormWaitList(isMore: true);
       }
-    } else {/// 处理中
+    } else {
+      /// 处理中
       if (currentPlateIndex == 0) {
         return getProcessingWorkOrderList(isMore: true);
       } else if (currentPlateIndex == 1) {
         return getRealVerificationProcessingList(isMore: true);
-      } else{
+      } else {
         return getOrderFormProcessingList(isMore: true);
       }
     }
@@ -212,46 +212,42 @@ class SCWorkBenchController extends GetxController {
               SCDefaultConfigModel model = SCDefaultConfigModel.fromJson(value);
               SCScaffoldManager.instance.defaultConfigModel = model;
               SCChangeSpaceController controller =
-              Get.find<SCChangeSpaceController>();
-              controller.initBase(
-                  success: (String spaceNameValue){
-                    spaceName = spaceNameValue;
-                    update();
-                  }
-              );
+                  Get.find<SCChangeSpaceController>();
+              controller.initBase(success: (String spaceNameValue) {
+                spaceName = spaceNameValue;
+                update();
+              });
             } else {
-              SCSpaceModel model = SCSpaceModel.fromJson(
-                  {
-                    "id" : "",
-                    "pid" : "",
-                    "flag" : 0,
-                    "type" : 1,
-                    "floor" : "",
-                    "title" : SCScaffoldManager.instance.user.tenantName,
-                    "value" : "",
-                    "isLeaf" : false,
-                    "unable" : 0,
-                    "iconUrl" : "",
-                    "children" : [],
-                    "communityId" : ""
-                  });
+              SCSpaceModel model = SCSpaceModel.fromJson({
+                "id": "",
+                "pid": "",
+                "flag": 0,
+                "type": 1,
+                "floor": "",
+                "title": SCScaffoldManager.instance.user.tenantName,
+                "value": "",
+                "isLeaf": false,
+                "unable": 0,
+                "iconUrl": "",
+                "children": [],
+                "communityId": ""
+              });
               var params = {
-                "id" : SCScaffoldManager.instance.defaultConfigModel?.id ,
-                "userId" : SCScaffoldManager.instance.user.id,
-                "tenantId" : SCScaffoldManager.instance.user.tenantId,
-                "type" : 1,
-                "jsonValue" : jsonEncode([model])
+                "id": SCScaffoldManager.instance.defaultConfigModel?.id,
+                "userId": SCScaffoldManager.instance.user.id,
+                "tenantId": SCScaffoldManager.instance.user.tenantId,
+                "type": 1,
+                "jsonValue": jsonEncode([model])
               };
-              SCDefaultConfigModel defModel = SCDefaultConfigModel.fromJson(params);
+              SCDefaultConfigModel defModel =
+                  SCDefaultConfigModel.fromJson(params);
               SCScaffoldManager.instance.defaultConfigModel = defModel;
               SCChangeSpaceController controller =
-              Get.find<SCChangeSpaceController>();
-              controller.initBase(
-                  success: (String spaceNameValue){
-                    spaceName = spaceNameValue;
-                    update();
-                  }
-              );
+                  Get.find<SCChangeSpaceController>();
+              controller.initBase(success: (String spaceNameValue) {
+                spaceName = spaceNameValue;
+                update();
+              });
             }
           });
     } else {
@@ -304,28 +300,30 @@ class SCWorkBenchController extends GetxController {
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
-         if (value is Map) {
-           List list = value['records'];
-           if (isLoadMore == true) {
-             waitDataList.addAll(List<SCWorkOrderModel>.from(
-                 list.map((e) => SCWorkOrderModel.fromJson(e)).toList()));
-           } else {
-             waitDataList = List<SCWorkOrderModel>.from(
-                 list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
-           }
-         } else {
-           if (isLoadMore == false) {
-             waitDataList = [];
-           }
-         }
+          if (value is Map) {
+            List list = value['records'];
+            if (isLoadMore == true) {
+              waitDataList.addAll(List<SCWorkOrderModel>.from(
+                  list.map((e) => SCWorkOrderModel.fromJson(e)).toList()));
+            } else {
+              waitDataList = List<SCWorkOrderModel>.from(
+                  list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
+            }
+          } else {
+            if (isLoadMore == false) {
+              waitDataList = [];
+            }
+          }
           update();
           waitController.dataList = waitDataList;
           waitController.update();
-        }, failure: (value) {
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
           if (currentPlateIndex == 0 && isLoadMore == true) {
             waitPageNum--;
           }
-    });
+        });
   }
 
   /// 工单处理-处理中数据
@@ -378,11 +376,13 @@ class SCWorkBenchController extends GetxController {
           update();
           processingController.dataList = processingDataList;
           processingController.update();
-        }, failure: (value){
-      if (currentPlateIndex == 0 && isLoadMore == true) {
-        processingPageNum--;
-      }
-    });
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+          if (currentPlateIndex == 0 && isLoadMore == true) {
+            processingPageNum--;
+          }
+        });
   }
 
   /// 实地核验-待处理数据
@@ -390,7 +390,7 @@ class SCWorkBenchController extends GetxController {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       waitPageNum++;
-    }  else {
+    } else {
       SCLoadingUtils.show();
     }
     var params = {
@@ -398,7 +398,7 @@ class SCWorkBenchController extends GetxController {
         "fields": [
           {"map": {}, "method": 1, "name": "dealStatus", "value": 0}
         ],
-        "specialMap" : {}
+        "specialMap": {}
       },
       "count": true,
       "last": true,
@@ -416,11 +416,13 @@ class SCWorkBenchController extends GetxController {
           if (value is Map) {
             List list = value['records'];
             if (isLoadMore == true) {
-              waitDataList.addAll(List<SCVerificationOrderModel>.from(
-                  list.map((e) => SCVerificationOrderModel.fromJson(e)).toList()));
+              waitDataList.addAll(List<SCVerificationOrderModel>.from(list
+                  .map((e) => SCVerificationOrderModel.fromJson(e))
+                  .toList()));
             } else {
-              waitDataList = List<SCVerificationOrderModel>.from(
-                  list.map((e) => SCVerificationOrderModel.fromJson(e)).toList());
+              waitDataList = List<SCVerificationOrderModel>.from(list
+                  .map((e) => SCVerificationOrderModel.fromJson(e))
+                  .toList());
             }
           } else {
             if (isLoadMore == false) {
@@ -430,11 +432,13 @@ class SCWorkBenchController extends GetxController {
           update();
           waitController.dataList = waitDataList;
           waitController.update();
-        }, failure: (value) {
-      if (currentPlateIndex == 1 && isLoadMore == true) {
-        waitPageNum--;
-      }
-    });
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+          if (currentPlateIndex == 1 && isLoadMore == true) {
+            waitPageNum--;
+          }
+        });
   }
 
   /// 实地核验-处理中数据
@@ -442,7 +446,7 @@ class SCWorkBenchController extends GetxController {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       processingPageNum++;
-    }  else {
+    } else {
       SCLoadingUtils.show();
     }
     var params = {
@@ -450,7 +454,7 @@ class SCWorkBenchController extends GetxController {
         "fields": [
           {"map": {}, "method": 1, "name": "dealStatus", "value": 1}
         ],
-        "specialMap" : {}
+        "specialMap": {}
       },
       "count": true,
       "last": true,
@@ -468,11 +472,13 @@ class SCWorkBenchController extends GetxController {
           if (value is Map) {
             List list = value['records'];
             if (isLoadMore == true) {
-              processingDataList.addAll(List<SCVerificationOrderModel>.from(
-                  list.map((e) => SCVerificationOrderModel.fromJson(e)).toList()));
+              processingDataList.addAll(List<SCVerificationOrderModel>.from(list
+                  .map((e) => SCVerificationOrderModel.fromJson(e))
+                  .toList()));
             } else {
-              processingDataList = List<SCVerificationOrderModel>.from(
-                  list.map((e) => SCVerificationOrderModel.fromJson(e)).toList());
+              processingDataList = List<SCVerificationOrderModel>.from(list
+                  .map((e) => SCVerificationOrderModel.fromJson(e))
+                  .toList());
             }
           } else {
             if (isLoadMore == false) {
@@ -482,11 +488,13 @@ class SCWorkBenchController extends GetxController {
           update();
           processingController.dataList = processingDataList;
           processingController.update();
-        }, failure: (value) {
-      if (currentPlateIndex == 1 && isLoadMore == true) {
-        processingPageNum--;
-      }
-    });
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+          if (currentPlateIndex == 1 && isLoadMore == true) {
+            processingPageNum--;
+          }
+        });
   }
 
   /// 订单处理-待处理数据
@@ -528,11 +536,13 @@ class SCWorkBenchController extends GetxController {
           update();
           waitController.dataList = waitDataList;
           waitController.update();
-        }, failure: (value){
-      if (currentPlateIndex == 2 && isLoadMore == true) {
-        waitPageNum--;
-      }
-    });
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+          if (currentPlateIndex == 2 && isLoadMore == true) {
+            waitPageNum--;
+          }
+        });
   }
 
   /// 订单处理-处理中数据
@@ -574,11 +584,13 @@ class SCWorkBenchController extends GetxController {
           update();
           processingController.dataList = processingDataList;
           processingController.update();
-        }, failure: (value){
-      if (currentPlateIndex == 2 && isLoadMore == true) {
-        processingPageNum--;
-      }
-    });
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+          if (currentPlateIndex == 2 && isLoadMore == true) {
+            processingPageNum--;
+          }
+        });
   }
 
   /// 定时器
@@ -615,7 +627,11 @@ class SCWorkBenchController extends GetxController {
 
   /// 实地核验订单点击
   Future verificationOrderDetailTap(String id) {
-    return SCHttpManager.instance.post(url: SCUrl.kDealActualVerifyUrl, params: {"id" : id}, success: (value){}, failure: (value){});
+    return SCHttpManager.instance.post(
+        url: SCUrl.kDealActualVerifyUrl,
+        params: {"id": id},
+        success: (value) {},
+        failure: (value) {});
   }
 
   /// 获取定位

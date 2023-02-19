@@ -109,6 +109,14 @@ class SCApplicationPageState extends State<SCApplicationPage>
 
   /// 应用详情
   itemDetail(String title, String url) async {
+    if (title == "物资入库") {
+      SCRouterHelper.pathPage(SCRouterPath.materialEntryPage, null);
+      return;
+    } else if (title == "物资出库") {
+      SCRouterHelper.pathPage(SCRouterPath.materialOutboundPage, null);
+      return;
+    }
+
     if (Platform.isAndroid) {
       String realUrl = SCUtils.getWebViewUrl(url: url, needJointParams: true);
 

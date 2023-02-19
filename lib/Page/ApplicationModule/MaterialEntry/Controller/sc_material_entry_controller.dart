@@ -97,6 +97,7 @@ class SCMaterialEntryController extends GetxController {
         url: SCUrl.kMaterialEntryListUrl,
         params: params,
         success: (value) {
+          SCLoadingUtils.hide();
           if (value is Map) {
             List list = value['records'];
             if (isLoadMore == true) {

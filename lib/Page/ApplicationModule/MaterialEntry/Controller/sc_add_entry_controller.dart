@@ -163,6 +163,7 @@ class SCAddEntryController extends GetxController {
           completeHandler?.call(true);
         },
         failure: (value) {
+          SCLoadingUtils.hide();
           completeHandler?.call(false);
         });
   }
@@ -179,6 +180,7 @@ class SCAddEntryController extends GetxController {
           completeHandler?.call(true);
         },
         failure: (value) {
+          SCLoadingUtils.hide();
           completeHandler?.call(false);
         });
   }
@@ -199,6 +201,7 @@ class SCAddEntryController extends GetxController {
             print("编辑成功");
           },
           failure: (value) {
+            SCLoadingUtils.hide();
             print("编辑失败");
           });
     }
@@ -217,7 +220,9 @@ class SCAddEntryController extends GetxController {
           initEditParams();
           update();
         },
-        failure: (value) {});
+        failure: (value) {
+          SCLoadingUtils.hide();
+        });
   }
 
   /// 入库类型
@@ -233,7 +238,9 @@ class SCAddEntryController extends GetxController {
           initEditParams();
           update();
         },
-        failure: (value) {});
+        failure: (value) {
+          SCLoadingUtils.hide();
+        });
   }
 
   /// 更新已选的物资数据
