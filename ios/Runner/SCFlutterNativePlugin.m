@@ -65,7 +65,7 @@ static SCFlutterNativePlugin *plugin;
             [self showAlert:call.arguments];
         } else if ([call.method isEqualToString:kWebView]) {
             NSLog(@"调用webView参数:%@", call.arguments);
-            [self webView:call.arguments];
+            [self webView:call.arguments completeHandler:result];
         }
     }];
 }
@@ -90,13 +90,13 @@ static SCFlutterNativePlugin *plugin;
 }
 
 /// webView
-- (void)webView:(id)params {
+- (void)webView:(id)params completeHandler:(FlutterResult  _Nonnull)completeHandler{
     SCWebViewController *vc = [[SCWebViewController alloc] init];
-    vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    vc.modalPresentationStyle = UIModalPresentationFullScreen;
     vc.titleString = params[@"title"];
     vc.urlString = params[@"url"];
     [[SCCurrentViewController presentViewController] presentViewController:vc animated:YES completion:^{
-            
+        completeHandler(@{});
     }];
 }
 
