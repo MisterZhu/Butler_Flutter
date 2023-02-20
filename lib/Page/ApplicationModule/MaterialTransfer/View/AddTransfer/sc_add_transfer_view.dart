@@ -168,7 +168,7 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
       // 调入仓库
       currentIndex = widget.state.inNameIndex;
     } else if (index == 1) {
-      // 调出出仓库
+      // 调出仓库
       currentIndex = widget.state.outNameIndex;
     } else if (index == 2) {
       // 类型
@@ -220,7 +220,7 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
     /// 基础信息数组
     List baseInfoList = [
       {'isRequired': true,'title': '调入仓库','content': widget.state.inWareHouseName},
-      {'isRequired': true,'title': '调入仓库','content': widget.state.outWareHouseName},
+      {'isRequired': true,'title': '调出仓库','content': widget.state.outWareHouseName},
       {'isRequired': true, 'title': '类型', 'content': widget.state.type},
     ];
     return baseInfoList;
