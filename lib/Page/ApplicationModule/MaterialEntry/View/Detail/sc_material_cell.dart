@@ -151,7 +151,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
       width: 80.0,
       height: 80.0,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(2.0),
+          borderRadius: BorderRadius.circular(4.0),
           color: SCColors.color_D9D9D9),
       child: SCImage(url: url, width: 80.0, height: 80.0, fit: BoxFit.cover,)
     );
@@ -246,7 +246,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
       style: const TextStyle(
-          fontSize: SCFonts.f14,
+          fontSize: SCFonts.f16,
           fontWeight: FontWeight.w500,
           color: SCColors.color_1B1D33),
     );

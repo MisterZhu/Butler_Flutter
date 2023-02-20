@@ -103,13 +103,12 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
     );
   }
 
-
   /// 领用人view
   Widget userView() {
     return Row(
       children: [
         desLabel('领用人'),
-        contactView(model?.fetchUserName ?? '')
+        contactView(model?.fetchUserName ?? '', model?.fetchUserMobileNum ?? '')
       ],
     );
   }
@@ -129,7 +128,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
     return Row(
       children: [
         desLabel('操作人'),
-        contactView('${model?.creatorName}')
+        contactView('${model?.creatorName}', model?.mobileNum ?? '')
       ],
     );
   }
@@ -156,9 +155,12 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
 
   /// 备注
   Widget entryRemarkView() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [desLabel('备注'), textView(10, '${model?.remark}')],
+    return Offstage(
+      offstage: model?.remark == "",
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [desLabel('备注'), textView(10, '${model?.remark}')],
+      ),
     );
   }
 
@@ -179,7 +181,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   }
 
   /// 联系人
-  Widget contactView(String name) {
+  Widget contactView(String name, String mobile) {
     return Expanded(
         child: CupertinoButton(
             minSize: 22.0,
@@ -190,17 +192,6 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Offstage(
-                      offstage: name.isEmpty,
-                      child: Image.asset(
-                        SCAsset.iconPhone,
-                        width: 20.0,
-                        height: 20.0,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 8.0,
-                    ),
                     Text(
                       name,
                       maxLines: 1,
@@ -209,13 +200,24 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
                           fontSize: SCFonts.f14,
                           fontWeight: FontWeight.w400,
                           color: SCColors.color_1B1D33),
-                    )
+                    ),
+                    SizedBox(
+                      width: name.isEmpty ? 0.0 : 8.0,
+                    ),
+                    Offstage(
+                      offstage: name.isEmpty,
+                      child: Image.asset(
+                        SCAsset.iconContactPhone,
+                        width: 20.0,
+                        height: 20.0,
+                      ),
+                    ),
                   ],
                 )
               ],
             ),
             onPressed: () {
-              callAction?.call(model?.mobileNum ?? '');
+              callAction?.call(mobile);
             }));
   }
 
@@ -239,12 +241,12 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
                       color: SCColors.color_1B1D33),
                 ),
                 const SizedBox(
-                  width: 8.0,
+                  width: 4.0,
                 ),
                 Image.asset(
                   SCAsset.iconMaterialCopy,
-                  width: 20.0,
-                  height: 20.0,
+                  width: 12.0,
+                  height: 12.0,
                 ),
               ],
             ),

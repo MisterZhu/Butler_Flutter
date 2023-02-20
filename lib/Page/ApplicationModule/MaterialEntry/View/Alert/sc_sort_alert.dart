@@ -85,7 +85,7 @@ class SCSortAlertState extends State<SCSortAlert> {
         padding: const EdgeInsets.symmetric(horizontal: 10.0,),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4.0),
-          color: SCColors.color_F7F8FA,),
+          color: currentIndex == index ? SCColors.color_F7F8FA : SCColors.color_FFFFFF,),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
