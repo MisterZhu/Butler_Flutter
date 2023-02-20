@@ -1,19 +1,18 @@
 
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Constants/sc_default_value.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
-import '../../../../../Utils/Router/sc_router_path.dart';
-import '../../Controller/sc_material_entry_controller.dart';
+import '../../../../../Utils/sc_utils.dart';
 import '../../Controller/sc_material_search_controller.dart';
-import '../../Model/sc_material_entry_model.dart';
 import '../../Model/sc_material_list_model.dart';
+import '../Detail/sc_material_bottom_view.dart';
 import '../Detail/sc_material_cell.dart';
-import '../MaterialEntry/sc_material_entry_cell.dart';
 
 /// 物资搜索view
 
@@ -39,10 +38,30 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
   /// RefreshController
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
+  late StreamSubscription<bool> keyboardSubscription;
+
+  /// 是否弹起键盘
+  //bool isShowKeyboard = true;
+
   @override
-  initState() {
+  void initState() {
     super.initState();
     showKeyboard(context);
+    // var keyboardVisibilityController = KeyboardVisibilityController();
+    // isShowKeyboard = keyboardVisibilityController.isVisible;
+    // keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
+    //   setState(() {
+    //     isShowKeyboard = visible;
+    //   });
+    // });
+  }
+
+  @override
+  void dispose() {
+    //keyboardSubscription.cancel();
+    controller.dispose();
+    node.dispose();
+    super.dispose();
   }
 
   @override
@@ -64,9 +83,56 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           headerItem(),
-          Expanded(child: contentView())
+          Expanded(child: contentView()),
+          bottomView()
         ]
     );
+  }
+
+  /// 底部按钮
+  Widget bottomView() {
+    return Container(
+        width: double.infinity,
+        height: 54.0 + SCUtils().getBottomSafeArea(),
+        color: SCColors.color_FFFFFF,
+        padding: EdgeInsets.only(
+            left: 16.0,
+            top: 7.0,
+            right: 16.0,
+            bottom: SCUtils().getBottomSafeArea() + 7.0),
+        decoration: BoxDecoration(
+            color: SCColors.color_4285F4,
+            borderRadius: BorderRadius.circular(4.0)),
+        child: CupertinoButton(
+          padding: EdgeInsets.zero,
+          child: Text(
+            '确定',
+            style: const TextStyle(
+              fontSize: SCFonts.f16,
+              fontWeight: FontWeight.w400,
+              color: SCColors.color_FFFFFF,),
+          ),
+          onPressed: () {
+            sureAction();
+          },
+        )
+    );
+  }
+
+  /// 确定
+  sureAction() {
+    List<SCMaterialListModel> list = [];
+    for (SCMaterialListModel model in widget.state.materialList) {
+      bool isSelect = model.isSelect ?? false;
+      if (isSelect) {
+        list.add(model);
+      }
+    }
+    if (list.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectMaterialTip);
+    } else {
+      SCRouterHelper.back({'list': list});
+    }
   }
 
   /// 搜索
@@ -249,13 +315,6 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
               fontWeight: FontWeight.w400,
               color: SCColors.color_8D8E99)),
     );
-  }
-
-  @override
-  dispose() {
-    super.dispose();
-    controller.dispose();
-    node.dispose();
   }
 
   /// 下拉刷新

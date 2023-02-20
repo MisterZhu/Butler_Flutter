@@ -116,15 +116,13 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
               height: 38.0,
               alignment: Alignment.center,
               child: Image.asset(
-                  allSelected
-                      ? SCAsset.iconMaterialSelected
-                      : SCAsset.iconMaterialUnselect,
+                  allSelected ? SCAsset.iconMaterialSelected : SCAsset.iconMaterialUnselect,
                   width: 22.0,
                   height: 22.0),
             ),
           ),
           Expanded(
-              child: Column(
+            child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -236,8 +234,12 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
   /// 搜索
   searchAction() async{
     var backParams = await SCRouterHelper.pathPage(SCRouterPath.materialSearchPage, {'wareHouseId': widget.state.wareHouseId});
-    List<SCMaterialListModel> list = backParams['list'] ?? [];
-    widget.state.dealSearchData(list);
+    if (backParams != null) {
+      if (backParams['list'] != null) {
+        List<SCMaterialListModel> list = backParams['list'] ?? [];
+        widget.state.dealSearchData(list);
+      }
+    }
   }
 
   /// 点击header
