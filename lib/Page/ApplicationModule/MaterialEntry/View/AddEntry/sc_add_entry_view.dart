@@ -104,9 +104,10 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         itemCount: 4);
   }
 
+  /// cell
   Widget getCell(int index) {
     if (index == 0) {
-      return SCBasicInfoCell(
+      return SCBasicInfoCell(// 基础信息
         list: getBaseInfoList(),
         remark: widget.state.remark,
         selectAction: (index) {
@@ -125,9 +126,9 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         },
         addPhotoAction: (list) {},
       );
-    } else if (index == 1) {
+    } else if (index == 1) {// 物资信息
       return SCMaterialInfoCell(
-        showAdd: widget.state.isEdit ? false : true,
+        showAdd: true,
         list: widget.state.selectedList,
         addAction: () {
           addAction();
@@ -223,24 +224,38 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       SCToast.showTip(SCDefaultValue.selectWarehouseTip);
       return;
     }
+    if (widget.state.isEdit) {
+      print("编辑-添加物资");
+      addExitsMaterialAction();
+    } else {
+      print("添加物资");
+      addMaterialAction();
+    }
+  }
+
+  /// 新增物资-添加物资
+  addMaterialAction() async{
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId
     });
-    if (widget.state.isEdit) {
-      // 编辑
-      editAddMaterial(list);
-    } else {
-      // 添加
-      onlyAddMaterial(list);
-    }
+    onlyAddMaterial(list);
+  }
+
+  /// 编辑物资-添加既存物资
+  addExitsMaterialAction() async{
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
+      'data': widget.state.selectedList,
+      'wareHouseId': widget.state.wareHouseId,
+      'isEdit': true,
+    });
+    editAddMaterial(list);
   }
 
   /// 删除物资
   deleteAction(int index) {
     if (widget.state.isEdit) {
       SCMaterialListModel model = widget.state.selectedList[index];
-      widget.state.deleteMaterial(index);
       widget.state.editDeleteMaterial(materialInRelationId: model.id ?? '');
     } else {
       widget.state.deleteMaterial(index);
@@ -366,7 +381,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       for (SCMaterialListModel subModel in widget.state.selectedList) {
         if (model.id == subModel.materialId) {
           contains = true;
-          tempModel = subModel;
+          tempModel = SCMaterialListModel.fromJson(subModel.toJson());
           if (model.localNum == subModel.localNum) {
             needUpdate = false;
           } else {
@@ -396,11 +411,15 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
     List<SCMaterialListModel> newList = widget.state.selectedList;
     List addJsonList = [];
     for (SCMaterialListModel model in addList) {
+      model.inId = widget.state.editId;
+      model.materialId = model.id;
+      model.materialName = model.name;
       newList.add(model);
       var subParams = model.toJson();
       subParams['materialId'] = model.id;
       subParams['materialName'] = model.name;
       subParams['num'] = model.localNum;
+      subParams['inId'] = widget.state.editId;
       addJsonList.add(subParams);
       print("新增的物资===${subParams}");
     }

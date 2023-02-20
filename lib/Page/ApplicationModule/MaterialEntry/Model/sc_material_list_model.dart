@@ -190,12 +190,20 @@ class SCMaterialListModel {
     _name = value;
   }
 
+  set materialName(String? value) {
+    _materialName = value;
+  }
+
   set id(String? value) {
     _id = value;
   }
 
   set materialId(String? value) {
     _materialId = value;
+  }
+
+  set inId(String? value) {
+    _inId = value;
   }
 
   Map<String, dynamic> toJson() {

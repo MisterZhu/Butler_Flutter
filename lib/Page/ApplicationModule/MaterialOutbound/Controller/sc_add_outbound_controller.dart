@@ -7,6 +7,7 @@ import '../../../../Network/sc_url.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Utils/Router/sc_router_helper.dart';
 import '../../MaterialEntry/Model/sc_entry_type_model.dart';
+import '../../MaterialEntry/Model/sc_material_entry_detail_model.dart';
 import '../../MaterialEntry/Model/sc_material_list_model.dart';
 import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
 
@@ -250,6 +251,22 @@ class SCAddOutboundController extends GetxController {
     }
   }
 
+  /// 编辑-新增物资
+  editAddMaterial({required List list, Function(bool success)? completeHandler}) {
+    print("出库物资===${list}");
+    var params = {"outId": editId, "materialOutRelations": list};
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kEditOutMaterialUrl,
+        params: params,
+        success: (value) {
+          loadMaterialDetail();
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+        });
+  }
+
   /// 编辑-删除物资
   editDeleteMaterial({required String materialInRelationId, Function(bool success)? completeHandler}) {
     var params = {"materialInRelationId": materialInRelationId};
@@ -265,6 +282,28 @@ class SCAddOutboundController extends GetxController {
         failure: (value) {
           SCLoadingUtils.hide();
           completeHandler?.call(false);
+        });
+  }
+
+  /// 出库详情
+  loadMaterialDetail() {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.get(
+        url: SCUrl.kMaterialOutboundDetailUrl,
+        params: {'wareHouseOutId': editId},
+        success: (value) {
+          SCLoadingUtils.hide();
+          SCMaterialEntryDetailModel model = SCMaterialEntryDetailModel.fromJson(value);
+          List<SCMaterialListModel> materials = model.materials ?? [];
+          for (SCMaterialListModel subModel in materials) {
+            subModel.localNum = subModel.number ?? 1;
+            subModel.isSelect = true;
+            subModel.name = subModel.materialName ?? '';
+          }
+          updateSelectedMaterial(materials);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
         });
   }
 

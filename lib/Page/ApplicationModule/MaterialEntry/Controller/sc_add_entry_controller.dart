@@ -6,6 +6,7 @@ import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../Model/sc_entry_type_model.dart';
+import '../Model/sc_material_entry_detail_model.dart';
 import '../Model/sc_material_list_model.dart';
 import '../Model/sc_wareHouse_model.dart';
 
@@ -125,7 +126,6 @@ class SCAddEntryController extends GetxController {
 
   /// 编辑入库基础信息
   editMaterialBaseInfo({required dynamic data}) {
-    List materialList = data['materialList'];
     var params = {
       "id": editId,
       "remark": data['remark'],
@@ -159,12 +159,10 @@ class SCAddEntryController extends GetxController {
         url: SCUrl.kEditAddEntryMaterialUrl,
         params: params,
         success: (value) {
-          SCLoadingUtils.hide();
-          completeHandler?.call(true);
+          loadMaterialEntryDetail();
         },
         failure: (value) {
           SCLoadingUtils.hide();
-          completeHandler?.call(false);
         });
   }
 
@@ -176,12 +174,10 @@ class SCAddEntryController extends GetxController {
         url: SCUrl.kEditDeleteEntryMaterialUrl,
         params: params,
         success: (value) {
-          SCLoadingUtils.hide();
-          completeHandler?.call(true);
+          loadMaterialEntryDetail();
         },
         failure: (value) {
           SCLoadingUtils.hide();
-          completeHandler?.call(false);
         });
   }
 
@@ -197,7 +193,7 @@ class SCAddEntryController extends GetxController {
           url: SCUrl.kEditEntryMaterialUrl,
           params: params,
           success: (value) {
-            SCLoadingUtils.hide();
+            loadMaterialEntryDetail();
             print("编辑成功");
           },
           failure: (value) {
@@ -209,7 +205,6 @@ class SCAddEntryController extends GetxController {
 
   /// 仓库列表
   loadWareHouseList() {
-    SCLoadingUtils.show();
     SCHttpManager.instance.get(
         url: SCUrl.kWareHouseListUrl,
         params: null,
@@ -240,6 +235,28 @@ class SCAddEntryController extends GetxController {
         },
         failure: (value) {
           SCLoadingUtils.hide();
+        });
+  }
+
+  /// 入库详情
+  loadMaterialEntryDetail() {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.get(
+        url: SCUrl.kMaterialEntryDetailUrl,
+        params: {'wareHouseInId': editId},
+        success: (value) {
+          SCLoadingUtils.hide();
+          SCMaterialEntryDetailModel model = SCMaterialEntryDetailModel.fromJson(value);
+          List<SCMaterialListModel> materials = model.materials ?? [];
+          for (SCMaterialListModel subModel in materials) {
+            subModel.localNum = subModel.number ?? 1;
+            subModel.isSelect = true;
+            subModel.name = subModel.materialName ?? '';
+          }
+          updateSelectedMaterial(materials);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
         });
   }
 

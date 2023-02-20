@@ -282,7 +282,17 @@ doError(e) {
         case 201:
           {}
           break;
-
+        case 300:
+          {
+            if (error.response?.data is Map) {
+              var errorData = error.response?.data;
+              message = errorData['msg'] ?? SCDefaultValue.errorMessage;
+            } else {
+              message = error.response?.data.toString() ??
+                  SCDefaultValue.errorMessage;
+            }
+          }
+          break;
         case 400:
           {
             if (error.response?.data is Map) {

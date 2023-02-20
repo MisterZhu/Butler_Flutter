@@ -88,7 +88,6 @@ class SCRouterPath {
   /// 出入库搜索
   static String entrySearchPage = "/lib/Page/materialEntry/Page/sc_entry_search_page";
 
-
   /// *************************** 物资出库 ******************************/
 
   /// 物资出库

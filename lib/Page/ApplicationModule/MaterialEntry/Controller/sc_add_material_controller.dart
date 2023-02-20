@@ -22,6 +22,9 @@ class SCAddMaterialController extends GetxController {
   /// 分类名称
   String classifyName = '';
 
+  /// 是否是编辑
+  bool isEdit = false;
+
   /// 数据源
   List<SCMaterialListModel> materialList = [];
 
@@ -34,7 +37,7 @@ class SCAddMaterialController extends GetxController {
     //loadMaterialSortData();
   }
 
-  /// 物资列表数据
+  /// 新增物资-物资列表数据
   loadMaterialListData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
@@ -72,9 +75,18 @@ class SCAddMaterialController extends GetxController {
           }
           for (SCMaterialListModel model in materialList) {
             for (SCMaterialListModel subModel in originalList) {
-              if (model.id == subModel.id) {
-                model.localNum = subModel.localNum;
-                model.isSelect = true;
+              if (isEdit) {
+                print("编辑===");
+                if (model.id == subModel.materialId) {
+                  model.localNum = subModel.localNum;
+                  model.isSelect = true;
+                  model.materialId = subModel.materialId;
+                }
+              } else {
+                if (model.id == subModel.id) {
+                  model.localNum = subModel.localNum;
+                  model.isSelect = true;
+                }
               }
             }
           }

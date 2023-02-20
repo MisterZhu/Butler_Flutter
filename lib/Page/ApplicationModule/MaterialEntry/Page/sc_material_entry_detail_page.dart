@@ -88,9 +88,12 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
         tag: controllerTag,
         init: controller,
         builder: (state) {
-          return SCMaterialDetailListView(
-            state: controller,
-            type: SCWarehouseManageType.entry,
+          return Offstage(
+            offstage: !controller.success,
+            child: SCMaterialDetailListView(
+              state: controller,
+              type: SCWarehouseManageType.entry,
+            ),
           );
         });
   }

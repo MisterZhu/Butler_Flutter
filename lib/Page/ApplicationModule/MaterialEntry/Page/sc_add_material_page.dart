@@ -48,6 +48,7 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> {
   @override
   dispose() {
     SCScaffoldManager.instance.deleteGetXControllerTag((SCAddMaterialPage).toString(), addControllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCAddMaterialPage).toString(), categoryAlertControllerTag);
     addController.dispose();
     super.dispose();
   }
@@ -63,6 +64,9 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> {
       var wareHouseId = params['wareHouseId'];
       if (wareHouseId != null) {
         addController.wareHouseId = wareHouseId;
+      }
+      if (params.containsKey('isEdit')) {
+        addController.isEdit = params['isEdit'];
       }
     }
   }

@@ -87,9 +87,12 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
       tag: controllerTag,
       init: controller,
       builder: (state) {
-        return SCMaterialDetailListView(
-          state: controller,
-          type: SCWarehouseManageType.outbound,
+        return Offstage(
+          offstage: !controller.success,
+          child: SCMaterialDetailListView(
+            state: controller,
+            type: SCWarehouseManageType.outbound,
+          ),
         );
       });
   }

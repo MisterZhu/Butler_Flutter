@@ -145,6 +145,9 @@ class SCUrl {
   /// 编辑出库基础信息
   static const String kEditOutboundBaseInfoUrl = "/api/warehouse/app/out/editWareHouseOut";
 
+  /// 物资出库-编辑-新增物资
+  static const String kEditOutMaterialUrl = "/api/warehouse/manage/materialOutRelation/addMaterialOutRelationList";
+
   /// 物资出库-编辑-删除物资
   static const String kEditDeleteOutEntryUrl = "/api/warehouse/manage/materialOutRelation/deleteMaterialOutRelation";
 
