@@ -78,7 +78,7 @@ class SCAddOutboundPageState extends State<SCAddOutboundPage> {
         title: controller.isEdit ? "编辑" : "新增出库",
         centerTitle: true,
         elevation: 0,
-        resizeToAvoidBottomInset: false, /// 页面不会随着键盘上移
+        resizeToAvoidBottomInset: true,
         body: body());
   }
 

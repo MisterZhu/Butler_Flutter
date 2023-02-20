@@ -87,6 +87,7 @@ class SCMaterialInfoCell extends StatelessWidget {
   Widget topRightItem() {
     if (showAdd) {
       return GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: () {
           addAction?.call();
         },

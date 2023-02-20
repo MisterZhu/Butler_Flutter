@@ -8,7 +8,6 @@ import 'package:smartcommunity/Utils/sc_utils.dart';
 /// 数量步进器
 
 class SCStepper extends StatefulWidget {
-
   SCStepper({Key? key, this.numChangeAction, this.num = 1}) : super(key: key);
 
   /// 数量改变回调
@@ -32,7 +31,11 @@ class SCStepperState extends State<SCStepper> {
   initState() {
     super.initState();
     int num = widget.num ?? 1;
-    textFiledController = TextEditingController.fromValue(TextEditingValue(text: '$num', selection: TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length))));
+    textFiledController = TextEditingController();
+    textFiledController.value = TextEditingValue(
+        text: num.toString(),
+        selection: TextSelection.fromPosition(TextPosition(
+            affinity: TextAffinity.downstream, offset: num.toString().length)));
   }
 
   @override
@@ -43,7 +46,11 @@ class SCStepperState extends State<SCStepper> {
 
   @override
   void didUpdateWidget(SCStepper oldWidget) {
-    textFiledController.text = '${widget.num}';
+    int num = widget.num ?? 1;
+    textFiledController.value = TextEditingValue(
+        text: num.toString(),
+        selection: TextSelection.fromPosition(TextPosition(
+            affinity: TextAffinity.downstream, offset: num.toString().length)));
     super.didUpdateWidget(oldWidget);
   }
 
@@ -130,7 +137,8 @@ class SCStepperState extends State<SCStepper> {
       cursorWidth: 2,
       focusNode: node,
       inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp(SCDefaultValue.positiveNumberReg))
+        FilteringTextInputFormatter.allow(
+            RegExp(SCDefaultValue.positiveNumberReg))
       ],
       style:
           const TextStyle(fontSize: SCFonts.f12, color: SCColors.color_5E5F66),
@@ -163,8 +171,11 @@ class SCStepperState extends State<SCStepper> {
     setState(() {
       int num = widget.num ?? 1;
       num++;
-      textFiledController.text = '$num';
-      textFiledController.selection = TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length));
+      textFiledController.value = TextEditingValue(
+          text: num.toString(),
+          selection: TextSelection.fromPosition(TextPosition(
+              affinity: TextAffinity.downstream,
+              offset: num.toString().length)));
       widget.numChangeAction?.call(num);
       widget.num = num;
     });
@@ -176,8 +187,11 @@ class SCStepperState extends State<SCStepper> {
       int num = widget.num ?? 1;
       if (num > 1) {
         num--;
-        textFiledController.text = '$num';
-        textFiledController.selection = TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length));
+        textFiledController.value = TextEditingValue(
+            text: num.toString(),
+            selection: TextSelection.fromPosition(TextPosition(
+                affinity: TextAffinity.downstream,
+                offset: num.toString().length)));
         widget.numChangeAction?.call(num);
         widget.num = num;
       }
@@ -190,7 +204,11 @@ class SCStepperState extends State<SCStepper> {
     if (value.isEmpty) {
       num = 1;
       textFiledController.text = '$num';
-      textFiledController.selection = TextSelection.fromPosition(TextPosition(affinity: TextAffinity.downstream, offset: '$num'.length));
+      textFiledController.value = TextEditingValue(
+          text: num.toString(),
+          selection: TextSelection.fromPosition(TextPosition(
+              affinity: TextAffinity.downstream,
+              offset: num.toString().length)));
       widget.numChangeAction?.call(num);
     } else {
       if (SCUtils().isPositiveNumber(value)) {
