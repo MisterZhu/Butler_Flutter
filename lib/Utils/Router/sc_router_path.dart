@@ -113,4 +113,15 @@ class SCRouterPath {
   /// 报损详情
   static String frmLossDetailPage = "/lib/Page/MaterialFrmLoss/Page/sc_material_frmLoss_detail_page";
 
+  /// *************************** 物资调拨 ******************************/
+
+  /// 物资调拨
+  static String materialTransferPage = "/lib/Page/MaterialTransfer/Page/sc_material_transfer_page";
+
+  /// 新增调拨
+  static String addTransferPage = "/lib/Page/MaterialTransfer/Page/sc_add_transfer_page";
+
+  /// 调拨详情
+  static String transferDetailPage = "/lib/Page/MaterialTransfer/Page/sc_material_transfer_detail_page";
+
 }

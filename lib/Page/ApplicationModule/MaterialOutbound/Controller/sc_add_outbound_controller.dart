@@ -16,13 +16,11 @@ import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
 
 class SCAddOutboundController extends GetxController {
 
-  String wareHouseName = '';
-
   /// 仓库列表数组
   List<SCWareHouseModel> wareHouseList = [];
 
   /// 出库类型数组
-  List<SCEntryTypeModel> outboundList = [];
+  List<SCEntryTypeModel> typeList = [];
 
   /// 已选择的物资数据
   List<SCMaterialListModel> selectedList = [];
@@ -34,7 +32,7 @@ class SCAddOutboundController extends GetxController {
   Map<String, dynamic> editParams = {};
 
   /// 仓库名称
-  String warehouseName = '';
+  String wareHouseName = '';
 
   /// 仓库id
   String wareHouseId = '';
@@ -81,7 +79,7 @@ class SCAddOutboundController extends GetxController {
     if (isEdit && editParams.isNotEmpty) {
       Map<String, dynamic> params = editParams;
       /// 仓库名称
-      warehouseName = params['wareHouseName'];
+      wareHouseName = params['wareHouseName'];
       /// 仓库id
       wareHouseId = params['wareHouseId'];
       /// 类型
@@ -102,8 +100,8 @@ class SCAddOutboundController extends GetxController {
           break;
         }
       }
-      for (int i=0; i<outboundList.length; i++) {
-        SCEntryTypeModel model = outboundList[i];
+      for (int i=0; i<typeList.length; i++) {
+        SCEntryTypeModel model = typeList[i];
         if (model.code == typeID) {
           typeIndex = i;
           break;
@@ -204,7 +202,7 @@ class SCAddOutboundController extends GetxController {
         params: {'dictionaryCode' : 'OUTBOUND'},
         success: (value) {
           SCLoadingUtils.hide();
-          outboundList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
+          typeList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
           initEditParams();
           update();
         },

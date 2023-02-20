@@ -56,6 +56,7 @@ class SCMaterialEntryDetailModel {
     String? fetchOrgId,
     String? fetchOrgName,
     String? fetchUserId,
+    String? fetchUserMobileNum,
     String? fetchUserName,}){
     _creator = creator;
     _creatorName = creatorName;
@@ -83,6 +84,7 @@ class SCMaterialEntryDetailModel {
     _fetchOrgName = fetchOrgName;
     _fetchUserId = fetchUserId;
     _fetchUserName = fetchUserName;
+    _fetchUserMobileNum = fetchUserMobileNum;
 }
 
   SCMaterialEntryDetailModel.fromJson(dynamic json) {
@@ -117,6 +119,7 @@ class SCMaterialEntryDetailModel {
     _fetchOrgName = json['fetchOrgName'];
     _fetchUserId = json['fetchUserId'];
     _fetchUserName = json['fetchUserName'];
+    _fetchUserMobileNum = json['fetchUserMobileNum'];
   }
   String? _creator;
   String? _creatorName;
@@ -144,6 +147,7 @@ class SCMaterialEntryDetailModel {
   String? _fetchOrgName;
   String? _fetchUserId;
   String? _fetchUserName;
+  String? _fetchUserMobileNum;
   SCMaterialEntryDetailModel copyWith({  String? creator,
   String? creatorName,
   String? gmtCreate,
@@ -169,6 +173,7 @@ class SCMaterialEntryDetailModel {
     String? fetchOrgName,
     String? fetchUserId,
     String? fetchUserName,
+    String? fetchUserMobileNum,
 }) => SCMaterialEntryDetailModel(  creator: creator ?? _creator,
   creatorName: creatorName ?? _creatorName,
   gmtCreate: gmtCreate ?? _gmtCreate,
@@ -195,6 +200,7 @@ class SCMaterialEntryDetailModel {
     fetchOrgName: fetchOrgName ?? _fetchOrgName,
     fetchUserId: fetchUserId ?? _fetchUserId,
     fetchUserName: fetchUserName ?? _fetchUserName,
+    fetchUserMobileNum: fetchUserMobileNum ?? _fetchUserMobileNum,
 );
   String? get creator => _creator;
   String? get creatorName => _creatorName;
@@ -222,7 +228,7 @@ class SCMaterialEntryDetailModel {
   String? get fetchOrgName => _fetchOrgName;
   String? get fetchUserId => _fetchUserId;
   String? get fetchUserName => _fetchUserName;
-
+  String? get fetchUserMobileNum => _fetchUserMobileNum;
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['creator'] = _creator;
@@ -253,6 +259,7 @@ class SCMaterialEntryDetailModel {
     map['fetchOrgName'] = _fetchOrgName;
     map['fetchUserId'] = _fetchUserId;
     map['fetchUserName'] = _fetchUserName;
+    map['fetchUserMobileNum'] = _fetchUserMobileNum;
     return map;
   }
 

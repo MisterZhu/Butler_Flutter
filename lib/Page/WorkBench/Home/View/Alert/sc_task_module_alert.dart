@@ -142,7 +142,7 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
     String name = model.name ?? '';
     bool isSelect = index == normalIndex;
     /// 背景颜色
-    Color bgColor = isSelect == true ? SCColors.color_EBF2FF : SCColors.color_EDEDF0;
+    Color bgColor = isSelect == true ? SCColors.color_EBF2FF : SCColors.color_F7F8FA;
     /// 边框颜色
     Color borderColor = isSelect == true ? SCColors.color_4285F4 : Colors.transparent;
     /// 边框宽度
@@ -170,11 +170,11 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            fontSize: SCFonts.f12,
+            fontSize: SCFonts.f14,
             fontWeight: FontWeight.w400,
             color: textColor),
           strutStyle: const StrutStyle(
-            fontSize: SCFonts.f12,
+            fontSize: SCFonts.f14,
             height: 1.25,
             forceStrutHeight: true,
           ),

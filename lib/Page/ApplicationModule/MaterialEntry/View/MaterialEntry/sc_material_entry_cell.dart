@@ -82,7 +82,6 @@ class SCMaterialEntryCell extends StatelessWidget {
 
   /// title
   Widget titleView() {
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
@@ -144,7 +143,7 @@ class SCMaterialEntryCell extends StatelessWidget {
           ),
           Expanded(
               child: Text(
-                model?.wareHouseName ?? '',
+                type == SCWarehouseManageType.transfer ? '调入：${model?.wareHouseName}  调出：${model?.wareHouseName}' : model?.wareHouseName ?? '',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -158,14 +157,6 @@ class SCMaterialEntryCell extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(
-                    SCAsset.iconPhone,
-                    width: 16.0,
-                    height: 16.0,
-                  ),
-                  const SizedBox(
-                    width: 8.0,
-                  ),
                   Text(
                     model?.creatorName ?? '',
                     maxLines: 1,
@@ -174,7 +165,15 @@ class SCMaterialEntryCell extends StatelessWidget {
                         fontSize: SCFonts.f12,
                         fontWeight: FontWeight.w400,
                         color: SCColors.color_5E5F66),
-                  )
+                  ),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  Image.asset(
+                    SCAsset.iconContactPhone,
+                    width: 16.0,
+                    height: 16.0,
+                  ),
                 ],
               ),
               onPressed: () {

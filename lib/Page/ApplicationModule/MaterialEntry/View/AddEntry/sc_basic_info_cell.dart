@@ -69,7 +69,6 @@ class SCBasicInfoCell extends StatelessWidget {
   /// contentItem
   Widget contentItem() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12.0),
       decoration: BoxDecoration(
         color: SCColors.color_FFFFFF,
         borderRadius: BorderRadius.circular(4.0)),
@@ -82,9 +81,9 @@ class SCBasicInfoCell extends StatelessWidget {
           line(),
           const SizedBox(height: 12.0,),
           inputItem(),
-          const SizedBox(height: 10.0,),
+          //const SizedBox(height: 10.0,),
           //photosItem(),
-          //const SizedBox(height: 12.0,),
+          const SizedBox(height: 12.0,),
         ])
     );
   }

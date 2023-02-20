@@ -109,7 +109,7 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
       decoration: const InputDecoration(
         contentPadding: EdgeInsets.zero,
         hintText: "请输入内容",
-        hintStyle: TextStyle(fontSize: 14, color: SCColors.color_B0B1B8),
+        hintStyle: TextStyle(fontSize: 16, color: SCColors.color_B0B1B8),
         focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(width: 0, color: Colors.transparent)),
         disabledBorder: OutlineInputBorder(
