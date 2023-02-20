@@ -5,13 +5,14 @@ import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
-import '../Model/sc_entry_type_model.dart';
-import '../Model/sc_material_list_model.dart';
-import '../Model/sc_wareHouse_model.dart';
+import '../../MaterialEntry/Model/sc_entry_type_model.dart';
+import '../../MaterialEntry/Model/sc_material_list_model.dart';
+import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
 
-/// 新增入库controller
 
-class SCAddEntryController extends GetxController {
+/// 新增调拨controller
+
+class SCAddTransferController extends GetxController {
   /// 仓库列表数组
   List<SCWareHouseModel> wareHouseList = [];
 
@@ -27,14 +28,23 @@ class SCAddEntryController extends GetxController {
   /// 编辑的参数
   Map<String, dynamic> editParams = {};
 
-  /// 仓库名称
-  String warehouseName = '';
+  /// 调入仓库名称
+  String inWareHouseName = '';
 
-  /// 仓库id
-  String wareHouseId = '';
+  /// 调入仓库id
+  String inWareHouseId = '';
 
-  /// 仓库index
-  int nameIndex = -1;
+  /// 调入仓库index
+  int inNameIndex = -1;
+
+  /// 调出仓库名称
+  String outWareHouseName = '';
+
+  /// 调出仓库id
+  String outWareHouseId = '';
+
+  /// 调出仓库index
+  int outNameIndex = -1;
 
   /// 类型
   String type = '';
@@ -63,16 +73,22 @@ class SCAddEntryController extends GetxController {
     if (isEdit && editParams.isNotEmpty) {
       Map<String, dynamic> params = editParams;
 
-      /// 仓库名称
-      warehouseName = params['wareHouseName'];
+      /// 调入仓库名称
+      inWareHouseName = params['inWareHouseName'];
 
-      /// 仓库id
-      wareHouseId = params['wareHouseId'];
+      /// 调入仓库id
+      inWareHouseId = params['inWarehouseId'];
+
+      /// 调出仓库名称
+      outWareHouseName = params['outWarehouseName'];
+
+      /// 调出仓库id
+      outWareHouseId = params['outWarehouseId'];
 
       /// 类型
       type = params['typeName'];
 
-      /// 仓库类型id
+      /// 类型id
       typeID = params['type'];
 
       /// 备注
@@ -82,8 +98,15 @@ class SCAddEntryController extends GetxController {
       editId = params['id'];
       for (int i = 0; i < wareHouseList.length; i++) {
         SCWareHouseModel model = wareHouseList[i];
-        if (model.id == wareHouseId) {
-          nameIndex = i;
+        if (model.id == inWareHouseId) {
+          inNameIndex = i;
+          break;
+        }
+      }
+      for (int i = 0; i < wareHouseList.length; i++) {
+        SCWareHouseModel model = wareHouseList[i];
+        if (model.id == outWareHouseId) {
+          outNameIndex = i;
           break;
         }
       }
@@ -97,16 +120,18 @@ class SCAddEntryController extends GetxController {
     }
   }
 
-  /// 新增入库, status=0暂存，1提交
-  addEntry({required int status, required dynamic data}) {
+  /// 新增调拨, status=0暂存，1提交
+  addTransfer({required int status, required dynamic data}) {
     var params = {
       "materials": data['materialList'],
       "remark": data['remark'],
       "status": status,
       "type": data['typeId'],
       "typeName": data['typeName'],
-      "wareHouseId": data['wareHouseId'],
-      "wareHouseName": data['wareHouseName']
+      "inWareHouseId": data['inWareHouseId'],
+      "inWareHouseName": data['inWareHouseName'],
+      "outWareHouseId": data['outWareHouseId'],
+      "outWareHouseName": data['outWareHouseName']
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
@@ -115,7 +140,7 @@ class SCAddEntryController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialEntryPage});
+              .fire({'key': SCKey.kRefreshMaterialTransferPage});
           SCRouterHelper.back(null);
         },
         failure: (value) {
@@ -131,8 +156,10 @@ class SCAddEntryController extends GetxController {
       "remark": data['remark'],
       "type": data['typeId'],
       "typeName": data['typeName'],
-      "wareHouseId": data['wareHouseId'],
-      "wareHouseName": data['wareHouseName'],
+      "inWareHouseId": data['inWareHouseId'],
+      "inWareHouseName": data['inWareHouseName'],
+      "outWareHouseId": data['outWareHouseId'],
+      "outWareHouseName": data['outWareHouseName'],
       "status": 0
     };
     SCLoadingUtils.show();
@@ -142,7 +169,7 @@ class SCAddEntryController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialEntryPage});
+              .fire({'key': SCKey.kRefreshMaterialTransferPage});
           SCRouterHelper.back(null);
         },
         failure: (value) {

@@ -6,8 +6,8 @@ import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../../Utils/sc_utils.dart';
-import '../../MaterialEntry/Controller/sc_add_entry_controller.dart';
-import '../../MaterialEntry/View/AddEntry/sc_add_entry_view.dart';
+import '../Controller/sc_add_transfer_controller.dart';
+import '../View/AddTransfer/sc_add_transfer_view.dart';
 
 /// 新增调拨page
 
@@ -18,8 +18,8 @@ class SCAddTransferPage extends StatefulWidget {
 
 class SCAddTransferPageState extends State<SCAddTransferPage> {
 
-  /// SCAddEntryController
-  late SCAddEntryController controller;
+  /// SCAddTransferController
+  late SCAddTransferController controller;
 
   /// SCAddEntryController - tag
   String controllerTag = '';
@@ -28,7 +28,7 @@ class SCAddTransferPageState extends State<SCAddTransferPage> {
   initState() {
     super.initState();
     controllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddTransferPage).toString());
-    controller = Get.put(SCAddEntryController(), tag: controllerTag);
+    controller = Get.put(SCAddTransferController(), tag: controllerTag);
     initEditData();
   }
 
@@ -79,11 +79,11 @@ class SCAddTransferPageState extends State<SCAddTransferPage> {
         width: double.infinity,
         height: double.infinity,
         color: SCColors.color_F2F3F5,
-        child: GetBuilder<SCAddEntryController>(
+        child: GetBuilder<SCAddTransferController>(
             tag: controllerTag,
             init: controller,
             builder: (state) {
-              return SCAddEntryView(state: state,);
+              return SCAddTransferView(state: state,);
             }),
       ),
     );

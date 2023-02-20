@@ -183,7 +183,7 @@ class SCMaterialTransferViewState extends State<SCMaterialTransferView> {
           SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
             model: model,
-            type: SCWarehouseManageType.frmLoss,
+            type: SCWarehouseManageType.transfer,
             detailTapAction: () {
               detailAction(model);
             },

@@ -64,10 +64,45 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
             ),
           ]
       );
-    } else {
+    } else if (type == SCWarehouseManageType.transfer) {
+      // 物料调拨，显示调入仓库、调出仓库
+      return Column(
+          children: [
+            inWareHouseView(),
+            const SizedBox(
+              height: 10.0,
+            ),
+            outWareHouseView(),
+            const SizedBox(
+              height: 10.0,
+            ),
+          ]
+      );
+    }else {
       return const SizedBox();
     }
   }
+
+  /// 调入仓库view
+  Widget inWareHouseView() {
+    return Row(
+      children: [
+        desLabel('调入仓库'),
+        textView(1, model?.wareHouseName ?? '')
+      ],
+    );
+  }
+
+  /// 调出仓库view
+  Widget outWareHouseView() {
+    return Row(
+      children: [
+        desLabel('调出仓库'),
+        textView(1, model?.wareHouseName ?? '')
+      ],
+    );
+  }
+
 
   /// 领用人view
   Widget userView() {

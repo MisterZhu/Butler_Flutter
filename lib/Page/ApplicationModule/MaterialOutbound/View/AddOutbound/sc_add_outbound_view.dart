@@ -130,7 +130,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
             showAlert(0, '仓库名称', list);
           } else if (index == 1) {
             // 类型
-            List list = widget.state.outboundList.map((e) => e.name).toList();
+            List list = widget.state.typeList.map((e) => e.name).toList();
             showAlert(1, '类型', list);
           } else if (index == 2) {
             // 领用部门
@@ -199,15 +199,13 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
               setState(() {
                 if (index == 0) {
                   // 仓库名称
-                  SCWareHouseModel subModel =
-                      widget.state.wareHouseList[selectIndex];
+                  SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
                   widget.state.nameIndex = selectIndex;
                   widget.state.warehouseName = model.name ?? '';
                   widget.state.wareHouseId = subModel.id ?? '';
                 } else if (index == 1) {
                   // 类型
-                  SCEntryTypeModel subModel =
-                      widget.state.outboundList[selectIndex];
+                  SCEntryTypeModel subModel = widget.state.typeList[selectIndex];
                   widget.state.typeIndex = selectIndex;
                   widget.state.type = model.name ?? '';
                   widget.state.typeID = subModel.code ?? 0;
@@ -222,11 +220,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
   List getBaseInfoList() {
     /// 基础信息数组
     List baseInfoList = [
-      {
-        'isRequired': true,
-        'title': '仓库名称',
-        'content': widget.state.warehouseName
-      },
+      {'isRequired': true, 'title': '仓库名称', 'content': widget.state.warehouseName},
       {'isRequired': true, 'title': '类型', 'content': widget.state.type},
     ];
 
