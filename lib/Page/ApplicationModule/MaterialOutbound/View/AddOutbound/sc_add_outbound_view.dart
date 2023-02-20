@@ -201,7 +201,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
                   // 仓库名称
                   SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
                   widget.state.nameIndex = selectIndex;
-                  widget.state.warehouseName = model.name ?? '';
+                  widget.state.wareHouseName = model.name ?? '';
                   widget.state.wareHouseId = subModel.id ?? '';
                 } else if (index == 1) {
                   // 类型
@@ -220,7 +220,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
   List getBaseInfoList() {
     /// 基础信息数组
     List baseInfoList = [
-      {'isRequired': true, 'title': '仓库名称', 'content': widget.state.warehouseName},
+      {'isRequired': true, 'title': '仓库名称', 'content': widget.state.wareHouseName},
       {'isRequired': true, 'title': '类型', 'content': widget.state.type},
     ];
 
@@ -294,7 +294,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     }
 
     var params = {
-      "wareHouseName" : widget.state.warehouseName,
+      "wareHouseName" : widget.state.wareHouseName,
       "wareHouseId" : widget.state.wareHouseId,
       "typeName" : widget.state.type,
       "typeId" : widget.state.typeID,
@@ -483,7 +483,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     }
 
     var params = {
-      "wareHouseName" : widget.state.warehouseName,
+      "wareHouseName" : widget.state.wareHouseName,
       "wareHouseId" : widget.state.wareHouseId,
       "typeName" : widget.state.type,
       "typeId" : widget.state.typeID,

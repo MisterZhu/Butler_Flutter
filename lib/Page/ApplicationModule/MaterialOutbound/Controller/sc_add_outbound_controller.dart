@@ -15,8 +15,6 @@ import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
 
 class SCAddOutboundController extends GetxController {
 
-  String wareHouseName = '';
-
   /// 仓库列表数组
   List<SCWareHouseModel> wareHouseList = [];
 
@@ -33,7 +31,7 @@ class SCAddOutboundController extends GetxController {
   Map<String, dynamic> editParams = {};
 
   /// 仓库名称
-  String warehouseName = '';
+  String wareHouseName = '';
 
   /// 仓库id
   String wareHouseId = '';
@@ -80,7 +78,7 @@ class SCAddOutboundController extends GetxController {
     if (isEdit && editParams.isNotEmpty) {
       Map<String, dynamic> params = editParams;
       /// 仓库名称
-      warehouseName = params['wareHouseName'];
+      wareHouseName = params['wareHouseName'];
       /// 仓库id
       wareHouseId = params['wareHouseId'];
       /// 类型

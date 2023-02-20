@@ -28,7 +28,7 @@ class SCAddEntryController extends GetxController {
   Map<String, dynamic> editParams = {};
 
   /// 仓库名称
-  String warehouseName = '';
+  String wareHouseName = '';
 
   /// 仓库id
   String wareHouseId = '';
@@ -64,7 +64,7 @@ class SCAddEntryController extends GetxController {
       Map<String, dynamic> params = editParams;
 
       /// 仓库名称
-      warehouseName = params['wareHouseName'];
+      wareHouseName = params['wareHouseName'];
 
       /// 仓库id
       wareHouseId = params['wareHouseId'];

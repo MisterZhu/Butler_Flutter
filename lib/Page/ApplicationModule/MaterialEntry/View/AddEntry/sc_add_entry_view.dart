@@ -187,7 +187,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
                   SCWareHouseModel subModel =
                       widget.state.wareHouseList[selectIndex];
                   widget.state.nameIndex = selectIndex;
-                  widget.state.warehouseName = model.name ?? '';
+                  widget.state.wareHouseName = model.name ?? '';
                   widget.state.wareHouseId = subModel.id ?? '';
                 } else if (index == 1) {
                   // 类型
@@ -210,7 +210,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       {
         'isRequired': true,
         'title': '仓库名称',
-        'content': widget.state.warehouseName
+        'content': widget.state.wareHouseName
       },
       {'isRequired': true, 'title': '类型', 'content': widget.state.type}
     ];
@@ -284,7 +284,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
     }
 
     var params = {
-      "wareHouseName": widget.state.warehouseName,
+      "wareHouseName": widget.state.wareHouseName,
       "wareHouseId": widget.state.wareHouseId,
       "typeName": widget.state.type,
       "typeId": widget.state.typeID,
@@ -332,7 +332,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
 
     var params = {
       "id": widget.state.editId,
-      "wareHouseName": widget.state.warehouseName,
+      "wareHouseName": widget.state.wareHouseName,
       "wareHouseId": widget.state.wareHouseId,
       "typeName": widget.state.type,
       "typeId": widget.state.typeID,
