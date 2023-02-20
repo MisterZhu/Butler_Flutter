@@ -40,10 +40,10 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
           height: 10.0,
         ),
         entryTimeView(),
-        const SizedBox(
-          height: 10.0,
-        ),
         receiveView(),
+        SizedBox(
+          height: model?.remark == "" ? 0.0 : 10.0,
+        ),
         entryRemarkView()
       ],
     ),),);
@@ -54,14 +54,14 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
       // 领料出库才显示领用人
       return Column(
           children: [
+            const SizedBox(
+              height: 10.0,
+            ),
             userView(),
             const SizedBox(
               height: 10.0,
             ),
             userDepartmentView(),
-            const SizedBox(
-              height: 10.0,
-            ),
           ]
       );
     } else if (type == SCWarehouseManageType.transfer) {
@@ -73,12 +73,9 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
               height: 10.0,
             ),
             outWareHouseView(),
-            const SizedBox(
-              height: 10.0,
-            ),
           ]
       );
-    }else {
+    } else {
       return const SizedBox();
     }
   }
