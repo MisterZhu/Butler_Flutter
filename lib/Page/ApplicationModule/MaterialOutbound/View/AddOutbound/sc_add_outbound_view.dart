@@ -255,7 +255,9 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId
     });
-    onlyAddMaterial(list);
+    if (list != null) {
+      onlyAddMaterial(list);
+    }
   }
 
   /// 编辑物资-添加既存物资
@@ -265,7 +267,9 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       'wareHouseId': widget.state.wareHouseId,
       'isEdit': true,
     });
-    editAddMaterial(list);
+    if (list != null) {
+      editAddMaterial(list);
+    }
   }
 
   /// 删除物资
