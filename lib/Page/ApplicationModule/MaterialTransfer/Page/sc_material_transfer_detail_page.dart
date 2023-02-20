@@ -17,15 +17,15 @@ import '../../MaterialEntry/Controller/sc_material_entry_controller.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart';
 
 
-/// 报损详情
+/// 调拨详情
 
-class SCMaterialFrmLossDetailPage extends StatefulWidget {
+class SCMaterialTransferDetailPage extends StatefulWidget {
   @override
-  SCMaterialFrmLossDetailPageState createState() =>
-      SCMaterialFrmLossDetailPageState();
+  SCMaterialTransferDetailPageState createState() =>
+      SCMaterialTransferDetailPageState();
 }
 
-class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage> {
+class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPage> {
   /// SCMaterialEntryDetailController
   late SCMaterialEntryDetailController controller;
 
@@ -38,7 +38,7 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
   @override
   initState() {
     super.initState();
-    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCMaterialFrmLossDetailPage).toString());
+    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCMaterialTransferDetailPage).toString());
     controller = Get.put(SCMaterialEntryDetailController(), tag: controllerTag);
     Map<String, dynamic> params = Get.arguments;
     if (params.isNotEmpty) {
@@ -55,14 +55,14 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
 
   @override
   dispose() {
-    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialFrmLossDetailPage).toString(), controllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialTransferDetailPage).toString(), controllerTag);
     controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SCCustomScaffold(title: '报损详情', body: body());
+    return SCCustomScaffold(title: '调拨详情', body: body());
   }
 
   /// body
@@ -88,7 +88,7 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
         builder: (state) {
           return SCMaterialDetailListView(
             state: controller,
-            type: SCWarehouseManageType.frmLoss,
+            type: SCWarehouseManageType.transfer,
           );
         });
   }
@@ -194,7 +194,7 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
     SCMaterialEntryController materialEntryController = SCMaterialEntryController();
     materialEntryController.submit(id: controller.id, completeHandler: (bool success){
       SCScaffoldManager.instance.eventBus
-          .fire({'key': SCKey.kRefreshMaterialFrmLossPage});
+          .fire({'key': SCKey.kRefreshMaterialTransferPage});
       SCRouterHelper.back( null);
     });
   }

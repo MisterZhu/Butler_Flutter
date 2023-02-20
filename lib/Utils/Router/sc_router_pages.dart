@@ -32,6 +32,9 @@ import '../../Page/ApplicationModule/MaterialFrmLoss/Page/sc_material_frmLoss_pa
 import '../../Page/ApplicationModule/MaterialOutbound/Page/sc_material_outbound_detail_page.dart';
 import '../../Page/ApplicationModule/MaterialOutbound/Page/sc_material_outbound_page.dart';
 import '../../Page/ApplicationModule/MaterialOutbound/Page/sc_select_receiver_page.dart';
+import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_add_transfer_page.dart';
+import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_material_transfer_detail_page.dart';
+import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_material_transfer_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
 import 'sc_router_path.dart';
 
@@ -107,6 +110,12 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.materialFrmLossPage, page: () => SCMaterialFrmLossPage()),
     /*报损详情*/
     GetPage(name: SCRouterPath.frmLossDetailPage, page: () => SCMaterialFrmLossDetailPage()),
+    /*新增调拨*/
+    GetPage(name: SCRouterPath.addTransferPage, page: () => SCAddTransferPage()),
+    /*物资调拨*/
+    GetPage(name: SCRouterPath.materialTransferPage, page: () => SCMaterialTransferPage()),
+    /*调拨详情*/
+    GetPage(name: SCRouterPath.transferDetailPage, page: () => SCMaterialTransferDetailPage()),
   ];
 
   /*根据code使用路由*/
