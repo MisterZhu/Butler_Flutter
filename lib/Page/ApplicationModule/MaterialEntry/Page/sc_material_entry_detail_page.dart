@@ -171,12 +171,13 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
     String typeName = controller.model.typeName ?? '';
     int type = controller.model.type ?? 0;
     String remark = controller.model.remark ?? '';
+    String id = controller.model.id ?? '';
     List<SCMaterialListModel> materials = controller.model.materials ?? [];
     for (SCMaterialListModel model in materials) {
       model.localNum = model.number ?? 1;
       model.isSelect = true;
       model.name = model.materialName ?? '';
-      model.id = model.materialId;
+      // model.id = model.materialId;
     }
     SCRouterHelper.pathPage(SCRouterPath.addEntryPage, {
       'isEdit' : true,
@@ -186,6 +187,7 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
       "typeName" : typeName,
       "type" : type,
       "remark" : remark,
+      "id" : id
     })?.then((value) {
       controller.loadMaterialEntryDetail();
     });
@@ -195,9 +197,11 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
   submitAction() {
     SCMaterialEntryController materialEntryController = SCMaterialEntryController();
     materialEntryController.submit(id: controller.id, completeHandler: (bool success){
-      SCScaffoldManager.instance.eventBus
-          .fire({'key': SCKey.kRefreshMaterialEntryPage});
-      SCRouterHelper.back( null);
+      if (success) {
+        SCScaffoldManager.instance.eventBus
+            .fire({'key': SCKey.kRefreshMaterialEntryPage});
+        SCRouterHelper.back( null);
+      }
     });
   }
 }

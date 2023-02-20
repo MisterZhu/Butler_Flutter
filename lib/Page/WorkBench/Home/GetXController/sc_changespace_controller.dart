@@ -12,7 +12,6 @@ import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 /// 修改空间Controller
 
 class SCChangeSpaceController extends GetxController {
-
   /// 已选择的空间列表
   List<SCSpaceModel> selectList = [];
 
@@ -33,7 +32,6 @@ class SCChangeSpaceController extends GetxController {
 
   /// 是否有下一级空间
   bool hasNextSpace = false;
-
 
   @override
   onInit() {
@@ -74,7 +72,8 @@ class SCChangeSpaceController extends GetxController {
   }
 
   /// 更新当前空间树数据
-  updateCurrentSpace(String currentIdValue, int flagValue, bool needOrgNodeValue) {
+  updateCurrentSpace(
+      String currentIdValue, int flagValue, bool needOrgNodeValue) {
     currentId = currentIdValue;
     flag = flagValue;
     needOrgNode = needOrgNodeValue;
@@ -98,7 +97,7 @@ class SCChangeSpaceController extends GetxController {
     bool containsPid = false;
     int idIndex = -1;
     int pidIndex = -1;
-    for (int i=0; i<selectList.length; i++) {
+    for (int i = 0; i < selectList.length; i++) {
       SCSpaceModel subModel = selectList[i];
       if (subModel.id == model.id) {
         containsID = true;
@@ -106,7 +105,7 @@ class SCChangeSpaceController extends GetxController {
         break;
       }
     }
-    for (int i=0; i<selectList.length; i++) {
+    for (int i = 0; i < selectList.length; i++) {
       SCSpaceModel subModel = selectList[i];
       if (subModel.pid == model.pid) {
         containsPid = true;
@@ -141,6 +140,7 @@ class SCChangeSpaceController extends GetxController {
         url: SCUrl.kSpaceTreeUrl,
         params: params,
         success: (value) {
+          SCLoadingUtils.hide();
           if (currentId.isEmpty) {
             List<SCSpaceModel> list = List<SCSpaceModel>.from(
                 value.map((e) => SCSpaceModel.fromJson(e)).toList());
@@ -151,7 +151,8 @@ class SCChangeSpaceController extends GetxController {
               update();
               success?.call(dataList);
             } else {
-              SCSpaceModel model = SCSpaceModel.fromJson({"title" : SCScaffoldManager.instance.user.tenantName});
+              SCSpaceModel model = SCSpaceModel.fromJson(
+                  {"title": SCScaffoldManager.instance.user.tenantName});
               hasNextSpace = false;
               dataList = [model];
               update();
@@ -165,6 +166,9 @@ class SCChangeSpaceController extends GetxController {
             update();
             success?.call(dataList);
           }
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
         });
   }
 
@@ -189,20 +193,24 @@ class SCChangeSpaceController extends GetxController {
   /// 确认切换空间
   switchSpace({Function? success}) {
     var params = {
-      "id" : SCScaffoldManager.instance.defaultConfigModel?.id ,
-      "userId" : SCScaffoldManager.instance.user.id,
-      "tenantId" : SCScaffoldManager.instance.user.tenantId,
-      "type" : 1,
-      "jsonValue" : jsonEncode(selectList)
+      "id": SCScaffoldManager.instance.defaultConfigModel?.id,
+      "userId": SCScaffoldManager.instance.user.id,
+      "tenantId": SCScaffoldManager.instance.user.tenantId,
+      "type": 1,
+      "jsonValue": jsonEncode(selectList)
     };
     SCLoadingUtils.show(text: '');
-    SCHttpManager.instance.post(url: SCUrl.kUserDefaultConfigUrl, params: params, success: (value){
-      SCLoadingUtils.hide();
-      success?.call();
-    }, failure: (value){
-      SCLoadingUtils.hide();
-      String message = value['message'];
-      SCToast.showTip(message);
-    });
+    SCHttpManager.instance.post(
+        url: SCUrl.kUserDefaultConfigUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          success?.call();
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+          String message = value['message'];
+          SCToast.showTip(message);
+        });
   }
 }

@@ -23,7 +23,10 @@ class SCMaterialInfoCell extends StatelessWidget {
   final List<SCMaterialListModel> list;
 
   /// 刷新数量
-  final Function(int value)? updateNumAction;
+  final Function(int index, int value)? updateNumAction;
+
+  /// 是否显示添加
+  final bool showAdd;
 
   SCMaterialInfoCell(
       {Key? key,
@@ -32,7 +35,9 @@ class SCMaterialInfoCell extends StatelessWidget {
       this.addAction,
       required this.list,
       this.deleteAction,
-      this.updateNumAction})
+      this.updateNumAction,
+        required this.showAdd
+      })
       : super(key: key);
 
   @override
@@ -80,32 +85,37 @@ class SCMaterialInfoCell extends StatelessWidget {
 
   /// 新增
   Widget topRightItem() {
-    return GestureDetector(
-      onTap: () {
-        addAction?.call();
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            SCAsset.iconMaterialAdd,
-            width: 18.0,
-            height: 18.0,
-          ),
-          const SizedBox(
-            width: 6.0,
-          ),
-          const Text('新增',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontSize: SCFonts.f14,
-                  fontWeight: FontWeight.w400,
-                  color: SCColors.color_4285F4)),
-        ],
-      ),
-    );
+    if (showAdd) {
+      return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          addAction?.call();
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              SCAsset.iconMaterialAdd,
+              width: 18.0,
+              height: 18.0,
+            ),
+            const SizedBox(
+              width: 6.0,
+            ),
+            const Text('新增',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontSize: SCFonts.f14,
+                    fontWeight: FontWeight.w400,
+                    color: SCColors.color_4285F4)),
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   /// 数量
@@ -126,8 +136,8 @@ class SCMaterialInfoCell extends StatelessWidget {
       deleteAction: (int index) {
         deleteAction?.call(index);
       },
-      updateNumAction: (int value) {
-        updateNumAction?.call(value);
+      updateNumAction: (int index, int value) {
+        updateNumAction?.call(index, value);
       },
     );
   }

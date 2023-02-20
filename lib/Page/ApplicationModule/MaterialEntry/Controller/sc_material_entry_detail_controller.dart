@@ -3,8 +3,11 @@ import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
+import '../../../../Constants/sc_key.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
+import '../../../../Skin/Tools/sc_scaffold_manager.dart';
+import '../../../../Utils/Router/sc_router_helper.dart';
 import '../Model/sc_material_entry_detail_model.dart';
 
 /// 入库详情controller

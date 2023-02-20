@@ -19,27 +19,28 @@
 
 class SCMaterialListModel {
   SCMaterialListModel({
-      String? barCode,
-      String? classifyId,
-      String? classifyName,
-      String? code,
-      bool? enabled,
-      String? id,
-      String? materialId,
-      String? name,
-      String? materialName,
-      String? norms,
-      String? pic,
-      PicFileVo? picFileVo,
-      num? referPrice,
-      int? number,
-      String? remark,
-      String? thirdCode,
-      String? unitId,
-      String? unitName,
-      int? localNum,/// 本地物资数量，默认1
-      bool? isSelect,/// 是否选中
-  }){
+    String? barCode,
+    String? classifyId,
+    String? classifyName,
+    String? code,
+    bool? enabled,
+    String? id,
+    String? materialId,
+    String? inId, // 关联入库id
+    String? name,
+    String? materialName,
+    String? norms,
+    String? pic,
+    PicFileVo? picFileVo,
+    num? referPrice,
+    int? number,
+    String? remark,
+    String? thirdCode,
+    String? unitId,
+    String? unitName,
+    int? localNum,// 本地物资数量，默认1
+    bool? isSelect,// 是否选中
+  }) {
     _barCode = barCode;
     _classifyId = classifyId;
     _classifyName = classifyName;
@@ -47,6 +48,7 @@ class SCMaterialListModel {
     _enabled = enabled;
     _id = id;
     _materialId = materialId;
+    _inId = inId;
     _name = name;
     _materialName = materialName;
     _norms = norms;
@@ -60,7 +62,7 @@ class SCMaterialListModel {
     _unitName = unitName;
     _localNum = localNum;
     _isSelect = isSelect;
-}
+  }
 
   SCMaterialListModel.fromJson(dynamic json) {
     _barCode = json['barCode'];
@@ -70,11 +72,14 @@ class SCMaterialListModel {
     _enabled = json['enabled'];
     _id = json['id'];
     _materialId = json['materialId'];
+    _inId = json['inId'];
     _name = json['name'];
     _materialName = json['materialName'];
     _norms = json['norms'];
     _pic = json['pic'];
-    _picFileVo = json['picFileVo'] != null ? PicFileVo.fromJson(json['picFileVo']) : null;
+    _picFileVo = json['picFileVo'] != null
+        ? PicFileVo.fromJson(json['picFileVo'])
+        : null;
     _referPrice = json['referPrice'];
     _number = json['num'];
     _remark = json['remark'];
@@ -91,6 +96,7 @@ class SCMaterialListModel {
   bool? _enabled;
   String? _id;
   String? _materialId;
+  String? _inId;
   String? _name;
   String? _materialName;
   String? _norms;
@@ -104,45 +110,50 @@ class SCMaterialListModel {
   String? _unitName;
   int? _localNum;
   bool? _isSelect;
-  SCMaterialListModel copyWith({  String? barCode,
-  String? classifyId,
-  String? classifyName,
-  String? code,
-  bool? enabled,
-  String? id,
+  SCMaterialListModel copyWith({
+    String? barCode,
+    String? classifyId,
+    String? classifyName,
+    String? code,
+    bool? enabled,
+    String? id,
     String? materialId,
-  String? name,
+    String? inId,
+    String? name,
     String? materialName,
-  String? norms,
-  String? pic,
-  PicFileVo? picFileVo,
-  double? referPrice,
-  String? remark,
-  String? thirdCode,
-  String? unitId,
-  String? unitName,
+    String? norms,
+    String? pic,
+    PicFileVo? picFileVo,
+    double? referPrice,
+    String? remark,
+    String? thirdCode,
+    String? unitId,
+    String? unitName,
     int? localNum,
     bool? isSelect,
-}) => SCMaterialListModel(  barCode: barCode ?? _barCode,
-  classifyId: classifyId ?? _classifyId,
-  classifyName: classifyName ?? _classifyName,
-  code: code ?? _code,
-  enabled: enabled ?? _enabled,
-  id: id ?? _id,
-    materialId: materialId ?? _materialId,
-  name: name ?? _name,
-    materialName: materialName ?? _materialName,
-  norms: norms ?? _norms,
-  pic: pic ?? _pic,
-  picFileVo: picFileVo ?? _picFileVo,
-  referPrice: referPrice ?? _referPrice,
-  remark: remark ?? _remark,
-  thirdCode: thirdCode ?? _thirdCode,
-  unitId: unitId ?? _unitId,
-  unitName: unitName ?? _unitName,
-    localNum: localNum  ?? _localNum,
-      isSelect: isSelect ?? _isSelect,
-);
+  }) =>
+      SCMaterialListModel(
+        barCode: barCode ?? _barCode,
+        classifyId: classifyId ?? _classifyId,
+        classifyName: classifyName ?? _classifyName,
+        code: code ?? _code,
+        enabled: enabled ?? _enabled,
+        id: id ?? _id,
+        materialId: materialId ?? _materialId,
+        inId: inId ?? _inId,
+        name: name ?? _name,
+        materialName: materialName ?? _materialName,
+        norms: norms ?? _norms,
+        pic: pic ?? _pic,
+        picFileVo: picFileVo ?? _picFileVo,
+        referPrice: referPrice ?? _referPrice,
+        remark: remark ?? _remark,
+        thirdCode: thirdCode ?? _thirdCode,
+        unitId: unitId ?? _unitId,
+        unitName: unitName ?? _unitName,
+        localNum: localNum ?? _localNum,
+        isSelect: isSelect ?? _isSelect,
+      );
   String? get barCode => _barCode;
   String? get classifyId => _classifyId;
   String? get classifyName => _classifyName;
@@ -150,6 +161,7 @@ class SCMaterialListModel {
   bool? get enabled => _enabled;
   String? get id => _id;
   String? get materialId => _materialId;
+  String? get inId => _inId;
   String? get name => _name;
   String? get materialName => _materialName;
   String? get norms => _norms;
@@ -182,6 +194,10 @@ class SCMaterialListModel {
     _id = value;
   }
 
+  set materialId(String? value) {
+    _materialId = value;
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['barCode'] = _barCode;
@@ -191,6 +207,7 @@ class SCMaterialListModel {
     map['enabled'] = _enabled;
     map['id'] = _id;
     map['materialId'] = _materialId;
+    map['inId'] = _inId;
     map['name'] = _name;
     map['materialName'] = _materialName;
     map['norms'] = _norms;
@@ -208,7 +225,6 @@ class SCMaterialListModel {
     map['isSelect'] = _isSelect;
     return map;
   }
-
 }
 
 /// fileKey : ""
@@ -219,17 +235,18 @@ class SCMaterialListModel {
 
 class PicFileVo {
   PicFileVo({
-      String? fileKey,
-      String? name,
-      int? size,
-      String? suffix,
-      int? type,}){
+    String? fileKey,
+    String? name,
+    int? size,
+    String? suffix,
+    int? type,
+  }) {
     _fileKey = fileKey;
     _name = name;
     _size = size;
     _suffix = suffix;
     _type = type;
-}
+  }
 
   PicFileVo.fromJson(dynamic json) {
     _fileKey = json['fileKey'];
@@ -243,17 +260,20 @@ class PicFileVo {
   int? _size;
   String? _suffix;
   int? _type;
-PicFileVo copyWith({  String? fileKey,
-  String? name,
-  int? size,
-  String? suffix,
-  int? type,
-}) => PicFileVo(  fileKey: fileKey ?? _fileKey,
-  name: name ?? _name,
-  size: size ?? _size,
-  suffix: suffix ?? _suffix,
-  type: type ?? _type,
-);
+  PicFileVo copyWith({
+    String? fileKey,
+    String? name,
+    int? size,
+    String? suffix,
+    int? type,
+  }) =>
+      PicFileVo(
+        fileKey: fileKey ?? _fileKey,
+        name: name ?? _name,
+        size: size ?? _size,
+        suffix: suffix ?? _suffix,
+        type: type ?? _type,
+      );
   String? get fileKey => _fileKey;
   String? get name => _name;
   int? get size => _size;
@@ -269,5 +289,4 @@ PicFileVo copyWith({  String? fileKey,
     map['type'] = _type;
     return map;
   }
-
 }

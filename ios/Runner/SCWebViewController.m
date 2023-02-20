@@ -43,6 +43,10 @@
     // Do any additional setup after loading the view.
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
+}
+
 - (void)setupView {
     [self.view addSubview:self.navBar];
     [self.view addSubview:self.wkWebView];

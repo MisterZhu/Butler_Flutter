@@ -1,15 +1,14 @@
-
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_selectcategory_model.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../../MaterialEntry/Model/sc_selectcategory_tree_model.dart';
-import '../Model/sc_receiver_model.dart';
+import '../../MaterialOutbound/Model/sc_receiver_model.dart';
 
-/// 选择领用部门controller
+/// 新增物资alert-controller
 
-class SCSelectDepartmentController extends GetxController {
+class SCCategoryAlertController extends GetxController {
 
   /// 领用人列表数组
   List<SCReceiverModel> dataList = [];
@@ -41,22 +40,12 @@ class SCSelectDepartmentController extends GetxController {
     //loadDataList();
   }
 
-  /// 领用部门列表
-  loadDataList({Function(bool success, List<SCSelectCategoryModel> list)? completeHandler}) {
-    var params = {
-      "companyId": "",
-      "disabled": false,
-      "id": 0,
-      "orgName": "",
-      "orgType": 0,
-      "pid": 0,
-      "tenantId": "",
-      "typeId": 0
-    };
+  /// 物资分类数据
+  loadMaterialSortData({Function(bool success, List<SCSelectCategoryModel> list)? completeHandler}) {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kDepartmentListUrl,
-        params: params,
+        url: SCUrl.kMaterialSortUrl,
+        params: null,
         success: (value) {
           SCLoadingUtils.hide();
           treeList = (List<SCSelectCategoryTreeModel>.from(
@@ -64,7 +53,7 @@ class SCSelectDepartmentController extends GetxController {
           childrenList = treeList;
           List<SCSelectCategoryModel> list = [];
           for(SCSelectCategoryTreeModel model in treeList) {
-            String orgName = model.orgName ?? '';
+            String orgName = model.name ?? '';
             String subId = model.id.toString();
             var subParams = {
               "enable" : true,

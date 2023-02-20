@@ -56,6 +56,7 @@ class SCMaterialSearchController extends GetxController {
         url: SCUrl.kMaterialListUrl,
         params: params,
         success: (value) {
+          SCLoadingUtils.hide();
           List list = value['records'];
           if (isLoadMore == true) {
             materialList.addAll(List<SCMaterialListModel>.from(

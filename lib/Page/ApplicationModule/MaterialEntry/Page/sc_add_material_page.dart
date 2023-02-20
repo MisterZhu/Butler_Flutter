@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Controller/sc_categoryalert_controlller.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
@@ -22,14 +23,24 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> {
   /// SCAddMaterialController
   late SCAddMaterialController addController;
 
+  /// SCCategoryAlertController
+  late SCCategoryAlertController categoryAlertController;
+
   /// SCAddMaterialController - tag
   String addControllerTag = '';
+
+  /// SCCategoryAlertController - tag
+  String categoryAlertControllerTag = '';
 
   @override
   initState() {
     super.initState();
     addControllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddMaterialPage).toString());
     addController = Get.put(SCAddMaterialController(), tag: addControllerTag);
+    categoryAlertControllerTag = SCScaffoldManager.instance
+        .getXControllerTag((SCAddMaterialPage).toString());
+    categoryAlertController = Get.put(SCCategoryAlertController(), tag: categoryAlertControllerTag);
+    categoryAlertController.tag = categoryAlertControllerTag;
     initPageData();
     addController.loadMaterialListData();
   }
@@ -75,7 +86,10 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> {
           tag: addControllerTag,
           init: addController,
           builder: (state) {
-            return SCAddMaterialView(state: state, sureAction: (List<SCMaterialListModel> list){
+            return SCAddMaterialView(
+              state: state,
+              categoryAlertController: categoryAlertController,
+              sureAction: (List<SCMaterialListModel> list){
               SCRouterHelper.back(list);
             },);
           }),

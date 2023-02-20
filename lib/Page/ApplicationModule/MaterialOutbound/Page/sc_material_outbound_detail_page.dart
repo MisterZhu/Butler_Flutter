@@ -164,11 +164,14 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
     /// 领用组织(或部门)ID（只有出库类型为领料出库时才传）
     String fetchOrgId = controller.model.fetchOrgId ?? '';
 
+    /// 主键id
+    String id = controller.model.id ?? '';
+
     for (SCMaterialListModel model in materials) {
       model.localNum = model.number ?? 1;
       model.isSelect = true;
       model.name = model.materialName ?? '';
-      model.id = model.materialId;
+      // model.id = model.materialId;
     }
     SCRouterHelper.pathPage(SCRouterPath.addOutboundPage, {
       'isEdit' : true,
@@ -182,6 +185,7 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
       "fetchUserName" : fetchUserName,
       "fetchUserId" : fetchUserId,
       "remark" : remark,
+      "id" : id
     })?.then((value) {
       controller.loadMaterialOutboundDetail();
     });
@@ -200,7 +204,9 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
   outboundConfirmAction(String outTime, String input) {
     controller.outboundConfirm(outTime: outTime, remark: input, successHandler: () {
       SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshMaterialOutboundPage});
-      SCRouterHelper.back( null);
+      Future.delayed(const Duration(seconds: 2), (){
+        SCRouterHelper.back( null);
+      });
     });
   }
 }

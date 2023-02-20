@@ -19,6 +19,9 @@ class SCAddMaterialController extends GetxController {
   /// 分类ID
   String classifyId = '';
 
+  /// 分类名称
+  String classifyName = '';
+
   /// 数据源
   List<SCMaterialListModel> materialList = [];
 
@@ -58,6 +61,7 @@ class SCAddMaterialController extends GetxController {
         url: SCUrl.kMaterialListUrl,
         params: params,
         success: (value) {
+          SCLoadingUtils.hide();
           List list = value['records'];
           if (isLoadMore == true) {
             materialList.addAll(List<SCMaterialListModel>.from(

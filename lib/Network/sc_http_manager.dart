@@ -253,10 +253,8 @@ class SCHttpManager {
 /// 处理dio请求成功后,网络数据解包
 doResponse(Response response) {
   if (response.statusCode == 200) {
-    SCLoadingUtils.hide();
     return response.data;
   } else {
-    SCLoadingUtils.hide();
     log('失败：${response.data}');
     return response.data;
   }

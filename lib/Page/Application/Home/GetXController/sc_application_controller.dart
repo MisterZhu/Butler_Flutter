@@ -69,10 +69,12 @@ class SCApplicationController extends GetxController {
         url: SCUrl.kApplicationListUrl,
         params: null,
         success: (value) {
+          SCLoadingUtils.hide();
           List<SCApplicationModuleModel> dataList = List<SCApplicationModuleModel>.from(value.map((e) => SCApplicationModuleModel.fromJson(e)).toList());
           updateModuleList(list: dataList);
         },
         failure: (value) {
+          SCLoadingUtils.hide();
         });
   }
 

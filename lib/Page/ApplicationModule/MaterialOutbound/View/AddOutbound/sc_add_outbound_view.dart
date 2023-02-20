@@ -83,8 +83,8 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
         Offstage(
           offstage: isShowKeyboard,
           child: SCBottomButtonItem(
-            list: const ['暂存', '提交'],
-            buttonType: 1,
+            list: bottomButtonList(),
+            buttonType: widget.state.isEdit ? 0 : 1,
             leftTapAction: () {
               /// 保存
               save();
@@ -92,6 +92,10 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
             rightTapAction: () {
               /// 提交
               submit();
+            },
+            tapAction: () {
+              /// 编辑
+              editAction();
             },
           ),
         ),
@@ -142,6 +146,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       );
     } else if (index == 1) {
       return SCMaterialInfoCell(
+        showAdd: widget.state.isEdit ? false : true,
         list: widget.state.selectedList,
         addAction: () {
           addAction();
@@ -149,8 +154,9 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
         deleteAction: (int subIndex) {
           deleteAction(subIndex);
         },
-        updateNumAction: (int value) {
+        updateNumAction: (int index, int value) {
           widget.state.update();
+          editOneMaterial(index);
         },
       );
     } else {
@@ -247,7 +253,14 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
 
   /// 删除物资
   deleteAction(int index) {
-    widget.state.deleteMaterial(index);
+    if (widget.state.isEdit) {
+      SCMaterialListModel model = widget.state.selectedList[index];
+      print("物资id===${model.id}");
+      widget.state.deleteMaterial(index);
+      widget.state.editDeleteMaterial(materialInRelationId: model.id ?? '');
+    } else {
+      widget.state.deleteMaterial(index);
+    }
   }
 
   /// 暂存
@@ -337,7 +350,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       List<SCSelectCategoryModel> list = [];
       for(SCSelectCategoryTreeModel subModel in widget.selectDepartmentController.treeList) {
         String orgName = subModel.orgName ?? '';
-        String subId = subModel.id.toString();
+        String subId = subModel.id ?? '';
         var subParams = {
           "enable" : true,
           "title" : orgName,
@@ -356,7 +369,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       List<SCSelectCategoryModel> newList = [];
       for (SCSelectCategoryTreeModel childModel in list) {
         String orgName = childModel.orgName ?? '';
-        String subId = childModel.id.toString();
+        String subId = childModel.id ?? '';
         var subParams = {
           "enable" : true,
           "title" : orgName,
@@ -392,7 +405,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
 
     for(SCSelectCategoryTreeModel subChildrenModel in childrenList) {
       String orgName = subChildrenModel.orgName ?? '';
-      String subId = subChildrenModel.id.toString();
+      String subId = subChildrenModel.id ?? '';
       var subParams = {
         "enable" : true,
         "title" : orgName,
@@ -446,6 +459,53 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
         });
       }
     }
+  }
 
+  /// 底部按钮
+  List<String> bottomButtonList() {
+    if (widget.state.isEdit) {
+      return ["确定"];
+    } else {
+      return ['暂存', '提交'];
+    }
+  }
+
+  /// 编辑
+  editAction() {
+    print("编辑");
+    if (widget.state.wareHouseId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
+      return;
+    }
+
+    if (widget.state.typeID <= 0) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
+      return;
+    }
+
+    if (widget.state.selectedList.isEmpty) {
+      SCToast.showTip(SCDefaultValue.addMaterialInfoTip);
+      return;
+    }
+
+    var params = {
+      "wareHouseName" : widget.state.warehouseName,
+      "wareHouseId" : widget.state.wareHouseId,
+      "typeName" : widget.state.type,
+      "typeId" : widget.state.typeID,
+      "remark" : widget.state.remark,
+      "id" : widget.state.editId
+    };
+    widget.state.editMaterialBaseInfo(data: params);
+  }
+
+  /// 编辑单条物资
+  editOneMaterial(int index) {
+    if (widget.state.isEdit) {
+      List<SCMaterialListModel> list = [widget.state.selectedList[index]];
+      widget.state.editMaterial(list: list);
+    } else {
+      widget.state.update();
+    }
   }
 }

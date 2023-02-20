@@ -38,6 +38,8 @@ target 'Runner' do
   pod 'LMWebViewJavascriptBridge', :git => 'http://10.100.10.22/ios_module/LMWebViewJavascriptBridge.git'
   # 简化KVO使用
   pod 'KVOController', '~> 1.2.0'
+  # 键盘
+  pod 'IQKeyboardManager', '~> 6.5.0'
 end
 
 post_install do |installer|
