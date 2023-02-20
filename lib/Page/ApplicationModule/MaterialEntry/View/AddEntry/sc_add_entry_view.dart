@@ -239,7 +239,9 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId
     });
-    onlyAddMaterial(list);
+    if (list != null) {
+      onlyAddMaterial(list);
+    }
   }
 
   /// 编辑物资-添加既存物资
@@ -249,7 +251,9 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       'wareHouseId': widget.state.wareHouseId,
       'isEdit': true,
     });
-    editAddMaterial(list);
+    if (list != null) {
+      editAddMaterial(list);
+    }
   }
 
   /// 删除物资
