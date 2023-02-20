@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
@@ -27,6 +30,8 @@ class SCStepperState extends State<SCStepper> {
   /// focusNode
   FocusNode node = FocusNode();
 
+  late StreamSubscription<bool> keyboardSubscription;
+
   @override
   initState() {
     super.initState();
@@ -36,6 +41,13 @@ class SCStepperState extends State<SCStepper> {
         text: num.toString(),
         selection: TextSelection.fromPosition(TextPosition(
             affinity: TextAffinity.downstream, offset: num.toString().length)));
+    var keyboardVisibilityController = KeyboardVisibilityController();
+    keyboardSubscription =
+        keyboardVisibilityController.onChange.listen((bool visible) {
+            if (!visible) {
+              editCompleteAction(textFiledController.text);
+            }
+        });
   }
 
   @override
@@ -160,6 +172,13 @@ class SCStepperState extends State<SCStepper> {
       onChanged: (value) {
         updateText(value);
       },
+      onEditingComplete: () {
+        print("1111111");
+
+      },
+      onSubmitted: (value) {
+        print("2222222");
+      },
       keyboardType: TextInputType.number,
       keyboardAppearance: Brightness.light,
       textInputAction: TextInputAction.next,
@@ -200,8 +219,20 @@ class SCStepperState extends State<SCStepper> {
 
   /// 更新输入框
   updateText(String value) {
-    int num = widget.num ?? 1;
+    if (value.isNotEmpty) {
+      int num = widget.num ?? 1;
+      if (SCUtils().isPositiveNumber(value)) {
+        num = int.parse(value);
+        widget.numChangeAction?.call(num);
+      }
+      widget.num = num;
+    }
+  }
+
+  /// 编辑完成
+  editCompleteAction(String value) {
     if (value.isEmpty) {
+      int num = widget.num ?? 1;
       num = 1;
       textFiledController.text = '$num';
       textFiledController.value = TextEditingValue(
@@ -210,12 +241,7 @@ class SCStepperState extends State<SCStepper> {
               affinity: TextAffinity.downstream,
               offset: num.toString().length)));
       widget.numChangeAction?.call(num);
-    } else {
-      if (SCUtils().isPositiveNumber(value)) {
-        num = int.parse(value);
-        widget.numChangeAction?.call(num);
-      }
+      widget.num = num;
     }
-    widget.num = num;
   }
 }
