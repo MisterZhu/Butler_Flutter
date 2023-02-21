@@ -118,7 +118,8 @@ class SCWorkBenchView extends StatelessWidget {
 
   /// listView
   Widget listView() {
-    double headerHeight = 305.0 + SCUtils().getTopSafeArea();
+    // double headerHeight = 305.0 + SCUtils().getTopSafeArea();
+    double headerHeight = 255.0 + SCUtils().getTopSafeArea();
     double contentHeight = height - headerHeight;
     return ListView.separated(
         shrinkWrap: true,

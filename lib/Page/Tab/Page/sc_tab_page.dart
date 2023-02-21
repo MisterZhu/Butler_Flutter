@@ -139,27 +139,27 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
   /// floating点击，弹出
   floatingAction() {
     List testList = [
-      {
-        "icon": {"fileKey": "", "name": SCAsset.iconApplicationWorkOrder},
-        "id": 1,
-        "name": "工单调度",
-        "url": ""
-      },
-      {
-        "icon": {
-          "fileKey": "",
-          "name": SCAsset.iconApplicationVehicleRegistration
-        },
-        "id": 2,
-        "name": "车访登记",
-        "url": ""
-      },
-      {
-        "icon": {"fileKey": "", "name": SCAsset.iconApplicationReportRepair},
-        "id": 3,
-        "name": "报事报修",
-        "url": ""
-      },
+      // {
+      //   "icon": {"fileKey": "", "name": SCAsset.iconApplicationWorkOrder},
+      //   "id": 1,
+      //   "name": "工单调度",
+      //   "url": ""
+      // },
+      // {
+      //   "icon": {
+      //     "fileKey": "",
+      //     "name": SCAsset.iconApplicationVehicleRegistration
+      //   },
+      //   "id": 2,
+      //   "name": "车访登记",
+      //   "url": ""
+      // },
+      // {
+      //   "icon": {"fileKey": "", "name": SCAsset.iconApplicationReportRepair},
+      //   "id": 3,
+      //   "name": "报事报修",
+      //   "url": ""
+      // },
     ];
     List<SCMenuItemModel> list =
         testList.map((e) => SCMenuItemModel.fromJson(e)).toList();

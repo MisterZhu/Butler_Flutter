@@ -31,10 +31,10 @@ class SCWorkBenchListView extends StatefulWidget {
   final Function(SCWorkOrderModel model)? detailAction;
 
   /// 更多
-  final Function(String orderId)? moreAction;
+  final Function(SCWorkOrderModel model)? moreAction;
 
   /// 收藏
-  final Function(String orderId)? likeAction;
+  final Function(SCWorkOrderModel model)? likeAction;
 
   /// 打电话
   final Function(String mobile)? callAction;
@@ -176,31 +176,31 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
                     child: SizedBox(
                   width: 4.0,
                 )),
-                WidgetSpan(
-                    alignment: PlaceholderAlignment.middle,
-                    child: CupertinoButton(
-                        minSize: 22.0,
-                        padding: EdgeInsets.zero,
-                        child: Image.asset(
-                          SCAsset.iconLikeSelect,
-                          width: 22.0,
-                          height: 22.0,
-                        ),
-                        onPressed: () {
-                          widget.likeAction?.call(model.orderId ?? '');
-                        }))
+                // WidgetSpan(
+                //     alignment: PlaceholderAlignment.middle,
+                //     child: CupertinoButton(
+                //         minSize: 22.0,
+                //         padding: EdgeInsets.zero,
+                //         child: Image.asset(
+                //           SCAsset.iconLikeSelect,
+                //           width: 22.0,
+                //           height: 22.0,
+                //         ),
+                //         onPressed: () {
+                //           widget.likeAction?.call(model);
+                //         }))
               ])),
-          CupertinoButton(
-              minSize: 20.0,
-              padding: EdgeInsets.zero,
-              child: Image.asset(
-                SCAsset.iconGreyMore,
-                width: 20.0,
-                height: 20.0,
-              ),
-              onPressed: () {
-                widget.moreAction?.call(model.orderId ?? '');
-              })
+          // CupertinoButton(
+          //     minSize: 20.0,
+          //     padding: EdgeInsets.zero,
+          //     child: Image.asset(
+          //       SCAsset.iconGreyMore,
+          //       width: 20.0,
+          //       height: 20.0,
+          //     ),
+          //     onPressed: () {
+          //       widget.moreAction?.call(model);
+          //     })
         ],
       ),
     );
