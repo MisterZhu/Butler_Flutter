@@ -68,6 +68,9 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
       // 物料调拨，显示调入仓库、调出仓库
       return Column(
           children: [
+            const SizedBox(
+              height: 10.0,
+            ),
             inWareHouseView(),
             const SizedBox(
               height: 10.0,
