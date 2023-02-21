@@ -76,35 +76,11 @@ class SCMineListView extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) {
           return line();
         },
-        itemCount: 7));
+        itemCount: 4));
   }
 
   Widget getCell(int index) {
     if (index == 0) {
-      return SCSettingCell(
-        title: '待上传事项',
-        showLeftIcon: true,
-        leftIcon: SCAsset.iconMineService,
-        onTap: () {
-
-      },);
-    } else if (index == 1) {
-      return SCSettingCell(
-        title: '关怀模式',
-        showLeftIcon: true,
-        leftIcon: SCAsset.iconMineCareModel,
-        onTap: () {
-
-      },);
-    } else if (index == 2) {
-      return SCSettingCell(
-        title: '选择房号',
-        showLeftIcon: true,
-        leftIcon: SCAsset.iconMineService,
-        onTap: () {
-          SCRouterHelper.pathPage(SCRouterPath.houseInspectSelectPath, null);
-      },);
-    } else if (index == 3) {
       return SCSettingCell(
         title: '物资入库',
         showLeftIcon: true,
@@ -112,7 +88,7 @@ class SCMineListView extends StatelessWidget {
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.materialEntryPage, null);
       },);
-    } else if (index == 4) {
+    } else if (index == 1) {
       return SCSettingCell(
         title: '物资出库',
         showLeftIcon: true,
@@ -120,7 +96,7 @@ class SCMineListView extends StatelessWidget {
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.materialOutboundPage, null);
         },);
-    } else if (index == 5) {
+    } else if (index == 2) {
       return SCSettingCell(
         title: '物资报损',
         showLeftIcon: true,
@@ -128,7 +104,7 @@ class SCMineListView extends StatelessWidget {
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.materialFrmLossPage, null);
         },);
-    } else if (index == 6) {
+    } else if (index == 3) {
       return SCSettingCell(
         title: '物资调拨',
         showLeftIcon: true,
