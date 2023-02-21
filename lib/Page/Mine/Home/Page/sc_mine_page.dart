@@ -20,7 +20,6 @@ class SCMinePage extends StatefulWidget {
 }
 
 class SCMinePageState extends State<SCMinePage> {
-
   /// 通知
   late StreamSubscription subscription;
 
@@ -45,7 +44,7 @@ class SCMinePageState extends State<SCMinePage> {
         color: SCColors.color_F2F3F5,
         width: double.infinity,
         height: double.infinity,
-        child: GetBuilder<SCMineController>(builder: (value){
+        child: GetBuilder<SCMineController>(builder: (value) {
           return SCMineListView(
             qrCodeTapAction: () {
               SCRouterHelper.pathPage(SCRouterPath.scanPath, null);

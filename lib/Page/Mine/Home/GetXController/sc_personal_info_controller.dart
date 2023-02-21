@@ -21,11 +21,7 @@ class SCPersonalInfoController extends GetxController {
   @override
   onInit() {
     super.onInit();
-    if (SCScaffoldManager.instance.user.headPicUri?.fileKey == null) {
-      userHeadPicUrl = '';
-    } else {
-      userHeadPicUrl = SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri!.fileKey!);
-    }
+    userHeadPicUrl = SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri?.fileKey ?? '');
     birthday = SCScaffoldManager.instance.user.birthday ?? '';
   }
 
