@@ -56,10 +56,10 @@ class SCTypeDefine {
   static const int SC_LOGIN_TYPE_TEXTFIELD = 1;
   /// 登录按钮
   static const int SC_LOGIN_TYPE_LOGIN_BUTTON = 2;
-  /// 底部图片
-  static const int SC_LOGIN_TYPE_BOTTOM_IMAGE = 3;
   /// 协议
-  static const int SC_LOGIN_TYPE_AGREEMENT = 4;
+  static const int SC_LOGIN_TYPE_AGREEMENT = 3;
+  /// 底部图片
+  static const int SC_LOGIN_TYPE_BOTTOM_IMAGE = 4;
   /************************* 登录页面-cellType *************************/
 
   /// 皮肤类型1

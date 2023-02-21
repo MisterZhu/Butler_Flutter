@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/Login/Home/View/sc_agreement_item.dart';
 import '../../../../Constants/sc_asset.dart';
 
@@ -33,32 +34,13 @@ class SCLoginAgreement extends StatelessWidget {
 
   /// body
   Widget body() {
-    return Stack(
-      alignment: Alignment.centerLeft,
-      children: [
-        bgImageItem(),
-        privacyItem()
-      ],
-    );
-  }
-
-  /// 背景图片
-  Widget bgImageItem() {
-    double imageScale = 750 / 320.0;
-    return AspectRatio(
-      aspectRatio: imageScale,
-      child: Image.asset(
-        '',
-        //SCAsset.iconLoginBottomBg,
-        fit: BoxFit.cover,
-      ),
-    );
+    return privacyItem();
   }
 
   /// 用户协议和隐私政策
   Widget privacyItem() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -71,8 +53,9 @@ class SCLoginAgreement extends StatelessWidget {
     );
   }
 
+  /// 勾选框
   Widget selectItem() {
-    return Padding(padding: EdgeInsets.only(top: 0.0),
+    return Padding(padding: const EdgeInsets.only(top: 0.0),
       child: GestureDetector(
         onTap: () {
           if (agreeAction != null) {
@@ -85,8 +68,8 @@ class SCLoginAgreement extends StatelessWidget {
           alignment: Alignment.topCenter,
           color: Colors.transparent,
           child: Image.asset(
-            '',
-            //isAgree ? SCAsset.iconAgree : SCAsset.iconNotAgree,
+            isAgree ? SCAsset.iconSelectRadio : SCAsset.iconNormalRadio,
+            color: isAgree ? SCColors.color_4285F4 : SCColors.color_8D8E99,
             width: 22.0,
             height: 22.0,
           ),
@@ -95,6 +78,7 @@ class SCLoginAgreement extends StatelessWidget {
     );
   }
 
+  /// 内容
   Widget agreementItem() {
     return Expanded(child: SCAgreementItem(
       list: list,

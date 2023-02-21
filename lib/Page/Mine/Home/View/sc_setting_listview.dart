@@ -6,8 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_setting_cell.dart';
+import '../../../../Constants/sc_agreement.dart';
 import '../../../../Constants/sc_default_value.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
+import '../../../../Utils/Router/sc_router_helper.dart';
+import '../../../../Utils/Router/sc_router_path.dart';
 import '../GetXController/sc_setting_controller.dart';
 
 /// 设置listview
@@ -35,15 +38,18 @@ class SCSettingListView extends StatelessWidget {
   Widget getCell(int index, BuildContext context) {
     if (index == 0) {
       return SCSettingCell(title: '关于', onTap: (){
-
+        var params = {'title' : '关于${SCDefaultValue.appName}', 'url' : SCAgreement.userAgreementUrl, 'removeLoginCheck' : true};
+        SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
       },);
     } else if (index == 1) {
       return SCSettingCell(title: '用户协议', onTap: (){
-
+        var params = {'title' : '用户协议', 'url' : SCAgreement.userAgreementUrl, 'removeLoginCheck' : true};
+        SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
       },);
     } else if (index == 2) {
       return SCSettingCell(title: '隐私政策', onTap: (){
-
+        var params = {'title' : '隐私政策', 'url' : SCAgreement.privacyProtocolUrl, 'removeLoginCheck' : true};
+        SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
       },);
     } else if (index == 3) {
       return logOffCell(context);
@@ -54,7 +60,7 @@ class SCSettingListView extends StatelessWidget {
     }
   }
 
-  /// 注销
+  /// 注销cell
   Widget logOffCell(BuildContext context) {
     return SizedBox(
       width: double.infinity,
@@ -77,6 +83,7 @@ class SCSettingListView extends StatelessWidget {
     );
   }
 
+  /// 注销
   logOff(BuildContext context) {
     SCDialogUtils.instance.showMiddleDialog(
       context: context,
@@ -95,7 +102,6 @@ class SCSettingListView extends StatelessWidget {
             }),
       ],
     );
-
   }
 
   /// 退出登录

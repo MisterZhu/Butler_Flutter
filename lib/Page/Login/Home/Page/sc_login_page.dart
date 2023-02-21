@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Skin/View/sc_custom_scaffold.dart';
-
 import '../../../../Utils/sc_utils.dart';
 import '../GetXController/sc_login_controller.dart';
 import '../View/sc_login_listview.dart';

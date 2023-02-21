@@ -50,7 +50,7 @@ class SCLoginListView extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) {
           return getSeparateItem(index: index);
         },
-        itemCount: 3);
+        itemCount: 4);
   }
 
   /// cell
@@ -61,7 +61,9 @@ class SCLoginListView extends StatelessWidget {
       return textFieldItem();
     } else if (index == SCTypeDefine.SC_LOGIN_TYPE_LOGIN_BUTTON) {
       return loginBtnItem(context);
-    } {
+    } else if (index == SCTypeDefine.SC_LOGIN_TYPE_AGREEMENT) {
+      return agreementItem();
+    } else {
       return const SizedBox();
     }
   }
@@ -71,6 +73,10 @@ class SCLoginListView extends StatelessWidget {
     if (index == SCTypeDefine.SC_LOGIN_TYPE_TEXTFIELD) {
       return const SizedBox(
         height: 44.0,
+      );
+    } else if (index == SCTypeDefine.SC_LOGIN_TYPE_LOGIN_BUTTON) {
+      return const SizedBox(
+        height: 20.0,
       );
     } else {
       return const SizedBox();
@@ -141,10 +147,10 @@ class SCLoginListView extends StatelessWidget {
       return;
     }
 
-    // if (state.isAgree == false) {
-    //   SCToast.showTipWithGravity(msg: '请同意用户服务协议和隐私协议', gravity: ToastGravity.BOTTOM);
-    //   return;
-    // }
+    if (state.isAgree == false) {
+      SCToast.showTip('请同意用户服务协议和隐私协议');
+      return;
+    }
     state.login();
   }
 
@@ -173,21 +179,21 @@ class SCLoginListView extends StatelessWidget {
         'title': '《用户服务协议》',
         'imageUrl': '',
         'url': SCAgreement.userAgreementUrl,
-        'color': SCHexColor.colorToString(SCColors.color_FF6C00)
+        'color': SCHexColor.colorToString(SCColors.color_4285F4)
       },
       {
         'type': SCTypeDefine.richTextTypeText,
         'title': '',
         'imageUrl': '',
         'url': '',
-        'color': SCHexColor.colorToString(SCColors.color_FF6C00)
+        'color': SCHexColor.colorToString(SCColors.color_4285F4)
       },
       {
         'type': SCTypeDefine.richTextTypeText,
         'title': '《隐私协议》',
         'imageUrl': '',
         'url': SCAgreement.privacyProtocolUrl,
-        'color': SCHexColor.colorToString(SCColors.color_FF6C00)
+        'color': SCHexColor.colorToString(SCColors.color_4285F4)
       },
       {
         'type': SCTypeDefine.richTextTypeText,
