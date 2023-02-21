@@ -6,6 +6,7 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Controller/s
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
+import '../Controller/sc_material_frmLoss_controller.dart';
 import '../View/MaterialFrmLoss/sc_material_frmLoss_view.dart';
 
 /// 物资报损page
@@ -17,8 +18,8 @@ class SCMaterialFrmLossPage extends StatefulWidget {
 
 class SCMaterialFrmLossPageState extends State<SCMaterialFrmLossPage> {
 
-  /// SCMaterialEntryController
-  late SCMaterialEntryController controller;
+  /// SCMaterialFrmLossController
+  late SCMaterialFrmLossController controller;
 
   /// SCMaterialEntryController - tag
   String controllerTag = '';
@@ -31,8 +32,8 @@ class SCMaterialFrmLossPageState extends State<SCMaterialFrmLossPage> {
     super.initState();
     controllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCMaterialFrmLossPage).toString());
-    controller = Get.put(SCMaterialEntryController(), tag: controllerTag);
-    controller.loadEntryListData(isMore: false);
+    controller = Get.put(SCMaterialFrmLossController(), tag: controllerTag);
+    controller.loadFrmLossListData(isMore: false);
     addNotification();
   }
 
@@ -56,7 +57,7 @@ class SCMaterialFrmLossPageState extends State<SCMaterialFrmLossPage> {
       width: double.infinity,
       height: double.infinity,
       color: SCColors.color_F2F3F5,
-      child: GetBuilder<SCMaterialEntryController>(
+      child: GetBuilder<SCMaterialFrmLossController>(
           tag: controllerTag,
           init: controller,
           builder: (state) {
@@ -70,7 +71,7 @@ class SCMaterialFrmLossPageState extends State<SCMaterialFrmLossPage> {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
       if (key == SCKey.kRefreshMaterialFrmLossPage) {
-        controller.loadEntryListData(isMore: false);
+        controller.loadFrmLossListData(isMore: false);
       }
     });
   }

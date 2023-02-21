@@ -39,6 +39,16 @@ class SCMaterialEntryCell extends StatelessWidget {
 
   /// body
   Widget body() {
+    String text = '数量';
+    if (type == SCWarehouseManageType.entry) {
+      text = '入库数量';
+    } else if (type == SCWarehouseManageType.outbound) {
+      text = '出库数量';
+    } else if (type == SCWarehouseManageType.frmLoss) {
+      text = '报损数量';
+    } else if (type == SCWarehouseManageType.transfer) {
+      text = '调拨数量';
+    }
     return GestureDetector(
       onTap: () {
         detailTapAction?.call();
@@ -61,7 +71,7 @@ class SCMaterialEntryCell extends StatelessWidget {
             const SizedBox(
               height: 4.0,
             ),
-            nameItem('入库数量：${model?.materialNums}'),
+            nameItem('$text：${model?.materialNums}'),
             const SizedBox(
               height: 6.0,
             ),
@@ -83,12 +93,14 @@ class SCMaterialEntryCell extends StatelessWidget {
   /// title
   Widget titleView() {
     String icon = SCAsset.iconMaterialIcon;
+    String typeName = model?.typeName ?? '';
     if (type == SCWarehouseManageType.entry) {
       icon = SCAsset.iconMaterialEntry;
     } else if (type == SCWarehouseManageType.outbound) {
       icon = SCAsset.iconMaterialOutbound;
     } else if (type == SCWarehouseManageType.frmLoss) {
       icon = SCAsset.iconMaterialFrmLoss;
+      typeName = model?.reasonName ?? '';
     } else if (type == SCWarehouseManageType.transfer) {
       icon = SCAsset.iconMaterialTransfer;
     }
@@ -102,7 +114,7 @@ class SCMaterialEntryCell extends StatelessWidget {
           Image.asset(icon, width: 18.0, height: 18.0,),
           const SizedBox(width: 6.0,),
           Expanded(child: Text(
-            model?.typeName ?? '',
+            typeName,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(

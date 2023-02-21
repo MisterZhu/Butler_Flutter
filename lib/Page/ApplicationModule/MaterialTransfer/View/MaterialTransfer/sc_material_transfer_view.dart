@@ -42,7 +42,7 @@ class SCMaterialTransferViewState extends State<SCMaterialTransferView> {
     {'name': '已拒绝', 'code': 3},
     {'name': '已驳回', 'code': 4},
     {'name': '已撤回', 'code': 5},
-    {'name': '已入库', 'code': 6},
+    {'name': '已通过', 'code': 6},
   ];
   List typeList = ['全部'];
 
@@ -66,7 +66,7 @@ class SCMaterialTransferViewState extends State<SCMaterialTransferView> {
     super.initState();
     sortIndex = widget.state.sort == true ? 0 : 1;
     widget.state.loadWareHouseType(() {
-      List list = widget.state.entryList.map((e) => e.name).toList();
+      List list = widget.state.typeList.map((e) => e.name).toList();
       setState(() {
         typeList.addAll(list);
       });
@@ -257,7 +257,7 @@ class SCMaterialTransferViewState extends State<SCMaterialTransferView> {
               showTypeAlert = false;
               selectType = value;
               siftList[1] = value == 0 ? '类型' : typeList[value];
-              widget.state.updateType(value == 0 ? -1 : widget.state.entryList[value - 1].code ?? -1);
+              widget.state.updateType(value == 0 ? -1 : widget.state.typeList[value - 1].code ?? -1);
             });
           }
         },),

@@ -66,7 +66,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
     super.initState();
     sortIndex = widget.state.sort == true ? 0 : 1;
     widget.state.loadWareHouseType(() {
-      List list = widget.state.entryList.map((e) => e.name).toList();
+      List list = widget.state.typeList.map((e) => e.name).toList();
       setState(() {
         typeList.addAll(list);
       });
@@ -257,7 +257,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
               showTypeAlert = false;
               selectType = value;
               siftList[1] = value == 0 ? '类型' : typeList[value];
-              widget.state.updateType(value == 0 ? -1 : widget.state.entryList[value - 1].code ?? -1);
+              widget.state.updateType(value == 0 ? -1 : widget.state.typeList[value - 1].code ?? -1);
             });
           }
         },),

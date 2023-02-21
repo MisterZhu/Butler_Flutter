@@ -230,8 +230,8 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
     pickerUtils.completionHandler = (selectedValues, selecteds) {
       DateTime value = selectedValues.first;
       setState(() {
-        widget.state.frmLossTime = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
-        widget.state.frmLossDate = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]);
+        widget.state.reportTime = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+        widget.state.reportDate = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]);
       });
     };
     pickerUtils.showDatePicker(
@@ -248,9 +248,9 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
     List baseInfoList = [
       {'isRequired': true,'title': '仓库名称','content': widget.state.wareHouseName},
       {'isRequired': true, 'title': '类型', 'content': widget.state.type},
-      {'isRequired': true,'title': '报损部门','content': widget.state.frmLossOrgName},
-      {'isRequired': true,'title': '报损人','content': widget.state.frmLossUserName},
-      {'isRequired': true,'title': '报损日期','content': widget.state.frmLossTime},
+      {'isRequired': true,'title': '报损部门','content': widget.state.reportOrgName},
+      {'isRequired': true,'title': '报损人','content': widget.state.reportUserName},
+      {'isRequired': true,'title': '报损日期','content': widget.state.reportTime},
 
     ];
     return baseInfoList;
@@ -302,17 +302,17 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
       return;
     }
 
-    if (widget.state.frmLossOrgId.isEmpty) {
+    if (widget.state.reportOrgId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectFrmLossDepartment);
       return;
     }
 
-    if (widget.state.frmLossUserId.isEmpty) {
+    if (widget.state.reportUserId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectFrmLossUser);
       return;
     }
 
-    if (widget.state.frmLossTime.isEmpty) {
+    if (widget.state.reportTime.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectFrmLossTime);
       return;
     }
@@ -334,11 +334,11 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
     var params = {
       "wareHouseName" : widget.state.wareHouseName,
       "wareHouseId" : widget.state.wareHouseId,
-      "frmLossOrgId" : widget.state.frmLossOrgId,
-      "frmLossOrgName" : widget.state.frmLossOrgName,
-      "frmLossUserId" : widget.state.frmLossUserId,
-      "frmLossUserName" : widget.state.frmLossUserName,
-      "frmLossTime" : widget.state.frmLossTime,
+      "reportOrgId" : widget.state.reportOrgId,
+      "reportOrgName" : widget.state.reportOrgName,
+      "reportUserId" : widget.state.reportUserId,
+      "reportUserName" : widget.state.reportUserName,
+      "reportTime" : widget.state.reportTime,
       "typeName" : widget.state.type,
       "typeId" : widget.state.typeID,
       "remark" : widget.state.remark,
@@ -467,11 +467,11 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
   sureSelectDepartment() {
     bool enable = widget.selectDepartmentController.currentDepartmentModel.enable ?? false;
     if (enable) {
-      if (widget.state.frmLossOrgId != (widget.selectDepartmentController.currentDepartmentModel.id ?? '')) {
-        widget.state.frmLossUserId = '';
-        widget.state.frmLossUserName = '';
-        widget.state.frmLossOrgId = widget.selectDepartmentController.currentDepartmentModel.id ?? '';
-        widget.state.frmLossOrgName = widget.selectDepartmentController.currentDepartmentModel.title ?? '';
+      if (widget.state.reportOrgId != (widget.selectDepartmentController.currentDepartmentModel.id ?? '')) {
+        widget.state.reportUserId = '';
+        widget.state.reportUserName = '';
+        widget.state.reportOrgId = widget.selectDepartmentController.currentDepartmentModel.id ?? '';
+        widget.state.reportOrgName = widget.selectDepartmentController.currentDepartmentModel.title ?? '';
         widget.state.update();
       }
     } else {// 未选择数据
@@ -480,19 +480,19 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
 
   /// 选择报损人
   selectFrmLossUser() async{
-    if (widget.state.frmLossOrgId.isEmpty) {
+    if (widget.state.reportOrgId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectFrmLossDepartment);
     } else {
       var params = {
         'receiverModel': receiverModel,
-        'orgId': widget.state.frmLossOrgId,
+        'orgId': widget.state.reportOrgId,
       };
       var backParams = await SCRouterHelper.pathPage(SCRouterPath.selectReceiverPage, params);
       if (backParams != null) {
         setState(() {
           receiverModel = backParams['receiverModel'];
-          widget.state.frmLossUserId = receiverModel.personId ?? '';
-          widget.state.frmLossUserName =  receiverModel.personName ?? '';
+          widget.state.reportUserId = receiverModel.personId ?? '';
+          widget.state.reportUserName =  receiverModel.personName ?? '';
         });
       }
     }
@@ -520,17 +520,17 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
       return;
     }
 
-    if (widget.state.frmLossOrgId.isEmpty) {
+    if (widget.state.reportOrgId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectFrmLossDepartment);
       return;
     }
 
-    if (widget.state.frmLossUserId.isEmpty) {
+    if (widget.state.reportUserId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectFrmLossUser);
       return;
     }
 
-    if (widget.state.frmLossTime.isEmpty) {
+    if (widget.state.reportTime.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectFrmLossTime);
       return;
     }
@@ -545,11 +545,11 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
       "wareHouseId" : widget.state.wareHouseId,
       "typeName" : widget.state.type,
       "typeId" : widget.state.typeID,
-      "frmLossOrgName" : widget.state.frmLossOrgName,
-      "frmLossOrgId" : widget.state.frmLossOrgId,
-      "frmLossUserName" : widget.state.frmLossUserName,
-      "frmLossUserId" : widget.state.frmLossUserId,
-      "frmLossTime" : widget.state.frmLossTime,
+      "reportOrgName" : widget.state.reportOrgName,
+      "reportOrgId" : widget.state.reportOrgId,
+      "reportUserName" : widget.state.reportUserName,
+      "reportUserId" : widget.state.reportUserId,
+      "reportTime" : widget.state.reportTime,
       "remark" : widget.state.remark,
       "id" : widget.state.editId
     };

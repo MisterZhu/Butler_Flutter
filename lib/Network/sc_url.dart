@@ -172,4 +172,15 @@ class SCUrl {
   /// 出库确认
   static const String kOutboundConfirmUrl = "/api/warehouse/manage/materialOutRelation/outCheck";
 
+  /************************* 物资报损 *************************/
+
+  /// 报损列表
+  static const String kMaterialFrmLossListUrl = "/api/warehouse/app/warehouse/report/pageFront";
+
+  /// 新增报损
+  static const String kAddFrmLossUrl = "/api/warehouse/app/warehouse/report/save";
+
+
+
+
 }

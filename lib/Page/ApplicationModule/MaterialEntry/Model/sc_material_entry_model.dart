@@ -46,8 +46,10 @@ class SCMaterialEntryModel {
       String? remark, 
       int? status, 
       int? type, 
-      String? typeName, 
-      String? wareHouseAddress, 
+      String? typeName,
+    int? reason,
+    String? reasonName,
+    String? wareHouseAddress,
       String? wareHouseId, 
       String? wareHouseName,
       String? fetchOrgId,
@@ -72,6 +74,8 @@ class SCMaterialEntryModel {
     _status = status;
     _type = type;
     _typeName = typeName;
+    _reason = reason;
+    _reasonName = reasonName;
     _wareHouseAddress = wareHouseAddress;
     _wareHouseId = wareHouseId;
     _wareHouseName = wareHouseName;
@@ -105,6 +109,8 @@ class SCMaterialEntryModel {
     _status = json['status'];
     _type = json['type'];
     _typeName = json['typeName'];
+    _reason = json['reason'];
+    _reasonName = json['reasonName'];
     _wareHouseAddress = json['wareHouseAddress'];
     _wareHouseId = json['wareHouseId'];
     _wareHouseName = json['wareHouseName'];
@@ -131,6 +137,8 @@ class SCMaterialEntryModel {
   int? _status;
   int? _type;
   String? _typeName;
+  int? _reason;
+  String? _reasonName;
   String? _wareHouseAddress;
   String? _wareHouseId;
   String? _wareHouseName;
@@ -155,6 +163,8 @@ class SCMaterialEntryModel {
   int? status,
   int? type,
   String? typeName,
+    int? reason,
+    String? reasonName,
   String? wareHouseAddress,
   String? wareHouseId,
   String? wareHouseName,
@@ -180,6 +190,8 @@ class SCMaterialEntryModel {
   status: status ?? _status,
   type: type ?? _type,
   typeName: typeName ?? _typeName,
+    reason: reason ?? _reason,
+    reasonName: reasonName ?? _reasonName,
   wareHouseAddress: wareHouseAddress ?? _wareHouseAddress,
   wareHouseId: wareHouseId ?? _wareHouseId,
   wareHouseName: wareHouseName ?? _wareHouseName,
@@ -206,6 +218,8 @@ class SCMaterialEntryModel {
   int? get status => _status;
   int? get type => _type;
   String? get typeName => _typeName;
+  int? get reason => _reason;
+  String? get reasonName => _reasonName;
   String? get wareHouseAddress => _wareHouseAddress;
   String? get wareHouseId => _wareHouseId;
   String? get wareHouseName => _wareHouseName;
@@ -236,6 +250,8 @@ class SCMaterialEntryModel {
     map['status'] = _status;
     map['type'] = _type;
     map['typeName'] = _typeName;
+    map['reason'] = _reason;
+    map['reasonName'] = _reasonName;
     map['wareHouseAddress'] = _wareHouseAddress;
     map['wareHouseId'] = _wareHouseId;
     map['wareHouseName'] = _wareHouseName;

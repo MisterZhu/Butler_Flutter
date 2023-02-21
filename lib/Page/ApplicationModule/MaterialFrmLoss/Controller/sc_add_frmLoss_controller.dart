@@ -47,22 +47,22 @@ class SCAddFrmLossController extends GetxController {
   int typeIndex = -1;
 
   /// 报损人
-  String frmLossUserName = '';
+  String reportUserName = '';
 
   /// 报损人ID
-  String frmLossUserId = '';
+  String reportUserId = '';
 
   /// 报损组织(或部门)
-  String frmLossOrgName = '';
+  String reportOrgName = '';
 
   /// 报损组织(或部门)ID
-  String frmLossOrgId = '';
+  String reportOrgId = '';
 
   /// 报损日期，页面上显示，格式yyyy-mm-dd HH:nn
-  String frmLossTime = '';
+  String reportTime = '';
 
   /// 报损日期，接口使用，格式yyyy-mm-dd HH:nn:ss
-  String frmLossDate = '';
+  String reportDate = '';
 
   /// 备注
   String remark = '';
@@ -74,7 +74,7 @@ class SCAddFrmLossController extends GetxController {
   onInit() {
     super.onInit();
     loadWareHouseList();
-    loadWareHouseType();
+    loadFrmLossType();
   }
 
   /// 初始化编辑的参数
@@ -95,19 +95,19 @@ class SCAddFrmLossController extends GetxController {
       typeID = params['type'];
 
       /// 报损人
-      frmLossUserName = params['frmLossUserName'];
+      reportUserName = params['reportUserName'];
 
       /// 报损人ID
-      frmLossUserId = params['frmLossUserId'];
+      reportUserId = params['reportUserId'];
 
       /// 报损组织(或部门)
-      frmLossOrgName = params['frmLossOrgName'];
+      reportOrgName = params['reportOrgName'];
 
       /// 报损组织(或部门)ID
-      frmLossOrgId = params['frmLossOrgId'];
+      reportOrgId = params['reportOrgId'];
 
       /// 报损日期
-      frmLossTime = params['frmLossTime'];
+      reportTime = params['reportTime'];
 
       /// 备注
       remark = params['remark'];
@@ -138,19 +138,19 @@ class SCAddFrmLossController extends GetxController {
       "materials": data['materialList'],
       "remark": data['remark'],
       "status": status,
-      "type": data['typeId'],
-      "typeName": data['typeName'],
+      "reason": data['typeId'],
+      //"typeName": data['typeName'],
       "wareHouseId": data['wareHouseId'],
       "wareHouseName": data['wareHouseName'],
-      "frmLossUserName": data['frmLossUserName'],
-      "frmLossUserId": data['frmLossUserId'],
-      "frmLossOrgName": data['frmLossOrgName'],
-      "frmLossOrgId": data['frmLossOrgId'],
+      "reportUserName": data['reportUserName'],
+      "reportUserId": data['reportUserId'],
+      "reportOrgName": data['reportOrgName'],
+      "reportOrgId": data['reportOrgId'],
       "frmLossTime": data['frmLossTime'],
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kAddEntryUrl,
+        url: SCUrl.kAddFrmLossUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
@@ -173,11 +173,11 @@ class SCAddFrmLossController extends GetxController {
       "typeName": data['typeName'],
       "wareHouseId": data['wareHouseId'],
       "wareHouseName": data['wareHouseName'],
-      "frmLossUserName": data['frmLossUserName'],
-      "frmLossUserId": data['frmLossUserId'],
-      "frmLossOrgName": data['frmLossOrgName'],
-      "frmLossOrgId": data['frmLossOrgId'],
-      "frmLossTime": data['frmLossTime'],
+      "reportUserName": data['reportUserName'],
+      "reportUserId": data['reportUserId'],
+      "reportOrgName": data['reportOrgName'],
+      "reportOrgId": data['reportOrgId'],
+      "reportTime": data['reportTime'],
       "status": 0
     };
     SCLoadingUtils.show();
@@ -270,8 +270,8 @@ class SCAddFrmLossController extends GetxController {
         });
   }
 
-  /// 入库类型
-  loadWareHouseType() {
+  /// 报损类型
+  loadFrmLossType() {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kWareHouseTypeUrl,

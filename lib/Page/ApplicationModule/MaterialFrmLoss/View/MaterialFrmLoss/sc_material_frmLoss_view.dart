@@ -12,17 +12,17 @@ import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
-import '../../../MaterialEntry/Controller/sc_material_entry_controller.dart';
 import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
 import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
+import '../../Controller/sc_material_frmLoss_controller.dart';
 
 
 /// 物资报损view
 
 class SCMaterialFrmLossView extends StatefulWidget {
 
-  /// SCMaterialEntryController
-  final SCMaterialEntryController state;
+  /// SCMaterialFrmLossController
+  final SCMaterialFrmLossController state;
 
   SCMaterialFrmLossView({Key? key, required this.state}) : super(key: key);
 
@@ -42,7 +42,7 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
     {'name': '已拒绝', 'code': 3},
     {'name': '已驳回', 'code': 4},
     {'name': '已撤回', 'code': 5},
-    {'name': '已入库', 'code': 6},
+    {'name': '已通过', 'code': 6},
   ];
   List typeList = ['全部'];
 
@@ -65,8 +65,8 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
   void initState() {
     super.initState();
     sortIndex = widget.state.sort == true ? 0 : 1;
-    widget.state.loadWareHouseType(() {
-      List list = widget.state.entryList.map((e) => e.name).toList();
+    widget.state.loadFrmLossType(() {
+      List list = widget.state.typeList.map((e) => e.name).toList();
       setState(() {
         typeList.addAll(list);
       });
@@ -208,7 +208,7 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
     SCRouterHelper.pathPage(SCRouterPath.frmLossDetailPage, {'id': model.id, 'canEdit' : canEdit});
   }
 
-  /// 入库状态弹窗
+  /// 报损状态弹窗
   Widget statusAlert() {
     List list = [];
     for (int i = 0; i < statusList.length; i++) {
@@ -217,7 +217,7 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
     return Offstage(
       offstage: !showStatusAlert,
       child: SCSiftAlert(
-        title: '入库状态',
+        title: '报损状态',
         list: list,
         selectIndex: selectStatus,
         closeAction: () {
@@ -238,12 +238,12 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
     );
   }
 
-  /// 入库类型弹窗
+  /// 报损类型弹窗
   Widget typeAlert() {
     return Offstage(
       offstage: !showTypeAlert,
       child: SCSiftAlert(
-        title: '入库类型',
+        title: '报损类型',
         list: typeList,
         selectIndex: selectType,
         closeAction: () {
@@ -257,7 +257,7 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
               showTypeAlert = false;
               selectType = value;
               siftList[1] = value == 0 ? '类型' : typeList[value];
-              widget.state.updateType(value == 0 ? -1 : widget.state.entryList[value - 1].code ?? -1);
+              widget.state.updateType(value == 0 ? -1 : widget.state.typeList[value - 1].code ?? -1);
             });
           }
         },),
@@ -296,13 +296,13 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
     widget.state.submit(id: model.id ?? '', completeHandler: (bool success){
-      widget.state.loadEntryListData(isMore: false);
+      widget.state.loadFrmLossListData(isMore: false);
     });
   }
 
   /// 下拉刷新
   Future onRefresh() async {
-    widget.state.loadEntryListData(isMore: false, completeHandler: (bool success, bool last){
+    widget.state.loadFrmLossListData(isMore: false, completeHandler: (bool success, bool last){
       refreshController.refreshCompleted();
       refreshController.loadComplete();
     });
@@ -310,7 +310,7 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
 
   /// 上拉加载
   void loadMore() async{
-    widget.state.loadEntryListData(isMore: true, completeHandler: (bool success, bool last){
+    widget.state.loadFrmLossListData(isMore: true, completeHandler: (bool success, bool last){
       if (last) {
         refreshController.loadNoData();
       } else {
