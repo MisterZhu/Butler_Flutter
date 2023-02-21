@@ -32,7 +32,7 @@ class SCMaterialDetailBottomView extends StatelessWidget {
     return Container(
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      height: 54.0 + SCUtils().getBottomSafeArea(),
+      height: 54.0 + MediaQuery.of(context).padding.bottom,
       color: SCColors.color_FFFFFF,
       child: Container(
         height: 54.0,
