@@ -30,7 +30,7 @@ class SCPersonalInfoPageState extends State<SCPersonalInfoPage> {
       child: GetBuilder<SCPersonalInfoController>(builder: (state) {
         return SCPersonalInfoListView(
           userHeadPicUrl: state.userHeadPicUrl,
-          birthday:  state.birthday,
+          birthday: state.birthday,
           updateUserHeadPicAction: (String path) {
             updateUserHeadPicAction(path);
           },

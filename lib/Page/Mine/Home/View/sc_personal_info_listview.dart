@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/Mine/Home/Model/sc_headpic_model.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_setting_cell.dart';
 import 'package:smartcommunity/Utils/Date/sc_date_utils.dart';
 import 'package:smartcommunity/utils/Permission/sc_permission_utils.dart';
-import 'package:smartcommunity/utils/Upload/sc_upload_utils.dart';
-import '../../../../Network/sc_config.dart';
-import '../../../../constants/sc_asset.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 
 /// 个人资料listview
 
 class SCPersonalInfoListView extends StatelessWidget {
-  const SCPersonalInfoListView({
-    Key? key,
-    required this.userHeadPicUrl,
-    this.birthday,
-    this.updateUserHeadPicAction,
-    this.updateBirthdayAction
-  }) : super(key: key);
+  const SCPersonalInfoListView(
+      {Key? key,
+      required this.userHeadPicUrl,
+      this.birthday,
+      this.updateUserHeadPicAction,
+      this.updateBirthdayAction})
+      : super(key: key);
 
   /// 用户头像
   final String userHeadPicUrl;
@@ -108,7 +103,6 @@ class SCPersonalInfoListView extends StatelessWidget {
   Widget roleItem() {
     return Container(
       width: double.infinity,
-      height: 68.0,
       color: SCColors.color_FFFFFF,
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
@@ -116,15 +110,18 @@ class SCPersonalInfoListView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Expanded(
-              child: Text(
-            '角色',
-            textAlign: TextAlign.left,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                fontSize: SCFonts.f16,
-                fontWeight: FontWeight.w400,
-                color: SCColors.color_1B1C33),
+              child: SizedBox(
+            height: 48.0,
+            child: Text(
+              '角色',
+              textAlign: TextAlign.left,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontSize: SCFonts.f16,
+                  fontWeight: FontWeight.w400,
+                  color: SCColors.color_1B1C33),
+            ),
           )),
           const SizedBox(
             width: 30.0,
@@ -242,7 +239,6 @@ class SCPersonalInfoListView extends StatelessWidget {
       updateBirthdayAction?.call(dateString);
     };
     pickerUtils.showDatePicker(
-        context: context,
-        dateType: PickerDateTimeType.kYMD);
+        context: context, dateType: PickerDateTimeType.kYMD);
   }
 }
