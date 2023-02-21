@@ -233,4 +233,15 @@ class SCAsset {
   /// 联系领用人icon
   static const String iconReceiverCall = "images/materialOutbound/icon_receiver_call.png";
 
+  /// ****************  物资报损 ****************/
+
+  /// 物资报损icon
+  static const String iconMaterialFrmLoss = "images/materialFrmLoss/icon_material_frmLoss.png";
+
+
+  /// ****************  物资调拨 ****************/
+
+  /// 物资调拨icon
+  static const String iconMaterialTransfer = "images/materialTransfer/icon_material_transfer.png";
+
 }

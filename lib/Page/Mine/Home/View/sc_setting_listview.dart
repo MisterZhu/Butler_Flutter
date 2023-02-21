@@ -1,10 +1,14 @@
 
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_setting_cell.dart';
+import '../../../../Constants/sc_default_value.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
+import '../GetXController/sc_setting_controller.dart';
 
 /// 设置listview
 
@@ -12,80 +16,86 @@ class SCSettingListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return body();
-  }
-
-  /// body
-  Widget body() {
     return ListView.separated(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
-          return getCell(index);
+          return getCell(index, context);
         },
         separatorBuilder: (BuildContext context, int index) {
           bool isLine = true;
-          if (index == 6 || index == 10) {
+          if (index == 2 || index == 3) {
             isLine = false;
           }
           return getLine(isLine);
         },
-        itemCount: 12);
+        itemCount: 5);
   }
   
-  Widget getCell(int index) {
+  Widget getCell(int index, BuildContext context) {
     if (index == 0) {
-      return SCSettingCell(title: '账户安全', onTap: (){
-      },);
-    } else if (index == 1) {
-      return SCSettingCell(
-        title: '清除缓存',
-        content: '12.0KB',
-        cellType: SCSettingCellType.contentType,
-        onTap: (){
-
-      },);
-    } else if (index == 2) {
-      return SCSettingCell(title: '检查更新', onTap: (){
-
-      },);
-    } else if (index == 3) {
-      return SCSettingCell(title: '意见反馈', onTap: (){
-
-      },);
-    } else if (index == 4) {
       return SCSettingCell(title: '关于', onTap: (){
 
       },);
-    } else if (index == 5) {
+    } else if (index == 1) {
       return SCSettingCell(title: '用户协议', onTap: (){
 
       },);
-    } else if (index == 6) {
+    } else if (index == 2) {
       return SCSettingCell(title: '隐私政策', onTap: (){
 
       },);
-    } else if (index == 7) {
-      return SCSettingCell(title: '更换皮肤', onTap: (){
-
-      },);
-    } else if (index == 8) {
-      return SCSettingCell(title: '消息设置', onTap: (){
-
-      },);
-    } else if (index == 9) {
-      return SCSettingCell(title: '待办事项设置', onTap: (){
-
-      },);
-    } else if (index == 10) {
-      return SCSettingCell(title: '底部导航栏设置', onTap: (){
-
-      },);
-    } else if (index == 11) {
+    } else if (index == 3) {
+      return logOffCell(context);
+    } else if (index == 4) {
       return logoutCell();
     } else {
       return const SizedBox(height: 100.0,);
     }
+  }
+
+  /// 注销
+  Widget logOffCell(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 60.0,
+      child: CupertinoButton(
+          padding: EdgeInsets.zero,
+          color: SCColors.color_FFFFFF,
+          borderRadius: BorderRadius.circular(0.0),
+          child: const Text(
+            "注销",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: SCFonts.f16,
+                fontWeight: FontWeight.w500,
+                color: SCColors.color_4285F4),
+          ),
+          onPressed: () {
+            logOff(context);
+          }),
+    );
+  }
+
+  logOff(BuildContext context) {
+    SCDialogUtils.instance.showMiddleDialog(
+      context: context,
+      content: SCDefaultValue.logOffTip,
+      customWidgetButtons: [
+        defaultCustomButton(context,
+            text: '取消',
+            textColor: SCColors.color_1B1C33,
+            fontWeight: FontWeight.w400),
+        defaultCustomButton(context,
+            text: '确定',
+            textColor: SCColors.color_1B1C33,
+            fontWeight: FontWeight.w400, onTap: () {
+              SCSettingController controller = SCSettingController();
+              controller.logOff();
+            }),
+      ],
+    );
+
   }
 
   /// 退出登录

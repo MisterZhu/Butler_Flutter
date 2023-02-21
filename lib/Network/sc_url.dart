@@ -89,6 +89,9 @@ class SCUrl {
   /// 修改用户信息
   static const String kModifyUserInfoUrl = "/api/user/info/modifyAccount";
 
+  /// 注销
+  static const String kLogOffUrl = "/api/user/info/stateBatch";
+
 
   /************************* 物资入库 *************************/
   /// 入库列表
