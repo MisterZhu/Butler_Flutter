@@ -112,20 +112,20 @@ class SCWorkBenchHeader extends StatelessWidget {
               headerAction?.call();
             },
           ),
-          const SizedBox(
-            height: 15.0,
-          ),
-          SCWorkBenchSearch(
-            searchAction: () {
-              searchAction?.call();
-            },
-            scanAction: () {
-              scanAction?.call();
-            },
-            messageAction: () {
-              messageAction?.call();
-            },
-          ),
+          // const SizedBox(
+          //   height: 15.0,
+          // ),
+          // SCWorkBenchSearch(
+          //   searchAction: () {
+          //     searchAction?.call();
+          //   },
+          //   scanAction: () {
+          //     scanAction?.call();
+          //   },
+          //   messageAction: () {
+          //     messageAction?.call();
+          //   },
+          // ),
           const SizedBox(
             height: 22.0,
           ),

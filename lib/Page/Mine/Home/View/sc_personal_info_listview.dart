@@ -109,10 +109,11 @@ class SCPersonalInfoListView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Expanded(
-              child: SizedBox(
+          Expanded(
+              child: Container(
+                alignment: Alignment.centerLeft,
             height: 48.0,
-            child: Text(
+            child: const Text(
               '角色',
               textAlign: TextAlign.left,
               maxLines: 1,
