@@ -2,17 +2,14 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_bottom_button_item.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Constants/sc_default_value.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
-import '../../../../../Utils/sc_utils.dart';
 import '../../Controller/sc_material_search_controller.dart';
 import '../../Model/sc_material_list_model.dart';
-import '../Detail/sc_material_bottom_view.dart';
 import '../Detail/sc_material_cell.dart';
 
 /// 物资搜索view
@@ -41,25 +38,14 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
 
   late StreamSubscription<bool> keyboardSubscription;
 
-  /// 是否弹起键盘
-  //bool isShowKeyboard = true;
-
   @override
   void initState() {
     super.initState();
     showKeyboard(context);
-    // var keyboardVisibilityController = KeyboardVisibilityController();
-    // isShowKeyboard = keyboardVisibilityController.isVisible;
-    // keyboardSubscription = keyboardVisibilityController.onChange.listen((bool visible) {
-    //   setState(() {
-    //     isShowKeyboard = visible;
-    //   });
-    // });
   }
 
   @override
   void dispose() {
-    //keyboardSubscription.cancel();
     controller.dispose();
     node.dispose();
     super.dispose();

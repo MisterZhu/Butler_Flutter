@@ -33,11 +33,6 @@ class SCBottomButtonItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return body(context);
-  }
-
-  /// body
-  Widget body(BuildContext context) {
     return Container(
       width: double.infinity,
       alignment: Alignment.topLeft,
