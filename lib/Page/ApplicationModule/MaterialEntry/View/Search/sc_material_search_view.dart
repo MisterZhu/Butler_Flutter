@@ -99,32 +99,6 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
         sureAction();
       },
     );
-    return Container(
-        width: double.infinity,
-        height: 54.0 + SCUtils().getBottomSafeArea(),
-
-        padding: EdgeInsets.only(
-            left: 16.0,
-            top: 7.0,
-            right: 16.0,
-            bottom: SCUtils().getBottomSafeArea() + 7.0),
-        decoration: BoxDecoration(
-            color: SCColors.color_4285F4,
-            borderRadius: BorderRadius.circular(4.0)),
-        child: CupertinoButton(
-          padding: EdgeInsets.zero,
-          child: Text(
-            '确定',
-            style: const TextStyle(
-              fontSize: SCFonts.f16,
-              fontWeight: FontWeight.w400,
-              color: SCColors.color_FFFFFF,),
-          ),
-          onPressed: () {
-            sureAction();
-          },
-        )
-    );
   }
 
   /// 确定
