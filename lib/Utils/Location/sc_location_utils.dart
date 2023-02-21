@@ -9,13 +9,14 @@ import '../../Network/sc_url.dart';
 
 class SCLocationUtils {
   /// 获取定位权限
-  static Future<LocationPermission> requestPermission() async{
+  static Future<LocationPermission> requestPermission() async {
     LocationPermission permission = await Geolocator.requestPermission();
     return permission;
   }
 
   /// 获取位置-仅仅是posotion, status:0-权限被拒绝，1-获取成功，2-权限无法确定
-  static locationOnlyPosition(Function(Position? position, int status)? completeHandler) async{
+  static locationOnlyPosition(
+      Function(Position? position, int status)? completeHandler) async {
     LocationPermission permission = await SCLocationUtils.requestPermission();
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
@@ -33,8 +34,9 @@ class SCLocationUtils {
   }
 
   /// 获取位置
-  static Future<Position> location() async{
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  static Future<Position> location() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     log('定位位置:${position.toJson()}');
     return position;
   }
@@ -46,7 +48,10 @@ class SCLocationUtils {
   }
 
   /// 逆地理编码
-  static reGeoCode({required Position position, Function(dynamic value)? success, Function(dynamic value)? failure}) {
+  static reGeoCode(
+      {required Position position,
+      Function(dynamic value)? success,
+      Function(dynamic value)? failure}) {
     var longitude = position.longitude;
     var latitude = position.latitude;
     var params = {
@@ -60,20 +65,25 @@ class SCLocationUtils {
 
     SCLoadingUtils.show();
     SCHttpManager.instance.get(
-        url: SCUrl.kReGeoCodeUrl, params: params, success: (response) {
-      int status = int.parse(response['status']);
-      if (status == 1) {
-        log('位置成功:$response');
-        var data = response['regeocode'];
-        SCLocationModel model = SCLocationModel.fromJson(data);
+        url: SCUrl.kReGeoCodeUrl,
+        params: params,
+        success: (response) {
+          SCLoadingUtils.hide();
+          int status = int.parse(response['status']);
+          if (status == 1) {
+            log('位置成功:$response');
+            var data = response['regeocode'];
+            SCLocationModel model = SCLocationModel.fromJson(data);
 
-        success?.call(model);
-      } else {
-        failure?.call(SCDefaultValue.errorMessage);
-      }
-    }, failure: (error) {
-      log('位置失败:$error');
-      failure?.call(SCDefaultValue.errorMessage);
-    });
+            success?.call(model);
+          } else {
+            failure?.call(SCDefaultValue.errorMessage);
+          }
+        },
+        failure: (error) {
+          SCLoadingUtils.hide();
+          log('位置失败:$error');
+          failure?.call(SCDefaultValue.errorMessage);
+        });
   }
 }

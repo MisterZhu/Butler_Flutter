@@ -176,6 +176,7 @@ class SCAddEntryController extends GetxController {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kEditDeleteEntryMaterialUrl,
+        isQuery: true,
         params: params,
         success: (value) {
           loadMaterialEntryDetail();

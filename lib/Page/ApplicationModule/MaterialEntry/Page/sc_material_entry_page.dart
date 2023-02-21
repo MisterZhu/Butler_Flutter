@@ -17,7 +17,6 @@ class SCMaterialEntryPage extends StatefulWidget {
 }
 
 class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
-
   /// SCMaterialEntryController
   late SCMaterialEntryController controller;
 
@@ -40,7 +39,8 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
   @override
   dispose() {
     subscription.cancel();
-    SCScaffoldManager.instance.deleteGetXControllerTag(pageName(), controllerTag);
+    SCScaffoldManager.instance
+        .deleteGetXControllerTag(pageName(), controllerTag);
     controller.dispose();
     super.dispose();
   }
@@ -61,7 +61,9 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
           tag: controllerTag,
           init: controller,
           builder: (state) {
-            return SCMaterialEntryView(state: state,);
+            return SCMaterialEntryView(
+              state: state,
+            );
           }),
     );
   }

@@ -136,23 +136,27 @@ class SCPersonalInfoListView extends StatelessWidget {
   /// gridView
   Widget gridView() {
     List<String> list = SCScaffoldManager.instance.user.roleNames ?? [];
-    return SizedBox(
-      width: 160.0,
-      child: StaggeredGridView.countBuilder(
-          padding: const EdgeInsets.only(top: 4.0),
-          mainAxisSpacing: 4,
-          crossAxisSpacing: 4,
-          crossAxisCount: 2,
-          shrinkWrap: true,
-          itemCount: list.length,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return cell(list[index]);
-          },
-          staggeredTileBuilder: (int index) {
-            return const StaggeredTile.fit(1);
-          }),
-    );
+    if (list.length == 1) {
+      return cell(list.first);
+    } else {
+      return SizedBox(
+        width: 160.0,
+        child: StaggeredGridView.countBuilder(
+            padding: const EdgeInsets.only(top: 4.0),
+            mainAxisSpacing: 4,
+            crossAxisSpacing: 4,
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            itemCount: list.length,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return cell(list[index]);
+            },
+            staggeredTileBuilder: (int index) {
+              return const StaggeredTile.fit(1);
+            }),
+      );
+    }
   }
 
   Widget cell(String name) {

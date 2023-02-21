@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -20,7 +19,6 @@ import '../Alert/sc_sort_alert.dart';
 /// 物资入库view
 
 class SCMaterialEntryView extends StatefulWidget {
-
   /// SCMaterialEntryController
   final SCMaterialEntryController state;
 
@@ -31,8 +29,7 @@ class SCMaterialEntryView extends StatefulWidget {
 }
 
 class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
-
-  List siftList =  ['状态', '类型', '排序'];
+  List siftList = ['状态', '类型', '排序'];
 
   List statusList = [
     {'name': '全部', 'code': -1},
@@ -59,7 +56,8 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
   bool showSortAlert = false;
 
   /// RefreshController
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -90,30 +88,37 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SCMaterialSearchItem(name: '搜索仓库名称', searchAction: () {
-          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.entry});
-        },),
-        SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
-          if (index == 0) {
-            setState(() {
-              showStatusAlert = !showStatusAlert;
-              showTypeAlert = false;
-              showSortAlert = false;
-            });
-          } else if (index == 1) {
-            setState(() {
-              showStatusAlert = false;
-              showTypeAlert = !showTypeAlert;
-              showSortAlert = false;
-            });
-          } else if (index == 2) {
-            setState(() {
-              showStatusAlert = false;
-              showTypeAlert = false;
-              showSortAlert = !showSortAlert;
-            });
-          }
-        },),
+        SCMaterialSearchItem(
+          name: '搜索仓库名称',
+          searchAction: () {
+            SCRouterHelper.pathPage(SCRouterPath.entrySearchPage,
+                {'type': SCWarehouseManageType.entry});
+          },
+        ),
+        SCMaterialSiftItem(
+          tagList: siftList,
+          tapAction: (index) {
+            if (index == 0) {
+              setState(() {
+                showStatusAlert = !showStatusAlert;
+                showTypeAlert = false;
+                showSortAlert = false;
+              });
+            } else if (index == 1) {
+              setState(() {
+                showStatusAlert = false;
+                showTypeAlert = !showTypeAlert;
+                showSortAlert = false;
+              });
+            } else if (index == 2) {
+              setState(() {
+                showStatusAlert = false;
+                showTypeAlert = false;
+                showSortAlert = !showSortAlert;
+              });
+            }
+          },
+        ),
         Expanded(child: contentItem())
       ],
     );
@@ -123,18 +128,14 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
   Widget contentItem() {
     return Stack(
       children: [
-        Positioned(
-            left: 0,
-            top: 0,
-            right: 0,
-            bottom: 0,
-            child: listview()),
+        Positioned(left: 0, top: 0, right: 0, bottom: 0, child: listview()),
         Positioned(
           right: 16,
           bottom: SCUtils().getBottomSafeArea() + 40,
           width: 71.0,
           height: 71.0,
-          child: addItem(),),
+          child: addItem(),
+        ),
         Positioned(
           left: 0.0,
           right: 0.0,
@@ -162,9 +163,12 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
 
   /// 新增入库按钮
   Widget addItem() {
-    return SCAddEntryButton(name: '新增入库', tapAction: () {
-      SCRouterHelper.pathPage(SCRouterPath.addEntryPage, null);
-    },);
+    return SCAddEntryButton(
+      name: '新增入库',
+      tapAction: () {
+        SCRouterHelper.pathPage(SCRouterPath.addEntryPage, null);
+      },
+    );
   }
 
   /// listview
@@ -176,36 +180,42 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
       header: const SCCustomHeader(
         style: SCCustomHeaderStyle.noNavigation,
       ),
-      onRefresh: onRefresh, onLoading: loadMore, child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          SCMaterialEntryModel model = widget.state.dataList[index];
-          return SCMaterialEntryCell(
-            model: model,
-            type: SCWarehouseManageType.entry,
-            detailTapAction: () {
-              detailAction(model);
-            },
-            btnTapAction: () {
-              submit(index);
-            },
-            callAction: (String phone) {
-              call(phone);
-            },
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(height: 10.0,);
-        },
-        itemCount: widget.state.dataList.length),);
+      onRefresh: onRefresh,
+      onLoading: loadMore,
+      child: ListView.separated(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            SCMaterialEntryModel model = widget.state.dataList[index];
+            return SCMaterialEntryCell(
+              model: model,
+              type: SCWarehouseManageType.entry,
+              detailTapAction: () {
+                detailAction(model);
+              },
+              btnTapAction: () {
+                submit(index);
+              },
+              callAction: (String phone) {
+                call(phone);
+              },
+            );
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox(
+              height: 10.0,
+            );
+          },
+          itemCount: widget.state.dataList.length),
+    );
   }
 
   /// 详情
   detailAction(SCMaterialEntryModel model) {
     int status = model.status ?? -1;
     bool canEdit = (status == 0);
-    SCRouterHelper.pathPage(SCRouterPath.entryDetailPage, {'id': model.id, 'canEdit' : canEdit});
+    SCRouterHelper.pathPage(
+        SCRouterPath.entryDetailPage, {'id': model.id, 'canEdit': canEdit});
   }
 
   /// 入库状态弹窗
@@ -234,7 +244,8 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
               widget.state.updateStatus(statusList[value]['code']);
             });
           }
-        },),
+        },
+      ),
     );
   }
 
@@ -260,7 +271,8 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
               widget.state.updateType(value == 0 ? -1 : widget.state.typeList[value - 1].code ?? -1);
             });
           }
-        },),
+        },
+      ),
     );
   }
 
@@ -283,7 +295,8 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
               widget.state.updateSort(index == 0 ? true : false);
             });
           }
-      },),
+        },
+      ),
     );
   }
 
@@ -295,28 +308,33 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
   /// 提交
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
-    widget.state.submit(id: model.id ?? '', completeHandler: (bool success){
-      widget.state.loadEntryListData(isMore: false);
-    });
+    widget.state.submit(
+        id: model.id ?? '',
+        completeHandler: (bool success) {
+          widget.state.loadEntryListData(isMore: false);
+        });
   }
 
   /// 下拉刷新
   Future onRefresh() async {
-    widget.state.loadEntryListData(isMore: false, completeHandler: (bool success, bool last){
-      refreshController.refreshCompleted();
-      refreshController.loadComplete();
-    });
+    widget.state.loadEntryListData(
+        isMore: false,
+        completeHandler: (bool success, bool last) {
+          refreshController.refreshCompleted();
+          refreshController.loadComplete();
+        });
   }
 
   /// 上拉加载
-  void loadMore() async{
-    widget.state.loadEntryListData(isMore: true, completeHandler: (bool success, bool last){
-      if (last) {
-        refreshController.loadNoData();
-      } else {
-        refreshController.loadComplete();
-      }
-    });
+  void loadMore() async {
+    widget.state.loadEntryListData(
+        isMore: true,
+        completeHandler: (bool success, bool last) {
+          if (last) {
+            refreshController.loadNoData();
+          } else {
+            refreshController.loadComplete();
+          }
+        });
   }
-
 }
