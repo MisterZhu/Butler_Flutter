@@ -107,7 +107,8 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
   /// cell
   Widget getCell(int index) {
     if (index == 0) {
-      return SCBasicInfoCell(// 基础信息
+      return SCBasicInfoCell(
+        // 基础信息
         list: getBaseInfoList(),
         remark: widget.state.remark,
         selectAction: (index) {
@@ -126,7 +127,8 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         },
         addPhotoAction: (list) {},
       );
-    } else if (index == 1) {// 物资信息
+    } else if (index == 1) {
+      // 物资信息
       return SCMaterialInfoCell(
         showAdd: true,
         list: widget.state.selectedList,
@@ -225,16 +227,14 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       return;
     }
     if (widget.state.isEdit) {
-      print("编辑-添加物资");
       addExitsMaterialAction();
     } else {
-      print("添加物资");
       addMaterialAction();
     }
   }
 
   /// 新增物资-添加物资
-  addMaterialAction() async{
+  addMaterialAction() async {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId
@@ -245,7 +245,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
   }
 
   /// 编辑物资-添加既存物资
-  addExitsMaterialAction() async{
+  addExitsMaterialAction() async {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
@@ -324,7 +324,6 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
 
   /// 编辑
   editAction() {
-    print("编辑");
     if (widget.state.wareHouseId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
       return;
@@ -368,9 +367,6 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
 
   /// 新增物资-编辑
   editAddMaterial(List<SCMaterialListModel> list) {
-    print("原始数据===${widget.state.selectedList}");
-
-    print("添加===$list");
     // 编辑的物资
     List<SCMaterialListModel> editList = [];
     // 新增的物资
@@ -408,9 +404,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       }
     }
 
-    for (SCMaterialListModel model in editList) {
-      print("编辑的物资===${model.toJson()}");
-    }
+    for (SCMaterialListModel model in editList) {}
 
     List<SCMaterialListModel> newList = widget.state.selectedList;
     List addJsonList = [];
@@ -425,7 +419,6 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       subParams['num'] = model.localNum;
       subParams['inId'] = widget.state.editId;
       addJsonList.add(subParams);
-      print("新增的物资===${subParams}");
     }
 
     if (editList.isNotEmpty) {

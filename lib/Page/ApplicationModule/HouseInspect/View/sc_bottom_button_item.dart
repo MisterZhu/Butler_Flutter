@@ -33,16 +33,17 @@ class SCBottomButtonItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return body();
+    return body(context);
   }
 
   /// body
-  Widget body() {
+  Widget body(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 54.0 + SCUtils().getBottomSafeArea(),
+      alignment: Alignment.topLeft,
+      height: 54.0 + MediaQuery.of(context).padding.bottom,
       color: SCColors.color_FFFFFF,
-      padding: EdgeInsets.only(left: 16.0, top: 7.0, right: 16.0, bottom: SCUtils().getBottomSafeArea() + 7.0),
+      padding: const EdgeInsets.only(left: 16.0, top: 7.0, right: 16.0),
       child: buttonType == 1 ? buttonsItem() : buttonItem(list[0]),
     );
   }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_bottom_button_item.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Constants/sc_default_value.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
@@ -91,10 +92,17 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
 
   /// 底部按钮
   Widget bottomView() {
+    return SCBottomButtonItem(
+        list: const ['确定'],
+      buttonType: 0,
+      tapAction: () {
+        sureAction();
+      },
+    );
     return Container(
         width: double.infinity,
         height: 54.0 + SCUtils().getBottomSafeArea(),
-        color: SCColors.color_FFFFFF,
+
         padding: EdgeInsets.only(
             left: 16.0,
             top: 7.0,

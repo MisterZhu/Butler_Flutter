@@ -132,7 +132,6 @@ class SCHttpManager {
 
     try {
       response = await _dio!.post(url,
-          queryParameters: params is Map<String, dynamic> ? params : {},
           data: params,
           options: headers == null ? null : options);
       status = true;
@@ -169,7 +168,6 @@ class SCHttpManager {
 
     try {
       response = await _dio!.put(url,
-          queryParameters: params,
           data: params,
           options: headers == null ? null : options);
       status = true;
@@ -204,7 +202,6 @@ class SCHttpManager {
 
     try {
       response = await _dio!.delete(url,
-          queryParameters: params,
           data: params,
           options: headers == null ? null : options);
       status = true;

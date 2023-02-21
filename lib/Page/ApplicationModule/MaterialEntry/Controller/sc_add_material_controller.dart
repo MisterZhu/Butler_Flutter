@@ -76,7 +76,6 @@ class SCAddMaterialController extends GetxController {
           for (SCMaterialListModel model in materialList) {
             for (SCMaterialListModel subModel in originalList) {
               if (isEdit) {
-                print("编辑===");
                 if (model.id == subModel.materialId) {
                   model.localNum = subModel.localNum;
                   model.isSelect = true;
@@ -125,8 +124,6 @@ class SCAddMaterialController extends GetxController {
         url: SCUrl.kMaterialSortUrl,
         params: null,
         success: (value) {
-          print('物资分类数据=================$value');
-
           update();
         },
         failure: (value) {

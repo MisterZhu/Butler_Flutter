@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
@@ -151,8 +153,8 @@ class SCAddEntryController extends GetxController {
   }
 
   /// 编辑-新增物资
-  editAddMaterial({required List list, Function(bool success)? completeHandler}) {
-    print("入库物资===${list}");
+  editAddMaterial(
+      {required List list, Function(bool success)? completeHandler}) {
     var params = {"inId": editId, "materialInRelations": list};
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
@@ -167,7 +169,9 @@ class SCAddEntryController extends GetxController {
   }
 
   /// 编辑-删除物资
-  editDeleteMaterial({required String materialInRelationId, Function(bool success)? completeHandler}) {
+  editDeleteMaterial(
+      {required String materialInRelationId,
+      Function(bool success)? completeHandler}) {
     var params = {"materialInRelationId": materialInRelationId};
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
@@ -183,8 +187,7 @@ class SCAddEntryController extends GetxController {
 
   /// 编辑-编辑物资
   editMaterial({required List list, Function(bool success)? completeHandler}) {
-    for(SCMaterialListModel model in list) {
-      print("物资数据===${model.toJson()}");
+    for (SCMaterialListModel model in list) {
       var params = model.toJson();
       params['num'] = model.localNum;
       params['materialName'] = model.name;
@@ -194,11 +197,9 @@ class SCAddEntryController extends GetxController {
           params: params,
           success: (value) {
             loadMaterialEntryDetail();
-            print("编辑成功");
           },
           failure: (value) {
             SCLoadingUtils.hide();
-            print("编辑失败");
           });
     }
   }
@@ -246,7 +247,8 @@ class SCAddEntryController extends GetxController {
         params: {'wareHouseInId': editId},
         success: (value) {
           SCLoadingUtils.hide();
-          SCMaterialEntryDetailModel model = SCMaterialEntryDetailModel.fromJson(value);
+          SCMaterialEntryDetailModel model =
+              SCMaterialEntryDetailModel.fromJson(value);
           List<SCMaterialListModel> materials = model.materials ?? [];
           for (SCMaterialListModel subModel in materials) {
             subModel.localNum = subModel.number ?? 1;
