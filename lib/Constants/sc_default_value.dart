@@ -146,6 +146,16 @@ class SCDefaultValue {
   /// 仓储-新增调拨-请选择调出仓库
   static const String selectOutWareHouseTip = "请选择调出仓库";
 
+  /// 仓储-新增报损-请选择报损部门
+  static const String selectFrmLossDepartment = "请选择报损部门";
+
+  /// 仓储-新增报损-请选择报损人
+  static const String selectFrmLossUser = "请选择报损人";
+
+  /// 仓储-新增报损-请选择报损时间
+  static const String selectFrmLossTime = "请选择报损时间";
+
+
   /// 设置-注销账号提示
   static const String logOffTip = "确定要注销账号吗";
 

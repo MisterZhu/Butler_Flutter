@@ -78,9 +78,57 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
             outWareHouseView(),
           ]
       );
+    }else if (type == SCWarehouseManageType.frmLoss) {
+      // 物料调拨，显示报损人、报损部门、报损时间
+      return Column(
+          children: [
+            const SizedBox(
+              height: 10.0,
+            ),
+            frmLossUserView(),
+            const SizedBox(
+              height: 10.0,
+            ),
+            frmLossDepartmentView(),
+            const SizedBox(
+              height: 10.0,
+            ),
+            frmLossTimeView(),
+          ]
+      );
     } else {
       return const SizedBox();
     }
+  }
+
+  /// 报损部门view
+  Widget frmLossDepartmentView() {
+    return Row(
+      children: [
+        desLabel('报损部门'),
+        textView(1, model?.fetchOrgName ?? '')
+      ],
+    );
+  }
+
+  /// 报损人view
+  Widget frmLossUserView() {
+    return Row(
+      children: [
+        desLabel('报损人'),
+        contactView('${model?.creatorName}', model?.mobileNum ?? '')
+      ],
+    );
+  }
+
+  /// 报损时间
+  Widget frmLossTimeView() {
+    return Row(
+      children: [
+        desLabel('报损时间'),
+        textView(1, '${model?.gmtCreate}')
+      ],
+    );
   }
 
   /// 调入仓库view

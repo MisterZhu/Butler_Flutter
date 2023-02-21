@@ -6,8 +6,9 @@ import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../../Utils/sc_utils.dart';
-import '../../MaterialEntry/Controller/sc_add_entry_controller.dart';
-import '../../MaterialEntry/View/AddEntry/sc_add_entry_view.dart';
+import '../../MaterialOutbound/Controller/sc_select_department_controller.dart';
+import '../Controller/sc_add_frmLoss_controller.dart';
+import '../View/AddFrmLoss/sc_add_frmLoss_view.dart';
 
 /// 新增报损page
 
@@ -18,17 +19,27 @@ class SCAddFrmLossPage extends StatefulWidget {
 
 class SCAddFrmLossPageState extends State<SCAddFrmLossPage> {
 
-  /// SCAddEntryController
-  late SCAddEntryController controller;
+  /// SCAddFrmLossController
+  late SCAddFrmLossController controller;
+
+  /// SCSelectDepartmentController
+  late SCSelectDepartmentController selectDepartmentController;
 
   /// SCAddEntryController - tag
   String controllerTag = '';
+
+  /// SCSelectDepartmentController - tag
+  String selectDepartmentControllerTag = '';
 
   @override
   initState() {
     super.initState();
     controllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddFrmLossPage).toString());
-    controller = Get.put(SCAddEntryController(), tag: controllerTag);
+    controller = Get.put(SCAddFrmLossController(), tag: controllerTag);
+    selectDepartmentControllerTag = SCScaffoldManager.instance
+        .getXControllerTag((SCAddFrmLossPage).toString());
+    selectDepartmentController = Get.put(SCSelectDepartmentController(), tag: selectDepartmentControllerTag);
+    selectDepartmentController.tag = selectDepartmentControllerTag;
     initEditData();
   }
 
@@ -79,11 +90,11 @@ class SCAddFrmLossPageState extends State<SCAddFrmLossPage> {
         width: double.infinity,
         height: double.infinity,
         color: SCColors.color_F2F3F5,
-        child: GetBuilder<SCAddEntryController>(
+        child: GetBuilder<SCAddFrmLossController>(
             tag: controllerTag,
             init: controller,
             builder: (state) {
-              return SCAddEntryView(state: state,);
+              return SCAddFemLossView(state: state, selectDepartmentController: selectDepartmentController,);
             }),
       ),
     );
