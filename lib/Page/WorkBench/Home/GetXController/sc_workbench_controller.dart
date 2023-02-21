@@ -14,8 +14,10 @@ import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_model.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Location/sc_location_utils.dart';
+import 'package:smartcommunity/Utils/Permission/sc_permission_utils.dart';
 
 import '../../../../Constants/sc_asset.dart';
+import '../../../../Utils/Location/sc_location_model.dart';
 import '../Model/sc_work_order_model.dart';
 
 /// 工作台Controller
@@ -636,12 +638,16 @@ class SCWorkBenchController extends GetxController {
 
   /// 获取定位
   location() {
-    SCLocationUtils.locationOnlyPosition((position, status) {
-      if (status == 1) {
-        SCScaffoldManager.instance.longitude = position?.longitude ?? 0;
-        SCScaffoldManager.instance.latitude = position?.latitude ?? 0;
-      }
+    SCPermissionUtils.startLocationWithPrivacyAlert(completionHandler: (dynamic result, SCLocationModel? model) {
+      print("定位结果:$result");
+      print("定位结果模型:${model?.toJson()}");
     });
+    // SCLocationUtils.locationOnlyPosition((position, status) {
+    //   if (status == 1) {
+    //     SCScaffoldManager.instance.longitude = position?.longitude ?? 0;
+    //     SCScaffoldManager.instance.latitude = position?.latitude ?? 0;
+    //   }
+    // });
   }
 
   @override

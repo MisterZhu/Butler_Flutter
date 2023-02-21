@@ -76,7 +76,7 @@ class SCDefaultValue {
   static const String noPhotoPermissionMessage = "相册权限受限，请在设置中开启相册权限";
 
   /// 定位权限弹窗提示内容
-  static const String locationAlertMessage = "允许“$appName”访问您的位置权限，用于您在快速定位所在园区、参与活动功能";
+  static const String locationAlertMessage = "允许“$appName”访问您的位置权限，用于您在快速定位所在园区获取周边订单、快捷报事、参与附近活动等功能";
 
   /// 输入姓名提示
   static const String inputNameTip = "请输入姓名";

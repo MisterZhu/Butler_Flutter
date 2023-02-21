@@ -1,4 +1,5 @@
 /// 网络请求
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:dio/adapter.dart';
@@ -123,15 +124,18 @@ class SCHttpManager {
       {required String url,
       dynamic params,
       Map<String, dynamic>? headers,
+      bool? isQuery,
       Function(dynamic value)? success,
       Function(dynamic value)? failure}) async {
     Options options = Options(headers: headers);
     late Response response;
     late Object exception;
     bool status = false;
+    bool query = isQuery ?? false;
 
     try {
       response = await _dio!.post(url,
+          queryParameters: query ? params : {},
           data: params,
           options: headers == null ? null : options);
       status = true;

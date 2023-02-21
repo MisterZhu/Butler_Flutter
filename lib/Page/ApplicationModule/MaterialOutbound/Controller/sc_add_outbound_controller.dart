@@ -240,18 +240,15 @@ class SCAddOutboundController extends GetxController {
           success: (value) {
             SCLoadingUtils.hide();
             SCScaffoldManager.instance.eventBus.fire({"key" : SCKey.kRefreshMaterialOutboundPage});
-            print("编辑成功");
           },
           failure: (value) {
             SCLoadingUtils.hide();
-            print("编辑失败");
           });
     }
   }
 
   /// 编辑-新增物资
   editAddMaterial({required List list, Function(bool success)? completeHandler}) {
-    print("出库物资===${list}");
     var params = {"outId": editId, "materialOutRelations": list};
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
@@ -271,6 +268,7 @@ class SCAddOutboundController extends GetxController {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kEditDeleteOutEntryUrl,
+        isQuery: true,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
