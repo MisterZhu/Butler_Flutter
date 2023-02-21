@@ -82,13 +82,24 @@ class SCMaterialEntryCell extends StatelessWidget {
 
   /// title
   Widget titleView() {
+    String icon = SCAsset.iconMaterialIcon;
+    if (type == SCWarehouseManageType.entry) {
+      icon = SCAsset.iconMaterialEntry;
+    } else if (type == SCWarehouseManageType.outbound) {
+      icon = SCAsset.iconMaterialOutbound;
+    } else if (type == SCWarehouseManageType.frmLoss) {
+      icon = SCAsset.iconMaterialFrmLoss;
+    } else if (type == SCWarehouseManageType.transfer) {
+      icon = SCAsset.iconMaterialTransfer;
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(type == SCWarehouseManageType.entry ? SCAsset.iconMaterialEntry : SCAsset.iconMaterialOutbound, width: 18.0, height: 18.0,),
+          Image.asset(icon, width: 18.0, height: 18.0,),
           const SizedBox(width: 6.0,),
           Expanded(child: Text(
             model?.typeName ?? '',

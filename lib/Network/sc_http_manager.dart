@@ -222,6 +222,40 @@ class SCHttpManager {
     }
   }
 
+  /// 通用的PATCH请求
+  patch(
+      {required String url,
+        dynamic params,
+        Map<String, dynamic>? headers,
+        Function(dynamic value)? success,
+        Function(dynamic value)? failure}) async {
+    Options options = Options(headers: headers);
+    late Response response;
+    late Object exception;
+    bool status = false;
+
+    try {
+      response = await _dio!.patch(url,
+          data: params,
+          options: headers == null ? null : options);
+      status = true;
+    } catch (e) {
+      status = false;
+      exception = e;
+    } finally {
+      if (status) {
+        var data = doResponse(response);
+        success?.call(data);
+      } else {
+        var data = doError(exception);
+        var code = data['code'];
+        if (code != 401) {
+          failure?.call(data);
+        }
+      }
+    }
+  }
+
   /// 校验登录
   checkLogin({required String url, dynamic headers, dynamic data}) {
     if (url == SCUrl.kPhoneCodeLoginUrl || url == SCUrl.kSwitchTenantUrl) {
