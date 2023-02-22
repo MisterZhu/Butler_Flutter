@@ -1,3 +1,6 @@
+
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
@@ -68,6 +71,7 @@ class SCMaterialEntryDetailController extends GetxController {
         url: SCUrl.kMaterialFrmLossDetailUrl,
         params: {'id': id},
         success: (value) {
+          log("报损详情===$value");
           SCLoadingUtils.hide();
           success = true;
           model = SCMaterialTaskDetailModel.fromJson(value);

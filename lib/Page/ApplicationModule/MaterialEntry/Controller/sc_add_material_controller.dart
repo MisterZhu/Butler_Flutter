@@ -81,6 +81,7 @@ class SCAddMaterialController extends GetxController {
                   model.localNum = subModel.localNum;
                   model.isSelect = true;
                   model.materialId = subModel.materialId;
+                  model.reportId = subModel.reportId;
                 }
               } else {
                 if (model.id == subModel.id) {
