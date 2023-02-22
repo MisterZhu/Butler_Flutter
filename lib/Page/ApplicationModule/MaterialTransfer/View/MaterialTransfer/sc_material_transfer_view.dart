@@ -12,17 +12,17 @@ import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
-import '../../../MaterialEntry/Controller/sc_material_entry_controller.dart';
 import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
 import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
+import '../../Controller/sc_material_transfer_controller.dart';
 
 
 /// 物资报损view
 
 class SCMaterialTransferView extends StatefulWidget {
 
-  /// SCMaterialEntryController
-  final SCMaterialEntryController state;
+  /// SCMaterialTransferController
+  final SCMaterialTransferController state;
 
   SCMaterialTransferView({Key? key, required this.state}) : super(key: key);
 
@@ -91,7 +91,7 @@ class SCMaterialTransferViewState extends State<SCMaterialTransferView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SCMaterialSearchItem(name: '搜索仓库名称', searchAction: () {
-          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.transfer});
+          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.check});
         },),
         SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
           if (index == 0) {
@@ -208,7 +208,7 @@ class SCMaterialTransferViewState extends State<SCMaterialTransferView> {
     SCRouterHelper.pathPage(SCRouterPath.transferDetailPage, {'id': model.id, 'canEdit' : canEdit});
   }
 
-  /// 入库状态弹窗
+  /// 状态弹窗
   Widget statusAlert() {
     List list = [];
     for (int i = 0; i < statusList.length; i++) {
@@ -217,7 +217,7 @@ class SCMaterialTransferViewState extends State<SCMaterialTransferView> {
     return Offstage(
       offstage: !showStatusAlert,
       child: SCSiftAlert(
-        title: '入库状态',
+        title: '调拨状态',
         list: list,
         selectIndex: selectStatus,
         closeAction: () {
@@ -238,12 +238,12 @@ class SCMaterialTransferViewState extends State<SCMaterialTransferView> {
     );
   }
 
-  /// 入库类型弹窗
+  /// 类型弹窗
   Widget typeAlert() {
     return Offstage(
       offstage: !showTypeAlert,
       child: SCSiftAlert(
-        title: '入库类型',
+        title: '调拨类型',
         list: typeList,
         selectIndex: selectType,
         closeAction: () {

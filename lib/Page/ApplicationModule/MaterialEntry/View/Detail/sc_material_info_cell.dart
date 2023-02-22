@@ -101,10 +101,37 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
         ),
         frmLossTimeView(),
       ]);
+    } else if (type == SCWarehouseManageType.check) {
+      // 盘点任务，显示任务时间、仓库名称
+      return Column(children: [
+        const SizedBox(
+          height: 10.0,
+        ),
+        taskTimeView(),
+        const SizedBox(
+          height: 10.0,
+        ),
+        wareHouseView(),
+      ]);
     } else {
       return const SizedBox();
     }
   }
+
+  /// 任务时间
+  Widget taskTimeView() {
+    return Row(
+      children: [desLabel('任务时间'), textView(1, '${model?.gmtCreate}')],
+    );
+  }
+
+  /// 仓库名称view
+  Widget wareHouseView() {
+    return Row(
+      children: [desLabel('仓库名称'), textView(1, model?.fetchOrgName ?? '')],
+    );
+  }
+
 
   /// 报损部门view
   Widget frmLossDepartmentView() {

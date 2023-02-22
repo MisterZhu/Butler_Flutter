@@ -122,6 +122,8 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
     if (index == 0) {
       return SCBasicInfoCell(
         list: getBaseInfoList(),
+        requiredRemark: true,
+        requiredPhotos: true,
         remark: widget.state.remark,
         selectAction: (index) async {
           if (index == 0) {
@@ -230,8 +232,8 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
     pickerUtils.completionHandler = (selectedValues, selecteds) {
       DateTime value = selectedValues.first;
       setState(() {
-        widget.state.reportTime = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
-        widget.state.reportDate = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]);
+        widget.state.reportTimeStr = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+        widget.state.reportTime = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]);
       });
     };
     pickerUtils.showDatePicker(
@@ -250,7 +252,7 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
       {'isRequired': true, 'title': '类型', 'content': widget.state.type},
       {'isRequired': true,'title': '报损部门','content': widget.state.reportOrgName},
       {'isRequired': true,'title': '报损人','content': widget.state.reportUserName},
-      {'isRequired': true,'title': '报损日期','content': widget.state.reportTime},
+      {'isRequired': true,'title': '报损日期','content': widget.state.reportTimeStr},
 
     ];
     return baseInfoList;

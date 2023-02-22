@@ -59,10 +59,10 @@ class SCAddFrmLossController extends GetxController {
   String reportOrgId = '';
 
   /// 报损日期，页面上显示，格式yyyy-mm-dd HH:nn
-  String reportTime = '';
+  String reportTimeStr = '';
 
   /// 报损日期，接口使用，格式yyyy-mm-dd HH:nn:ss
-  String reportDate = '';
+  String reportTime = '';
 
   /// 备注
   String remark = '';
@@ -74,7 +74,9 @@ class SCAddFrmLossController extends GetxController {
   onInit() {
     super.onInit();
     loadWareHouseList();
-    loadFrmLossType();
+    //loadFrmLossType();
+    List list = [{'code': '1', 'name': '损坏报损'}, {'code': '2', 'name': '丢失报损'}, {'code': '99', 'name': '其他报损'},];
+    typeList = list.map((e) => SCEntryTypeModel.fromJson(e)).toList();
   }
 
   /// 初始化编辑的参数
@@ -138,15 +140,15 @@ class SCAddFrmLossController extends GetxController {
       "materials": data['materialList'],
       "remark": data['remark'],
       "status": status,
-      "reason": data['typeId'],
-      //"typeName": data['typeName'],
+      "type": data['typeId'],
+      "typeName": data['typeName'],
       "wareHouseId": data['wareHouseId'],
       "wareHouseName": data['wareHouseName'],
       "reportUserName": data['reportUserName'],
       "reportUserId": data['reportUserId'],
       "reportOrgName": data['reportOrgName'],
       "reportOrgId": data['reportOrgId'],
-      "frmLossTime": data['frmLossTime'],
+      "reportTime": data['reportTime'],
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
@@ -155,7 +157,7 @@ class SCAddFrmLossController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialTransferPage});
+              .fire({'key': SCKey.kRefreshMaterialFrmLossPage});
           SCRouterHelper.back(null);
         },
         failure: (value) {
@@ -187,7 +189,7 @@ class SCAddFrmLossController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialTransferPage});
+              .fire({'key': SCKey.kRefreshMaterialFrmLossPage});
           SCRouterHelper.back(null);
         },
         failure: (value) {

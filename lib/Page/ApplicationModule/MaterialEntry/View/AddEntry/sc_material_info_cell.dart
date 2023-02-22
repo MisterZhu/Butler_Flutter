@@ -36,7 +36,7 @@ class SCMaterialInfoCell extends StatelessWidget {
       required this.list,
       this.deleteAction,
       this.updateNumAction,
-        required this.showAdd
+      required this.showAdd
       })
       : super(key: key);
 

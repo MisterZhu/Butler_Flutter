@@ -14,23 +14,23 @@ import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
 import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
-import '../../Controller/sc_material_frmLoss_controller.dart';
+import '../../Controller/sc_material_check_controller.dart';
 
 
-/// 物资报损view
+/// 盘点任务view
 
-class SCMaterialFrmLossView extends StatefulWidget {
+class SCMaterialCheckView extends StatefulWidget {
 
-  /// SCMaterialFrmLossController
-  final SCMaterialFrmLossController state;
+  /// SCMaterialCheckController
+  final SCMaterialCheckController state;
 
-  SCMaterialFrmLossView({Key? key, required this.state}) : super(key: key);
+  SCMaterialCheckView({Key? key, required this.state}) : super(key: key);
 
   @override
-  SCMaterialFrmLossViewState createState() => SCMaterialFrmLossViewState();
+  SCMaterialCheckViewState createState() => SCMaterialCheckViewState();
 }
 
-class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
+class SCMaterialCheckViewState extends State<SCMaterialCheckView> {
 
   List siftList =  ['状态', '类型', '排序'];
 
@@ -65,14 +65,12 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
   void initState() {
     super.initState();
     sortIndex = widget.state.sort == true ? 0 : 1;
-    // widget.state.loadFrmLossType(() {
-    //   List list = widget.state.typeList.map((e) => e.name).toList();
-    //   setState(() {
-    //     typeList.addAll(list);
-    //   });
-    // });
-    // 类型没有接口获取，暂时用本地数据
-    typeList = ['全部', '损坏报损', '丢失报损' ,'其他报损'];
+    widget.state.loadTypeData(() {
+      List list = widget.state.typeList.map((e) => e.name).toList();
+      setState(() {
+        typeList.addAll(list);
+      });
+    });
   }
 
   @override
@@ -93,7 +91,7 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SCMaterialSearchItem(name: '搜索仓库名称', searchAction: () {
-          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.frmLoss});
+          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.transfer});
         },),
         SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
           if (index == 0) {
@@ -162,10 +160,10 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
     );
   }
 
-  /// 新增报损按钮
+  /// 新增任务按钮
   Widget addItem() {
-    return SCAddEntryButton(name: '新增报损', tapAction: () {
-      SCRouterHelper.pathPage(SCRouterPath.addFrmLossPage, null);
+    return SCAddEntryButton(name: '新增任务', tapAction: () {
+      SCRouterHelper.pathPage(SCRouterPath.addCheckPage, null);
     },);
   }
 
@@ -185,7 +183,7 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
           SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
             model: model,
-            type: SCWarehouseManageType.frmLoss,
+            type: SCWarehouseManageType.check,
             detailTapAction: () {
               detailAction(model);
             },
@@ -207,10 +205,10 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
   detailAction(SCMaterialEntryModel model) {
     int status = model.status ?? -1;
     bool canEdit = (status == 0);
-    SCRouterHelper.pathPage(SCRouterPath.frmLossDetailPage, {'id': model.id, 'canEdit' : canEdit});
+    SCRouterHelper.pathPage(SCRouterPath.checkDetailPage, {'id': model.id, 'canEdit' : canEdit});
   }
 
-  /// 报损状态弹窗
+  /// 状态弹窗
   Widget statusAlert() {
     List list = [];
     for (int i = 0; i < statusList.length; i++) {
@@ -219,7 +217,7 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
     return Offstage(
       offstage: !showStatusAlert,
       child: SCSiftAlert(
-        title: '报损状态',
+        title: '任务状态',
         list: list,
         selectIndex: selectStatus,
         closeAction: () {
@@ -240,12 +238,12 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
     );
   }
 
-  /// 报损类型弹窗
+  /// 类型弹窗
   Widget typeAlert() {
     return Offstage(
       offstage: !showTypeAlert,
       child: SCSiftAlert(
-        title: '报损类型',
+        title: '任务类型',
         list: typeList,
         selectIndex: selectType,
         closeAction: () {
@@ -298,13 +296,13 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
     widget.state.submit(id: model.id ?? '', completeHandler: (bool success){
-      widget.state.loadFrmLossListData(isMore: false);
+      widget.state.loadData(isMore: false);
     });
   }
 
   /// 下拉刷新
   Future onRefresh() async {
-    widget.state.loadFrmLossListData(isMore: false, completeHandler: (bool success, bool last){
+    widget.state.loadData(isMore: false, completeHandler: (bool success, bool last){
       refreshController.refreshCompleted();
       refreshController.loadComplete();
     });
@@ -312,7 +310,7 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
 
   /// 上拉加载
   void loadMore() async{
-    widget.state.loadFrmLossListData(isMore: true, completeHandler: (bool success, bool last){
+    widget.state.loadData(isMore: true, completeHandler: (bool success, bool last){
       if (last) {
         refreshController.loadNoData();
       } else {

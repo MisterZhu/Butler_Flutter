@@ -16,17 +16,16 @@ import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_controller.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart';
 
+/// 盘点详情
 
-/// 调拨详情
-
-class SCMaterialTransferDetailPage extends StatefulWidget {
+class SCMaterialCheckDetailPage extends StatefulWidget {
   @override
-  SCMaterialTransferDetailPageState createState() =>
-      SCMaterialTransferDetailPageState();
+  SCMaterialCheckDetailPageState createState() =>
+      SCMaterialCheckDetailPageState();
 }
 
-class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPage> {
-  /// SCMaterialEntryDetailController
+class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
+  /// SCMaterialCheckDetailController
   late SCMaterialEntryDetailController controller;
 
   /// SCMaterialEntryDetailController - tag
@@ -38,7 +37,7 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
   @override
   initState() {
     super.initState();
-    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCMaterialTransferDetailPage).toString());
+    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCMaterialCheckDetailPage).toString());
     controller = Get.put(SCMaterialEntryDetailController(), tag: controllerTag);
     Map<String, dynamic> params = Get.arguments;
     if (params.isNotEmpty) {
@@ -55,14 +54,14 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
 
   @override
   dispose() {
-    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialTransferDetailPage).toString(), controllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialCheckDetailPage).toString(), controllerTag);
     controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SCCustomScaffold(title: '调拨详情', body: body());
+    return SCCustomScaffold(title: '盘点详情', body: body());
   }
 
   /// body
@@ -119,43 +118,6 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
                 } else if(value == '提交') {
                   submitAction();
                 }
-                // if (value == "驳回") {
-                //   SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-                //     SCDialogUtils().showCustomBottomDialog(
-                //         isDismissible: true,
-                //         context: context,
-                //         widget: SCRejectAlert(
-                //           title: '驳回',
-                //           reason: '驳回理由',
-                //           tagList: const [],
-                //           showNode: true,
-                //         ));
-                //   });
-                // } else if (value == "拒绝") {
-                //   SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-                //     SCDialogUtils().showCustomBottomDialog(
-                //         isDismissible: true,
-                //         context: context,
-                //         widget: SCRejectAlert(
-                //           title: '审批拒绝',
-                //           reason: '拒绝理由',
-                //           tagList: ['流程不合理', '图片不清晰', '名称错误', '审批不合规'],
-                //           showNode: false,
-                //         ));
-                //   });
-                // } else if (value == "通过") {
-                //   SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-                //     SCDialogUtils().showCustomBottomDialog(
-                //         isDismissible: true,
-                //         context: context,
-                //         widget: SCRejectAlert(
-                //           title: '审批通过',
-                //           reason: '通过理由',
-                //           tagList: ['批准通过', '入库批准通过'],
-                //           showNode: false,
-                //         ));
-                //   });
-                // }
               },
             ),
           );

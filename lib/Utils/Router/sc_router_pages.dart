@@ -21,6 +21,9 @@ import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_form_pag
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_problem_page.dart';
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_select_page.dart';
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_to_be_upload_page.dart';
+import '../../Page/ApplicationModule/MaterialCheck/Page/sc_add_check_page.dart';
+import '../../Page/ApplicationModule/MaterialCheck/Page/sc_material_check_detail_page.dart';
+import '../../Page/ApplicationModule/MaterialCheck/Page/sc_material_check_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_add_material_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_add_entry_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_entry_search_page.dart';
@@ -116,6 +119,12 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.materialTransferPage, page: () => SCMaterialTransferPage()),
     /*调拨详情*/
     GetPage(name: SCRouterPath.transferDetailPage, page: () => SCMaterialTransferDetailPage()),
+    /*新增任务*/
+    GetPage(name: SCRouterPath.addCheckPage, page: () => SCAddCheckPage()),
+    /*盘点任务*/
+    GetPage(name: SCRouterPath.materialCheckPage, page: () => SCMaterialCheckPage()),
+    /*盘点详情*/
+    GetPage(name: SCRouterPath.checkDetailPage, page: () => SCMaterialCheckDetailPage()),
   ];
 
   /*根据code使用路由*/

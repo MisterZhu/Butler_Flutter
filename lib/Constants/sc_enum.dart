@@ -66,4 +66,6 @@ enum SCWarehouseManageType {
   frmLoss,
   // 物料调拨
   transfer,
+  // 盘点任务
+  check,
 }

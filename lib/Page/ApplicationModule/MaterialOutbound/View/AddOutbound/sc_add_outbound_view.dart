@@ -122,6 +122,8 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     if (index == 0) {
       return SCBasicInfoCell(
         list: getBaseInfoList(),
+        requiredRemark: true,
+        requiredPhotos: false,
         remark: widget.state.remark,
         selectAction: (index) async {
           if (index == 0) {

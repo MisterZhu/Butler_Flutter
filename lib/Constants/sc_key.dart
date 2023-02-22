@@ -32,5 +32,7 @@ class SCKey {
   static const String kRefreshMaterialTransferPage = "kRefreshMaterialTransferPage";
   /// 仓储-刷新物资详情页面
   static const String kRefreshMaterialDetailPage = "kRefreshMaterialDetailPage";
+  /// 仓储-刷新盘点任务页面
+  static const String kRefreshMaterialCheckPage = "kRefreshMaterialCheckPage";
 
 }

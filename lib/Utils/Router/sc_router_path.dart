@@ -124,4 +124,15 @@ class SCRouterPath {
   /// 调拨详情
   static String transferDetailPage = "/lib/Page/MaterialTransfer/Page/sc_material_transfer_detail_page";
 
+  /// *************************** 盘点任务 ******************************/
+
+  /// 盘点任务
+  static String materialCheckPage = "/lib/Page/MaterialCheck/Page/sc_material_check_page";
+
+  /// 新增任务
+  static String addCheckPage = "/lib/Page/MaterialCheck/Page/sc_add_check_page";
+
+  /// 盘点详情
+  static String checkDetailPage = "/lib/Page/MaterialCheck/Page/sc_material_check_detail_page";
+
 }
