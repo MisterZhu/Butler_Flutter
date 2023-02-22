@@ -9,6 +9,7 @@ class SCKeyboard {
       {required FocusNode node, required BuildContext context}) {
     return KeyboardActionsConfig(
       keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+      keyboardBarElevation: 40.0,
       keyboardBarColor: SCColors.color_F2F3F5,
       nextFocus: false,
       actions: [
