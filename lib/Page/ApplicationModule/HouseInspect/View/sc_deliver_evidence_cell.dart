@@ -19,15 +19,15 @@ class SCDeliverEvidenceCell extends StatefulWidget {
   final SCAddPhotoType addPhotoType;
   /// 最多可添加图片的数量，默认8张
   final int maxCount;
-  /// 添加图片
-  final Function(List list)? addPhotoAction;
+  /// 添加/删除图片
+  final Function(List list)? updatePhoto;
 
   SCDeliverEvidenceCell({ Key? key,
     required this.title,
     this.addIcon = SCAsset.iconInspectProblemAddPhoto,
     this.addPhotoType = SCAddPhotoType.all,
     this.maxCount = 8,
-    this.addPhotoAction}) : super(key: key);
+    this.updatePhoto}) : super(key: key);
 
   @override
   SCDeliverEvidenceCellState createState() => SCDeliverEvidenceCellState();
@@ -124,7 +124,7 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
                 onTap: () {
                   setState(() {
                     photosList.removeAt(index);
-                    widget.addPhotoAction?.call(photosList);
+                    widget.updatePhoto?.call(photosList);
                   });
                 },
                 child: Image.asset(
@@ -151,14 +151,14 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
             completionHandler: (imageList) {
               setState(() {
                 photosList.addAll(imageList);
-                widget.addPhotoAction?.call(photosList);
+                widget.updatePhoto?.call(photosList);
               });
             });
       } else if (widget.addPhotoType == SCAddPhotoType.takePhoto) {//只能拍照
         SCPermissionUtils.takePhoto((String path){
           setState(() {
             photosList.add(path);
-            widget.addPhotoAction?.call(photosList);
+            widget.updatePhoto?.call(photosList);
           });
         });
       } else {
@@ -169,10 +169,14 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
             completionHandler: (imageList) {
               setState(() {
                 photosList.addAll(imageList);
-                widget.addPhotoAction?.call(photosList);
+                widget.updatePhoto?.call(photosList);
               });
             });
       }
     }
+  }
+
+  upLoadPhotos() {
+
   }
 }

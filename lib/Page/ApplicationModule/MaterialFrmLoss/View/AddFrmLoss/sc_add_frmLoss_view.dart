@@ -148,7 +148,9 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
         inputAction: (content) {
           widget.state.remark = content;
         },
-        addPhotoAction: (list) {},
+        updatePhoto: (list) {
+
+        },
       );
     } else if (index == 1) {
       return SCMaterialInfoCell(
@@ -344,7 +346,8 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
       "typeName" : widget.state.type,
       "typeId" : widget.state.typeID,
       "remark" : widget.state.remark,
-      "materialList" : materialList
+      "materialList" : materialList,
+      "files": widget.state.files,
     };
     widget.state.addTransfer(status: status, data: params);
   }
@@ -553,7 +556,8 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
       "reportUserId" : widget.state.reportUserId,
       "reportTime" : widget.state.reportTime,
       "remark" : widget.state.remark,
-      "id" : widget.state.editId
+      "id" : widget.state.editId,
+      "files" : widget.state.files,
     };
     widget.state.editMaterialBaseInfo(data: params);
   }

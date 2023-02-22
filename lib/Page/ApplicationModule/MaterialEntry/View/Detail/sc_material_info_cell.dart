@@ -2,15 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
-import 'package:smartcommunity/Utils/sc_utils.dart';
 import '../../../../../Constants/sc_enum.dart';
-import '../../Model/sc_material_entry_detail_model.dart';
+import '../../Model/sc_material_task_detail_model.dart';
 
 /// 入库信息cell
 
 class SCMaterialEntryInfoCell extends StatelessWidget {
   /// model
-  final SCMaterialEntryDetailModel? model;
+  final SCMaterialTaskDetailModel? model;
 
   /// type=entry入库详情，type=outbound出库详情
   final SCWarehouseManageType type;
@@ -128,7 +127,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 仓库名称view
   Widget wareHouseView() {
     return Row(
-      children: [desLabel('仓库名称'), textView(1, model?.fetchOrgName ?? '')],
+      children: [desLabel('仓库名称'), textView(1, model?.wareHouseName ?? '')],
     );
   }
 
@@ -136,7 +135,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 报损部门view
   Widget frmLossDepartmentView() {
     return Row(
-      children: [desLabel('报损部门'), textView(1, model?.fetchOrgName ?? '')],
+      children: [desLabel('报损部门'), textView(1, model?.reportOrgName ?? '')],
     );
   }
 
@@ -145,7 +144,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
     return Row(
       children: [
         desLabel('报损人'),
-        contactView('${model?.creatorName}', model?.mobileNum ?? '')
+        contactView('${model?.reportUserName}', model?.reportManMobileNum ?? '')
       ],
     );
   }
@@ -153,7 +152,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 报损时间
   Widget frmLossTimeView() {
     return Row(
-      children: [desLabel('报损时间'), textView(1, '${model?.gmtCreate}')],
+      children: [desLabel('报损时间'), textView(1, '${model?.reportTime}')],
     );
   }
 

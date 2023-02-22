@@ -127,7 +127,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         inputAction: (content) {
           widget.state.remark = content;
         },
-        addPhotoAction: (list) {},
+        updatePhoto: (list) {},
       );
     } else if (index == 1) {
       // 物资信息

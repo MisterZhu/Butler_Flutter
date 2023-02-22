@@ -70,6 +70,9 @@ class SCAddFrmLossController extends GetxController {
   /// 主键id
   String editId = '';
 
+  /// 上传的图片文件数组
+  List files = [];
+
   @override
   onInit() {
     super.onInit();
@@ -83,6 +86,9 @@ class SCAddFrmLossController extends GetxController {
   initEditParams() {
     if (isEdit && editParams.isNotEmpty) {
       Map<String, dynamic> params = editParams;
+
+      /// 上传的图片文件数组
+      files = params['files'];
 
       /// 调入仓库名称
       wareHouseName = params['wareHouseName'];
@@ -137,6 +143,7 @@ class SCAddFrmLossController extends GetxController {
   /// 新增调拨, status=0暂存，1提交
   addTransfer({required int status, required dynamic data}) {
     var params = {
+      "files": data['files'],
       "materials": data['materialList'],
       "remark": data['remark'],
       "status": status,
@@ -180,7 +187,8 @@ class SCAddFrmLossController extends GetxController {
       "reportOrgName": data['reportOrgName'],
       "reportOrgId": data['reportOrgId'],
       "reportTime": data['reportTime'],
-      "status": 0
+      "status": 0,
+      "files": data['files'],
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(

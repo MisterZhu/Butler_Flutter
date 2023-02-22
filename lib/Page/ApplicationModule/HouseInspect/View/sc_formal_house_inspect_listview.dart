@@ -76,7 +76,7 @@ class SCFormalHouseInspectListView extends StatelessWidget {
   Widget photosItem() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-      child: SCDeliverEvidenceCell(title: '交付凭证', addPhotoAction: (List list) {
+      child: SCDeliverEvidenceCell(title: '交付凭证', updatePhoto: (List list) {
 
       },)
     );
