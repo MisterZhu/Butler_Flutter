@@ -4,20 +4,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
+import 'package:smartcommunity/Utils/Keyboard/sc_keyboard.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
 
 /// 数量步进器
 
 class SCStepper extends StatefulWidget {
-  SCStepper({Key? key, this.numChangeAction, this.num = 1}) : super(key: key);
+  SCStepper({Key? key, this.numChangeAction, this.num = 1, this.showDone}) : super(key: key);
 
   /// 数量改变回调
   final Function(int num)? numChangeAction;
 
   /// 默认数量
   int? num;
+
+  /// 是否显示完成按钮
+  final bool? showDone;
 
   @override
   SCStepperState createState() => SCStepperState();
@@ -44,10 +49,10 @@ class SCStepperState extends State<SCStepper> {
     var keyboardVisibilityController = KeyboardVisibilityController();
     keyboardSubscription =
         keyboardVisibilityController.onChange.listen((bool visible) {
-            if (!visible) {
-              editCompleteAction(textFiledController.text);
-            }
-        });
+      if (!visible) {
+        editCompleteAction(textFiledController.text);
+      }
+    });
   }
 
   @override
@@ -74,10 +79,27 @@ class SCStepperState extends State<SCStepper> {
       decoration: BoxDecoration(
           border: Border.all(width: 0.5, color: SCColors.color_D8D8D8),
           borderRadius: BorderRadius.circular(2.0)),
-      child: Row(
-        children: [subtractView(), line(), textField(), line(), addView()],
-      ),
+      child: body(context),
     );
+  }
+
+  /// body
+  Widget body(BuildContext context) {
+    bool showDone = widget.showDone ?? false;
+    if (showDone) {
+      return KeyboardActions(
+        disableScroll: true,
+        bottomAvoiderScrollPhysics: const NeverScrollableScrollPhysics(),
+        config: SCKeyboard.keyboardConfig(node: node, context: context),
+        child: Row(
+          children: [subtractView(), line(), textField(), line(), addView()],
+        ),
+      );
+    } else {
+      return Row(
+        children: [subtractView(), line(), textField(), line(), addView()],
+      );
+    }
   }
 
   /// -
@@ -134,6 +156,7 @@ class SCStepperState extends State<SCStepper> {
   Widget line() {
     return Container(
       width: 0.5,
+      height: 22.0,
       color: SCColors.color_D8D8D8,
     );
   }
@@ -172,13 +195,8 @@ class SCStepperState extends State<SCStepper> {
       onChanged: (value) {
         updateText(value);
       },
-      onEditingComplete: () {
-        print("1111111");
-
-      },
-      onSubmitted: (value) {
-        print("2222222");
-      },
+      onEditingComplete: () {},
+      onSubmitted: (value) {},
       keyboardType: TextInputType.number,
       keyboardAppearance: Brightness.light,
       textInputAction: TextInputAction.next,

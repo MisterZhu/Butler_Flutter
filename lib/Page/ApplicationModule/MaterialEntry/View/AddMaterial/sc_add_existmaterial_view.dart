@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
 import '../../../../../Constants/sc_asset.dart';
@@ -9,8 +10,12 @@ import 'sc_add_material_listview.dart';
 /// 添加物资view
 
 class SCAddExitsMaterialView extends StatefulWidget {
-
-  SCAddExitsMaterialView({Key? key, required this.state, this.sureAction}) : super(key: key);
+  SCAddExitsMaterialView(
+      {Key? key,
+      required this.state,
+      required this.refreshController,
+      this.sureAction})
+      : super(key: key);
 
   /// SCAddMaterialController
   final SCAddMaterialController state;
@@ -18,6 +23,8 @@ class SCAddExitsMaterialView extends StatefulWidget {
   /// 确定
   final Function(List<SCMaterialListModel> list)? sureAction;
 
+  /// RefreshController
+  final RefreshController refreshController;
 
   @override
   SCAddExitsMaterialViewState createState() => SCAddExitsMaterialViewState();
@@ -47,9 +54,10 @@ class SCAddExitsMaterialViewState extends State<SCAddExitsMaterialView> {
   Widget listview(BuildContext context) {
     return SCAddMaterialListView(
       state: widget.state,
+      refreshController: widget.refreshController,
       list: widget.state.materialList,
       radioTap: () {
-        setState((){});
+        setState(() {});
       },
     );
   }
@@ -101,25 +109,25 @@ class SCAddExitsMaterialViewState extends State<SCAddExitsMaterialView> {
           ),
           Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('全选',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: SCFonts.f14,
-                          fontWeight: FontWeight.w400,
-                          color: SCColors.color_1B1D33)),
-                  Text('已选${getSelectedNumber()}项',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontSize: SCFonts.f12,
-                          fontWeight: FontWeight.w400,
-                          color: SCColors.color_5E5F66))
-                ],
-              )),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('全选',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: SCFonts.f14,
+                      fontWeight: FontWeight.w400,
+                      color: SCColors.color_1B1D33)),
+              Text('已选${getSelectedNumber()}项',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontSize: SCFonts.f12,
+                      fontWeight: FontWeight.w400,
+                      color: SCColors.color_5E5F66))
+            ],
+          )),
           const SizedBox(
             width: 8.0,
           ),
@@ -154,7 +162,7 @@ class SCAddExitsMaterialViewState extends State<SCAddExitsMaterialView> {
     for (SCMaterialListModel model in widget.state.materialList) {
       bool isSelect = model.isSelect ?? false;
       if (isSelect) {
-        num+=1;
+        num += 1;
       }
     }
     return num;
@@ -175,5 +183,4 @@ class SCAddExitsMaterialViewState extends State<SCAddExitsMaterialView> {
     //   widget.sureAction?.call(list);
     // }
   }
-
 }
