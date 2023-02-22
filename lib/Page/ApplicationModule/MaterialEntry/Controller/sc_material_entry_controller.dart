@@ -139,15 +139,15 @@ class SCMaterialEntryController extends GetxController {
         failure: (value) {});
   }
 
-  /// 提交入库
+  /// 提交报损
   submit({required String id, Function(bool success)? completeHandler}) async {
     var params = {
-      "wareHouseInId": id,
+      "wareHouseReportId": id,
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         isQuery: true,
-        url: SCUrl.kSubmitMaterialUrl,
+        url: SCUrl.kSubmitFrmLossUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();

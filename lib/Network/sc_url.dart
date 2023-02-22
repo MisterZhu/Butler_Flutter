@@ -202,5 +202,5 @@ class SCUrl {
   static const String kFrmLossMaterialListUrl = "/api/warehouse/manage/materialReportRelation/selectMaterialReportRelationListByPage";
 
   /// 提交报损
-  static const String kSubmitFrmLossUrl = "/api/warehouse/app/out/submitWareHouseOut";
+  static const String kSubmitFrmLossUrl = "/api/warehouse/app/warehouse/report/submitWareHouseReport";
 }
