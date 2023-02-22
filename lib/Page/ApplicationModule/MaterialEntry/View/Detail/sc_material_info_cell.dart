@@ -21,81 +21,86 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 复制粘贴板
   final Function(String value)? pasteAction;
 
-  SCMaterialEntryInfoCell({Key? key, this.model, required this.type, this.callAction, this.pasteAction})
+  SCMaterialEntryInfoCell(
+      {Key? key,
+      this.model,
+      required this.type,
+      this.callAction,
+      this.pasteAction})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(decoration: BoxDecoration(
-      color: SCColors.color_FFFFFF,
-      borderRadius: BorderRadius.circular(4.0),
-    ), child: Padding(padding: const EdgeInsets.all(12.0), child: Column(
-      children: [
-        entryNumView(),
-        const SizedBox(
-          height: 10.0,
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: SCColors.color_FFFFFF,
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            entryNumView(),
+            const SizedBox(
+              height: 10.0,
+            ),
+            entryUserView(),
+            const SizedBox(
+              height: 10.0,
+            ),
+            entryTimeView(),
+            receiveView(),
+            SizedBox(
+              height: model?.remark == "" ? 0.0 : 10.0,
+            ),
+            entryRemarkView()
+          ],
         ),
-        entryUserView(),
-        const SizedBox(
-          height: 10.0,
-        ),
-        entryTimeView(),
-        receiveView(),
-        SizedBox(
-          height: model?.remark == "" ? 0.0 : 10.0,
-        ),
-        entryRemarkView()
-      ],
-    ),),);
+      ),
+    );
   }
 
   Widget receiveView() {
     if (type == SCWarehouseManageType.outbound && model?.typeName == '领料出库') {
       // 领料出库才显示领用人
-      return Column(
-          children: [
-            const SizedBox(
-              height: 10.0,
-            ),
-            userView(),
-            const SizedBox(
-              height: 10.0,
-            ),
-            userDepartmentView(),
-          ]
-      );
+      return Column(children: [
+        const SizedBox(
+          height: 10.0,
+        ),
+        userView(),
+        const SizedBox(
+          height: 10.0,
+        ),
+        userDepartmentView(),
+      ]);
     } else if (type == SCWarehouseManageType.transfer) {
       // 物料调拨，显示调入仓库、调出仓库
-      return Column(
-          children: [
-            const SizedBox(
-              height: 10.0,
-            ),
-            inWareHouseView(),
-            const SizedBox(
-              height: 10.0,
-            ),
-            outWareHouseView(),
-          ]
-      );
-    }else if (type == SCWarehouseManageType.frmLoss) {
+      return Column(children: [
+        const SizedBox(
+          height: 10.0,
+        ),
+        inWareHouseView(),
+        const SizedBox(
+          height: 10.0,
+        ),
+        outWareHouseView(),
+      ]);
+    } else if (type == SCWarehouseManageType.frmLoss) {
       // 物料调拨，显示报损人、报损部门、报损时间
-      return Column(
-          children: [
-            const SizedBox(
-              height: 10.0,
-            ),
-            frmLossUserView(),
-            const SizedBox(
-              height: 10.0,
-            ),
-            frmLossDepartmentView(),
-            const SizedBox(
-              height: 10.0,
-            ),
-            frmLossTimeView(),
-          ]
-      );
+      return Column(children: [
+        const SizedBox(
+          height: 10.0,
+        ),
+        frmLossUserView(),
+        const SizedBox(
+          height: 10.0,
+        ),
+        frmLossDepartmentView(),
+        const SizedBox(
+          height: 10.0,
+        ),
+        frmLossTimeView(),
+      ]);
     } else {
       return const SizedBox();
     }
@@ -104,10 +109,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 报损部门view
   Widget frmLossDepartmentView() {
     return Row(
-      children: [
-        desLabel('报损部门'),
-        textView(1, model?.fetchOrgName ?? '')
-      ],
+      children: [desLabel('报损部门'), textView(1, model?.fetchOrgName ?? '')],
     );
   }
 
@@ -124,30 +126,21 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 报损时间
   Widget frmLossTimeView() {
     return Row(
-      children: [
-        desLabel('报损时间'),
-        textView(1, '${model?.gmtCreate}')
-      ],
+      children: [desLabel('报损时间'), textView(1, '${model?.gmtCreate}')],
     );
   }
 
   /// 调入仓库view
   Widget inWareHouseView() {
     return Row(
-      children: [
-        desLabel('调入仓库'),
-        textView(1, model?.wareHouseName ?? '')
-      ],
+      children: [desLabel('调入仓库'), textView(1, model?.wareHouseName ?? '')],
     );
   }
 
   /// 调出仓库view
   Widget outWareHouseView() {
     return Row(
-      children: [
-        desLabel('调出仓库'),
-        textView(1, model?.wareHouseName ?? '')
-      ],
+      children: [desLabel('调出仓库'), textView(1, model?.wareHouseName ?? '')],
     );
   }
 
@@ -164,10 +157,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 领用部门view
   Widget userDepartmentView() {
     return Row(
-      children: [
-        desLabel('领用部门'),
-        textView(1, model?.fetchOrgName ?? '')
-      ],
+      children: [desLabel('领用部门'), textView(1, model?.fetchOrgName ?? '')],
     );
   }
 
@@ -184,20 +174,14 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 单号
   Widget entryNumView() {
     return Row(
-      children: [
-        desLabel('单号'),
-        numView('${model?.number}')
-      ],
+      children: [desLabel('单号'), numView('${model?.number}')],
     );
   }
 
   /// 操作时间
   Widget entryTimeView() {
     return Row(
-      children: [
-        desLabel('操作时间'),
-        textView(1, '${model?.gmtCreate}')
-      ],
+      children: [desLabel('操作时间'), textView(1, '${model?.gmtCreate}')],
     );
   }
 
@@ -220,10 +204,16 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
         text,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+        strutStyle: const StrutStyle(
+          fontSize: SCFonts.f14,
+          height: 1.25,
+          forceStrutHeight: true,
+        ),
         style: const TextStyle(
-            fontSize: SCFonts.f14,
-            fontWeight: FontWeight.w400,
-            color: SCColors.color_5E5F66),
+          fontSize: SCFonts.f14,
+          fontWeight: FontWeight.w400,
+          color: SCColors.color_5E5F66,
+        ),
       ),
     );
   }
@@ -311,6 +301,11 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
       textAlign: TextAlign.right,
       maxLines: maxLines,
       overflow: TextOverflow.ellipsis,
+      strutStyle: const StrutStyle(
+        fontSize: SCFonts.f14,
+        height: 1.25,
+        forceStrutHeight: true,
+      ),
       style: const TextStyle(
           fontSize: SCFonts.f14,
           fontWeight: FontWeight.w400,

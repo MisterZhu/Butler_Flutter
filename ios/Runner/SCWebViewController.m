@@ -119,6 +119,11 @@
     [_bridge registerHandler:@"_app_scan" handler:^(id data, WVJBResponseCallback responseCallback) {
         
     }];
+    // 返回
+    [_bridge registerHandler:@"sc_app_back" handler:^(id data, WVJBResponseCallback responseCallback) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf dismissViewControllerAnimated:YES completion:nil];
+    }];
 
 }
 

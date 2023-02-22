@@ -32,7 +32,7 @@ class SCWorkBenchPage extends StatefulWidget {
 }
 
 class SCWorkBenchPageState extends State<SCWorkBenchPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
 
   /// 工作台controller
   late SCWorkBenchController workBenchController;
@@ -211,7 +211,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   detailAction(SCWorkOrderModel model) async{
     String title = Uri.encodeComponent(SCUtils.getWorkOrderButtonText(model.status ?? 0));
     String url =
-        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?status=${model.status}&title=$title&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}";
+        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=${model.status}&title=$title&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}";
     if (Platform.isAndroid) {
       String realUrl = SCUtils.getWebViewUrl(url: url, needJointParams: true);
 
@@ -238,7 +238,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     int status = model.dealStatus ?? -1;
     if (status == 0) {
       workBenchController.verificationOrderDetailTap('${model.id})').then((value) {
-        String realUrl = SCUtils.getWebViewUrl(url: SCConfig.getH5Url(SCH5.verificationDetailUrl), needJointParams: true);
+        String realUrl = SCUtils.getWebViewUrl(url: '${SCConfig.getH5Url(SCH5.verificationDetailUrl)}?isFromWorkBench=1', needJointParams: true);
         SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
           "title":  '',
           "url": realUrl,
@@ -262,7 +262,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   }
   /// 酒店订单处理详情
   hotelOrderDetailAction(SCHotelOrderModel model) {
-    String realUrl = SCUtils.getWebViewUrl(url: '${SCConfig.getH5Url(SCH5.hotelOrderDetailUrl)}?orderId=${model.id ?? ''}', needJointParams: true);
+    String realUrl = SCUtils.getWebViewUrl(url: '${SCConfig.getH5Url(SCH5.hotelOrderDetailUrl)}?isFromWorkBench=1&orderId=${model.id ?? ''}', needJointParams: true);
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
       "title":  model.hotelName,
       "url": realUrl,
@@ -334,4 +334,8 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
 
   /*获取到错误*/
   void getNativeDataError(Object err) {}
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
