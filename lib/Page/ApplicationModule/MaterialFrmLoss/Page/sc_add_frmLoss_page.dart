@@ -94,7 +94,7 @@ class SCAddFrmLossPageState extends State<SCAddFrmLossPage> {
             tag: controllerTag,
             init: controller,
             builder: (state) {
-              return SCAddFemLossView(state: state, selectDepartmentController: selectDepartmentController,);
+              return SCAddFrmLossView(state: state, selectDepartmentController: selectDepartmentController);
             }),
       ),
     );

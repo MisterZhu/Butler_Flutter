@@ -1,5 +1,5 @@
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
-
+/// 详情页面model
 class SCMaterialTaskDetailModel {
   SCMaterialTaskDetailModel({
       this.creator, 
@@ -141,7 +141,7 @@ class SCMaterialTaskDetailModel {
     map['gmtModify'] = gmtModify;
     map['id'] = id;
     if (labelList != null) {
-      map['labelList'] = labelList?.map((v) => v.toJson()).toList();
+      map['labelList'] = labelList?.map((v) => v).toList();
     }
     map['materialNames'] = materialNames;
     map['materialNums'] = materialNums;

@@ -23,6 +23,9 @@ class SCBasicInfoCell extends StatelessWidget {
   /// 需要添加图片
   final bool requiredPhotos;
 
+  /// 图片数组
+  final List? files;
+
   /// 点击选择
   final Function(int index)? selectAction;
 
@@ -35,6 +38,7 @@ class SCBasicInfoCell extends StatelessWidget {
   SCBasicInfoCell({Key? key,
     required this.list,
     this.remark,
+    this.files,
     this.selectAction,
     this.inputAction,
     this.updatePhoto,
@@ -147,6 +151,7 @@ class SCBasicInfoCell extends StatelessWidget {
             title: '上传照片',
             addIcon: SCAsset.iconMaterialAddPhoto,
             addPhotoType: SCAddPhotoType.all,
+            files: files ?? [],
             updatePhoto: (List list) {
               updatePhoto?.call(list);
             },)

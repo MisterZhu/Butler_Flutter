@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
@@ -94,7 +95,7 @@ class SCAddFrmLossController extends GetxController {
       wareHouseName = params['wareHouseName'];
 
       /// 调入仓库id
-      wareHouseId = params['warehouseId'];
+      wareHouseId = params['wareHouseId'];
 
       /// 类型
       type = params['typeName'];
@@ -116,6 +117,11 @@ class SCAddFrmLossController extends GetxController {
 
       /// 报损日期
       reportTime = params['reportTime'];
+
+      if (reportTime != '') {
+        /// 报损日期Str
+        reportTimeStr = formatDate(DateTime.parse(reportTime), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+      }
 
       /// 备注
       remark = params['remark'];
@@ -174,7 +180,8 @@ class SCAddFrmLossController extends GetxController {
 
   /// 编辑入库基础信息
   editMaterialBaseInfo({required dynamic data}) {
-    List materialList = data['materialList'];
+    print('编辑基础信息=========$data');
+    //List materialList = data['materialList'];
     var params = {
       "id": editId,
       "remark": data['remark'],
@@ -188,11 +195,10 @@ class SCAddFrmLossController extends GetxController {
       "reportOrgId": data['reportOrgId'],
       "reportTime": data['reportTime'],
       "status": 0,
-      "files": data['files'],
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kEditAddEntryBaseInfoUrl,
+        url: SCUrl.kEditAddFrmLossBaseInfoUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();

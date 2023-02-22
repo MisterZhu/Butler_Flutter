@@ -169,14 +169,15 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
     String typeName = controller.model.typeName ?? '';
     int type = controller.model.type ?? 0;
     String remark = controller.model.remark ?? '';
+    String id = controller.model.id ?? '';
     List<SCMaterialListModel> materials = controller.model.materials ?? [];
     for (SCMaterialListModel model in materials) {
       model.localNum = model.number ?? 1;
       model.isSelect = true;
       model.name = model.materialName ?? '';
-      model.id = model.materialId;
+      //model.id = model.materialId;
     }
-    SCRouterHelper.pathPage(SCRouterPath.addEntryPage, {
+    SCRouterHelper.pathPage(SCRouterPath.addTransferPage, {
       'isEdit' : true,
       'data' : materials,
       "wareHouseName" : wareHouseName,
@@ -184,6 +185,8 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
       "typeName" : typeName,
       "type" : type,
       "remark" : remark,
+      "id" : id
+
     })?.then((value) {
       controller.loadMaterialEntryDetail();
     });

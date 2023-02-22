@@ -15,6 +15,7 @@ import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_controller.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart';
+import '../../MaterialEntry/Model/sc_material_task_detail_model.dart';
 
 
 /// 报损详情
@@ -119,7 +120,6 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
                 } else if(value == '提交') {
                   submitAction();
                 }
-
                 // } else if (value == "拒绝") {
                 //   SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
                 //     SCDialogUtils().showCustomBottomDialog(
@@ -146,14 +146,21 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
     String typeName = controller.model.typeName ?? '';
     int type = controller.model.type ?? 0;
     String remark = controller.model.remark ?? '';
+    String id = controller.model.id ?? '';
     List<SCMaterialListModel> materials = controller.model.materials ?? [];
     for (SCMaterialListModel model in materials) {
       model.localNum = model.number ?? 1;
       model.isSelect = true;
       model.name = model.materialName ?? '';
-      model.id = model.materialId;
+      //model.id = model.materialId;
     }
-    SCRouterHelper.pathPage(SCRouterPath.addEntryPage, {
+
+    List<Files> filesList = controller.model.files ?? [];
+    List files = [];
+    for (Files file in filesList) {
+      files.add(file.toJson());
+    }
+    SCRouterHelper.pathPage(SCRouterPath.addFrmLossPage, {
       'isEdit' : true,
       'data' : materials,
       "wareHouseName" : wareHouseName,
@@ -161,6 +168,13 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
       "typeName" : typeName,
       "type" : type,
       "remark" : remark,
+      "reportUserName": controller.model.reportUserName ?? '',
+      "reportUserId": controller.model.reportUserId ?? '',
+      "reportOrgName": controller.model.reportOrgName ?? '',
+      "reportOrgId": controller.model.reportOrgId ?? '',
+      "reportTime": controller.model.reportTime ?? '',
+      "files": files,
+      "id" : id
     })?.then((value) {
       controller.loadMaterialFrmLossDetail();
     });

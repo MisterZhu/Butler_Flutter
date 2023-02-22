@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import '../../../../Constants/sc_enum.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../Model/sc_material_list_model.dart';
