@@ -174,7 +174,8 @@ class SCRejectAlertState extends State<SCRejectAlert> {
           title: '上传照片',
           addIcon: SCAsset.iconMaterialAddPhoto,
           addPhotoType: SCAddPhotoType.all,
-          addPhotoAction: (List list) {
+          files: photosList,
+          updatePhoto: (List list) {
             photosList = list;
         },)
     );

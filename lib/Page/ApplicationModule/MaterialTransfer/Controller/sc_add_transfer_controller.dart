@@ -77,13 +77,13 @@ class SCAddTransferController extends GetxController {
       inWareHouseName = params['inWareHouseName'];
 
       /// 调入仓库id
-      inWareHouseId = params['inWarehouseId'];
+      inWareHouseId = params['inWareHouseId'];
 
       /// 调出仓库名称
-      outWareHouseName = params['outWarehouseName'];
+      outWareHouseName = params['outWareHouseName'];
 
       /// 调出仓库id
-      outWareHouseId = params['outWarehouseId'];
+      outWareHouseId = params['outWareHouseId'];
 
       /// 类型
       type = params['typeName'];
@@ -150,7 +150,7 @@ class SCAddTransferController extends GetxController {
 
   /// 编辑入库基础信息
   editMaterialBaseInfo({required dynamic data}) {
-    List materialList = data['materialList'];
+    //List materialList = data['materialList'];
     var params = {
       "id": editId,
       "remark": data['remark'],

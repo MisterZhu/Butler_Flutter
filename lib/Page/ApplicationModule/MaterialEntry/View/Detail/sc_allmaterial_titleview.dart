@@ -1,16 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
-
 import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/sc_utils.dart';
-import '../../Model/sc_material_entry_detail_model.dart';
+import '../../Model/sc_material_task_detail_model.dart';
 
 /// 入库详情-所有物资cell-titleview
 
 class SCAllMaterialTitleView extends StatelessWidget {
 
-  final SCMaterialEntryDetailModel? model;
+  final SCMaterialTaskDetailModel? model;
 
   /// 类型，type=0入库详情，type=1出库详情
   final SCWarehouseManageType type;

@@ -55,6 +55,8 @@ class SCEntrySearchController extends GetxController {
     String url = SCUrl.kMaterialEntryListUrl;
     if (type == SCWarehouseManageType.outbound) {
       url =  SCUrl.kMaterialOutboundListUrl;
+    } else if (type == SCWarehouseManageType.frmLoss) {
+      url = SCUrl.kMaterialFrmLossListUrl;
     }
     SCHttpManager.instance.post(
         url: url,

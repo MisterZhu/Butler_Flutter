@@ -3,13 +3,10 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Constant/sc_material_entry_enum.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
-import '../../../../Constants/sc_key.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
-import '../../../../Skin/Tools/sc_scaffold_manager.dart';
-import '../../../../Utils/Router/sc_router_helper.dart';
-import '../Model/sc_material_entry_detail_model.dart';
 import '../View/Detail/sc_material_bottom_view.dart';
+import '../Model/sc_material_task_detail_model.dart';
 
 /// 入库详情controller
 
@@ -23,8 +20,7 @@ class SCMaterialEntryDetailController extends GetxController {
 
   /// 状态 单据状态(0：待提交，1：待审批，2：审批中，3：已拒绝，4：已驳回，5：已撤回，6：已入库)
   int status = -1;
-
-  SCMaterialEntryDetailModel model = SCMaterialEntryDetailModel();
+  SCMaterialTaskDetailModel model = SCMaterialTaskDetailModel();
 
   @override
   onInit() {
@@ -40,7 +36,7 @@ class SCMaterialEntryDetailController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           success = true;
-          model = SCMaterialEntryDetailModel.fromJson(value);
+          model = SCMaterialTaskDetailModel.fromJson(value);
           update();
         },
         failure: (value) {
@@ -57,7 +53,7 @@ class SCMaterialEntryDetailController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           success = true;
-          model = SCMaterialEntryDetailModel.fromJson(value);
+          model = SCMaterialTaskDetailModel.fromJson(value);
           update();
         },
         failure: (value) {
@@ -74,7 +70,7 @@ class SCMaterialEntryDetailController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           success = true;
-          model = SCMaterialEntryDetailModel.fromJson(value);
+          model = SCMaterialTaskDetailModel.fromJson(value);
           update();
         },
         failure: (value) {

@@ -183,6 +183,14 @@ class SCUrl {
   /// 报损详情
   static const String kMaterialFrmLossDetailUrl = "/api/warehouse/app/warehouse/report/detail";
 
+  /// 上传图片url
+  static const String kMaterialUploadPicUrl = "/api/warehouse/file/upload";
+
+  /// 编辑物资报损基础信息
+  static const String kEditAddFrmLossBaseInfoUrl = "/api/warehouse/app/warehouse/report/edit";
+
+  /// 物资报损物资列表-分页
+  static const String kFrmLossMaterialListUrl = "/api/warehouse/manage/materialReportRelation/selectMaterialReportRelationListByPage";
 
 
 }

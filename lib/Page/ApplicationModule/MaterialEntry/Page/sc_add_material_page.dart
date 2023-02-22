@@ -6,6 +6,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Controller/sc_categoryalert_controlller.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
+import '../../../../Constants/sc_enum.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../Controller/sc_add_material_controller.dart';
@@ -15,6 +16,7 @@ import '../View/AddMaterial/sc_add_material_view.dart';
 /// 添加物资page
 
 class SCAddMaterialPage extends StatefulWidget {
+
   @override
   SCAddMaterialPageState createState() => SCAddMaterialPageState();
 }
@@ -22,7 +24,7 @@ class SCAddMaterialPage extends StatefulWidget {
 class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeepAliveClientMixin{
 
   /// SCAddMaterialController
-  late SCAddMaterialController addController;
+  late SCAddMaterialController controller;
 
   /// SCCategoryAlertController
   late SCCategoryAlertController categoryAlertController;
@@ -31,7 +33,7 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
   /// SCAddMaterialController - tag
-  String addControllerTag = '';
+  String controllerTag = '';
 
   /// SCCategoryAlertController - tag
   String categoryAlertControllerTag = '';
@@ -39,21 +41,21 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
   @override
   initState() {
     super.initState();
-    addControllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddMaterialPage).toString());
-    addController = Get.put(SCAddMaterialController(), tag: addControllerTag);
+    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddMaterialPage).toString());
+    controller = Get.put(SCAddMaterialController(), tag: controllerTag);
     categoryAlertControllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCAddMaterialPage).toString());
     categoryAlertController = Get.put(SCCategoryAlertController(), tag: categoryAlertControllerTag);
     categoryAlertController.tag = categoryAlertControllerTag;
     initPageData();
-    addController.loadMaterialListData();
+    controller.loadMaterialListData();
   }
 
   @override
   dispose() {
-    SCScaffoldManager.instance.deleteGetXControllerTag((SCAddMaterialPage).toString(), addControllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCAddMaterialPage).toString(), controllerTag);
     SCScaffoldManager.instance.deleteGetXControllerTag((SCAddMaterialPage).toString(), categoryAlertControllerTag);
-    addController.dispose();
+    controller.dispose();
     refreshController.dispose();
     super.dispose();
   }
@@ -64,14 +66,14 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
     if (params != null) {
       var originalSelectList = params['data'];
       if (originalSelectList != null) {
-        addController.originalList = originalSelectList;
+        controller.originalList = originalSelectList;
       }
       var wareHouseId = params['wareHouseId'];
       if (wareHouseId != null) {
-        addController.wareHouseId = wareHouseId;
+        controller.wareHouseId = wareHouseId;
       }
       if (params.containsKey('isEdit')) {
-        addController.isEdit = params['isEdit'];
+        controller.isEdit = params['isEdit'];
       }
     }
   }
@@ -92,8 +94,8 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
       height: double.infinity,
       color: SCColors.color_F2F3F5,
       child: GetBuilder<SCAddMaterialController>(
-          tag: addControllerTag,
-          init: addController,
+          tag: controllerTag,
+          init: controller,
           builder: (state) {
             return SCAddMaterialView(
               state: state,

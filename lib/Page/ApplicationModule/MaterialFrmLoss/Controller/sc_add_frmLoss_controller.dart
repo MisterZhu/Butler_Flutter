@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
@@ -70,6 +71,9 @@ class SCAddFrmLossController extends GetxController {
   /// 主键id
   String editId = '';
 
+  /// 上传的图片文件数组
+  List files = [];
+
   @override
   onInit() {
     super.onInit();
@@ -84,11 +88,14 @@ class SCAddFrmLossController extends GetxController {
     if (isEdit && editParams.isNotEmpty) {
       Map<String, dynamic> params = editParams;
 
+      /// 上传的图片文件数组
+      files = params['files'];
+
       /// 调入仓库名称
       wareHouseName = params['wareHouseName'];
 
       /// 调入仓库id
-      wareHouseId = params['warehouseId'];
+      wareHouseId = params['wareHouseId'];
 
       /// 类型
       type = params['typeName'];
@@ -110,6 +117,11 @@ class SCAddFrmLossController extends GetxController {
 
       /// 报损日期
       reportTime = params['reportTime'];
+
+      if (reportTime != '') {
+        /// 报损日期Str
+        reportTimeStr = formatDate(DateTime.parse(reportTime), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+      }
 
       /// 备注
       remark = params['remark'];
@@ -137,6 +149,7 @@ class SCAddFrmLossController extends GetxController {
   /// 新增调拨, status=0暂存，1提交
   addTransfer({required int status, required dynamic data}) {
     var params = {
+      "files": data['files'],
       "materials": data['materialList'],
       "remark": data['remark'],
       "status": status,
@@ -167,7 +180,8 @@ class SCAddFrmLossController extends GetxController {
 
   /// 编辑入库基础信息
   editMaterialBaseInfo({required dynamic data}) {
-    List materialList = data['materialList'];
+    print('编辑基础信息=========$data');
+    //List materialList = data['materialList'];
     var params = {
       "id": editId,
       "remark": data['remark'],
@@ -180,11 +194,11 @@ class SCAddFrmLossController extends GetxController {
       "reportOrgName": data['reportOrgName'],
       "reportOrgId": data['reportOrgId'],
       "reportTime": data['reportTime'],
-      "status": 0
+      "status": 0,
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kEditAddEntryBaseInfoUrl,
+        url: SCUrl.kEditAddFrmLossBaseInfoUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();

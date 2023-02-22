@@ -1,16 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_allmaterial_titleview.dart';
-
 import '../../../../../Constants/sc_enum.dart';
-import '../../Model/sc_material_entry_detail_model.dart';
+import '../../Model/sc_material_task_detail_model.dart';
 import 'sc_allmaterial_listview.dart';
 import 'sc_material_unfold_btn.dart';
 
 /// 入库详情-所有物资cell
 
 class SCAllMaterialCell extends StatefulWidget {
-  final SCMaterialEntryDetailModel? model;
+  final SCMaterialTaskDetailModel? model;
 
   /// 类型，type=entry入库详情，type=outbound出库详情
   final SCWarehouseManageType type;

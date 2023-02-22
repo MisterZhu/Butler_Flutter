@@ -146,7 +146,7 @@ class SCAddCheckController extends GetxController {
 
   /// 编辑入库基础信息
   editMaterialBaseInfo({required dynamic data}) {
-    List materialList = data['materialList'];
+    //List materialList = data['materialList'];
     var params = {
       "id": editId,
       "type": data['typeId'],

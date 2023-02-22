@@ -10,6 +10,7 @@ import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_basic_info_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_material_info_cell.dart';
+import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
@@ -27,19 +28,19 @@ import '../../Controller/sc_add_frmLoss_controller.dart';
 
 /// 新增调拨view
 
-class SCAddFemLossView extends StatefulWidget {
+class SCAddFrmLossView extends StatefulWidget {
   /// SCAddFrmLossController
   final SCAddFrmLossController state;
 
   /// SCSelectDepartmentController
   final SCSelectDepartmentController selectDepartmentController;
 
-  SCAddFemLossView({Key? key, required this.state, required this.selectDepartmentController}) : super(key: key);
+  SCAddFrmLossView({Key? key, required this.state, required this.selectDepartmentController}) : super(key: key);
   @override
-  SCAddFemLossViewState createState() => SCAddFemLossViewState();
+  SCAddFrmLossViewState createState() => SCAddFrmLossViewState();
 }
 
-class SCAddFemLossViewState extends State<SCAddFemLossView> {
+class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
 
   /// 报损人
   SCReceiverModel receiverModel = SCReceiverModel();
@@ -123,8 +124,9 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
       return SCBasicInfoCell(
         list: getBaseInfoList(),
         requiredRemark: true,
-        requiredPhotos: true,
+        requiredPhotos: widget.state.isEdit ? false : true,
         remark: widget.state.remark,
+        files: widget.state.files,
         selectAction: (index) async {
           if (index == 0) {
             // 仓库名称
@@ -148,11 +150,13 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
         inputAction: (content) {
           widget.state.remark = content;
         },
-        addPhotoAction: (list) {},
+        updatePhoto: (list) {
+          widget.state.files = list;
+        },
       );
     } else if (index == 1) {
       return SCMaterialInfoCell(
-        showAdd: widget.state.isEdit ? false : true,
+        showAdd: true,
         list: widget.state.selectedList,
         addAction: () {
           addAction();
@@ -181,7 +185,7 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
     }
     int currentIndex = -1;
     if (index == 0) {
-      // 调入仓库
+      // 仓库
       currentIndex = widget.state.nameIndex;
     } else if (index == 1) {
       // 类型
@@ -204,7 +208,7 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
             closeTap: (SCHomeTaskModel model, int selectIndex) {
               setState(() {
                 if (index == 0) {
-                  // 调入仓库
+                  // 仓库
                   SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
                   widget.state.nameIndex = selectIndex;
                   widget.state.wareHouseName = model.name ?? '';
@@ -344,7 +348,8 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
       "typeName" : widget.state.type,
       "typeId" : widget.state.typeID,
       "remark" : widget.state.remark,
-      "materialList" : materialList
+      "materialList" : materialList,
+      "files": widget.state.files,
     };
     widget.state.addTransfer(status: status, data: params);
   }
@@ -553,7 +558,8 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
       "reportUserId" : widget.state.reportUserId,
       "reportTime" : widget.state.reportTime,
       "remark" : widget.state.remark,
-      "id" : widget.state.editId
+      "id" : widget.state.editId,
+      "files" : widget.state.files,
     };
     widget.state.editMaterialBaseInfo(data: params);
   }

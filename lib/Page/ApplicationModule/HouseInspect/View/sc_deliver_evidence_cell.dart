@@ -2,9 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Network/sc_url.dart';
+import 'package:smartcommunity/Utils/Upload/sc_upload_utils.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import '../../../../Constants/sc_asset.dart';
 import '../../../../Constants/sc_enum.dart';
+import '../../../../Network/sc_config.dart';
+import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Utils/Permission/sc_permission_utils.dart';
 import '../../../../Utils/sc_utils.dart';
 
@@ -19,23 +23,25 @@ class SCDeliverEvidenceCell extends StatefulWidget {
   final SCAddPhotoType addPhotoType;
   /// 最多可添加图片的数量，默认8张
   final int maxCount;
-  /// 添加图片
-  final Function(List list)? addPhotoAction;
+  /// 添加/删除图片
+  final Function(List list)? updatePhoto;
+
+  /// 图片数组
+  final List files;
 
   SCDeliverEvidenceCell({ Key? key,
     required this.title,
     this.addIcon = SCAsset.iconInspectProblemAddPhoto,
     this.addPhotoType = SCAddPhotoType.all,
     this.maxCount = 8,
-    this.addPhotoAction}) : super(key: key);
+    required this.files,
+    this.updatePhoto}) : super(key: key);
 
   @override
   SCDeliverEvidenceCellState createState() => SCDeliverEvidenceCellState();
 }
 
 class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
-
-  List photosList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +83,7 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
         crossAxisSpacing: 8,
         crossAxisCount: 4,
         shrinkWrap: true,
-        itemCount: photosList.length >= widget.maxCount ? widget.maxCount : photosList.length + 1,
+        itemCount: widget.files.length >= widget.maxCount ? widget.maxCount : widget.files.length + 1,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           return photoItem(index);
@@ -89,7 +95,7 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
 
   /// 图片
   Widget photoItem(int index) {
-    if (index == photosList.length) {
+    if (index == widget.files.length) {
       return GestureDetector(
         onTap: () {
           addPhotoAction(index);
@@ -98,7 +104,7 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
           width: 79.0,
           height:  79.0,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(index == photosList.length ? 0.0 : 4.0),
+            borderRadius: BorderRadius.circular(index == widget.files.length ? 0.0 : 4.0),
             child: Image.asset(
               widget.addIcon,
               width: 79.0,
@@ -107,24 +113,29 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
         ),
       );
     } else {
+      var file = widget.files[index];
+      String fileKey = '';
+      if (file != null) {
+        fileKey = file['fileKey'] ?? '';
+      }
       return SizedBox(
         width: 79.0,
         height:  79.0,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(index == photosList.length ? 0.0 : 4.0),
+          borderRadius: BorderRadius.circular(index == widget.files.length ? 0.0 : 4.0),
           child: Stack(
             alignment: Alignment.topRight,
             children: [
-              Image.asset(
-                photosList[index],
+              SCImage(
+                url: SCConfig.getImageUrl(fileKey),
                 width: 79.0,
                 height: 79.0,
                 fit: BoxFit.fill,),
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    photosList.removeAt(index);
-                    widget.addPhotoAction?.call(photosList);
+                    widget.files.removeAt(index);
+                    widget.updatePhoto?.call(widget.files);
                   });
                 },
                 child: Image.asset(
@@ -143,36 +154,45 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
   /// 添加图片
   addPhotoAction(int index) {
     SCUtils().hideKeyboard(context: context);
-    if (index == photosList.length) {
+    if (index == widget.files.length) {
       if (widget.addPhotoType == SCAddPhotoType.photoPicker) {//只能从相册选择图片
         SCPermissionUtils.photoPicker(
-            maxLength: widget.maxCount - photosList.length,
+            maxLength: widget.maxCount - widget.files.length,
             requestType: RequestType.image,
             completionHandler: (imageList) {
               setState(() {
-                photosList.addAll(imageList);
-                widget.addPhotoAction?.call(photosList);
+                upLoadPhotos(imageList);
               });
             });
       } else if (widget.addPhotoType == SCAddPhotoType.takePhoto) {//只能拍照
         SCPermissionUtils.takePhoto((String path){
           setState(() {
-            photosList.add(path);
-            widget.addPhotoAction?.call(photosList);
+            upLoadPhotos([path]);
           });
         });
       } else {
         //从相册选择+拍照
         SCPermissionUtils.showImagePicker(
-            maxLength: widget.maxCount - photosList.length,
+            maxLength: widget.maxCount - widget.files.length,
             requestType: RequestType.image,
             completionHandler: (imageList) {
               setState(() {
-                photosList.addAll(imageList);
-                widget.addPhotoAction?.call(photosList);
+                upLoadPhotos(imageList);
               });
             });
       }
     }
+  }
+
+  /// 上传照片到服务器
+  upLoadPhotos(List photoList) {
+    SCUploadUtils.uploadMoreImage(
+      imagePathList: photoList,
+      url: SCUrl.kMaterialUploadPicUrl,
+      successHandler: (list) {
+        widget.files.addAll(list);
+        widget.updatePhoto?.call(widget.files);
+      }
+     );
   }
 }

@@ -132,13 +132,15 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
     int type = controller.model.type ?? 0;
     String remark = controller.model.remark ?? '';
     List<SCMaterialListModel> materials = controller.model.materials ?? [];
+    String id = controller.model.id ?? '';
+
     for (SCMaterialListModel model in materials) {
       model.localNum = model.number ?? 1;
       model.isSelect = true;
       model.name = model.materialName ?? '';
-      model.id = model.materialId;
+      //model.id = model.materialId;
     }
-    SCRouterHelper.pathPage(SCRouterPath.addEntryPage, {
+    SCRouterHelper.pathPage(SCRouterPath.addCheckPage, {
       'isEdit' : true,
       'data' : materials,
       "wareHouseName" : wareHouseName,
@@ -146,6 +148,8 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
       "typeName" : typeName,
       "type" : type,
       "remark" : remark,
+      "id" : id
+
     })?.then((value) {
       controller.loadMaterialEntryDetail();
     });

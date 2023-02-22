@@ -134,11 +134,12 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
         inputAction: (content) {
           widget.state.remark = content;
         },
-        addPhotoAction: (list) {},
+        updatePhoto: (list) {
+        },
       );
     } else if (index == 1) {
       return SCMaterialInfoCell(
-        showAdd: widget.state.isEdit ? false : true,
+        showAdd: true,
         list: widget.state.selectedList,
         addAction: () {
           addAction();

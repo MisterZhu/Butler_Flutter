@@ -167,7 +167,8 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
           title: '上传照片',
           addIcon: SCAsset.iconMaterialAddPhoto,
           addPhotoType: SCAddPhotoType.all,
-          addPhotoAction: (List list) {
+          files: photosList,
+          updatePhoto: (List list) {
             photosList = list;
           },)
     );

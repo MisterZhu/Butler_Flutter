@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
-import 'package:smartcommunity/Utils/sc_utils.dart';
 import '../../../../../Constants/sc_enum.dart';
-import '../../Model/sc_material_entry_detail_model.dart';
+import '../../../../../Network/sc_config.dart';
+import '../../Model/sc_material_task_detail_model.dart';
 
 /// 入库信息cell
 
 class SCMaterialEntryInfoCell extends StatelessWidget {
   /// model
-  final SCMaterialEntryDetailModel? model;
+  final SCMaterialTaskDetailModel? model;
 
   /// type=entry入库详情，type=outbound出库详情
   final SCWarehouseManageType type;
@@ -53,7 +54,8 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
             SizedBox(
               height: model?.remark == "" ? 0.0 : 10.0,
             ),
-            entryRemarkView()
+            entryRemarkView(),
+            photosItem()
           ],
         ),
       ),
@@ -128,7 +130,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 仓库名称view
   Widget wareHouseView() {
     return Row(
-      children: [desLabel('仓库名称'), textView(1, model?.fetchOrgName ?? '')],
+      children: [desLabel('仓库名称'), textView(1, model?.wareHouseName ?? '')],
     );
   }
 
@@ -136,7 +138,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 报损部门view
   Widget frmLossDepartmentView() {
     return Row(
-      children: [desLabel('报损部门'), textView(1, model?.fetchOrgName ?? '')],
+      children: [desLabel('报损部门'), textView(1, model?.reportOrgName ?? '')],
     );
   }
 
@@ -145,7 +147,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
     return Row(
       children: [
         desLabel('报损人'),
-        contactView('${model?.creatorName}', model?.mobileNum ?? '')
+        contactView('${model?.reportUserName}', model?.reportManMobileNum ?? '')
       ],
     );
   }
@@ -153,7 +155,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 报损时间
   Widget frmLossTimeView() {
     return Row(
-      children: [desLabel('报损时间'), textView(1, '${model?.gmtCreate}')],
+      children: [desLabel('报损时间'), textView(1, '${model?.reportTime}')],
     );
   }
 
@@ -338,5 +340,45 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
           fontWeight: FontWeight.w400,
           color: SCColors.color_1B1D33),
     ));
+  }
+
+  /// photosItem
+  Widget photosItem() {
+    if (model?.files != null) {
+      return StaggeredGridView.countBuilder(
+          padding: const EdgeInsets.only(top: 16.0,),
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          crossAxisCount: 4,
+          shrinkWrap: true,
+          itemCount: model?.files?.length,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            return photoItem(index);
+          },
+          staggeredTileBuilder: (int index) {
+            return const StaggeredTile.fit(1);
+          });
+    } else {
+      return const SizedBox();
+    }
+  }
+
+  /// 图片
+  Widget photoItem(int index) {
+    Files? file = model?.files?[index];
+    String fileKey = file?.fileKey ?? '';
+    return SizedBox(
+      width: 79.0,
+      height:  79.0,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(4.0),
+        child: SCImage(
+          url: SCConfig.getImageUrl(fileKey),
+          width: 79.0,
+          height: 79.0,
+          fit: BoxFit.fill,),
+      )
+    );
   }
 }
