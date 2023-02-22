@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
@@ -16,48 +13,22 @@ import '../../../../WorkBench/Home/View/Alert/sc_task_module_alert.dart';
 import '../../../HouseInspect/View/sc_bottom_button_item.dart';
 import '../../../MaterialEntry/Model/sc_entry_type_model.dart';
 import '../../../MaterialEntry/Model/sc_wareHouse_model.dart';
-import '../../Controller/sc_add_transfer_controller.dart';
+import '../../Controller/sc_add_check_controller.dart';
 
 
 /// 新增调拨view
 
-class SCAddTransferView extends StatefulWidget {
-  /// SCAddTransferController
-  final SCAddTransferController state;
+class SCAddCheckView extends StatefulWidget {
+  /// SCAddCheckController
+  final SCAddCheckController state;
 
-  SCAddTransferView(
-      {Key? key, required this.state,})
-      : super(key: key);
+  SCAddCheckView({Key? key, required this.state,}) : super(key: key);
 
   @override
-  SCAddTransferViewState createState() => SCAddTransferViewState();
+  SCAddCheckViewState createState() => SCAddCheckViewState();
 }
 
-class SCAddTransferViewState extends State<SCAddTransferView> {
-
-  late StreamSubscription<bool> keyboardSubscription;
-
-  /// 是否弹起键盘
-  bool isShowKeyboard = false;
-
-  @override
-  void initState() {
-    super.initState();
-    var keyboardVisibilityController = KeyboardVisibilityController();
-    isShowKeyboard = keyboardVisibilityController.isVisible;
-    keyboardSubscription =
-        keyboardVisibilityController.onChange.listen((bool visible) {
-          setState(() {
-            isShowKeyboard = visible;
-          });
-        });
-  }
-
-  @override
-  void dispose() {
-    keyboardSubscription.cancel();
-    super.dispose();
-  }
+class SCAddCheckViewState extends State<SCAddCheckView> {
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +42,7 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(child: listview(context)),
-        Offstage(
-          offstage: isShowKeyboard,
-          child: SCBottomButtonItem(
+        SCBottomButtonItem(
             list: bottomButtonList(),
             buttonType: widget.state.isEdit ? 0 : 1,
             leftTapAction: () {
@@ -89,7 +58,6 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
               editAction();
             },
           ),
-        ),
       ],
     );
   }
@@ -113,28 +81,23 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
     if (index == 0) {
       return SCBasicInfoCell(
         list: getBaseInfoList(),
-        requiredRemark: true,
+        requiredRemark: false,
         requiredPhotos: false,
-        remark: widget.state.remark,
         selectAction: (index) async {
           if (index == 0) {
-            // 调入仓库
+            // 任务名称
             List list = widget.state.wareHouseList.map((e) => e.name).toList();
-            showAlert(0, '调入仓库', list);
+            showAlert(0, '任务名称', list);
           } else if (index == 1) {
-            // 调出仓库
-            List list = widget.state.wareHouseList.map((e) => e.name).toList();
-            showAlert(1, '调出仓库', list);
-          } else if (index == 2) {
             // 类型
             List list = widget.state.typeList.map((e) => e.name).toList();
-            showAlert(2, '类型', list);
+            showAlert(1, '类型', list);
+          } else if (index == 2) {
+            // 仓库名称
+            List list = widget.state.wareHouseList.map((e) => e.name).toList();
+            showAlert(2, '仓库名称', list);
           }
         },
-        inputAction: (content) {
-          widget.state.remark = content;
-        },
-        addPhotoAction: (list) {},
       );
     } else if (index == 1) {
       return SCMaterialInfoCell(
@@ -167,14 +130,14 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
     }
     int currentIndex = -1;
     if (index == 0) {
-      // 调入仓库
-      currentIndex = widget.state.inNameIndex;
+      // 任务名称
+      currentIndex = widget.state.taskIndex;
     } else if (index == 1) {
-      // 调出仓库
-      currentIndex = widget.state.outNameIndex;
-    } else if (index == 2) {
       // 类型
       currentIndex = widget.state.typeIndex;
+    } else if (index == 2) {
+      // 仓库名称
+      currentIndex = widget.state.nameIndex;
     }
     SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
       SCDialogUtils().showCustomBottomDialog(
@@ -193,23 +156,23 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
             closeTap: (SCHomeTaskModel model, int selectIndex) {
               setState(() {
                 if (index == 0) {
-                  // 调入仓库
+                  // 任务名称
                   SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
-                  widget.state.inNameIndex = selectIndex;
-                  widget.state.inWareHouseName = model.name ?? '';
-                  widget.state.inWareHouseId = subModel.id ?? '';
+                  widget.state.taskIndex = selectIndex;
+                  widget.state.taskName = model.name ?? '';
+                  widget.state.taskId = subModel.id ?? '';
                 } else if (index == 1) {
-                  // 调出仓库
-                  SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
-                  widget.state.outNameIndex = selectIndex;
-                  widget.state.outWareHouseName = model.name ?? '';
-                  widget.state.outWareHouseId = subModel.id ?? '';
-                } else if (index == 2) {
                   // 类型
                   SCEntryTypeModel subModel = widget.state.typeList[selectIndex];
                   widget.state.typeIndex = selectIndex;
                   widget.state.type = model.name ?? '';
                   widget.state.typeID = subModel.code ?? 0;
+                } else if (index == 2) {
+                  // 仓库名称
+                  SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
+                  widget.state.nameIndex = selectIndex;
+                  widget.state.wareHouseName = model.name ?? '';
+                  widget.state.wareHouseId = subModel.id ?? '';
                 }
               });
             },
@@ -221,20 +184,20 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
   List getBaseInfoList() {
     /// 基础信息数组
     List baseInfoList = [
-      {'isRequired': true,'title': '调入仓库','content': widget.state.inWareHouseName},
-      {'isRequired': true,'title': '调出仓库','content': widget.state.outWareHouseName},
+      {'isRequired': true,'title': '任务名称','content': widget.state.taskName},
       {'isRequired': true, 'title': '类型', 'content': widget.state.type},
+      {'isRequired': true,'title': '仓库名称','content': widget.state.wareHouseName},
     ];
     return baseInfoList;
   }
 
   /// 添加物资
   addAction() async {
-    if (widget.state.outWareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectOutWareHouseTip);
+    if (widget.state.wareHouseId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
       return;
     }
-    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {'data': widget.state.selectedList, 'inWareHouseId': widget.state.inWareHouseId, 'outWareHouseId': widget.state.outWareHouseId});
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {'data': widget.state.selectedList, 'wareHouseId': widget.state.wareHouseId});
     if (list != null) {
       widget.state.updateSelectedMaterial(list);
     }
@@ -264,12 +227,12 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
 
   /// 检查物资数据
   checkMaterialData(int status) {
-    if (widget.state.inWareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectInWareHouseTip);
+    if (widget.state.wareHouseId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
       return;
     }
-    if (widget.state.outWareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectOutWareHouseTip);
+    if (widget.state.taskId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectTaskName);
       return;
     }
 
@@ -293,13 +256,12 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
     }
 
     var params = {
-      "inWareHouseName" : widget.state.inWareHouseName,
-      "inWareHouseId" : widget.state.inWareHouseId,
-      "outWareHouseName" : widget.state.outWareHouseName,
-      "outWareHouseId" : widget.state.outWareHouseId,
+      "wareHouseName" : widget.state.wareHouseName,
+      "wareHouseId" : widget.state.wareHouseId,
+      "taskName" : widget.state.taskName,
+      "taskId" : widget.state.taskId,
       "typeName" : widget.state.type,
       "typeId" : widget.state.typeID,
-      "remark" : widget.state.remark,
       "materialList" : materialList
     };
     widget.state.addTransfer(status: status, data: params);
@@ -317,12 +279,12 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
   /// 编辑
   editAction() {
     print("编辑");
-    if (widget.state.inWareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectInWareHouseTip);
+    if (widget.state.wareHouseId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
       return;
     }
-    if (widget.state.outWareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectOutWareHouseTip);
+    if (widget.state.taskId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectTaskName);
       return;
     }
 
@@ -337,13 +299,12 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
     }
 
     var params = {
-      "inWareHouseName" : widget.state.inWareHouseName,
-      "inWareHouseId" : widget.state.inWareHouseId,
-      "outWareHouseName" : widget.state.outWareHouseName,
-      "outWareHouseId" : widget.state.outWareHouseId,
+      "wareHouseName" : widget.state.wareHouseName,
+      "wareHouseId" : widget.state.wareHouseId,
+      "taskName" : widget.state.taskName,
+      "taskId" : widget.state.taskId,
       "typeName" : widget.state.type,
       "typeId" : widget.state.typeID,
-      "remark" : widget.state.remark,
       "id" : widget.state.editId
     };
     widget.state.editMaterialBaseInfo(data: params);

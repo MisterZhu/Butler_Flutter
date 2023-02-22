@@ -155,7 +155,9 @@ class SCDefaultValue {
   /// 仓储-新增报损-请选择报损时间
   static const String selectFrmLossTime = "请选择报损时间";
 
-
+  /// 仓储-新增任务-请选择任务名称
+  static const String selectTaskName = "请选择任务名称";
+  
   /// 设置-注销账号提示
   static const String logOffTip = "确定要注销账号吗";
 

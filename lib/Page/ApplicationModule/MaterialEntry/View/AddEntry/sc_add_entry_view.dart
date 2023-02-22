@@ -110,6 +110,8 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       return SCBasicInfoCell(
         // 基础信息
         list: getBaseInfoList(),
+        requiredRemark: true,
+        requiredPhotos: false,
         remark: widget.state.remark,
         selectAction: (index) {
           if (index == 0) {

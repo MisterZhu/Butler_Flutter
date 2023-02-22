@@ -6,6 +6,7 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Controller/s
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
+import '../Controller/sc_material_transfer_controller.dart';
 import '../View/MaterialTransfer/sc_material_transfer_view.dart';
 
 /// 物资调拨page
@@ -17,8 +18,8 @@ class SCMaterialTransferPage extends StatefulWidget {
 
 class SCMaterialTransferPageState extends State<SCMaterialTransferPage> {
 
-  /// SCMaterialEntryController
-  late SCMaterialEntryController controller;
+  /// SCMaterialTransferController
+  late SCMaterialTransferController controller;
 
   /// SCMaterialEntryController - tag
   String controllerTag = '';
@@ -31,7 +32,7 @@ class SCMaterialTransferPageState extends State<SCMaterialTransferPage> {
     super.initState();
     controllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCMaterialTransferPage).toString());
-    controller = Get.put(SCMaterialEntryController(), tag: controllerTag);
+    controller = Get.put(SCMaterialTransferController(), tag: controllerTag);
     controller.loadEntryListData(isMore: false);
     addNotification();
   }
@@ -56,7 +57,7 @@ class SCMaterialTransferPageState extends State<SCMaterialTransferPage> {
       width: double.infinity,
       height: double.infinity,
       color: SCColors.color_F2F3F5,
-      child: GetBuilder<SCMaterialEntryController>(
+      child: GetBuilder<SCMaterialTransferController>(
           tag: controllerTag,
           init: controller,
           builder: (state) {

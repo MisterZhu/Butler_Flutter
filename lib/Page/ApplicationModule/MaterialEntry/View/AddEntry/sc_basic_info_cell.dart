@@ -17,6 +17,12 @@ class SCBasicInfoCell extends StatelessWidget {
   /// 备注
   final String? remark;
 
+  /// 需要备注
+  final bool requiredRemark;
+
+  /// 需要添加图片
+  final bool requiredPhotos;
+
   /// 点击选择
   final Function(int index)? selectAction;
 
@@ -32,6 +38,8 @@ class SCBasicInfoCell extends StatelessWidget {
     this.selectAction,
     this.inputAction,
     this.addPhotoAction,
+    required this.requiredRemark,
+    required this.requiredPhotos,
   }) : super(key: key);
 
   @override
@@ -79,10 +87,8 @@ class SCBasicInfoCell extends StatelessWidget {
         children: [
           selectListView(),
           line(),
-          const SizedBox(height: 12.0,),
           inputItem(),
-          //const SizedBox(height: 10.0,),
-          //photosItem(),
+          photosItem(),
           const SizedBox(height: 12.0,),
         ])
     );
@@ -112,33 +118,39 @@ class SCBasicInfoCell extends StatelessWidget {
 
   /// 输入框
   Widget inputItem() {
-    return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(4.0)),
-        child: SCDeliverExplainCell(
-          title: '备注信息',
-          content: remark ?? '',
-          inputHeight: 92.0,
-          inputAction: (String content) {
-          inputAction?.call(content);
-        },)
+    return Offstage(
+      offstage: !requiredRemark,
+      child: Container(
+          padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(4.0)),
+          child: SCDeliverExplainCell(
+            title: '备注信息',
+            content: remark ?? '',
+            inputHeight: 92.0,
+            inputAction: (String content) {
+              inputAction?.call(content);
+            },)
+      ),
     );
   }
 
   /// 图片
   Widget photosItem() {
-    return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(4.0)),
-        child: SCDeliverEvidenceCell(
-          title: '上传照片',
-          addIcon: SCAsset.iconMaterialAddPhoto,
-          addPhotoType: SCAddPhotoType.all,
-          addPhotoAction: (List list) {
-            addPhotoAction?.call(list);
-        },)
+    return Offstage(
+      offstage: !requiredPhotos,
+      child: Container(
+          padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 10.0),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(4.0)),
+          child: SCDeliverEvidenceCell(
+            title: '上传照片',
+            addIcon: SCAsset.iconMaterialAddPhoto,
+            addPhotoType: SCAddPhotoType.all,
+            addPhotoAction: (List list) {
+              addPhotoAction?.call(list);
+            },)
+      ),
     );
   }
 

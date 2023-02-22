@@ -5,9 +5,9 @@ import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../../MaterialEntry/Model/sc_entry_type_model.dart';
 
-/// 物资报损controller
+/// 物资调拨controller
 
-class SCMaterialFrmLossController extends GetxController {
+class SCMaterialTransferController extends GetxController {
 
   int pageNum = 1;
 
@@ -22,14 +22,12 @@ class SCMaterialFrmLossController extends GetxController {
 
   List<SCMaterialEntryModel> dataList = [];
 
-  /// 报损类型数组
+  /// 类型数组
   List<SCEntryTypeModel> typeList = [];
 
   @override
   onInit() {
     super.onInit();
-    List list = [{'code': '1', 'name': '损坏报损'}, {'code': '2', 'name': '丢失报损'}, {'code': '99', 'name': '其他报损'},];
-    typeList = list.map((e) => SCEntryTypeModel.fromJson(e)).toList();
   }
 
   /// 选择状态，刷新页面数据
@@ -37,7 +35,7 @@ class SCMaterialFrmLossController extends GetxController {
     selectStatusId = value;
     pageNum = 1;
     /// 重新获取数据
-    loadFrmLossListData(isMore: false);
+    loadEntryListData(isMore: false);
   }
 
   /// 选择类型，刷新页面数据
@@ -45,7 +43,7 @@ class SCMaterialFrmLossController extends GetxController {
     selectTypeId = value;
     pageNum = 1;
     /// 重新获取数据
-    loadFrmLossListData(isMore: false);
+    loadEntryListData(isMore: false);
   }
 
   /// 更新排序，刷新页面数据
@@ -53,11 +51,11 @@ class SCMaterialFrmLossController extends GetxController {
     sort = value;
     pageNum = 1;
     /// 重新获取数据
-    loadFrmLossListData(isMore: false);
+    loadEntryListData(isMore: false);
   }
 
-  /// 报损列表数据
-  loadFrmLossListData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
+  /// 入库列表数据
+  loadEntryListData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       pageNum++;
@@ -96,7 +94,7 @@ class SCMaterialFrmLossController extends GetxController {
       "pageSize": 20
     };
     SCHttpManager.instance.post(
-        url: SCUrl.kMaterialFrmLossListUrl,
+        url: SCUrl.kMaterialEntryListUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
@@ -114,6 +112,7 @@ class SCMaterialFrmLossController extends GetxController {
               dataList = [];
             }
           }
+          SCLoadingUtils.hide();
           update();
           bool last = false;
           if (isLoadMore) {
@@ -130,11 +129,11 @@ class SCMaterialFrmLossController extends GetxController {
         });
   }
 
-  /// 报损类型
-  loadFrmLossType(Function? resultHandler) {
+  /// 入库类型
+  loadWareHouseType(Function? resultHandler) {
     SCHttpManager.instance.post(
         url: SCUrl.kWareHouseTypeUrl,
-        params: {'dictionaryCode' : 'OUTBOUND'},
+        params: {'dictionaryCode' : 'WAREHOUSING'},
         success: (value) {
           typeList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
           update();
@@ -144,15 +143,14 @@ class SCMaterialFrmLossController extends GetxController {
         });
   }
 
-
-  /// 提交报损
+  /// 提交入库
   submit({required String id, Function(bool success)? completeHandler}) async{
     var params = {
-      "wareHouseOutId": id,
+      "wareHouseInId": id,
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kSubmitOutboundUrl,
+        url: SCUrl.kSubmitMaterialUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();

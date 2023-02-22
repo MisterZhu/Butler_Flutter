@@ -10,11 +10,14 @@ import '../../MaterialEntry/Model/sc_material_list_model.dart';
 import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
 
 
-/// 新增调拨controller
+/// 新增盘点任务controller
 
-class SCAddTransferController extends GetxController {
+class SCAddCheckController extends GetxController {
   /// 仓库列表数组
   List<SCWareHouseModel> wareHouseList = [];
+
+  /// 任务数组
+  List<SCWareHouseModel> taskList = [];
 
   /// 类型数组
   List<SCEntryTypeModel> typeList = [];
@@ -28,23 +31,23 @@ class SCAddTransferController extends GetxController {
   /// 编辑的参数
   Map<String, dynamic> editParams = {};
 
-  /// 调入仓库名称
-  String inWareHouseName = '';
+  /// 仓库名称
+  String wareHouseName = '';
 
-  /// 调入仓库id
-  String inWareHouseId = '';
+  /// 仓库id
+  String wareHouseId = '';
 
-  /// 调入仓库index
-  int inNameIndex = -1;
+  /// 仓库index
+  int nameIndex = -1;
 
-  /// 调出仓库名称
-  String outWareHouseName = '';
+  /// 任务名称
+  String taskName = '';
 
-  /// 调出仓库id
-  String outWareHouseId = '';
+  /// 任务id
+  String taskId = '';
 
-  /// 调出仓库index
-  int outNameIndex = -1;
+  /// 任务index
+  int taskIndex = -1;
 
   /// 类型
   String type = '';
@@ -54,9 +57,6 @@ class SCAddTransferController extends GetxController {
 
   /// 类型index
   int typeIndex = -1;
-
-  /// 备注
-  String remark = '';
 
   /// 主键id
   String editId = '';
@@ -73,17 +73,17 @@ class SCAddTransferController extends GetxController {
     if (isEdit && editParams.isNotEmpty) {
       Map<String, dynamic> params = editParams;
 
-      /// 调入仓库名称
-      inWareHouseName = params['inWareHouseName'];
+      /// 仓库名称
+      wareHouseName = params['wareHouseName'];
 
-      /// 调入仓库id
-      inWareHouseId = params['inWarehouseId'];
+      /// 仓库id
+      wareHouseId = params['wareHouseId'];
 
-      /// 调出仓库名称
-      outWareHouseName = params['outWarehouseName'];
+      /// 任务名称
+      taskName = params['taskName'];
 
-      /// 调出仓库id
-      outWareHouseId = params['outWarehouseId'];
+      /// 任务id
+      taskId = params['taskId'];
 
       /// 类型
       type = params['typeName'];
@@ -91,22 +91,19 @@ class SCAddTransferController extends GetxController {
       /// 类型id
       typeID = params['type'];
 
-      /// 备注
-      remark = params['remark'];
-
       /// 主键id
       editId = params['id'];
       for (int i = 0; i < wareHouseList.length; i++) {
         SCWareHouseModel model = wareHouseList[i];
-        if (model.id == inWareHouseId) {
-          inNameIndex = i;
+        if (model.id == wareHouseId) {
+          nameIndex = i;
           break;
         }
       }
-      for (int i = 0; i < wareHouseList.length; i++) {
-        SCWareHouseModel model = wareHouseList[i];
-        if (model.id == outWareHouseId) {
-          outNameIndex = i;
+      for (int i = 0; i < taskList.length; i++) {
+        SCWareHouseModel model = taskList[i];
+        if (model.id == taskId) {
+          taskIndex = i;
           break;
         }
       }
@@ -124,14 +121,13 @@ class SCAddTransferController extends GetxController {
   addTransfer({required int status, required dynamic data}) {
     var params = {
       "materials": data['materialList'],
-      "remark": data['remark'],
       "status": status,
       "type": data['typeId'],
       "typeName": data['typeName'],
-      "inWareHouseId": data['inWareHouseId'],
-      "inWareHouseName": data['inWareHouseName'],
-      "outWareHouseId": data['outWareHouseId'],
-      "outWareHouseName": data['outWareHouseName']
+      "wareHouseId": data['wareHouseId'],
+      "wareHouseName": data['wareHouseName'],
+      "taskId": data['taskId'],
+      "taskName": data['taskName']
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
@@ -140,7 +136,7 @@ class SCAddTransferController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialTransferPage});
+              .fire({'key': SCKey.kRefreshMaterialCheckPage});
           SCRouterHelper.back(null);
         },
         failure: (value) {
@@ -153,13 +149,12 @@ class SCAddTransferController extends GetxController {
     List materialList = data['materialList'];
     var params = {
       "id": editId,
-      "remark": data['remark'],
       "type": data['typeId'],
       "typeName": data['typeName'],
-      "inWareHouseId": data['inWareHouseId'],
-      "inWareHouseName": data['inWareHouseName'],
-      "outWareHouseId": data['outWareHouseId'],
-      "outWareHouseName": data['outWareHouseName'],
+      "wareHouseId": data['wareHouseId'],
+      "wareHouseName": data['wareHouseName'],
+      "taskId": data['taskId'],
+      "taskName": data['taskName'],
       "status": 0
     };
     SCLoadingUtils.show();
@@ -169,7 +164,7 @@ class SCAddTransferController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialTransferPage});
+              .fire({'key': SCKey.kRefreshMaterialCheckPage});
           SCRouterHelper.back(null);
         },
         failure: (value) {
@@ -252,7 +247,7 @@ class SCAddTransferController extends GetxController {
         });
   }
 
-  /// 入库类型
+  /// 类型
   loadWareHouseType() {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
