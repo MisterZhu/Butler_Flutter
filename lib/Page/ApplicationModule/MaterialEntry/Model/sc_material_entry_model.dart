@@ -7,7 +7,7 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_mat
 /// id : ""        主键ID
 /// number : ""      入库单号
 /// materialNames : ""   物资名称集合
-/// materialNums : 0     物资数量	
+/// materialNums : 0     物资数量
 /// materials : [{"barCode":"","code":"","id":"","inId":"","locations":"","materialId":"","materialName":"","norms":"","num":0,"referPrice":0,"thirdCode":"","totalPrice":0,"unitId":"","unitName":""}]
 /// operator : ""
 /// operatorName : ""
@@ -29,33 +29,34 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_mat
 
 class SCMaterialEntryModel {
   SCMaterialEntryModel({
-      String? creator, 
-      String? creatorName, 
-      String? gmtCreate, 
-      String? gmtModify, 
-      String? id, 
-      String? materialNames, 
-      int? materialNums, 
-      List<SCMaterialListModel>? materials,
-      String? number,
-      String? mobileNum,
-      String? operator, 
-      String? operatorName, 
-      String? orgId, 
-      String? orgName, 
-      String? remark, 
-      int? status, 
-      int? type, 
-      String? typeName,
+    String? creator,// 创建人ID
+    String? creatorName,// 创建人姓名
+    String? gmtCreate,// 创建时间
+    String? gmtModify,// 修改时间(最近操作时间)
+    String? id,// 主键ID
+    String? materialNames,
+    int? materialNums,
+    List<SCMaterialListModel>? materials,
+    String? number,// 入库单号
+    String? mobileNum,
+    String? operator,// 操作人ID
+    String? operatorName,// 修改人姓名
+    String? orgId, // 所属组织ID
+    String? orgName,
+    String? remark,
+    int? status, // 单据状态(0：待提交，1：待审批，2：审批中，3：已拒绝，4：已驳回，5：已撤回，6：已入库)
+    int? type, // 入库类型（1：采购入库，2：调拨入库，3：盘盈入库，4：领料归还入库，5：借用归还入库，6：退货入库，99：其它入库）
+    String? typeName,
     int? reason,
     String? reasonName,
     String? wareHouseAddress,
-      String? wareHouseId, 
-      String? wareHouseName,
-      String? fetchOrgId,
-      String? fetchOrgName,
-      String? fetchUserId,
-      String? fetchUserName,}){
+    String? wareHouseId, // 关联仓库ID
+    String? wareHouseName,
+    String? fetchOrgId,
+    String? fetchOrgName,
+    String? fetchUserId,
+    String? fetchUserName,
+  }) {
     _creator = creator;
     _creatorName = creatorName;
     _gmtCreate = gmtCreate;
@@ -83,7 +84,7 @@ class SCMaterialEntryModel {
     _fetchOrgName = fetchOrgName;
     _fetchUserId = fetchUserId;
     _fetchUserName = fetchUserName;
-}
+  }
 
   SCMaterialEntryModel.fromJson(dynamic json) {
     _creator = json['creator'];
@@ -146,60 +147,63 @@ class SCMaterialEntryModel {
   String? _fetchOrgName;
   String? _fetchUserId;
   String? _fetchUserName;
-  SCMaterialEntryModel copyWith({  String? creator,
-  String? creatorName,
-  String? gmtCreate,
-  String? gmtModify,
-  String? id,
-  String? materialNames,
-  int? materialNums,
-  List<SCMaterialListModel>? materials,
-  String? number,
-  String? operator,
-  String? operatorName,
-  String? orgId,
-  String? orgName,
-  String? remark,
-  int? status,
-  int? type,
-  String? typeName,
+  SCMaterialEntryModel copyWith({
+    String? creator,
+    String? creatorName,
+    String? gmtCreate,
+    String? gmtModify,
+    String? id,
+    String? materialNames,
+    int? materialNums,
+    List<SCMaterialListModel>? materials,
+    String? number,
+    String? operator,
+    String? operatorName,
+    String? orgId,
+    String? orgName,
+    String? remark,
+    int? status,
+    int? type,
+    String? typeName,
     int? reason,
     String? reasonName,
-  String? wareHouseAddress,
-  String? wareHouseId,
-  String? wareHouseName,
-  String? fetchOrgId,
-  String? fetchOrgName,
-  String? fetchUserId,
-  String? fetchUserName,
-}) => SCMaterialEntryModel(  creator: creator ?? _creator,
-  creatorName: creatorName ?? _creatorName,
-  gmtCreate: gmtCreate ?? _gmtCreate,
-  gmtModify: gmtModify ?? _gmtModify,
-  id: id ?? _id,
-  materialNames: materialNames ?? _materialNames,
-  materialNums: materialNums ?? _materialNums,
-  materials: materials ?? _materials,
-  number: number ?? _number,
-    mobileNum: mobileNum ?? _mobileNum,
-  operator: operator ?? _operator,
-  operatorName: operatorName ?? _operatorName,
-  orgId: orgId ?? _orgId,
-  orgName: orgName ?? _orgName,
-  remark: remark ?? _remark,
-  status: status ?? _status,
-  type: type ?? _type,
-  typeName: typeName ?? _typeName,
-    reason: reason ?? _reason,
-    reasonName: reasonName ?? _reasonName,
-  wareHouseAddress: wareHouseAddress ?? _wareHouseAddress,
-  wareHouseId: wareHouseId ?? _wareHouseId,
-  wareHouseName: wareHouseName ?? _wareHouseName,
-  fetchOrgId: fetchOrgId ?? _fetchOrgId,
-  fetchOrgName: fetchOrgName ?? _fetchOrgName,
-  fetchUserId: fetchUserId ?? _fetchUserId,
-  fetchUserName: fetchUserName ?? _fetchUserName,
-);
+    String? wareHouseAddress,
+    String? wareHouseId,
+    String? wareHouseName,
+    String? fetchOrgId,
+    String? fetchOrgName,
+    String? fetchUserId,
+    String? fetchUserName,
+  }) =>
+      SCMaterialEntryModel(
+        creator: creator ?? _creator,
+        creatorName: creatorName ?? _creatorName,
+        gmtCreate: gmtCreate ?? _gmtCreate,
+        gmtModify: gmtModify ?? _gmtModify,
+        id: id ?? _id,
+        materialNames: materialNames ?? _materialNames,
+        materialNums: materialNums ?? _materialNums,
+        materials: materials ?? _materials,
+        number: number ?? _number,
+        mobileNum: mobileNum ?? _mobileNum,
+        operator: operator ?? _operator,
+        operatorName: operatorName ?? _operatorName,
+        orgId: orgId ?? _orgId,
+        orgName: orgName ?? _orgName,
+        remark: remark ?? _remark,
+        status: status ?? _status,
+        type: type ?? _type,
+        typeName: typeName ?? _typeName,
+        reason: reason ?? _reason,
+        reasonName: reasonName ?? _reasonName,
+        wareHouseAddress: wareHouseAddress ?? _wareHouseAddress,
+        wareHouseId: wareHouseId ?? _wareHouseId,
+        wareHouseName: wareHouseName ?? _wareHouseName,
+        fetchOrgId: fetchOrgId ?? _fetchOrgId,
+        fetchOrgName: fetchOrgName ?? _fetchOrgName,
+        fetchUserId: fetchUserId ?? _fetchUserId,
+        fetchUserName: fetchUserName ?? _fetchUserName,
+      );
   String? get creator => _creator;
   String? get creatorName => _creatorName;
   String? get gmtCreate => _gmtCreate;

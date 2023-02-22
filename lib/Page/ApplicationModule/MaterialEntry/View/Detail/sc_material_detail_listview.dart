@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_approveflow_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_info_cell.dart';
 import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/sc_utils.dart';
@@ -25,17 +26,17 @@ class SCMaterialDetailListView extends StatelessWidget {
       return cell(index);
     }, separatorBuilder: (BuildContext context, int index){
       return line(index);
-    }, itemCount: 2);
+    }, itemCount: 3);
   }
 
   /// cell
   Widget cell(int index) {
     if (index == 0) {// 所有物资
       return SCAllMaterialCell(type: type, model: state.model);
-    // } else if(index == 1) {// 审批流程
-    //   return SCMaterialApproveFlowCell(title: '审批流程', onTap: () {
-    //
-    //   },);
+    } else if(index == 1) {// 审批流程
+      return SCMaterialApproveFlowCell(title: '审批流程', onTap: () {
+
+      },);
     } else {// 入库信息
       return SCMaterialEntryInfoCell(model: state.model, type: type, callAction: (String phone) {
         callAction(phone);

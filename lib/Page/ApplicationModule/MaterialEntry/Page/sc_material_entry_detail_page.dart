@@ -51,6 +51,9 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
       if (params.containsKey("canEdit")) {
         canEdit = params['canEdit'];
       }
+      if (params.containsKey("status")) {
+        controller.status = params['status'];
+      }
       controller.loadMaterialEntryDetail();
     }
   }

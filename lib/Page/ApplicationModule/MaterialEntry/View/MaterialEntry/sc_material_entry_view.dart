@@ -214,8 +214,9 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
   detailAction(SCMaterialEntryModel model) {
     int status = model.status ?? -1;
     bool canEdit = (status == 0);
+    print("status===$status");
     SCRouterHelper.pathPage(
-        SCRouterPath.entryDetailPage, {'id': model.id, 'canEdit': canEdit});
+        SCRouterPath.entryDetailPage, {'id': model.id, 'canEdit': canEdit, 'status' : status});
   }
 
   /// 入库状态弹窗
