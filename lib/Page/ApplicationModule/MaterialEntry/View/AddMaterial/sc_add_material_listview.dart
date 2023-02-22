@@ -9,8 +9,15 @@ import '../Detail/sc_material_cell.dart';
 /// 新增物资listView
 
 class SCAddMaterialListView extends StatelessWidget {
-
-  SCAddMaterialListView({Key? key, required this.state, required this.list, this.radioTap}) : super(key: key);
+  SCAddMaterialListView(
+      {
+        Key? key,
+        required this.state,
+        required this.list,
+        required this.refreshController,
+        this.radioTap,
+        this.loadMoreAction})
+      : super(key: key);
 
   /// SCAddMaterialController
   final SCAddMaterialController state;
@@ -22,7 +29,10 @@ class SCAddMaterialListView extends StatelessWidget {
   final Function? radioTap;
 
   /// RefreshController
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  final RefreshController refreshController;
+
+  /// 加载更多
+  final Function? loadMoreAction;
 
   @override
   Widget build(BuildContext context) {
@@ -30,21 +40,19 @@ class SCAddMaterialListView extends StatelessWidget {
         controller: refreshController,
         enablePullUp: true,
         enablePullDown: false,
-        header: const SCCustomHeader(
-        style: SCCustomHeaderStyle.noNavigation,
-    ),
-    onRefresh: onRefresh, onLoading: loadMore, child: ListView.separated(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 11.0),
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          SCMaterialListModel model = list[index];
-          return cell(model);
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return line(index);
-        },
-        itemCount: list.length));
+        onLoading: loadMore,
+        child: ListView.separated(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 11.0),
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              SCMaterialListModel model = list[index];
+              return cell(model);
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return line(index);
+            },
+            itemCount: list.length));
   }
 
   Widget cell(SCMaterialListModel model) {
@@ -70,20 +78,16 @@ class SCAddMaterialListView extends StatelessWidget {
 
   /// 下拉刷新
   Future onRefresh() async {
-    state.loadMaterialListData(isMore: false, completeHandler: (bool success, bool last){
-      refreshController.refreshCompleted();
-      refreshController.loadComplete();
-    });
+    state.loadMaterialListData(
+        isMore: false,
+        completeHandler: (bool success, bool last) {
+          refreshController.refreshCompleted();
+          refreshController.loadComplete();
+        });
   }
 
   /// 上拉加载
-  void loadMore() async{
-    state.loadMaterialListData(isMore: true, completeHandler: (bool success, bool last){
-      if (last) {
-        refreshController.loadNoData();
-      } else {
-        refreshController.loadComplete();
-      }
-    });
+  void loadMore() async {
+    loadMoreAction?.call();
   }
 }

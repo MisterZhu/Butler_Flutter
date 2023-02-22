@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Controller/sc_categoryalert_controlller.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
@@ -18,13 +19,16 @@ class SCAddMaterialPage extends StatefulWidget {
   SCAddMaterialPageState createState() => SCAddMaterialPageState();
 }
 
-class SCAddMaterialPageState extends State<SCAddMaterialPage> {
+class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeepAliveClientMixin{
 
   /// SCAddMaterialController
   late SCAddMaterialController addController;
 
   /// SCCategoryAlertController
   late SCCategoryAlertController categoryAlertController;
+
+  /// RefreshController
+  RefreshController refreshController = RefreshController(initialRefresh: false);
 
   /// SCAddMaterialController - tag
   String addControllerTag = '';
@@ -50,6 +54,7 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> {
     SCScaffoldManager.instance.deleteGetXControllerTag((SCAddMaterialPage).toString(), addControllerTag);
     SCScaffoldManager.instance.deleteGetXControllerTag((SCAddMaterialPage).toString(), categoryAlertControllerTag);
     addController.dispose();
+    refreshController.dispose();
     super.dispose();
   }
 
@@ -93,12 +98,17 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> {
             return SCAddMaterialView(
               state: state,
               categoryAlertController: categoryAlertController,
+              refreshController: refreshController,
               sureAction: (List<SCMaterialListModel> list){
               SCRouterHelper.back(list);
             },);
           }),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
 }
 
