@@ -311,13 +311,13 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
     widget.state.submit(
         id: model.id ?? '',
         completeHandler: (bool success) {
-          widget.state.loadEntryListData(isMore: false);
+          widget.state.loadData(isMore: false);
         });
   }
 
   /// 下拉刷新
   Future onRefresh() async {
-    widget.state.loadEntryListData(
+    widget.state.loadData(
         isMore: false,
         completeHandler: (bool success, bool last) {
           refreshController.refreshCompleted();
@@ -327,7 +327,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
 
   /// 上拉加载
   void loadMore() async {
-    widget.state.loadEntryListData(
+    widget.state.loadData(
         isMore: true,
         completeHandler: (bool success, bool last) {
           if (last) {

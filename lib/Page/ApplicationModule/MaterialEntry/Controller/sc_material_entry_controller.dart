@@ -35,7 +35,7 @@ class SCMaterialEntryController extends GetxController {
     selectStatusId = value;
     pageNum = 1;
     /// 重新获取数据
-    loadEntryListData(isMore: false);
+    loadData(isMore: false);
   }
 
   /// 选择类型，刷新页面数据
@@ -43,7 +43,7 @@ class SCMaterialEntryController extends GetxController {
     selectTypeId = value;
     pageNum = 1;
     /// 重新获取数据
-    loadEntryListData(isMore: false);
+    loadData(isMore: false);
   }
 
   /// 更新排序，刷新页面数据
@@ -51,11 +51,11 @@ class SCMaterialEntryController extends GetxController {
     sort = value;
     pageNum = 1;
     /// 重新获取数据
-    loadEntryListData(isMore: false);
+    loadData(isMore: false);
   }
 
   /// 入库列表数据
-  loadEntryListData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
+  loadData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       pageNum++;

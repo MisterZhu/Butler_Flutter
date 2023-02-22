@@ -298,13 +298,13 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
     widget.state.submit(id: model.id ?? '', completeHandler: (bool success){
-      widget.state.loadFrmLossListData(isMore: false);
+      widget.state.loadData(isMore: false);
     });
   }
 
   /// 下拉刷新
   Future onRefresh() async {
-    widget.state.loadFrmLossListData(isMore: false, completeHandler: (bool success, bool last){
+    widget.state.loadData(isMore: false, completeHandler: (bool success, bool last){
       refreshController.refreshCompleted();
       refreshController.loadComplete();
     });
@@ -312,7 +312,7 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
 
   /// 上拉加载
   void loadMore() async{
-    widget.state.loadFrmLossListData(isMore: true, completeHandler: (bool success, bool last){
+    widget.state.loadData(isMore: true, completeHandler: (bool success, bool last){
       if (last) {
         refreshController.loadNoData();
       } else {

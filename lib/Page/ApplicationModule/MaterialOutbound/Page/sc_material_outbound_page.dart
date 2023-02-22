@@ -33,7 +33,7 @@ class SCMaterialOutboundPageState extends State<SCMaterialOutboundPage> {
     controllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCMaterialOutboundPage).toString());
     controller = Get.put(SCMaterialOutboundController(), tag: controllerTag);
-    controller.loadOutboundListData(isMore: false);
+    controller.loadData(isMore: false);
     addNotification();
   }
 
@@ -76,7 +76,7 @@ class SCMaterialOutboundPageState extends State<SCMaterialOutboundPage> {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
       if (key == SCKey.kRefreshMaterialOutboundPage) {
-        controller.loadOutboundListData(isMore: false);
+        controller.loadData(isMore: false);
       }
     });
   }

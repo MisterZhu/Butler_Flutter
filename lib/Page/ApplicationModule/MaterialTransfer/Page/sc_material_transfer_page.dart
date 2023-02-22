@@ -33,7 +33,7 @@ class SCMaterialTransferPageState extends State<SCMaterialTransferPage> {
     controllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCMaterialTransferPage).toString());
     controller = Get.put(SCMaterialTransferController(), tag: controllerTag);
-    controller.loadEntryListData(isMore: false);
+    controller.loadData(isMore: false);
     addNotification();
   }
 
@@ -71,7 +71,7 @@ class SCMaterialTransferPageState extends State<SCMaterialTransferPage> {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
       if (key == SCKey.kRefreshMaterialTransferPage) {
-        controller.loadEntryListData(isMore: false);
+        controller.loadData(isMore: false);
       }
     });
   }

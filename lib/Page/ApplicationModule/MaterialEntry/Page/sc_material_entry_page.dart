@@ -32,7 +32,7 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
     controllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCMaterialEntryPage).toString());
     controller = Get.put(SCMaterialEntryController(), tag: controllerTag);
-    controller.loadEntryListData(isMore: false);
+    controller.loadData(isMore: false);
     addNotification();
   }
 
@@ -78,7 +78,7 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
       if (key == SCKey.kRefreshMaterialEntryPage) {
-        controller.loadEntryListData(isMore: false);
+        controller.loadData(isMore: false);
       }
     });
   }
