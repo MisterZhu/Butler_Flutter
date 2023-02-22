@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Network/sc_url.dart';
+import 'package:smartcommunity/Utils/Upload/sc_upload_utils.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import '../../../../Constants/sc_asset.dart';
 import '../../../../Constants/sc_enum.dart';
@@ -36,6 +38,8 @@ class SCDeliverEvidenceCell extends StatefulWidget {
 class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
 
   List photosList = [];
+
+  List files = [];
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +128,8 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
                 onTap: () {
                   setState(() {
                     photosList.removeAt(index);
-                    widget.updatePhoto?.call(photosList);
+                    files.removeAt(index);
+                    widget.updatePhoto?.call(files);
                   });
                 },
                 child: Image.asset(
@@ -151,14 +156,14 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
             completionHandler: (imageList) {
               setState(() {
                 photosList.addAll(imageList);
-                widget.updatePhoto?.call(photosList);
+                upLoadPhotos(photosList);
               });
             });
       } else if (widget.addPhotoType == SCAddPhotoType.takePhoto) {//只能拍照
         SCPermissionUtils.takePhoto((String path){
           setState(() {
             photosList.add(path);
-            widget.updatePhoto?.call(photosList);
+            upLoadPhotos(photosList);
           });
         });
       } else {
@@ -169,14 +174,22 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
             completionHandler: (imageList) {
               setState(() {
                 photosList.addAll(imageList);
-                widget.updatePhoto?.call(photosList);
+                upLoadPhotos(photosList);
               });
             });
       }
     }
   }
 
-  upLoadPhotos() {
-
+  /// 上传照片到服务器
+  upLoadPhotos(List photoList) {
+    SCUploadUtils.uploadMoreImage(
+      imagePathList: photoList,
+      url: SCUrl.kMaterialUploadPicUrl,
+      successHandler: (list) {
+        files = list;
+        widget.updatePhoto?.call(files);
+      }
+     );
   }
 }

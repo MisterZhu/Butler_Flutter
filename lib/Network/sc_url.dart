@@ -183,6 +183,9 @@ class SCUrl {
   /// 报损详情
   static const String kMaterialFrmLossDetailUrl = "/api/warehouse/app/warehouse/report/detail";
 
+  /// 上传图片url
+  static const String kMaterialUploadPicUrl = "/api/warehouse/file/upload";
+
 
 
 }

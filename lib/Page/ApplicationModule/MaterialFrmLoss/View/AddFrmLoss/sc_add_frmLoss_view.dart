@@ -149,7 +149,7 @@ class SCAddFemLossViewState extends State<SCAddFemLossView> {
           widget.state.remark = content;
         },
         updatePhoto: (list) {
-
+          widget.state.files = list;
         },
       );
     } else if (index == 1) {
