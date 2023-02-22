@@ -180,6 +180,8 @@ class SCUrl {
   /// 新增报损
   static const String kAddFrmLossUrl = "/api/warehouse/app/warehouse/report/save";
 
+  /// 报损详情
+  static const String kMaterialFrmLossDetailUrl = "/api/warehouse/app/warehouse/report/detail";
 
 
 

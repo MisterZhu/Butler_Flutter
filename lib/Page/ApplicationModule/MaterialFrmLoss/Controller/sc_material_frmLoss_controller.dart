@@ -37,7 +37,7 @@ class SCMaterialFrmLossController extends GetxController {
     selectStatusId = value;
     pageNum = 1;
     /// 重新获取数据
-    loadFrmLossListData(isMore: false);
+    loadData(isMore: false);
   }
 
   /// 选择类型，刷新页面数据
@@ -45,7 +45,7 @@ class SCMaterialFrmLossController extends GetxController {
     selectTypeId = value;
     pageNum = 1;
     /// 重新获取数据
-    loadFrmLossListData(isMore: false);
+    loadData(isMore: false);
   }
 
   /// 更新排序，刷新页面数据
@@ -53,11 +53,11 @@ class SCMaterialFrmLossController extends GetxController {
     sort = value;
     pageNum = 1;
     /// 重新获取数据
-    loadFrmLossListData(isMore: false);
+    loadData(isMore: false);
   }
 
   /// 报损列表数据
-  loadFrmLossListData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
+  loadData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       pageNum++;

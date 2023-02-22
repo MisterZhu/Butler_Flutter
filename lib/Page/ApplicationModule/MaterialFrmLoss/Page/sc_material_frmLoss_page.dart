@@ -33,7 +33,7 @@ class SCMaterialFrmLossPageState extends State<SCMaterialFrmLossPage> {
     controllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCMaterialFrmLossPage).toString());
     controller = Get.put(SCMaterialFrmLossController(), tag: controllerTag);
-    controller.loadFrmLossListData(isMore: false);
+    controller.loadData(isMore: false);
     addNotification();
   }
 
@@ -71,7 +71,7 @@ class SCMaterialFrmLossPageState extends State<SCMaterialFrmLossPage> {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
       if (key == SCKey.kRefreshMaterialFrmLossPage) {
-        controller.loadFrmLossListData(isMore: false);
+        controller.loadData(isMore: false);
       }
     });
   }

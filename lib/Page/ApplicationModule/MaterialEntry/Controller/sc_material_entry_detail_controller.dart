@@ -60,6 +60,23 @@ class SCMaterialEntryDetailController extends GetxController {
         });
   }
 
+  /// 报损详情
+  loadMaterialFrmLossDetail() {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.get(
+        url: SCUrl.kMaterialFrmLossDetailUrl,
+        params: {'id': id},
+        success: (value) {
+          SCLoadingUtils.hide();
+          success = true;
+          model = SCMaterialEntryDetailModel.fromJson(value);
+          update();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
   /// 出库确认
   outboundConfirm(
       {required String outTime,

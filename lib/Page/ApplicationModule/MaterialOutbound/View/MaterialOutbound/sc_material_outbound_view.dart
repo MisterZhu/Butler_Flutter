@@ -299,13 +299,13 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
     widget.state.submit(id: model.id ?? '', completeHandler: (bool success){
-      widget.state.loadOutboundListData(isMore: false);
+      widget.state.loadData(isMore: false);
     });
   }
 
   /// 下拉刷新
   Future onRefresh() async {
-    widget.state.loadOutboundListData(isMore: false, completeHandler: (bool success, bool last){
+    widget.state.loadData(isMore: false, completeHandler: (bool success, bool last){
       refreshController.refreshCompleted();
       refreshController.loadComplete();
     });
@@ -313,7 +313,7 @@ class SCMaterialOutboundViewState extends State<SCMaterialOutboundView> {
 
   /// 上拉加载
   void loadMore() async{
-    widget.state.loadOutboundListData(isMore: true, completeHandler: (bool success, bool last){
+    widget.state.loadData(isMore: true, completeHandler: (bool success, bool last){
       if (last) {
         refreshController.loadNoData();
       } else {

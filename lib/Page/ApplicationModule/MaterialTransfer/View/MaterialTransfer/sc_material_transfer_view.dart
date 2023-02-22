@@ -296,13 +296,13 @@ class SCMaterialTransferViewState extends State<SCMaterialTransferView> {
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
     widget.state.submit(id: model.id ?? '', completeHandler: (bool success){
-      widget.state.loadEntryListData(isMore: false);
+      widget.state.loadData(isMore: false);
     });
   }
 
   /// 下拉刷新
   Future onRefresh() async {
-    widget.state.loadEntryListData(isMore: false, completeHandler: (bool success, bool last){
+    widget.state.loadData(isMore: false, completeHandler: (bool success, bool last){
       refreshController.refreshCompleted();
       refreshController.loadComplete();
     });
@@ -310,7 +310,7 @@ class SCMaterialTransferViewState extends State<SCMaterialTransferView> {
 
   /// 上拉加载
   void loadMore() async{
-    widget.state.loadEntryListData(isMore: true, completeHandler: (bool success, bool last){
+    widget.state.loadData(isMore: true, completeHandler: (bool success, bool last){
       if (last) {
         refreshController.loadNoData();
       } else {
