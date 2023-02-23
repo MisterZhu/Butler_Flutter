@@ -11,8 +11,9 @@ import '../../Model/sc_selectcategory_model.dart';
 
 class SCSelectCategoryAlert extends StatefulWidget {
 
-  SCSelectCategoryAlert({Key? key, required this.headerList, required this.footerList, this.headerTap, this.footerTap, this.onSure, this.onCancel}) : super(key: key);
+  SCSelectCategoryAlert({Key? key, required this.title, required this.headerList, required this.footerList, this.headerTap, this.footerTap, this.onSure, this.onCancel}) : super(key: key);
 
+  final String title;
   List<SCSelectCategoryModel> headerList;
 
   List<SCSelectCategoryModel> footerList;
@@ -58,7 +59,7 @@ class SCSelectCategoryAlertState extends State<SCSelectCategoryAlert> {
   /// header
   Widget headerView() {
     return SCChangeSpaceAlertHeader(
-      title: '选择分类',
+      title: widget.title,
       onCancel: () {
         widget.onCancel?.call();
       },

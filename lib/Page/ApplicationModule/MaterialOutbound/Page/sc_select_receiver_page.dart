@@ -29,6 +29,7 @@ class SCSelectReceiverPageState extends State<SCSelectReceiverPage> {
   /// SCSelectReceiverController - tag
   String controllerTag = '';
 
+  String title = '';
   @override
   initState() {
     super.initState();
@@ -42,6 +43,9 @@ class SCSelectReceiverPageState extends State<SCSelectReceiverPage> {
       }
       if (arguments['receiverModel'] != null) {
         receiverModel = arguments['receiverModel'];
+      }
+      if (arguments['title'] != null) {
+        title = arguments['title'];
       }
       controller.loadDataList(isMore: false);
     }
@@ -57,7 +61,7 @@ class SCSelectReceiverPageState extends State<SCSelectReceiverPage> {
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: "选择领用人",
+        title: title,
         centerTitle: true,
         elevation: 0,
         body: body());

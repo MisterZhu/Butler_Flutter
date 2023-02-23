@@ -400,6 +400,7 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
                     init: widget.selectDepartmentController,
                     builder: (value) {
                       return SCSelectCategoryAlert(
+                        title: '选择部门',
                         headerList: widget.selectDepartmentController.headerList,
                         footerList: widget.selectDepartmentController.footerList,
                         headerTap: (int index, SCSelectCategoryModel model) {
@@ -524,6 +525,7 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
       var params = {
         'receiverModel': receiverModel,
         'orgId': widget.state.reportOrgId,
+        'title': '选择报损人',
       };
       var backParams = await SCRouterHelper.pathPage(SCRouterPath.selectReceiverPage, params);
       if (backParams != null) {

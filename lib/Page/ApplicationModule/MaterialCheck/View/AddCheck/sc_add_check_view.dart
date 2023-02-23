@@ -350,6 +350,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
                     init: widget.selectDepartmentController,
                     builder: (value) {
                       return SCSelectCategoryAlert(
+                        title: '选择部门',
                         headerList: widget.selectDepartmentController.headerList,
                         footerList: widget.selectDepartmentController.footerList,
                         headerTap: (int index, SCSelectCategoryModel model) {
@@ -474,6 +475,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       var params = {
         'receiverModel': receiverModel,
         'orgId': widget.state.orgId,
+        'title': '选择处理人',
       };
       var backParams = await SCRouterHelper.pathPage(SCRouterPath.selectReceiverPage, params);
       if (backParams != null) {
