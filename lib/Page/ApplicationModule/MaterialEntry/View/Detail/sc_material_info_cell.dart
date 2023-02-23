@@ -231,7 +231,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
       offstage: model?.remark == "",
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [desLabel('备注'), textView(10, '${model?.remark}')],
+        children: [desLabel('备注'), textView(100, '${model?.remark}')],
       ),
     );
   }
