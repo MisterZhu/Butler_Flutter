@@ -6,6 +6,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../../Utils/sc_utils.dart';
+import '../../MaterialOutbound/Controller/sc_select_department_controller.dart';
 import '../Controller/sc_add_check_controller.dart';
 import '../View/AddCheck/sc_add_check_view.dart';
 
@@ -22,14 +23,24 @@ class SCAddCheckPageState extends State<SCAddCheckPage> {
   /// SCAddCheckController
   late SCAddCheckController controller;
 
+  /// SCSelectDepartmentController
+  late SCSelectDepartmentController selectDepartmentController;
+
   /// SCAddEntryController - tag
   String controllerTag = '';
+
+  /// SCSelectDepartmentController - tag
+  String selectDepartmentControllerTag = '';
 
   @override
   initState() {
     super.initState();
     controllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddCheckPage).toString());
     controller = Get.put(SCAddCheckController(), tag: controllerTag);
+    selectDepartmentControllerTag = SCScaffoldManager.instance
+        .getXControllerTag((SCAddCheckPage).toString());
+    selectDepartmentController = Get.put(SCSelectDepartmentController(), tag: selectDepartmentControllerTag);
+    selectDepartmentController.tag = selectDepartmentControllerTag;
     initEditData();
   }
 
@@ -84,7 +95,7 @@ class SCAddCheckPageState extends State<SCAddCheckPage> {
             tag: controllerTag,
             init: controller,
             builder: (state) {
-              return SCAddCheckView(state: state,);
+              return SCAddCheckView(state: state, selectDepartmentController: selectDepartmentController,);
             }),
       ),
     );

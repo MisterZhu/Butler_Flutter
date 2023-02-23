@@ -19,9 +19,6 @@ class SCAddCheckController extends GetxController {
   /// 任务数组
   List<SCWareHouseModel> taskList = [];
 
-  /// 类型数组
-  List<SCEntryTypeModel> typeList = [];
-
   /// 已选择的物资数据
   List<SCMaterialListModel> selectedList = [];
 
@@ -49,14 +46,32 @@ class SCAddCheckController extends GetxController {
   /// 任务index
   int taskIndex = -1;
 
-  /// 类型
-  String type = '';
+  /// 开始时间，接口使用
+  String startTime = '';
 
-  /// 仓库类型id
-  int typeID = 0;
+  /// 开始时间，页面显示使用
+  String startTimeStr = '';
 
-  /// 类型index
-  int typeIndex = -1;
+  /// 结束时间
+  String endTime = '';
+
+  /// 结束时间，页面显示使用
+  String endTimeStr = '';
+
+  /// 部门
+  String orgName = '';
+
+  /// 部门id
+  String orgId = '';
+
+  /// 处理人名称
+  String operatorName = '';
+
+  /// 处理人id
+  String operator = '';
+
+  /// 范围
+  int range = 0;
 
   /// 主键id
   String editId = '';
@@ -65,7 +80,6 @@ class SCAddCheckController extends GetxController {
   onInit() {
     super.onInit();
     loadWareHouseList();
-    loadWareHouseType();
   }
 
   /// 初始化编辑的参数
@@ -85,11 +99,20 @@ class SCAddCheckController extends GetxController {
       /// 任务id
       taskId = params['taskId'];
 
-      /// 类型
-      type = params['typeName'];
+      /// 开始时间
+      startTime = params['startTime'];
 
-      /// 类型id
-      typeID = params['type'];
+      /// 结束时间
+      endTime = params['endTime'];
+
+      ///处理人名称
+      operatorName = params['operatorName'];
+
+      ///处理人id
+      operator = params['operator'];
+
+      /// 范围
+      range = params['range'];
 
       /// 主键id
       editId = params['id'];
@@ -107,13 +130,6 @@ class SCAddCheckController extends GetxController {
           break;
         }
       }
-      for (int i = 0; i < typeList.length; i++) {
-        SCEntryTypeModel model = typeList[i];
-        if (model.code == typeID) {
-          typeIndex = i;
-          break;
-        }
-      }
     }
   }
 
@@ -122,12 +138,15 @@ class SCAddCheckController extends GetxController {
     var params = {
       "materials": data['materialList'],
       "status": status,
-      "type": data['typeId'],
-      "typeName": data['typeName'],
       "wareHouseId": data['wareHouseId'],
       "wareHouseName": data['wareHouseName'],
       "taskId": data['taskId'],
-      "taskName": data['taskName']
+      "taskName": data['taskName'],
+      "range": data['range'],
+      "operator": data['operator'],
+      "operatorName": data['operatorName'],
+      "startTime": data['startTime'],
+      "endTime": data['endTime'],
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
@@ -149,12 +168,15 @@ class SCAddCheckController extends GetxController {
     //List materialList = data['materialList'];
     var params = {
       "id": editId,
-      "type": data['typeId'],
-      "typeName": data['typeName'],
       "wareHouseId": data['wareHouseId'],
       "wareHouseName": data['wareHouseName'],
       "taskId": data['taskId'],
       "taskName": data['taskName'],
+      "range": data['range'],
+      "operator": data['operator'],
+      "operatorName": data['operatorName'],
+      "startTime": data['startTime'],
+      "endTime": data['endTime'],
       "status": 0
     };
     SCLoadingUtils.show();
@@ -239,24 +261,6 @@ class SCAddCheckController extends GetxController {
           SCLoadingUtils.hide();
           wareHouseList = List<SCWareHouseModel>.from(
               value.map((e) => SCWareHouseModel.fromJson(e)).toList());
-          initEditParams();
-          update();
-        },
-        failure: (value) {
-          SCLoadingUtils.hide();
-        });
-  }
-
-  /// 类型
-  loadWareHouseType() {
-    SCLoadingUtils.show();
-    SCHttpManager.instance.post(
-        url: SCUrl.kWareHouseTypeUrl,
-        params: {'dictionaryCode': 'WAREHOUSING'},
-        success: (value) {
-          SCLoadingUtils.hide();
-          typeList = List<SCEntryTypeModel>.from(
-              value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
           initEditParams();
           update();
         },

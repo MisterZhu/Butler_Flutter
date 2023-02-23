@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_picker/Picker.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
@@ -11,10 +14,13 @@ import '../../../../../Utils/sc_utils.dart';
 import '../../../../WorkBench/Home/Model/sc_home_task_model.dart';
 import '../../../../WorkBench/Home/View/Alert/sc_task_module_alert.dart';
 import '../../../HouseInspect/View/sc_bottom_button_item.dart';
-import '../../../MaterialEntry/Model/sc_entry_type_model.dart';
+import '../../../MaterialEntry/Model/sc_selectcategory_model.dart';
+import '../../../MaterialEntry/Model/sc_selectcategory_tree_model.dart';
 import '../../../MaterialEntry/Model/sc_wareHouse_model.dart';
+import '../../../MaterialEntry/View/SelectCategoryAlert/sc_add_material_selectcategory_alert.dart';
+import '../../../MaterialOutbound/Controller/sc_select_department_controller.dart';
+import '../../../MaterialOutbound/Model/sc_receiver_model.dart';
 import '../../Controller/sc_add_check_controller.dart';
-
 
 /// 新增调拨view
 
@@ -22,13 +28,21 @@ class SCAddCheckView extends StatefulWidget {
   /// SCAddCheckController
   final SCAddCheckController state;
 
-  SCAddCheckView({Key? key, required this.state,}) : super(key: key);
+  /// SCSelectDepartmentController
+  final SCSelectDepartmentController selectDepartmentController;
+
+  SCAddCheckView({Key? key, required this.state, required this.selectDepartmentController}) : super(key: key);
 
   @override
   SCAddCheckViewState createState() => SCAddCheckViewState();
 }
 
 class SCAddCheckViewState extends State<SCAddCheckView> {
+
+  /// 处理人
+  SCReceiverModel receiverModel = SCReceiverModel();
+
+  List rangeList = ['全盘', '物资分类', '物资名称'];
 
   @override
   Widget build(BuildContext context) {
@@ -83,37 +97,57 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
         list: getBaseInfoList(),
         requiredRemark: false,
         requiredPhotos: false,
+        rangeList: rangeList,
+        selectRangeAction: (index) {
+          print('盘点范围==========$index');
+          widget.state.range = index;
+          widget.state.update();
+        },
         selectAction: (index) async {
           if (index == 0) {
             // 任务名称
             List list = widget.state.wareHouseList.map((e) => e.name).toList();
             showAlert(0, '任务名称', list);
           } else if (index == 1) {
-            // 类型
-            List list = widget.state.typeList.map((e) => e.name).toList();
-            showAlert(1, '类型', list);
+            // 开始时间
+            showTimeAlert(context, 0);
           } else if (index == 2) {
+            // 结束时间
+            showTimeAlert(context, 1);
+          } else if (index == 3) {
+            // 部门
+            showSelectDepartmentAlert();
+          } else if (index == 4) {
+            // 处理人
+            selectUser();
+          } else if (index == 5) {
             // 仓库名称
             List list = widget.state.wareHouseList.map((e) => e.name).toList();
-            showAlert(2, '仓库名称', list);
+            showAlert(1, '仓库名称', list);
           }
         },
       );
     } else if (index == 1) {
-      return SCMaterialInfoCell(
-        showAdd: true,
-        list: widget.state.selectedList,
-        addAction: () {
-          addAction();
-        },
-        deleteAction: (int subIndex) {
-          deleteAction(subIndex);
-        },
-        updateNumAction: (int index, int value) {
-          widget.state.update();
-          editOneMaterial(index);
-        },
-      );
+      if (widget.state.range == 0) {
+        return const SizedBox();
+      } else {
+        return SCMaterialInfoCell(
+          title: widget.state.range == 1 ? '物资分类' : '物资名称',
+          materialType: widget.state.range == 1 ? 1 : 0,
+          showAdd: true,
+          list: widget.state.selectedList,
+          addAction: () {
+            addAction();
+          },
+          deleteAction: (int subIndex) {
+            deleteAction(subIndex);
+          },
+          updateNumAction: (int index, int value) {
+            widget.state.update();
+            editOneMaterial(index);
+          },
+        );
+      }
     } else {
       return const SizedBox(
         height: 10,
@@ -133,9 +167,6 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       // 任务名称
       currentIndex = widget.state.taskIndex;
     } else if (index == 1) {
-      // 类型
-      currentIndex = widget.state.typeIndex;
-    } else if (index == 2) {
       // 仓库名称
       currentIndex = widget.state.nameIndex;
     }
@@ -162,12 +193,6 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
                   widget.state.taskName = model.name ?? '';
                   widget.state.taskId = subModel.id ?? '';
                 } else if (index == 1) {
-                  // 类型
-                  SCEntryTypeModel subModel = widget.state.typeList[selectIndex];
-                  widget.state.typeIndex = selectIndex;
-                  widget.state.type = model.name ?? '';
-                  widget.state.typeID = subModel.code ?? 0;
-                } else if (index == 2) {
                   // 仓库名称
                   SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
                   widget.state.nameIndex = selectIndex;
@@ -180,13 +205,43 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
     });
   }
 
+  /// 报损日期弹窗
+  showTimeAlert (BuildContext context, int timeIndex) {
+    DateTime now = DateTime.now();
+    SCPickerUtils pickerUtils = SCPickerUtils();
+    pickerUtils.title = timeIndex == 0 ? '开始时间': '结束时间';
+    pickerUtils.cancelText = '上一步';
+    pickerUtils.pickerType = SCPickerType.date;
+    pickerUtils.completionHandler = (selectedValues, selecteds) {
+      DateTime value = selectedValues.first;
+      setState(() {
+        if (timeIndex == 0) {
+          widget.state.startTimeStr = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+          widget.state.startTime = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]);
+        } else if (timeIndex == 1) {
+          widget.state.endTimeStr = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+          widget.state.endTime = formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]);
+        }
+      });
+    };
+    pickerUtils.showDatePicker(
+        context: context,
+        dateType: PickerDateTimeType.kYMDHM,
+        minValue: DateTime(now.year - 1, 1, 1, 00, 00),
+        maxValue: DateTime(now.year + 9, 12, 31, 23, 59)
+    );
+  }
+
   /// 获取基础信息
   List getBaseInfoList() {
     /// 基础信息数组
     List baseInfoList = [
       {'isRequired': true,'title': '任务名称','content': widget.state.taskName},
-      {'isRequired': true, 'title': '类型', 'content': widget.state.type},
+      {'isRequired': true, 'title': '开始时间', 'content': widget.state.startTimeStr},
+      {'isRequired': true, 'title': '结束时间', 'content': widget.state.endTimeStr},
       {'isRequired': true,'title': '仓库名称','content': widget.state.wareHouseName},
+      {'isRequired': true,'title': '部门','content': widget.state.orgName},
+      {'isRequired': true,'title': '处理人','content': widget.state.operatorName},
     ];
     return baseInfoList;
   }
@@ -227,21 +282,31 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
 
   /// 检查物资数据
   checkMaterialData(int status) {
-    if (widget.state.wareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
-      return;
-    }
     if (widget.state.taskId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectTaskName);
       return;
     }
-
-    if (widget.state.typeID <= 0) {
-      SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
+    if (widget.state.startTimeStr.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectStartTime);
       return;
     }
 
-    if (widget.state.selectedList.isEmpty) {
+    if (widget.state.endTimeStr.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectEndTime);
+      return;
+    }
+
+    if (widget.state.wareHouseId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
+      return;
+    }
+
+    if (widget.state.operatorName.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectOperatorName);
+      return;
+    }
+
+    if (widget.state.range != 0 && widget.state.selectedList.isEmpty) {
       SCToast.showTip(SCDefaultValue.addMaterialInfoTip);
       return;
     }
@@ -260,11 +325,165 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       "wareHouseId" : widget.state.wareHouseId,
       "taskName" : widget.state.taskName,
       "taskId" : widget.state.taskId,
-      "typeName" : widget.state.type,
-      "typeId" : widget.state.typeID,
+      "startTime" : widget.state.startTime,
+      "endTime" : widget.state.endTime,
+      "operatorName": widget.state.operatorName,
+      "operator": widget.state.operator,
+      "range": widget.state.range,
       "materialList" : materialList
     };
     widget.state.addTransfer(status: status, data: params);
+  }
+
+  /// 选择部门
+  showSelectDepartmentAlert() {
+    widget.selectDepartmentController.loadDataList(
+        completeHandler: (success, list) {
+          widget.selectDepartmentController.initHeaderData();
+          widget.selectDepartmentController.footerList = list;
+          if (success) {
+            SCDialogUtils().showCustomBottomDialog(
+                context: context,
+                isDismissible: true,
+                widget: GetBuilder<SCSelectDepartmentController>(
+                    tag: widget.selectDepartmentController.tag,
+                    init: widget.selectDepartmentController,
+                    builder: (value) {
+                      return SCSelectCategoryAlert(
+                        headerList: widget.selectDepartmentController.headerList,
+                        footerList: widget.selectDepartmentController.footerList,
+                        headerTap: (int index, SCSelectCategoryModel model) {
+                          headerAction(index, model);
+                        },
+                        footerTap: (int index, SCSelectCategoryModel model) {
+                          footerAction(index, model);
+                        },
+                        onSure: () {
+                          sureSelectDepartment();
+                        },
+                      );
+                    }));
+          }
+        });
+  }
+
+  /// 点击header
+  headerAction(int index, SCSelectCategoryModel model) {
+    if (index == 0) {
+      widget.selectDepartmentController.initHeaderData();
+      widget.selectDepartmentController.childrenList = widget.selectDepartmentController.treeList;
+      List<SCSelectCategoryModel> list = [];
+      for(SCSelectCategoryTreeModel subModel in widget.selectDepartmentController.treeList) {
+        String orgName = subModel.orgName ?? '';
+        String subId = subModel.id ?? '';
+        var subParams = {
+          "enable" : true,
+          "title" : orgName,
+          "id" : subId,
+          "parentList" : [],
+          "childList" :subModel.children
+        };
+        SCSelectCategoryModel selectCategoryModel = SCSelectCategoryModel.fromJson(subParams);
+        list.add(selectCategoryModel);
+      }
+      widget.selectDepartmentController.footerList = list;
+      widget.selectDepartmentController.update();
+    } else {
+      SCSelectCategoryModel subModel = widget.selectDepartmentController.headerList[index - 1];
+      List list = subModel.childList ?? [];
+      List<SCSelectCategoryModel> newList = [];
+      for (SCSelectCategoryTreeModel childModel in list) {
+        String orgName = childModel.orgName ?? '';
+        String subId = childModel.id ?? '';
+        var subParams = {
+          "enable" : true,
+          "title" : orgName,
+          "id" : subId,
+          "parentList" : [],
+          "childList" :childModel.children
+        };
+        SCSelectCategoryModel selectCategoryModel = SCSelectCategoryModel.fromJson(subParams);
+        newList.add(selectCategoryModel);
+      }
+
+      List treeList = subModel.childList ?? [];
+      List<SCSelectCategoryTreeModel> newTreeList = [];
+      for (SCSelectCategoryTreeModel treeModel in treeList) {
+        newTreeList.add(treeModel);
+      }
+
+      widget.selectDepartmentController.childrenList = newTreeList;
+      widget.selectDepartmentController.footerList = newList;
+      widget.selectDepartmentController.headerList = widget.selectDepartmentController.headerList.sublist(0,index);
+      SCSelectCategoryModel model = SCSelectCategoryModel.fromJson({"enable" : false, "title" : "请选择", "id" : ""});
+      widget.selectDepartmentController.headerList.add(model);
+      widget.selectDepartmentController.update();
+
+    }
+  }
+
+  /// 点击footer
+  footerAction(int index, SCSelectCategoryModel model) {
+    SCSelectCategoryTreeModel treeModel = widget.selectDepartmentController.childrenList[index];
+    List<SCSelectCategoryTreeModel> childrenList = treeModel.children ?? [];
+    List<SCSelectCategoryModel> subList = [];
+
+    for(SCSelectCategoryTreeModel subChildrenModel in childrenList) {
+      String orgName = subChildrenModel.orgName ?? '';
+      String subId = subChildrenModel.id ?? '';
+      var subParams = {
+        "enable" : true,
+        "title" : orgName,
+        "id" : subId,
+        "parentList" : widget.selectDepartmentController.childrenList,
+        "childList" :subChildrenModel.children
+      };
+
+      SCSelectCategoryModel selectCategoryModel = SCSelectCategoryModel.fromJson(subParams);
+      subList.add(selectCategoryModel);
+    }
+
+    model.parentList = widget.selectDepartmentController.childrenList;
+    widget.selectDepartmentController.childrenList = childrenList;
+    widget.selectDepartmentController
+        .updateHeaderData(model);
+    widget.selectDepartmentController
+        .updateFooterData(subList);
+  }
+
+  /// 确定选择部门
+  sureSelectDepartment() {
+    bool enable = widget.selectDepartmentController.currentDepartmentModel.enable ?? false;
+    if (enable) {
+      if (widget.state.orgId != (widget.selectDepartmentController.currentDepartmentModel.id ?? '')) {
+        widget.state.operator = '';
+        widget.state.operatorName = '';
+        widget.state.orgId = widget.selectDepartmentController.currentDepartmentModel.id ?? '';
+        widget.state.orgName = widget.selectDepartmentController.currentDepartmentModel.title ?? '';
+        widget.state.update();
+      }
+    } else {// 未选择数据
+    }
+  }
+
+  /// 选择处理人
+  selectUser() async{
+    if (widget.state.orgId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectFrmLossDepartment);
+    } else {
+      var params = {
+        'receiverModel': receiverModel,
+        'orgId': widget.state.orgId,
+      };
+      var backParams = await SCRouterHelper.pathPage(SCRouterPath.selectReceiverPage, params);
+      if (backParams != null) {
+        setState(() {
+          receiverModel = backParams['receiverModel'];
+          widget.state.operator = receiverModel.personId ?? '';
+          widget.state.operatorName =  receiverModel.personName ?? '';
+        });
+      }
+    }
   }
 
   /// 底部按钮
@@ -279,32 +498,44 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
   /// 编辑
   editAction() {
     print("编辑");
-    if (widget.state.wareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
-      return;
-    }
     if (widget.state.taskId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectTaskName);
       return;
     }
-
-    if (widget.state.typeID <= 0) {
-      SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
+    if (widget.state.startTimeStr.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectStartTime);
       return;
     }
 
-    if (widget.state.selectedList.isEmpty) {
+    if (widget.state.endTimeStr.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectEndTime);
+      return;
+    }
+
+    if (widget.state.wareHouseId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
+      return;
+    }
+
+    if (widget.state.operatorName.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectOperatorName);
+      return;
+    }
+
+    if (widget.state.range != 0 && widget.state.selectedList.isEmpty) {
       SCToast.showTip(SCDefaultValue.addMaterialInfoTip);
       return;
     }
-
     var params = {
       "wareHouseName" : widget.state.wareHouseName,
       "wareHouseId" : widget.state.wareHouseId,
       "taskName" : widget.state.taskName,
       "taskId" : widget.state.taskId,
-      "typeName" : widget.state.type,
-      "typeId" : widget.state.typeID,
+      "startTime" : widget.state.startTime,
+      "endTime" : widget.state.endTime,
+      "operatorName": widget.state.operatorName,
+      "operator": widget.state.operator,
+      "range": widget.state.range,
       "id" : widget.state.editId
     };
     widget.state.editMaterialBaseInfo(data: params);

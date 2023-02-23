@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_enum.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_material_select_item.dart';
@@ -9,7 +10,7 @@ import '../../../HouseInspect/View/sc_deliver_explain_cell.dart';
 
 /// 基础信息cell
 
-class SCBasicInfoCell extends StatelessWidget {
+class SCBasicInfoCell extends StatefulWidget {
 
   /// 数据源
   final List list;
@@ -26,8 +27,14 @@ class SCBasicInfoCell extends StatelessWidget {
   /// 图片数组
   final List? files;
 
+  /// 盘点范围数组
+  final List? rangeList;
+
   /// 点击选择
   final Function(int index)? selectAction;
+
+  /// 点击选择盘点范围
+  final Function(int index)? selectRangeAction;
 
   /// 输入内容
   final Function(String content)? inputAction;
@@ -42,9 +49,19 @@ class SCBasicInfoCell extends StatelessWidget {
     this.selectAction,
     this.inputAction,
     this.updatePhoto,
+    this.selectRangeAction,
     required this.requiredRemark,
     required this.requiredPhotos,
+    this.rangeList,
   }) : super(key: key);
+
+  @override
+  SCBasicInfoCellState createState() => SCBasicInfoCellState();
+}
+
+class SCBasicInfoCellState extends State<SCBasicInfoCell> {
+
+  int selectRangeIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +108,7 @@ class SCBasicInfoCell extends StatelessWidget {
         children: [
           selectListView(),
           line(),
+          checkRangeItem(),
           inputItem(),
           photosItem(),
           const SizedBox(height: 12.0,),
@@ -105,35 +123,35 @@ class SCBasicInfoCell extends StatelessWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          var dic = list[index];
+          var dic = widget.list[index];
           return SCMaterialSelectItem(
             isRequired: dic['isRequired'],
             title: dic['title'],
             content: dic['content'],
             selectAction: () {
-              selectAction?.call(index);
+              widget.selectAction?.call(index);
           },);
         },
         separatorBuilder: (BuildContext context, int index) {
           return line();
         },
-        itemCount: list.length);
+        itemCount: widget.list.length);
   }
 
   /// 输入框
   Widget inputItem() {
     return Offstage(
-      offstage: !requiredRemark,
+      offstage: !widget.requiredRemark,
       child: Container(
           padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0),
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(4.0)),
           child: SCDeliverExplainCell(
             title: '备注信息',
-            content: remark ?? '',
+            content: widget.remark ?? '',
             inputHeight: 92.0,
             inputAction: (String content) {
-              inputAction?.call(content);
+              widget.inputAction?.call(content);
             },)
       ),
     );
@@ -142,7 +160,7 @@ class SCBasicInfoCell extends StatelessWidget {
   /// 图片
   Widget photosItem() {
     return Offstage(
-      offstage: !requiredPhotos,
+      offstage: !widget.requiredPhotos,
       child: Container(
           padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 10.0),
           decoration: BoxDecoration(
@@ -151,9 +169,9 @@ class SCBasicInfoCell extends StatelessWidget {
             title: '上传照片',
             addIcon: SCAsset.iconMaterialAddPhoto,
             addPhotoType: SCAddPhotoType.all,
-            files: files ?? [],
+            files: widget.files ?? [],
             updatePhoto: (List list) {
-              updatePhoto?.call(list);
+              widget.updatePhoto?.call(list);
             },)
       ),
     );
@@ -161,13 +179,103 @@ class SCBasicInfoCell extends StatelessWidget {
 
   /// line
   Widget line() {
-    return Container(
-      color: SCColors.color_FFFFFF,
-      padding: const EdgeInsets.only(left: 12.0),
+    return Offstage(
+      offstage: widget.rangeList == null ? false : true,
       child: Container(
-        height: 0.5,
-        width: double.infinity,
-        color: SCColors.color_EDEDF0,
+        color: SCColors.color_FFFFFF,
+        padding: const EdgeInsets.only(left: 12.0),
+        child: Container(
+          height: 0.5,
+          width: double.infinity,
+          color: SCColors.color_EDEDF0,
+        ),
+    ));
+  }
+
+  /// 盘点范围
+  Widget checkRangeItem() {
+    return Offstage(
+      offstage: widget.rangeList == null ? true : false,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 12.0,
+              alignment: Alignment.centerRight,
+              child: const Text(
+                  '*',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                      fontSize: SCFonts.f16,
+                      fontWeight: FontWeight.w400,
+                      color: SCColors.color_FF4040)),),
+            const SizedBox(
+              width: 100.0,
+              child: Text(
+                  '盘点范围',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: SCFonts.f16,
+                      fontWeight: FontWeight.w400,
+                      color: SCColors.color_1B1D33)),
+            ),
+            const SizedBox(width: 12.0,),
+            Expanded(child: selectRangeItem()),
+            const SizedBox(width: 12.0,),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget selectRangeItem() {
+    if (widget.rangeList != null) {
+      return Wrap(
+        alignment: WrapAlignment.start,
+        spacing: 16.0,
+        runSpacing: 10.0,
+        children: widget.rangeList!.asMap().keys.map((index) => rangeCell(index)).toList(),
+      );
+    } else {
+      return const SizedBox();
+    }
+  }
+
+  /// rangeCell
+  Widget rangeCell(int index) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectRangeIndex = index;
+          widget.selectRangeAction?.call(index);
+        });
+      },
+      behavior: HitTestBehavior.opaque,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(selectRangeIndex == index ? SCAsset.iconOpened : SCAsset.iconNotOpened, width: 18.0, height: 18.0, fit: BoxFit.cover,),
+          const SizedBox(width: 8,),
+          Text(
+            widget.rangeList?[index],
+            textAlign: TextAlign.left,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: SCFonts.f16,
+              color: SCColors.color_1B1D33,
+              fontWeight: FontWeight.w400,
+            ),
+          )
+        ],
       ),
     );
   }

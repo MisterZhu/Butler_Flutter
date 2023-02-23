@@ -157,7 +157,16 @@ class SCDefaultValue {
 
   /// 仓储-新增任务-请选择任务名称
   static const String selectTaskName = "请选择任务名称";
-  
+
+  /// 仓储-新增任务-请选择开始时间
+  static const String selectStartTime = "请选择开始时间";
+
+  /// 仓储-新增任务-请选择结束时间
+  static const String selectEndTime = "请选择结束时间";
+
+  /// 仓储-新增报损-请选择处理人
+  static const String selectOperatorName = "请选择处理人";
+
   /// 设置-注销账号提示
   static const String logOffTip = "确定要注销账号吗";
 
