@@ -151,6 +151,7 @@ class SCMaterialTransferController extends GetxController {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kSubmitMaterialUrl,
+        isQuery: true,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();

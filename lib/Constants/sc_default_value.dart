@@ -170,6 +170,9 @@ class SCDefaultValue {
   /// 设置-注销账号提示
   static const String logOffTip = "确定要注销账号吗";
 
+  /// 上传中tip
+  static const String uploadingTip = "上传中...";
+
   /// 图片路径
   static const files = "/files/";
 }

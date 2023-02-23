@@ -135,4 +135,7 @@ class SCRouterPath {
   /// 盘点详情
   static String checkDetailPage = "/lib/Page/MaterialCheck/Page/sc_material_check_detail_page";
 
+  /// 选择分类
+  static String checkSelectCategoryPage = "/lib/Page/MaterialCheck/Page/sc_material_check_category_page";
+
 }
