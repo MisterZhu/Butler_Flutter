@@ -132,6 +132,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
     } else if (index == 1) {
       // 物资信息
       return SCMaterialInfoCell(
+        title: '物资信息',
         showAdd: true,
         list: widget.state.selectedList,
         addAction: () {

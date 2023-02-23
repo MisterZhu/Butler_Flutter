@@ -28,8 +28,15 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 是否显示添加
   final bool showAdd;
 
+  /// 0显示物资信息，1显示物资分类
+  final int? materialType;
+
+  final String title;
+
   SCMaterialInfoCell(
       {Key? key,
+        required this.title,
+        this.materialType = 0,
       this.selectNameAction,
       this.selectTypeAction,
       this.addAction,
@@ -69,11 +76,11 @@ class SCMaterialInfoCell extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Expanded(
-              child: Text('物资信息',
+            Expanded(
+              child: Text(title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: SCFonts.f16,
                       fontWeight: FontWeight.w500,
                       color: SCColors.color_1B1D33)),
@@ -130,15 +137,28 @@ class SCMaterialInfoCell extends StatelessWidget {
   }
 
   Widget listview() {
-    for (SCMaterialListModel model in list) {}
-    return SCAddEntryAllMaterialView(
-      list: list,
-      deleteAction: (int index) {
-        deleteAction?.call(index);
-      },
-      updateNumAction: (int index, int value) {
-        updateNumAction?.call(index, value);
-      },
+    if (materialType == 1) {
+      return classifyView();
+    } else {
+      return SCAddEntryAllMaterialView(
+        list: list,
+        deleteAction: (int index) {
+          deleteAction?.call(index);
+        },
+        updateNumAction: (int index, int value) {
+          updateNumAction?.call(index, value);
+        },
+      );
+    }
+  }
+
+  /// 物资分类列表
+  Widget classifyView() {
+    return Container(
+      decoration: BoxDecoration(
+          color: SCColors.color_FFFFFF,
+          borderRadius: BorderRadius.circular(4.0)),
+      height: 100,
     );
   }
 

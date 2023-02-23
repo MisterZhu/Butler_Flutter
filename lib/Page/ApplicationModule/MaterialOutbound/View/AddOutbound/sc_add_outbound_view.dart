@@ -148,6 +148,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       );
     } else if (index == 1) {
       return SCMaterialInfoCell(
+        title: '物资信息',
         showAdd: true,
         list: widget.state.selectedList,
         addAction: () {
