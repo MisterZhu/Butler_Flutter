@@ -148,11 +148,12 @@ class SCMaterialFrmLossController extends GetxController {
   /// 提交报损
   submit({required String id, Function(bool success)? completeHandler}) async{
     var params = {
-      "wareHouseOutId": id,
+      "wareHouseReportId": id,
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kSubmitOutboundUrl,
+        url: SCUrl.kSubmitFrmLossUrl,
+        isQuery: true,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();

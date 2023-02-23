@@ -151,6 +151,7 @@ class SCMaterialOutboundController extends GetxController {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kSubmitOutboundUrl,
+        isQuery: true,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();

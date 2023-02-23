@@ -27,6 +27,7 @@ class SCMaterialListModel {
     String? id,
     String? materialId,
     String? inId, // 关联入库id
+    String? reportId, // 关联报损ID
     String? name,
     String? materialName,
     String? norms,
@@ -49,6 +50,7 @@ class SCMaterialListModel {
     _id = id;
     _materialId = materialId;
     _inId = inId;
+    _reportId = reportId;
     _name = name;
     _materialName = materialName;
     _norms = norms;
@@ -73,6 +75,7 @@ class SCMaterialListModel {
     _id = json['id'];
     _materialId = json['materialId'];
     _inId = json['inId'];
+    _reportId = json['reportId'];
     _name = json['name'];
     _materialName = json['materialName'];
     _norms = json['norms'];
@@ -97,6 +100,7 @@ class SCMaterialListModel {
   String? _id;
   String? _materialId;
   String? _inId;
+  String? _reportId;
   String? _name;
   String? _materialName;
   String? _norms;
@@ -119,6 +123,7 @@ class SCMaterialListModel {
     String? id,
     String? materialId,
     String? inId,
+    String? reportId,
     String? name,
     String? materialName,
     String? norms,
@@ -141,6 +146,7 @@ class SCMaterialListModel {
         id: id ?? _id,
         materialId: materialId ?? _materialId,
         inId: inId ?? _inId,
+        reportId: reportId ?? _reportId,
         name: name ?? _name,
         materialName: materialName ?? _materialName,
         norms: norms ?? _norms,
@@ -162,6 +168,7 @@ class SCMaterialListModel {
   String? get id => _id;
   String? get materialId => _materialId;
   String? get inId => _inId;
+  String? get reportId => _reportId;
   String? get name => _name;
   String? get materialName => _materialName;
   String? get norms => _norms;
@@ -206,6 +213,10 @@ class SCMaterialListModel {
     _inId = value;
   }
 
+  set reportId(String? value) {
+    _reportId = value;
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['barCode'] = _barCode;
@@ -216,6 +227,7 @@ class SCMaterialListModel {
     map['id'] = _id;
     map['materialId'] = _materialId;
     map['inId'] = _inId;
+    map['reportId'] = _reportId;
     map['name'] = _name;
     map['materialName'] = _materialName;
     map['norms'] = _norms;

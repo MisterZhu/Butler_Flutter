@@ -213,11 +213,11 @@ class SCAddFrmLossController extends GetxController {
 
   /// 编辑-新增物资
   editAddMaterial({required List list, Function(bool success)? completeHandler}) {
-    print("入库物资===${list}");
-    var params = {"inId": editId, "materialInRelations": list};
+    print("报损物资===${list}");
+    var params = {"reportId": editId, "materialReportRelations": list};
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kEditAddEntryMaterialUrl,
+        url: SCUrl.kEditAddFrmLossMaterialUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
@@ -231,10 +231,12 @@ class SCAddFrmLossController extends GetxController {
 
   /// 编辑-删除物资
   editDeleteMaterial({required String materialInRelationId, Function(bool success)? completeHandler}) {
-    var params = {"materialInRelationId": materialInRelationId};
+    var params = {"materialReportRelationId": materialInRelationId};
+    print("删除报损参数：$params");
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kEditDeleteEntryMaterialUrl,
+      isQuery: true,
+        url: SCUrl.kEditDeleteFrmLossMaterialUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
@@ -249,13 +251,13 @@ class SCAddFrmLossController extends GetxController {
   /// 编辑-编辑物资
   editMaterial({required List list, Function(bool success)? completeHandler}) {
     for(SCMaterialListModel model in list) {
-      print("物资数据===${model.toJson()}");
+      print("报损物资数据===${model.toJson()}");
       var params = model.toJson();
       params['num'] = model.localNum;
       params['materialName'] = model.name;
       SCLoadingUtils.show();
       SCHttpManager.instance.post(
-          url: SCUrl.kEditEntryMaterialUrl,
+          url: SCUrl.kEditFrmLossMaterialUrl,
           params: params,
           success: (value) {
             SCLoadingUtils.hide();

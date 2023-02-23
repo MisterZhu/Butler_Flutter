@@ -1,9 +1,14 @@
+
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Constant/sc_material_entry_enum.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
+import '../View/Detail/sc_material_bottom_view.dart';
 import '../Model/sc_material_task_detail_model.dart';
 
 /// 入库详情controller
@@ -16,6 +21,8 @@ class SCMaterialEntryDetailController extends GetxController {
 
   String id = '';
 
+  /// 状态 单据状态(0：待提交，1：待审批，2：审批中，3：已拒绝，4：已驳回，5：已撤回，6：已入库)
+  int status = -1;
   SCMaterialTaskDetailModel model = SCMaterialTaskDetailModel();
 
   @override
@@ -64,6 +71,7 @@ class SCMaterialEntryDetailController extends GetxController {
         url: SCUrl.kMaterialFrmLossDetailUrl,
         params: {'id': id},
         success: (value) {
+          log("报损详情===$value");
           SCLoadingUtils.hide();
           success = true;
           model = SCMaterialTaskDetailModel.fromJson(value);
@@ -94,5 +102,74 @@ class SCMaterialEntryDetailController extends GetxController {
         failure: (value) {
           SCToast.showTip(value['message']);
         });
+  }
+
+  /// 根据状态获取底部按钮list
+  List getBottomList() {
+    List list = [];
+    if (status == SCMaterialEntryEnum.orderStatusWaitSubmit) {
+      list = [
+        {
+          "type": scMaterialBottomViewType1,
+          "title": "编辑",
+        },
+        {
+          "type": scMaterialBottomViewType2,
+          "title": "提交",
+        },
+      ];
+    } else if (status == SCMaterialEntryEnum.orderStatusWaitApprove) {
+      list = [
+        {
+          "type": scMaterialBottomViewType2,
+          "title": "驳回",
+        },
+      ];
+    } else if (status == SCMaterialEntryEnum.orderStatusApproving) {
+      list = [
+        {
+          "type": scMaterialBottomViewType1,
+          "title": "驳回",
+        },
+        {
+          "type": scMaterialBottomViewType1,
+          "title": "拒绝",
+        },
+        {
+          "type": scMaterialBottomViewType2,
+          "title": "通过",
+        },
+      ];
+    } else if (status == SCMaterialEntryEnum.orderStatusRefuse) {
+      list = [
+      ];
+    } else if (status == SCMaterialEntryEnum.orderStatusReject) {
+      list = [
+        {
+          "type": scMaterialBottomViewType1,
+          "title": "编辑",
+        },
+        {
+          "type": scMaterialBottomViewType2,
+          "title": "提交",
+        },
+      ];
+    } else if (status == SCMaterialEntryEnum.orderStatusWithdraw) {
+      list = [
+        {
+          "type": scMaterialBottomViewType1,
+          "title": "编辑",
+        },
+        {
+          "type": scMaterialBottomViewType2,
+          "title": "提交",
+        },
+      ];
+    } else if (status == SCMaterialEntryEnum.orderStatusDone) {
+      list = [
+      ];
+    }
+
+    return list;
   }
 }

@@ -264,7 +264,7 @@ class SCAddOutboundController extends GetxController {
 
   /// 编辑-删除物资
   editDeleteMaterial({required String materialInRelationId, Function(bool success)? completeHandler}) {
-    var params = {"materialInRelationId": materialInRelationId};
+    var params = {"materialOutRelationId": materialInRelationId};
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kEditDeleteOutEntryUrl,

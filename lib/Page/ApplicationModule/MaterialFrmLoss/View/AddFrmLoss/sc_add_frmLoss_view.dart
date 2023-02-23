@@ -152,6 +152,7 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
         },
         updatePhoto: (list) {
           widget.state.files = list;
+          widget.state.update();
         },
       );
     } else if (index == 1) {
@@ -245,7 +246,7 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
         context: context,
         dateType: PickerDateTimeType.kYMDHM,
         minValue: DateTime(now.year - 1, 1, 1, 00, 00),
-        maxValue: DateTime(now.year + 9, 12, 31, 23, 59)
+        maxValue: DateTime(now.year + 1, 12, 31, 23, 59)
     );
   }
 
@@ -269,10 +270,39 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
       SCToast.showTip(SCDefaultValue.selectWarehouseTip);
       return;
     }
-    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {'data': widget.state.selectedList, 'wareHouseId': widget.state.wareHouseId});
-    if (list != null) {
-      widget.state.updateSelectedMaterial(list);
+    if (widget.state.isEdit) {
+      addExitsMaterialAction();
+    } else {
+      addMaterialAction();
     }
+  }
+
+  /// 新增物资-添加物资
+  addMaterialAction() async {
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
+      'data': widget.state.selectedList,
+      'wareHouseId': widget.state.wareHouseId
+    });
+    if (list != null) {
+      onlyAddMaterial(list);
+    }
+  }
+
+  /// 编辑物资-添加既存物资
+  addExitsMaterialAction() async {
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
+      'data': widget.state.selectedList,
+      'wareHouseId': widget.state.wareHouseId,
+      'isEdit': true,
+    });
+    if (list != null) {
+      editAddMaterial(list);
+    }
+  }
+
+  /// 新增物资-添加
+  onlyAddMaterial(List<SCMaterialListModel> list) {
+    widget.state.updateSelectedMaterial(list);
   }
 
   /// 删除物资
@@ -573,5 +603,72 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
     } else {
       widget.state.update();
     }
+  }
+
+  /// 新增物资-编辑
+  editAddMaterial(List<SCMaterialListModel> list) {
+    // 编辑的物资
+    List<SCMaterialListModel> editList = [];
+    // 新增的物资
+    List<SCMaterialListModel> addList = [];
+    for (SCMaterialListModel model in list) {
+      // 是否存在
+      bool contains = false;
+      // 是否需要更新
+      bool needUpdate = false;
+      SCMaterialListModel tempModel = SCMaterialListModel();
+
+      for (SCMaterialListModel subModel in widget.state.selectedList) {
+        if (model.id == subModel.materialId) {
+          contains = true;
+          tempModel = SCMaterialListModel.fromJson(subModel.toJson());
+          if (model.localNum == subModel.localNum) {
+            needUpdate = false;
+          } else {
+            tempModel.localNum = model.localNum;
+            subModel.localNum = model.localNum;
+            needUpdate = true;
+          }
+          break;
+        } else {
+          contains = false;
+        }
+      }
+
+      if (contains) {
+        if (needUpdate) {
+          editList.add(tempModel);
+        }
+      } else {
+        addList.add(model);
+      }
+    }
+
+    for (SCMaterialListModel model in editList) {}
+
+    List<SCMaterialListModel> newList = widget.state.selectedList;
+    List addJsonList = [];
+    for (SCMaterialListModel model in addList) {
+      model.inId = widget.state.editId;
+      model.materialId = model.id;
+      model.materialName = model.name;
+      newList.add(model);
+      var subParams = model.toJson();
+      subParams['materialId'] = model.id;
+      subParams['materialName'] = model.name;
+      subParams['num'] = model.localNum;
+      subParams['inId'] = widget.state.editId;
+      addJsonList.add(subParams);
+    }
+
+    if (editList.isNotEmpty) {
+      widget.state.editMaterial(list: editList);
+    }
+
+    if (addList.isNotEmpty) {
+      widget.state.editAddMaterial(list: addJsonList);
+    }
+
+    widget.state.updateSelectedMaterial(newList);
   }
 }

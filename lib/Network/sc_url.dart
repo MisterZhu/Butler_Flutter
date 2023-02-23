@@ -189,8 +189,18 @@ class SCUrl {
   /// 编辑物资报损基础信息
   static const String kEditAddFrmLossBaseInfoUrl = "/api/warehouse/app/warehouse/report/edit";
 
+  /// 物资报损-编辑-删除物资
+  static const String kEditDeleteFrmLossMaterialUrl = "/api/warehouse/manage/materialReportRelation/deleteMaterialReportRelation";
+
+  /// 物资报损-编辑-新增物资
+  static const String kEditAddFrmLossMaterialUrl = "/api/warehouse/manage/materialReportRelation/addMaterialReportRelationList";
+
+  /// 物资报损-编辑-编辑物资
+  static const String kEditFrmLossMaterialUrl = "/api/warehouse/manage/materialReportRelation/editMaterialReportRelation";
+
   /// 物资报损物资列表-分页
   static const String kFrmLossMaterialListUrl = "/api/warehouse/manage/materialReportRelation/selectMaterialReportRelationListByPage";
 
-
+  /// 提交报损
+  static const String kSubmitFrmLossUrl = "/api/warehouse/app/warehouse/report/submitWareHouseReport";
 }
