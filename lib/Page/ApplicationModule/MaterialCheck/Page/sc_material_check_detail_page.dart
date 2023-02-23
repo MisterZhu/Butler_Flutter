@@ -15,6 +15,7 @@ import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_controller.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart';
+import '../Controller/sc_material_check_controller.dart';
 
 /// 盘点详情
 
@@ -157,8 +158,8 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
 
   /// 提交
   submitAction() {
-    SCMaterialEntryController materialEntryController = SCMaterialEntryController();
-    materialEntryController.submit(id: controller.id, completeHandler: (bool success){
+    SCMaterialCheckController materialCheckController = SCMaterialCheckController();
+    materialCheckController.submit(id: controller.id, completeHandler: (bool success){
       SCScaffoldManager.instance.eventBus
           .fire({'key': SCKey.kRefreshMaterialTransferPage});
       SCRouterHelper.back( null);
