@@ -115,15 +115,15 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
             // 结束时间
             showTimeAlert(context, 1);
           } else if (index == 3) {
-            // 部门
-            showSelectDepartmentAlert();
-          } else if (index == 4) {
-            // 处理人
-            selectUser();
-          } else if (index == 5) {
             // 仓库名称
             List list = widget.state.wareHouseList.map((e) => e.name).toList();
             showAlert(1, '仓库名称', list);
+          } else if (index == 4) {
+            // 部门
+            showSelectDepartmentAlert();
+          } else if (index == 5) {
+            // 处理人
+            selectUser();
           }
         },
       );
