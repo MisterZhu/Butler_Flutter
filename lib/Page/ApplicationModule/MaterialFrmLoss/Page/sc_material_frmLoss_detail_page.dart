@@ -16,6 +16,7 @@ import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_controller.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart';
 import '../../MaterialEntry/Model/sc_material_task_detail_model.dart';
+import '../Controller/sc_material_frmLoss_controller.dart';
 
 
 /// 报损详情
@@ -182,8 +183,8 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
 
   /// 提交
   submitAction() {
-    SCMaterialEntryController materialEntryController = SCMaterialEntryController();
-    materialEntryController.submit(id: controller.id, completeHandler: (bool success){
+    SCMaterialFrmLossController materialFrmLossController = SCMaterialFrmLossController();
+    materialFrmLossController.submit(id: controller.id, completeHandler: (bool success){
       SCScaffoldManager.instance.eventBus
           .fire({'key': SCKey.kRefreshMaterialFrmLossPage});
       SCRouterHelper.back( null);

@@ -77,7 +77,7 @@ class SCUploadUtils {
       required String url,
       Function? successHandler}) async {
     List list = [];
-    SCLoadingUtils.show();
+    SCLoadingUtils.show(text: SCDefaultValue.uploadingTip);
     for (int i = 0; i < imagePathList.length; i++) {
       await uploadOneImage(
           imagePath: imagePathList[i],
