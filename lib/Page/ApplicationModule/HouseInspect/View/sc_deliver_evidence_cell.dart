@@ -10,6 +10,7 @@ import '../../../../Constants/sc_enum.dart';
 import '../../../../Network/sc_config.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Utils/Permission/sc_permission_utils.dart';
+import '../../../../Utils/Preview/sc_image_preview_utils.dart';
 import '../../../../Utils/sc_utils.dart';
 
 /// 标题+添加图片cell
@@ -126,11 +127,16 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
           child: Stack(
             alignment: Alignment.topRight,
             children: [
-              SCImage(
-                url: SCConfig.getImageUrl(fileKey),
-                width: 79.0,
-                height: 79.0,
-                fit: BoxFit.fill,),
+              GestureDetector(
+                onTap: () {
+                  previewImage(SCConfig.getImageUrl(fileKey));
+                },
+                child: SCImage(
+                  url: SCConfig.getImageUrl(fileKey),
+                  width: 79.0,
+                  height: 79.0,
+                  fit: BoxFit.cover,),
+              ),
               GestureDetector(
                 onTap: () {
                   setState(() {
@@ -194,5 +200,10 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
         widget.updatePhoto?.call(widget.files);
       }
      );
+  }
+
+  /// 图片预览
+  previewImage(String url) {
+    SCImagePreviewUtils.previewImage(imageList: [url]);
   }
 }
