@@ -223,7 +223,7 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
   List getBaseInfoList() {
     /// 基础信息数组
     List baseInfoList = [
-      {'isRequired': true,'title': '调入仓库','content': widget.state.inWareHouseName},
+      {'isRequired': true,'title': '调入仓库','content': widget.state.inWareHouseName, 'disable' : widget.state.isEdit},
       {'isRequired': true,'title': '调出仓库','content': widget.state.outWareHouseName},
       {'isRequired': true, 'title': '类型', 'content': widget.state.type},
     ];
@@ -236,9 +236,38 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
       SCToast.showTip(SCDefaultValue.selectOutWareHouseTip);
       return;
     }
-    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {'data': widget.state.selectedList, 'wareHouseId': widget.state.outWareHouseId, "materialType" : 4});
+
+    if (widget.state.isEdit) {
+      print("编辑-添加物资");
+      addExitsMaterialAction();
+    } else {
+      print("添加物资");
+      addMaterialAction();
+    }
+  }
+
+  /// 新增物资-添加物资
+  addMaterialAction() async{
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
+      'data': widget.state.selectedList,
+      'wareHouseId': widget.state.outWareHouseId,
+      "materialType" : 4
+    });
     if (list != null) {
-      widget.state.updateSelectedMaterial(list);
+      onlyAddMaterial(list);
+    }
+  }
+
+  /// 编辑物资-添加既存物资
+  addExitsMaterialAction() async{
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
+      'data': widget.state.selectedList,
+      'wareHouseId': widget.state.outWareHouseId,
+      'isEdit': true,
+      "materialType" : 4
+    });
+    if (list != null) {
+      editAddMaterial(list);
     }
   }
 
@@ -351,6 +380,77 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
     widget.state.editMaterialBaseInfo(data: params);
   }
 
+  /// 新增物资-编辑
+  editAddMaterial(List<SCMaterialListModel> list) {
+    print("原始数据===${widget.state.selectedList}");
+
+    print("添加===$list");
+    // 编辑的物资
+    List<SCMaterialListModel> editList = [];
+    // 新增的物资
+    List<SCMaterialListModel> addList = [];
+    for (SCMaterialListModel model in list) {
+      // 是否存在
+      bool contains = false;
+      // 是否需要更新
+      bool needUpdate = false;
+      SCMaterialListModel tempModel = SCMaterialListModel();
+
+      for (SCMaterialListModel subModel in widget.state.selectedList) {
+        if (model.materialId == subModel.materialId) {
+          contains = true;
+          tempModel = SCMaterialListModel.fromJson(subModel.toJson());
+          if (model.localNum == subModel.localNum) {
+            needUpdate = false;
+          } else {
+            tempModel.localNum = model.localNum;
+            subModel.localNum = model.localNum;
+            needUpdate = true;
+          }
+          break;
+        } else {
+          contains = false;
+        }
+      }
+
+      if (contains) {
+        if (needUpdate) {
+          editList.add(tempModel);
+        }
+      } else {
+        addList.add(model);
+      }
+    }
+
+    for (SCMaterialListModel model in editList) {
+      print("编辑的物资===${model.toJson()}");
+    }
+
+    List<SCMaterialListModel> newList = widget.state.selectedList;
+    List addJsonList = [];
+    for (SCMaterialListModel model in addList) {
+      model.inId = widget.state.editId;
+      newList.add(model);
+      var subParams = model.toJson();
+      subParams['materialId'] = model.materialId;
+      subParams['materialName'] = model.materialName;
+      subParams['num'] = model.localNum;
+      subParams['inId'] = widget.state.editId;
+      addJsonList.add(subParams);
+      print("新增的物资===${subParams}");
+    }
+
+    if (editList.isNotEmpty) {
+      widget.state.editMaterial(list: editList);
+    }
+
+    if (addList.isNotEmpty) {
+      widget.state.editAddMaterial(list: addJsonList);
+    }
+
+    widget.state.updateSelectedMaterial(newList);
+  }
+
   /// 编辑单条物资
   editOneMaterial(int index) {
     if (widget.state.isEdit) {
@@ -359,5 +459,10 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
     } else {
       widget.state.update();
     }
+  }
+
+  /// 新增物资-添加
+  onlyAddMaterial(List<SCMaterialListModel> list) {
+    widget.state.updateSelectedMaterial(list);
   }
 }

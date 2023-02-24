@@ -216,7 +216,8 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       {
         'isRequired': true,
         'title': '仓库名称',
-        'content': widget.state.wareHouseName
+        'content': widget.state.wareHouseName,
+        'disable' : widget.state.isEdit
       },
       {'isRequired': true, 'title': '类型', 'content': widget.state.type}
     ];
