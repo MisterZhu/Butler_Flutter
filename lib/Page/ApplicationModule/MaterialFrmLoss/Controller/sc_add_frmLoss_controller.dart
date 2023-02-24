@@ -77,6 +77,10 @@ class SCAddFrmLossController extends GetxController {
   @override
   onInit() {
     super.onInit();
+    reportOrgId = SCScaffoldManager.instance.user.orgIds?.first.toString() ?? '';
+    reportOrgName = SCScaffoldManager.instance.user.tenantName ?? '';
+    reportUserId = SCScaffoldManager.instance.user.id ?? '';
+    reportUserName = SCScaffoldManager.instance.user.userName ?? '';
     loadWareHouseList();
     //loadFrmLossType();
     List list = [{'code': '1', 'name': '损坏报损'}, {'code': '2', 'name': '丢失报损'}, {'code': '99', 'name': '其他报损'},];

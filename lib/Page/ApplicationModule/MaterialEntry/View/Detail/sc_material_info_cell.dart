@@ -109,11 +109,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
         const SizedBox(
           height: 10.0,
         ),
-        taskStartTimeView(),
-        const SizedBox(
-          height: 10.0,
-        ),
-        taskEndTimeView(),
+        taskTimeView(),
         const SizedBox(
           height: 10.0,
         ),
@@ -124,17 +120,10 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
     }
   }
 
-  /// 任务开始时间
-  Widget taskStartTimeView() {
+  /// 任务时间
+  Widget taskTimeView() {
     return Row(
-      children: [desLabel('开始时间'), textView(1, '${model?.gmtCreate}')],
-    );
-  }
-
-  /// 任务结束时间
-  Widget taskEndTimeView() {
-    return Row(
-      children: [desLabel('结束时间'), textView(1, '${model?.gmtCreate}')],
+      children: [desLabel('任务时间'), textView(1, '${model?.gmtCreate}')],
     );
   }
 

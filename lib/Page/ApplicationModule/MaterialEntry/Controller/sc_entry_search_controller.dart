@@ -39,10 +39,13 @@ class SCEntrySearchController extends GetxController {
     var params = {
       "conditions": {
         "fields": [{
-          "map": {},
+          "map": {
+            "wareHouseName": searchString,
+            "operatorName": searchString
+          },
           "method": 7,
-          "name": "wareHouseName",
-          "value": searchString
+          "name": "searchs",
+          "value": ""
         }],
         "specialMap": {}
       },
