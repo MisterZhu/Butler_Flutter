@@ -261,7 +261,7 @@ class SCAddTransferController extends GetxController {
   loadOutWareHouseList() {
     SCLoadingUtils.show();
     SCHttpManager.instance.get(
-        url: SCUrl.kWareHouseListUrl,
+        url: SCUrl.kAllWareHouseListUrl,
         params: null,
         success: (value) {
           SCLoadingUtils.hide();

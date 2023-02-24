@@ -39,6 +39,7 @@ class SCUserModel {
     String? tenantId,
     String? tenantName,
     List<int>? orgIds,
+    List<String>? orgNames,
     String? mobileNum,
     int? state,
     int? gender,
@@ -61,6 +62,7 @@ class SCUserModel {
     _tenantId = tenantId;
     _tenantName = tenantName;
     _orgIds = orgIds;
+    _roleNames = roleNames;
     _mobileNum = mobileNum;
     _state = state;
     _gender = gender;
@@ -88,6 +90,7 @@ class SCUserModel {
     _tenantId = json['tenantId'];
     _tenantName = json['tenantName'];
     _orgIds = json['orgIds'] != null ? json['orgIds'].cast<int>() : [];
+    _orgNames = json['orgNames'] != null ? json['orgNames'].cast<String>() : [];
     _mobileNum = json['mobileNum'];
     _state = json['state'];
     _gender = json['gender'];
@@ -115,6 +118,7 @@ class SCUserModel {
   String? _tenantId;
   String? _tenantName;
   List<int>? _orgIds;
+  List<String>? _orgNames;
   String? _mobileNum;
   int? _state;
   int? _gender;
@@ -137,6 +141,7 @@ class SCUserModel {
     String? tenantId,
     String? tenantName,
     List<int>? orgIds,
+    List<String>? orgNames,
     String? mobileNum,
     int? state,
     int? gender,
@@ -160,6 +165,7 @@ class SCUserModel {
         tenantId: tenantId ?? _tenantId,
         tenantName: tenantName ?? _tenantName,
         orgIds: orgIds ?? _orgIds,
+        orgNames: orgNames ?? _orgNames,
         mobileNum: mobileNum ?? _mobileNum,
         state: state ?? _state,
         gender: gender ?? _gender,
@@ -182,6 +188,7 @@ class SCUserModel {
   String? get tenantId => _tenantId;
   String? get tenantName => _tenantName;
   List<int>? get orgIds => _orgIds;
+  List<String>? get orgNames => _orgNames;
   String? get mobileNum => _mobileNum;
   int? get state => _state;
   int? get gender => _gender;
@@ -208,6 +215,7 @@ class SCUserModel {
     map['tenantId'] = _tenantId;
     map['tenantName'] = _tenantName;
     map['orgIds'] = _orgIds;
+    map['orgNames'] = _orgNames;
     map['mobileNum'] = _mobileNum;
     map['state'] = _state;
     map['gender'] = _gender;

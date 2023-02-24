@@ -206,6 +206,9 @@ class SCUrl {
 
   /************************* 物资调拨 *************************/
 
+  /// 调出仓库列表
+  static const String kAllWareHouseListUrl = "/api/warehouse/manage/warehouse/chooseAllWareHouseList";
+
   /// 调拨列表
   static const String kMaterialTransferListUrl = "/api/warehouse/app/warehouse/change/pageFront";
 

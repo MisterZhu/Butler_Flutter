@@ -6,6 +6,7 @@ import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
+import '../../../Login/Home/Model/sc_user_model.dart';
 import '../../MaterialEntry/Model/sc_entry_type_model.dart';
 import '../../MaterialEntry/Model/sc_material_list_model.dart';
 import '../../MaterialEntry/Model/sc_material_task_detail_model.dart';
@@ -79,11 +80,13 @@ class SCAddFrmLossController extends GetxController {
   onInit() {
     super.onInit();
     reportOrgId = SCScaffoldManager.instance.user.orgIds?.first.toString() ?? '';
-    reportOrgName = SCScaffoldManager.instance.user.tenantName ?? '';
+    reportOrgName = SCScaffoldManager.instance.user.orgNames?.first.toString() ?? '';
     reportUserId = SCScaffoldManager.instance.user.id ?? '';
     reportUserName = SCScaffoldManager.instance.user.userName ?? '';
+    loadUserOrg();
     loadWareHouseList();
     loadFrmLossType();
+
   }
 
   /// 初始化编辑的参数
@@ -342,5 +345,22 @@ class SCAddFrmLossController extends GetxController {
       selectedList.removeAt(index);
       update();
     }
+  }
+
+  /// 获取当前用户默认组织信息
+  loadUserOrg() {
+    String token = SCScaffoldManager.instance.user.token ?? '';
+    var params = {'id': SCScaffoldManager.instance.user.id};
+    return SCHttpManager.instance.get(
+        url: SCUrl.kUserInfoUrl,
+        params: params,
+        success: (value) {
+          value['token'] = token;
+          SCUserModel userModel = SCUserModel.fromJson(value);
+          SCScaffoldManager.instance.user = userModel;
+          reportOrgId = SCScaffoldManager.instance.user.orgIds?.first.toString() ?? '';
+          reportOrgName = SCScaffoldManager.instance.user.orgNames?.first.toString() ?? '';
+          update();
+        });
   }
 }
