@@ -224,7 +224,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
   List getBaseInfoList() {
     /// 基础信息数组
     List baseInfoList = [
-      {'isRequired': true, 'title': '仓库名称', 'content': widget.state.wareHouseName},
+      {'isRequired': true, 'title': '仓库名称', 'content': widget.state.wareHouseName, 'disable' : widget.state.isEdit},
       {'isRequired': true, 'title': '类型', 'content': widget.state.type},
     ];
 

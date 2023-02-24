@@ -224,7 +224,7 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
   List getBaseInfoList() {
     /// 基础信息数组
     List baseInfoList = [
-      {'isRequired': true,'title': '调入仓库','content': widget.state.inWareHouseName},
+      {'isRequired': true,'title': '调入仓库','content': widget.state.inWareHouseName, 'disable' : widget.state.isEdit},
       {'isRequired': true,'title': '调出仓库','content': widget.state.outWareHouseName},
       {'isRequired': true, 'title': '类型', 'content': widget.state.type},
     ];
@@ -380,21 +380,6 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
     widget.state.editMaterialBaseInfo(data: params);
   }
 
-  /// 编辑单条物资
-  editOneMaterial(int index) {
-    if (widget.state.isEdit) {
-      List<SCMaterialListModel> list = [widget.state.selectedList[index]];
-      widget.state.editMaterial(list: list);
-    } else {
-      widget.state.update();
-    }
-  }
-
-  /// 新增物资-添加
-  onlyAddMaterial(List<SCMaterialListModel> list) {
-    widget.state.updateSelectedMaterial(list);
-  }
-
   /// 新增物资-编辑
   editAddMaterial(List<SCMaterialListModel> list) {
     print("原始数据===${widget.state.selectedList}");
@@ -464,6 +449,21 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
     }
 
     widget.state.updateSelectedMaterial(newList);
+  }
+
+  /// 编辑单条物资
+  editOneMaterial(int index) {
+    if (widget.state.isEdit) {
+      List<SCMaterialListModel> list = [widget.state.selectedList[index]];
+      widget.state.editMaterial(list: list);
+    } else {
+      widget.state.update();
+    }
+  }
+
+  /// 新增物资-添加
+  onlyAddMaterial(List<SCMaterialListModel> list) {
+    widget.state.updateSelectedMaterial(list);
   }
 
 }

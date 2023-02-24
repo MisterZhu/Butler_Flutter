@@ -10,6 +10,7 @@ class SCMaterialSelectItem extends StatelessWidget {
 
   /// 是否必填
   bool isRequired;
+
   /// 标题
   final String title;
 
@@ -19,11 +20,15 @@ class SCMaterialSelectItem extends StatelessWidget {
   /// 选择类型
   final Function? selectAction;
 
+  /// 是否不可用
+  final bool? disable;
+
   SCMaterialSelectItem({Key? key,
     required this.isRequired,
     required this.title,
     this.content,
     this.selectAction,
+    this.disable
   }) : super(key: key);
 
   @override
@@ -33,9 +38,23 @@ class SCMaterialSelectItem extends StatelessWidget {
 
   /// body
   Widget body() {
+    Color textColor;
+    String subContent = content ?? '';
+    bool subDisable = disable ?? false;
+    if (subContent.isEmpty) {
+      textColor = SCColors.color_B0B1B8;
+    } else {
+      if (subDisable) {
+        textColor = SCColors.color_B0B1B8;
+      } else {
+        textColor = SCColors.color_1B1D33;
+      }
+    }
     return GestureDetector(
       onTap: () {
-        selectAction?.call();
+        if (!subDisable) {
+          selectAction?.call();
+        }
       },
       behavior: HitTestBehavior.opaque,
       child: SizedBox(
@@ -76,7 +95,7 @@ class SCMaterialSelectItem extends StatelessWidget {
                 style: TextStyle(
                     fontSize: SCFonts.f16,
                     fontWeight: FontWeight.w400,
-                    color: content != '' ? SCColors.color_1B1D33 : SCColors.color_B0B1B8)),),
+                    color: textColor)),),
             const SizedBox(width: 12.0,),
             Image.asset(
               SCAsset.iconMineSettingArrow,

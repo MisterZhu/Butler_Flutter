@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
@@ -11,7 +10,6 @@ import '../../../HouseInspect/View/sc_deliver_explain_cell.dart';
 /// 基础信息cell
 
 class SCBasicInfoCell extends StatefulWidget {
-
   /// 数据源
   final List list;
 
@@ -42,7 +40,8 @@ class SCBasicInfoCell extends StatefulWidget {
   /// 添加/删除图片
   final Function(List list)? updatePhoto;
 
-  SCBasicInfoCell({Key? key,
+  SCBasicInfoCell({
+    Key? key,
     required this.list,
     this.remark,
     this.files,
@@ -60,7 +59,6 @@ class SCBasicInfoCell extends StatefulWidget {
 }
 
 class SCBasicInfoCellState extends State<SCBasicInfoCell> {
-
   int selectRangeIndex = 0;
 
   @override
@@ -84,8 +82,7 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
   Widget titleItem() {
     return const Padding(
       padding: EdgeInsets.only(top: 10.0, bottom: 11.0),
-      child: Text(
-          '基础信息',
+      child: Text('基础信息',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
@@ -98,22 +95,23 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
   /// contentItem
   Widget contentItem() {
     return Container(
-      decoration: BoxDecoration(
-        color: SCColors.color_FFFFFF,
-        borderRadius: BorderRadius.circular(4.0)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          selectListView(),
-          line(),
-          checkRangeItem(),
-          inputItem(),
-          photosItem(),
-          const SizedBox(height: 12.0,),
-        ])
-    );
+        decoration: BoxDecoration(
+            color: SCColors.color_FFFFFF,
+            borderRadius: BorderRadius.circular(4.0)),
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              selectListView(),
+              line(),
+              checkRangeItem(),
+              inputItem(),
+              photosItem(),
+              const SizedBox(
+                height: 12.0,
+              ),
+            ]));
   }
 
   /// selectListView
@@ -124,13 +122,19 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
           var dic = widget.list[index];
+          bool disable = false;
+          if (dic.containsKey('disable')) {
+            disable = dic['disable'];
+          }
           return SCMaterialSelectItem(
             isRequired: dic['isRequired'],
             title: dic['title'],
             content: dic['content'],
+            disable: disable,
             selectAction: () {
               widget.selectAction?.call(index);
-          },);
+            },
+          );
         },
         separatorBuilder: (BuildContext context, int index) {
           return line();
@@ -152,8 +156,8 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
             inputHeight: 92.0,
             inputAction: (String content) {
               widget.inputAction?.call(content);
-            },)
-      ),
+            },
+          )),
     );
   }
 
@@ -172,24 +176,24 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
             files: widget.files ?? [],
             updatePhoto: (List list) {
               widget.updatePhoto?.call(list);
-            },)
-      ),
+            },
+          )),
     );
   }
 
   /// line
   Widget line() {
     return Offstage(
-      offstage: widget.rangeList == null ? false : true,
-      child: Container(
-        color: SCColors.color_FFFFFF,
-        padding: const EdgeInsets.only(left: 12.0),
+        offstage: widget.rangeList == null ? false : true,
         child: Container(
-          height: 0.5,
-          width: double.infinity,
-          color: SCColors.color_EDEDF0,
-        ),
-    ));
+          color: SCColors.color_FFFFFF,
+          padding: const EdgeInsets.only(left: 12.0),
+          child: Container(
+            height: 0.5,
+            width: double.infinity,
+            color: SCColors.color_EDEDF0,
+          ),
+        ));
   }
 
   /// 盘点范围
@@ -206,19 +210,18 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
             Container(
               width: 12.0,
               alignment: Alignment.centerRight,
-              child: const Text(
-                  '*',
+              child: const Text('*',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.right,
                   style: TextStyle(
                       fontSize: SCFonts.f16,
                       fontWeight: FontWeight.w400,
-                      color: SCColors.color_FF4040)),),
+                      color: SCColors.color_FF4040)),
+            ),
             const SizedBox(
               width: 100.0,
-              child: Text(
-                  '盘点范围',
+              child: Text('盘点范围',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -226,9 +229,13 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
                       fontWeight: FontWeight.w400,
                       color: SCColors.color_1B1D33)),
             ),
-            const SizedBox(width: 12.0,),
+            const SizedBox(
+              width: 12.0,
+            ),
             Expanded(child: selectRangeItem()),
-            const SizedBox(width: 12.0,),
+            const SizedBox(
+              width: 12.0,
+            ),
           ],
         ),
       ),
@@ -241,7 +248,11 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
         alignment: WrapAlignment.start,
         spacing: 16.0,
         runSpacing: 10.0,
-        children: widget.rangeList!.asMap().keys.map((index) => rangeCell(index)).toList(),
+        children: widget.rangeList!
+            .asMap()
+            .keys
+            .map((index) => rangeCell(index))
+            .toList(),
       );
     } else {
       return const SizedBox();
@@ -263,8 +274,17 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(selectRangeIndex == index ? SCAsset.iconOpened : SCAsset.iconNotOpened, width: 18.0, height: 18.0, fit: BoxFit.cover,),
-          const SizedBox(width: 8,),
+          Image.asset(
+            selectRangeIndex == index
+                ? SCAsset.iconOpened
+                : SCAsset.iconNotOpened,
+            width: 18.0,
+            height: 18.0,
+            fit: BoxFit.cover,
+          ),
+          const SizedBox(
+            width: 8,
+          ),
           Text(
             widget.rangeList?[index],
             textAlign: TextAlign.left,
