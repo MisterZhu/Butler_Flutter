@@ -145,14 +145,14 @@ class SCMaterialTransferController extends GetxController {
         });
   }
 
-  /// 提交入库
+  /// 提交调拨
   submit({required String id, Function(bool success)? completeHandler}) async{
     var params = {
-      "wareHouseInId": id,
+      "wareHouseChangeId": id,
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kSubmitMaterialUrl,
+        url: SCUrl.kSubmitTransferUrl,
         isQuery: true,
         params: params,
         success: (value) {

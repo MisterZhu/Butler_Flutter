@@ -217,4 +217,19 @@ class SCUrl {
 
   /// 出库、报损、调拨、盘点物资列表
   static const String kOtherMaterialListUrl = "/api/warehouse/manage/warehouseAccount/chooseWareHouseAccountList";
+
+  /// 物资调拨编辑-新增物资
+  static const String kEditAddTransferMaterialUrl = "/api/warehouse/manage/materialChangeRelation/addMaterialChangeRelationList";
+
+  /// 物资调拨-编辑-删除物资
+  static const String kEditDeleteTransferMaterialUrl = "/api/warehouse/manage/materialChangeRelation/deleteMaterialChangeRelation";
+
+  /// 物资调拨-编辑-编辑物资
+  static const String kEditTransferMaterialUrl = "/api/warehouse/manage/materialChangeRelation/editMaterialChangeRelation";
+
+  /// 编辑物资调拨基础信息
+  static const String kEditTransferBaseInfoUrl = "/api/warehouse/app/warehouse/change/edit";
+
+  /// 提交调拨
+  static const String kSubmitTransferUrl = "/api/warehouse/app/warehouse/change/submitWareHouseChange";
 }

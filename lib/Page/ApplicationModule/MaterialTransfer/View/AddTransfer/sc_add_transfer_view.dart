@@ -318,8 +318,6 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
     for (SCMaterialListModel model in widget.state.selectedList) {
       var params = model.toJson();
       params['num'] = model.localNum;
-      params['materialId'] = model.id;
-      params['materialName'] = model.name;
       materialList.add(params);
     }
 
@@ -347,7 +345,6 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
 
   /// 编辑
   editAction() {
-    print("编辑");
     if (widget.state.inWareHouseId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectInWareHouseTip);
       return;

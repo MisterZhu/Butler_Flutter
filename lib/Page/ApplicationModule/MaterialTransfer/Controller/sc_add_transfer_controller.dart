@@ -8,6 +8,7 @@ import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../../MaterialEntry/Model/sc_entry_type_model.dart';
 import '../../MaterialEntry/Model/sc_material_list_model.dart';
+import '../../MaterialEntry/Model/sc_material_task_detail_model.dart';
 import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
 
 
@@ -170,7 +171,7 @@ class SCAddTransferController extends GetxController {
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kEditAddEntryBaseInfoUrl,
+        url: SCUrl.kEditTransferBaseInfoUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
@@ -186,14 +187,13 @@ class SCAddTransferController extends GetxController {
   /// 编辑-新增物资
   editAddMaterial({required List list, Function(bool success)? completeHandler}) {
     print("入库物资===${list}");
-    var params = {"inId": editId, "materialInRelations": list};
+    var params = {"changeId": editId, "materialChangeRelations": list};
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kEditAddEntryMaterialUrl,
+        url: SCUrl.kEditAddTransferMaterialUrl,
         params: params,
         success: (value) {
-          SCLoadingUtils.hide();
-          completeHandler?.call(true);
+          loadMaterialTransferDetail();
         },
         failure: (value) {
           SCLoadingUtils.hide();
@@ -203,10 +203,10 @@ class SCAddTransferController extends GetxController {
 
   /// 编辑-删除物资
   editDeleteMaterial({required String materialInRelationId, Function(bool success)? completeHandler}) {
-    var params = {"materialInRelationId": materialInRelationId};
+    var params = {"materialChangeRelationId": materialInRelationId};
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kEditDeleteEntryMaterialUrl,
+        url: SCUrl.kEditDeleteTransferMaterialUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
@@ -224,10 +224,9 @@ class SCAddTransferController extends GetxController {
       print("物资数据===${model.toJson()}");
       var params = model.toJson();
       params['num'] = model.localNum;
-      params['materialName'] = model.name;
       SCLoadingUtils.show();
       SCHttpManager.instance.post(
-          url: SCUrl.kEditEntryMaterialUrl,
+          url: SCUrl.kEditTransferMaterialUrl,
           params: params,
           success: (value) {
             SCLoadingUtils.hide();
@@ -291,6 +290,28 @@ class SCAddTransferController extends GetxController {
         },
         failure: (value) {
           SCLoadingUtils.hide();
+        });
+  }
+
+  /// 调拨详情
+  loadMaterialTransferDetail() {
+    SCHttpManager.instance.get(
+        url: SCUrl.kMaterialTransferDetailUrl,
+        params: {'id': editId},
+        success: (value) {
+          SCLoadingUtils.hide();
+          SCMaterialTaskDetailModel model = SCMaterialTaskDetailModel.fromJson(value);
+          List<SCMaterialListModel> materials = model.materials ?? [];
+          for (SCMaterialListModel subModel in materials) {
+            subModel.localNum = subModel.number ?? 1;
+            subModel.isSelect = true;
+            subModel.name = subModel.materialName ?? '';
+          }
+          updateSelectedMaterial(materials);
+          update();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
         });
   }
 
