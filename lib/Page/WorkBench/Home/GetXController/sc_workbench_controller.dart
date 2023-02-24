@@ -520,6 +520,7 @@ class SCWorkBenchController extends GetxController {
         url: SCUrl.kOrderFormUrl,
         params: params,
         success: (value) {
+          print("订单===value");
           SCLoadingUtils.hide();
           if (value is Map) {
             List list = value['records'];
@@ -600,23 +601,27 @@ class SCWorkBenchController extends GetxController {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (currentPlateIndex == 0) {
         for (int i = 0; i < waitDataList.length; i++) {
-          SCWorkOrderModel model = waitDataList[i];
-          int subTime = model.remainingTime ?? 0;
-          if (subTime > 0) {
-            model.remainingTime = subTime - 1;
-          } else if (subTime == 0) {
-            model.remainingTime = 0;
-          } else {}
+          if (waitDataList[i] is SCWorkOrderModel) {
+            SCWorkOrderModel model = waitDataList[i];
+            int subTime = model.remainingTime ?? 0;
+            if (subTime > 0) {
+              model.remainingTime = subTime - 1;
+            } else if (subTime == 0) {
+              model.remainingTime = 0;
+            } else {}
+          }
         }
 
         for (int i = 0; i < processingDataList.length; i++) {
-          SCWorkOrderModel model = processingDataList[i];
-          int subTime = model.remainingTime ?? 0;
-          if (subTime > 0) {
-            model.remainingTime = subTime - 1;
-          } else if (subTime == 0) {
-            model.remainingTime = 0;
-          } else {}
+          if (processingDataList[i] is SCWorkOrderModel) {
+            SCWorkOrderModel model = processingDataList[i];
+            int subTime = model.remainingTime ?? 0;
+            if (subTime > 0) {
+              model.remainingTime = subTime - 1;
+            } else if (subTime == 0) {
+              model.remainingTime = 0;
+            } else {}
+          }
         }
 
         waitController.dataList = waitDataList;

@@ -75,6 +75,9 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
       if (params.containsKey('isEdit')) {
         controller.isEdit = params['isEdit'];
       }
+      if (params.containsKey('materialType')) {
+        controller.materialType = params['materialType'];
+      }
     }
   }
 

@@ -26,6 +26,9 @@ class SCAddMaterialController extends GetxController {
   /// 是否是编辑
   bool isEdit = false;
 
+  /// 物资类型，1-入库，2-出库，3-报损，4-调拨，5-盘点
+  int materialType = 1;
+
   /// 数据源
   List<SCMaterialListModel> materialList = [];
 
@@ -60,11 +63,26 @@ class SCAddMaterialController extends GetxController {
       "pageNum": pageNum,
       "pageSize": 20
     };
+    String url = '';
+    if (materialType == 1) {
+      url = SCUrl.kMaterialListUrl;
+    } else {
+      url = SCUrl.kOtherMaterialLisrUrl;
+    }
     SCHttpManager.instance.post(
-        url: SCUrl.kMaterialListUrl,
+        url: url,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
+          if ((value['records'] is List) == false) {
+            bool last = false;
+            if (isLoadMore) {
+              last = value['last'];
+            }
+            completeHandler?.call(false, last);
+            update();
+            return;
+          }
           List list = value['records'];
           if (isLoadMore == true) {
             materialList.addAll(List<SCMaterialListModel>.from(
@@ -76,14 +94,23 @@ class SCAddMaterialController extends GetxController {
           for (SCMaterialListModel model in materialList) {
             for (SCMaterialListModel subModel in originalList) {
               if (isEdit) {
-                if (model.id == subModel.materialId) {
-                  model.localNum = subModel.localNum;
-                  model.isSelect = true;
-                  model.materialId = subModel.materialId;
-                  model.reportId = subModel.reportId;
+                if (materialType == 1) {
+                  if (model.id == subModel.materialId) {
+                    model.localNum = subModel.localNum;
+                    model.isSelect = true;
+                    model.materialId = subModel.materialId;
+                    model.reportId = subModel.reportId;
+                  }
+                } else {
+                  if (model.materialId == subModel.materialId) {
+                    model.localNum = subModel.localNum;
+                    model.isSelect = true;
+                    model.materialId = subModel.materialId;
+                    model.reportId = subModel.reportId;
+                  }
                 }
               } else {
-                if (model.id == subModel.id) {
+                if (model.materialId == subModel.materialId) {
                   model.localNum = subModel.localNum;
                   model.isSelect = true;
                 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
@@ -134,8 +136,9 @@ class SCAddTransferController extends GetxController {
       "outWareHouseName": data['outWareHouseName']
     };
     SCLoadingUtils.show();
+    log("调拨参数===$params");
     SCHttpManager.instance.post(
-        url: SCUrl.kAddEntryUrl,
+        url: SCUrl.kAddTransferUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
@@ -252,7 +255,7 @@ class SCAddTransferController extends GetxController {
         });
   }
 
-  /// 入库类型
+  /// 调拨类型
   loadWareHouseType() {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(

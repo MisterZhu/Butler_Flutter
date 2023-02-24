@@ -240,7 +240,8 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
   addMaterialAction() async {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
-      'wareHouseId': widget.state.wareHouseId
+      'wareHouseId': widget.state.wareHouseId,
+      "materialType" : 1
     });
     if (list != null) {
       onlyAddMaterial(list);
@@ -253,6 +254,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
       'isEdit': true,
+      "materialType" : 1
     });
     if (list != null) {
       editAddMaterial(list);

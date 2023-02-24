@@ -203,4 +203,15 @@ class SCUrl {
 
   /// 提交报损
   static const String kSubmitFrmLossUrl = "/api/warehouse/app/warehouse/report/submitWareHouseReport";
+
+  /************************* 物资调拨 *************************/
+
+  /// 调拨列表
+  static const String kMaterialTransferListUrl = "/api/warehouse/app/warehouse/change/pageFront";
+
+  /// 新增调拨
+  static const String kAddTransferUrl = "/api/warehouse/app/warehouse/change/save";
+
+  /// 出库、报损、调拨、盘点物资列表
+  static const String kOtherMaterialLisrUrl = "/api/warehouse/manage/warehouseAccount/chooseWareHouseAccountList";
 }

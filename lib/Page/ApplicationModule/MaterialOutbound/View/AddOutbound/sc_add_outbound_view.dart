@@ -256,7 +256,8 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
   addMaterialAction() async{
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
-      'wareHouseId': widget.state.wareHouseId
+      'wareHouseId': widget.state.wareHouseId,
+      "materialType" : 2
     });
     if (list != null) {
       onlyAddMaterial(list);
@@ -269,6 +270,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
       'isEdit': true,
+      "materialType" : 2
     });
     if (list != null) {
       editAddMaterial(list);
@@ -318,8 +320,6 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     for (SCMaterialListModel model in widget.state.selectedList) {
       var params = model.toJson();
       params['num'] = model.localNum;
-      params['materialId'] = model.id;
-      params['materialName'] = model.name;
       materialList.add(params);
     }
 
@@ -547,7 +547,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       SCMaterialListModel tempModel = SCMaterialListModel();
 
       for (SCMaterialListModel subModel in widget.state.selectedList) {
-        if (model.id == subModel.materialId) {
+        if (model.materialId == subModel.materialId) {
           contains = true;
           tempModel = SCMaterialListModel.fromJson(subModel.toJson());
           if (model.localNum == subModel.localNum) {
@@ -580,12 +580,10 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     List addJsonList = [];
     for (SCMaterialListModel model in addList) {
       model.inId = widget.state.editId;
-      model.materialId = model.id;
-      model.materialName = model.name;
       newList.add(model);
       var subParams = model.toJson();
-      subParams['materialId'] = model.id;
-      subParams['materialName'] = model.name;
+      subParams['materialId'] = model.materialId;
+      subParams['materialName'] = model.materialName;
       subParams['num'] = model.localNum;
       subParams['inId'] = widget.state.editId;
       addJsonList.add(subParams);

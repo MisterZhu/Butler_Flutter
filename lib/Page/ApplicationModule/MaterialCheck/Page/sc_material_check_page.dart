@@ -15,7 +15,7 @@ class SCMaterialCheckPage extends StatefulWidget {
   SCMaterialCheckPageState createState() => SCMaterialCheckPageState();
 }
 
-class SCMaterialCheckPageState extends State<SCMaterialCheckPage> {
+class SCMaterialCheckPageState extends State<SCMaterialCheckPage> with AutomaticKeepAliveClientMixin{
 
   /// SCMaterialCheckController
   late SCMaterialCheckController controller;
@@ -74,4 +74,7 @@ class SCMaterialCheckPageState extends State<SCMaterialCheckPage> {
       }
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

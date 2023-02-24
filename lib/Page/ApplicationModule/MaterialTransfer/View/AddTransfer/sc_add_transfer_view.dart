@@ -236,7 +236,7 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
       SCToast.showTip(SCDefaultValue.selectOutWareHouseTip);
       return;
     }
-    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {'data': widget.state.selectedList, 'inWareHouseId': widget.state.inWareHouseId, 'outWareHouseId': widget.state.outWareHouseId});
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {'data': widget.state.selectedList, 'inWareHouseId': widget.state.inWareHouseId, 'outWareHouseId': widget.state.outWareHouseId, "materialType" : 4});
     if (list != null) {
       widget.state.updateSelectedMaterial(list);
     }

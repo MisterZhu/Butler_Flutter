@@ -76,11 +76,20 @@ class SCMineListView extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) {
           return line();
         },
-        itemCount: 5));
+        itemCount: 6));
   }
 
+  /// cell
   Widget getCell(int index) {
     if (index == 0) {
+      return SCSettingCell(
+        title: '设置',
+        showLeftIcon: true,
+        leftIcon: SCAsset.iconMineNewSetting,
+        onTap: () {
+          SCRouterHelper.pathPage(SCRouterPath.settingPath, null);
+        },);
+    } else if (index == 1) {
       return SCSettingCell(
         title: '物资入库',
         showLeftIcon: true,
@@ -88,7 +97,7 @@ class SCMineListView extends StatelessWidget {
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.materialEntryPage, null);
       },);
-    } else if (index == 1) {
+    } else if (index == 2) {
       return SCSettingCell(
         title: '物资出库',
         showLeftIcon: true,
@@ -96,7 +105,7 @@ class SCMineListView extends StatelessWidget {
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.materialOutboundPage, null);
         },);
-    } else if (index == 2) {
+    } else if (index == 3) {
       return SCSettingCell(
         title: '物资报损',
         showLeftIcon: true,
@@ -104,7 +113,7 @@ class SCMineListView extends StatelessWidget {
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.materialFrmLossPage, null);
         },);
-    } else if (index == 3) {
+    } else if (index == 4) {
       return SCSettingCell(
         title: '物资调拨',
         showLeftIcon: true,
@@ -112,7 +121,7 @@ class SCMineListView extends StatelessWidget {
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.materialTransferPage, null);
         },);
-    } else if (index == 4) {
+    } else if (index == 5) {
       return SCSettingCell(
         title: '盘点任务',
         showLeftIcon: true,

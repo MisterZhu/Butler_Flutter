@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
@@ -94,7 +96,7 @@ class SCMaterialTransferController extends GetxController {
       "pageSize": 20
     };
     SCHttpManager.instance.post(
-        url: SCUrl.kMaterialEntryListUrl,
+        url: SCUrl.kMaterialTransferListUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();

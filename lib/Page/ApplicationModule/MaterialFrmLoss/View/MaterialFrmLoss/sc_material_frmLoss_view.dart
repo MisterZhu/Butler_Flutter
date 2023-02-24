@@ -92,7 +92,7 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SCMaterialSearchItem(name: '搜索仓库名称', searchAction: () {
+        SCMaterialSearchItem(name: '搜索仓库名称/操作人', searchAction: () {
           SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.frmLoss});
         },),
         SCMaterialSiftItem(tagList:siftList, tapAction: (index) {

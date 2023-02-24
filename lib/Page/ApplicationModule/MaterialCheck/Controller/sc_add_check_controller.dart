@@ -22,6 +22,9 @@ class SCAddCheckController extends GetxController {
   /// 已选择的物资数据
   List<SCMaterialListModel> selectedList = [];
 
+  /// 已选择的物资分类数据
+  List<SCMaterialListModel> selectedCategoryList = [];
+
   /// 是否是编辑
   bool isEdit = false;
 
@@ -70,7 +73,7 @@ class SCAddCheckController extends GetxController {
   /// 处理人id
   String operator = '';
 
-  /// 范围
+  /// 范围,0-全部，1-物资分类，2-物品名称
   int range = 0;
 
   /// 主键id
