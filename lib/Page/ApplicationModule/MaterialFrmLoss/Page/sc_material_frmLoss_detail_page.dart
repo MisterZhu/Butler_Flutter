@@ -18,7 +18,6 @@ import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart'
 import '../../MaterialEntry/Model/sc_material_task_detail_model.dart';
 import '../Controller/sc_material_frmLoss_controller.dart';
 
-
 /// 报损详情
 
 class SCMaterialFrmLossDetailPage extends StatefulWidget {
@@ -27,7 +26,8 @@ class SCMaterialFrmLossDetailPage extends StatefulWidget {
       SCMaterialFrmLossDetailPageState();
 }
 
-class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage> {
+class SCMaterialFrmLossDetailPageState
+    extends State<SCMaterialFrmLossDetailPage> {
   /// SCMaterialEntryDetailController
   late SCMaterialEntryDetailController controller;
 
@@ -40,7 +40,8 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
   @override
   initState() {
     super.initState();
-    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCMaterialFrmLossDetailPage).toString());
+    controllerTag = SCScaffoldManager.instance
+        .getXControllerTag((SCMaterialFrmLossDetailPage).toString());
     controller = Get.put(SCMaterialEntryDetailController(), tag: controllerTag);
     Map<String, dynamic> params = Get.arguments;
     if (params.isNotEmpty) {
@@ -57,7 +58,8 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
 
   @override
   dispose() {
-    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialFrmLossDetailPage).toString(), controllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag(
+        (SCMaterialFrmLossDetailPage).toString(), controllerTag);
     controller.dispose();
     super.dispose();
   }
@@ -74,10 +76,7 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
       height: double.infinity,
       color: SCColors.color_F2F3F5,
       child: Column(
-        children: [
-          Expanded(child: topView()),
-          bottomView()
-        ],
+        children: [Expanded(child: topView()), bottomView()],
       ),
     );
   }
@@ -88,9 +87,12 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
         tag: controllerTag,
         init: controller,
         builder: (state) {
-          return SCMaterialDetailListView(
-            state: controller,
-            type: SCWarehouseManageType.frmLoss,
+          return Offstage(
+            offstage: !controller.success,
+            child: SCMaterialDetailListView(
+              state: controller,
+              type: SCWarehouseManageType.frmLoss,
+            ),
           );
         });
   }
@@ -122,7 +124,7 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
               onTap: (value) {
                 if (value == '编辑') {
                   editAction();
-                } else if(value == '提交') {
+                } else if (value == '提交') {
                   submitAction();
                 }
                 // } else if (value == "拒绝") {
@@ -145,7 +147,7 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
   }
 
   /// 编辑
-  editAction() async{
+  editAction() async {
     String wareHouseName = controller.model.wareHouseName ?? '';
     String wareHouseId = controller.model.wareHouseId ?? '';
     String typeName = controller.model.typeName ?? '';
@@ -166,20 +168,20 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
       files.add(file.toJson());
     }
     SCRouterHelper.pathPage(SCRouterPath.addFrmLossPage, {
-      'isEdit' : true,
-      'data' : materials,
-      "wareHouseName" : wareHouseName,
-      "wareHouseId" : wareHouseId,
-      "typeName" : typeName,
-      "type" : type,
-      "remark" : remark,
+      'isEdit': true,
+      'data': materials,
+      "wareHouseName": wareHouseName,
+      "wareHouseId": wareHouseId,
+      "typeName": typeName,
+      "type": type,
+      "remark": remark,
       "reportUserName": controller.model.reportUserName ?? '',
       "reportUserId": controller.model.reportUserId ?? '',
       "reportOrgName": controller.model.reportOrgName ?? '',
       "reportOrgId": controller.model.reportOrgId ?? '',
       "reportTime": controller.model.reportTime ?? '',
       "files": files,
-      "id" : id
+      "id": id
     })?.then((value) {
       controller.loadMaterialFrmLossDetail();
     });
@@ -187,11 +189,14 @@ class SCMaterialFrmLossDetailPageState extends State<SCMaterialFrmLossDetailPage
 
   /// 提交
   submitAction() {
-    SCMaterialFrmLossController materialFrmLossController = SCMaterialFrmLossController();
-    materialFrmLossController.submit(id: controller.id, completeHandler: (bool success){
-      SCScaffoldManager.instance.eventBus
-          .fire({'key': SCKey.kRefreshMaterialFrmLossPage});
-      SCRouterHelper.back( null);
-    });
+    SCMaterialFrmLossController materialFrmLossController =
+        SCMaterialFrmLossController();
+    materialFrmLossController.submit(
+        id: controller.id,
+        completeHandler: (bool success) {
+          SCScaffoldManager.instance.eventBus
+              .fire({'key': SCKey.kRefreshMaterialFrmLossPage});
+          SCRouterHelper.back(null);
+        });
   }
 }

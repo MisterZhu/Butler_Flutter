@@ -38,7 +38,8 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
   @override
   initState() {
     super.initState();
-    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCMaterialCheckDetailPage).toString());
+    controllerTag = SCScaffoldManager.instance
+        .getXControllerTag((SCMaterialCheckDetailPage).toString());
     controller = Get.put(SCMaterialEntryDetailController(), tag: controllerTag);
     Map<String, dynamic> params = Get.arguments;
     if (params.isNotEmpty) {
@@ -55,7 +56,8 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
 
   @override
   dispose() {
-    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialCheckDetailPage).toString(), controllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag(
+        (SCMaterialCheckDetailPage).toString(), controllerTag);
     controller.dispose();
     super.dispose();
   }
@@ -72,10 +74,7 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
       height: double.infinity,
       color: SCColors.color_F2F3F5,
       child: Column(
-        children: [
-          Expanded(child: topView()),
-          bottomView()
-        ],
+        children: [Expanded(child: topView()), bottomView()],
       ),
     );
   }
@@ -86,9 +85,12 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
         tag: controllerTag,
         init: controller,
         builder: (state) {
-          return SCMaterialDetailListView(
-            state: controller,
-            type: SCWarehouseManageType.check,
+          return Offstage(
+            offstage: !controller.success,
+            child: SCMaterialDetailListView(
+              state: controller,
+              type: SCWarehouseManageType.check,
+            ),
           );
         });
   }
@@ -120,7 +122,7 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
               onTap: (value) {
                 if (value == '编辑') {
                   editAction();
-                } else if(value == '提交') {
+                } else if (value == '提交') {
                   submitAction();
                 }
               },
@@ -130,7 +132,7 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
   }
 
   /// 编辑
-  editAction() async{
+  editAction() async {
     String wareHouseName = controller.model.wareHouseName ?? '';
     String wareHouseId = controller.model.wareHouseId ?? '';
     String typeName = controller.model.typeName ?? '';
@@ -146,15 +148,14 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
       //model.id = model.materialId;
     }
     SCRouterHelper.pathPage(SCRouterPath.addCheckPage, {
-      'isEdit' : true,
-      'data' : materials,
-      "wareHouseName" : wareHouseName,
-      "wareHouseId" : wareHouseId,
-      "typeName" : typeName,
-      "type" : type,
-      "remark" : remark,
-      "id" : id
-
+      'isEdit': true,
+      'data': materials,
+      "wareHouseName": wareHouseName,
+      "wareHouseId": wareHouseId,
+      "typeName": typeName,
+      "type": type,
+      "remark": remark,
+      "id": id
     })?.then((value) {
       controller.loadMaterialEntryDetail();
     });
@@ -162,11 +163,14 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
 
   /// 提交
   submitAction() {
-    SCMaterialCheckController materialCheckController = SCMaterialCheckController();
-    materialCheckController.submit(id: controller.id, completeHandler: (bool success){
-      SCScaffoldManager.instance.eventBus
-          .fire({'key': SCKey.kRefreshMaterialTransferPage});
-      SCRouterHelper.back( null);
-    });
+    SCMaterialCheckController materialCheckController =
+        SCMaterialCheckController();
+    materialCheckController.submit(
+        id: controller.id,
+        completeHandler: (bool success) {
+          SCScaffoldManager.instance.eventBus
+              .fire({'key': SCKey.kRefreshMaterialTransferPage});
+          SCRouterHelper.back(null);
+        });
   }
 }
