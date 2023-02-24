@@ -32,6 +32,10 @@ class SCMaterialTaskDetailModel {
       this.wareHouseAddress, 
       this.wareHouseId, 
       this.wareHouseName,
+    this.inWareHouseId,
+    this.inWareHouseName,
+    this.outWareHouseId,
+    this.outWareHouseName,
       this.tenantId,
       this.fetchUserName,
       this.fetchUserId,
@@ -86,6 +90,10 @@ class SCMaterialTaskDetailModel {
     wareHouseAddress = json['wareHouseAddress'];
     wareHouseId = json['wareHouseId'];
     wareHouseName = json['wareHouseName'];
+    inWareHouseId = json['inWareHouseId'];
+    inWareHouseName = json['inWareHouseName'];
+    outWareHouseId = json['outWareHouseId'];
+    outWareHouseName = json['outWareHouseName'];
     tenantId = json['tenantId'];
     fetchOrgId = json['fetchOrgId'];
     fetchOrgName = json['fetchOrgName'];
@@ -99,7 +107,7 @@ class SCMaterialTaskDetailModel {
   String? gmtCreate;
   String? gmtModify;
   String? id;
-  List<dynamic>? labelList;
+  List<String>? labelList;
   String? materialNames;
   int? materialNums;
   List<SCMaterialListModel>? materials;
@@ -123,6 +131,10 @@ class SCMaterialTaskDetailModel {
   String? wareHouseAddress;
   String? wareHouseId;
   String? wareHouseName;
+  String? inWareHouseId;
+  String? inWareHouseName;
+  String? outWareHouseId;
+  String? outWareHouseName;
   String? tenantId;
   String? fetchOrgId;
   String? fetchOrgName;
@@ -168,6 +180,10 @@ class SCMaterialTaskDetailModel {
     map['wareHouseAddress'] = wareHouseAddress;
     map['wareHouseId'] = wareHouseId;
     map['wareHouseName'] = wareHouseName;
+    map['inWareHouseId'] = inWareHouseId;
+    map['inWareHouseName'] = inWareHouseName;
+    map['outWareHouseId'] = outWareHouseId;
+    map['outWareHouseName'] = outWareHouseName;
     map['tenantId'] = tenantId;
     map['fetchUserId'] = fetchUserId;
     map['fetchUserName'] = fetchUserName;

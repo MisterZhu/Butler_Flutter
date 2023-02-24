@@ -65,14 +65,14 @@ class SCMaterialFrmLossViewState extends State<SCMaterialFrmLossView> {
   void initState() {
     super.initState();
     sortIndex = widget.state.sort == true ? 0 : 1;
-    // widget.state.loadFrmLossType(() {
-    //   List list = widget.state.typeList.map((e) => e.name).toList();
-    //   setState(() {
-    //     typeList.addAll(list);
-    //   });
-    // });
-    // 类型没有接口获取，暂时用本地数据
-    typeList = ['全部', '损坏报损', '丢失报损' ,'其他报损'];
+    widget.state.loadFrmLossType(() {
+      List list = widget.state.typeList.map((e) => e.name).toList();
+      setState(() {
+        typeList.addAll(list);
+      });
+    });
+    // // 类型没有接口获取，暂时用本地数据
+    // typeList = ['全部', '损坏报损', '丢失报损' ,'其他报损'];
   }
 
   @override

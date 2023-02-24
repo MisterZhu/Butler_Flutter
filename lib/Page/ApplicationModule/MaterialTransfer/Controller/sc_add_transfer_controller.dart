@@ -70,9 +70,7 @@ class SCAddTransferController extends GetxController {
     super.onInit();
     loadInWareHouseList();
     loadOutWareHouseList();
-    //loadTransferType();
-    List list = [{'code': '1', 'name': '组织内调拨'}, {'code': '2', 'name': '跨组织调拨'}, {'code': '3', 'name': '店间调拨'},];
-    typeList = list.map((e) => SCEntryTypeModel.fromJson(e)).toList();
+    loadTransferType();
   }
 
   /// 初始化编辑的参数

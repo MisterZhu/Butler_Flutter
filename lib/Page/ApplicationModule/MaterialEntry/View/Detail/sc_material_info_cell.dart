@@ -162,14 +162,14 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 调入仓库view
   Widget inWareHouseView() {
     return Row(
-      children: [desLabel('调入仓库'), textView(1, model?.wareHouseName ?? '')],
+      children: [desLabel('调入仓库'), textView(1, model?.inWareHouseName ?? '')],
     );
   }
 
   /// 调出仓库view
   Widget outWareHouseView() {
     return Row(
-      children: [desLabel('调出仓库'), textView(1, model?.wareHouseName ?? '')],
+      children: [desLabel('调出仓库'), textView(1, model?.outWareHouseName ?? '')],
     );
   }
 

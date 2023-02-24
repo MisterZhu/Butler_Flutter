@@ -71,7 +71,23 @@ class SCMaterialEntryDetailController extends GetxController {
         url: SCUrl.kMaterialFrmLossDetailUrl,
         params: {'id': id},
         success: (value) {
-          log("报损详情===$value");
+          SCLoadingUtils.hide();
+          success = true;
+          model = SCMaterialTaskDetailModel.fromJson(value);
+          update();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 调拨详情
+  loadMaterialTransferDetail() {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.get(
+        url: SCUrl.kMaterialTransferDetailUrl,
+        params: {'id': id},
+        success: (value) {
           SCLoadingUtils.hide();
           success = true;
           model = SCMaterialTaskDetailModel.fromJson(value);

@@ -83,9 +83,7 @@ class SCAddFrmLossController extends GetxController {
     reportUserId = SCScaffoldManager.instance.user.id ?? '';
     reportUserName = SCScaffoldManager.instance.user.userName ?? '';
     loadWareHouseList();
-    //loadFrmLossType();
-    List list = [{'code': '1', 'name': '损坏报损'}, {'code': '2', 'name': '丢失报损'}, {'code': '99', 'name': '其他报损'},];
-    typeList = list.map((e) => SCEntryTypeModel.fromJson(e)).toList();
+    loadFrmLossType();
   }
 
   /// 初始化编辑的参数

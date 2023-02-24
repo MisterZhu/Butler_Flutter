@@ -30,8 +30,6 @@ class SCMaterialTransferController extends GetxController {
   @override
   onInit() {
     super.onInit();
-    List list = [{'code': '1', 'name': '组织内调拨'}, {'code': '2', 'name': '跨组织调拨'}, {'code': '3', 'name': '店间调拨'},];
-    typeList = list.map((e) => SCEntryTypeModel.fromJson(e)).toList();
   }
 
   /// 选择状态，刷新页面数据
@@ -137,7 +135,7 @@ class SCMaterialTransferController extends GetxController {
   loadTransferType(Function? resultHandler) {
     SCHttpManager.instance.post(
         url: SCUrl.kWareHouseTypeUrl,
-        params: {'dictionaryCode' : 'WAREHOUSING'},
+        params: {'dictionaryCode' : 'TRANSFER_TYPE'},
         success: (value) {
           typeList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
           update();

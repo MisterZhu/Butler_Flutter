@@ -65,13 +65,12 @@ class SCMaterialTransferViewState extends State<SCMaterialTransferView> {
   void initState() {
     super.initState();
     sortIndex = widget.state.sort == true ? 0 : 1;
-    // widget.state.loadTransferType(() {
-    //   List list = widget.state.typeList.map((e) => e.name).toList();
-    //   setState(() {
-    //     typeList.addAll(list);
-    //   });
-    // });
-    typeList = ['全部', '组织内调拨', '跨组织调拨' ,'店间调拨'];
+    widget.state.loadTransferType(() {
+      List list = widget.state.typeList.map((e) => e.name).toList();
+      setState(() {
+        typeList.addAll(list);
+      });
+    });
   }
 
   @override

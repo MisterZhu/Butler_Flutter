@@ -49,7 +49,7 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
       if (params.containsKey("canEdit")) {
         canEdit = params['canEdit'];
       }
-      controller.loadMaterialEntryDetail();
+      controller.loadMaterialTransferDetail();
     }
   }
 
@@ -88,7 +88,7 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
         builder: (state) {
           return SCMaterialDetailListView(
             state: controller,
-            type: SCWarehouseManageType.check,
+            type: SCWarehouseManageType.transfer,
           );
         });
   }
@@ -164,8 +164,10 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
 
   /// 编辑
   editAction() async{
-    String wareHouseName = controller.model.wareHouseName ?? '';
-    String wareHouseId = controller.model.wareHouseId ?? '';
+    String inWareHouseName = controller.model.inWareHouseName ?? '';
+    String inWareHouseId = controller.model.inWareHouseId ?? '';
+    String outWareHouseName = controller.model.outWareHouseName ?? '';
+    String outWareHouseId = controller.model.outWareHouseId ?? '';
     String typeName = controller.model.typeName ?? '';
     int type = controller.model.type ?? 0;
     String remark = controller.model.remark ?? '';
@@ -180,15 +182,17 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
     SCRouterHelper.pathPage(SCRouterPath.addTransferPage, {
       'isEdit' : true,
       'data' : materials,
-      "wareHouseName" : wareHouseName,
-      "wareHouseId" : wareHouseId,
+      "inWareHouseName" : inWareHouseName,
+      "inWareHouseId" : inWareHouseId,
+      "outWareHouseName" : outWareHouseName,
+      "outWareHouseId" : outWareHouseId,
       "typeName" : typeName,
       "type" : type,
       "remark" : remark,
       "id" : id
 
     })?.then((value) {
-      controller.loadMaterialEntryDetail();
+      controller.loadMaterialTransferDetail();
     });
   }
 

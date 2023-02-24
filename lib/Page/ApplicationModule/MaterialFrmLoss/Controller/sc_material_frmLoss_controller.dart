@@ -28,8 +28,6 @@ class SCMaterialFrmLossController extends GetxController {
   @override
   onInit() {
     super.onInit();
-    List list = [{'code': '1', 'name': '损坏报损'}, {'code': '2', 'name': '丢失报损'}, {'code': '99', 'name': '其他报损'},];
-    typeList = list.map((e) => SCEntryTypeModel.fromJson(e)).toList();
   }
 
   /// 选择状态，刷新页面数据
@@ -134,7 +132,7 @@ class SCMaterialFrmLossController extends GetxController {
   loadFrmLossType(Function? resultHandler) {
     SCHttpManager.instance.post(
         url: SCUrl.kWareHouseTypeUrl,
-        params: {'dictionaryCode' : 'OUTBOUND'},
+        params: {'dictionaryCode' : 'REPORTLOSS_TYPE'},
         success: (value) {
           typeList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
           update();

@@ -67,7 +67,7 @@ class SCAddMaterialController extends GetxController {
     if (materialType == 1) {
       url = SCUrl.kMaterialListUrl;
     } else {
-      url = SCUrl.kOtherMaterialLisrUrl;
+      url = SCUrl.kOtherMaterialListUrl;
     }
     SCHttpManager.instance.post(
         url: url,

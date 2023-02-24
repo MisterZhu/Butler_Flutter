@@ -212,6 +212,9 @@ class SCUrl {
   /// 新增调拨
   static const String kAddTransferUrl = "/api/warehouse/app/warehouse/change/save";
 
+  /// 调拨详情
+  static const String kMaterialTransferDetailUrl = "/api/warehouse/app/warehouse/change/detail";
+
   /// 出库、报损、调拨、盘点物资列表
-  static const String kOtherMaterialLisrUrl = "/api/warehouse/manage/warehouseAccount/chooseWareHouseAccountList";
+  static const String kOtherMaterialListUrl = "/api/warehouse/manage/warehouseAccount/chooseWareHouseAccountList";
 }
