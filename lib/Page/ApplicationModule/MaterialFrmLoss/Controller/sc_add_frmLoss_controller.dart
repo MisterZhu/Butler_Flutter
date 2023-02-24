@@ -8,6 +8,7 @@ import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../../MaterialEntry/Model/sc_entry_type_model.dart';
 import '../../MaterialEntry/Model/sc_material_list_model.dart';
+import '../../MaterialEntry/Model/sc_material_task_detail_model.dart';
 import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
 
 
@@ -213,15 +214,13 @@ class SCAddFrmLossController extends GetxController {
 
   /// 编辑-新增物资
   editAddMaterial({required List list, Function(bool success)? completeHandler}) {
-    print("报损物资===${list}");
     var params = {"reportId": editId, "materialReportRelations": list};
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kEditAddFrmLossMaterialUrl,
         params: params,
         success: (value) {
-          SCLoadingUtils.hide();
-          completeHandler?.call(true);
+          loadMaterialEntryDetail();
         },
         failure: (value) {
           SCLoadingUtils.hide();
@@ -304,6 +303,28 @@ class SCAddFrmLossController extends GetxController {
         },
         failure: (value) {
           SCLoadingUtils.hide();
+        });
+  }
+
+  /// 报损详情
+  loadMaterialEntryDetail() {
+    SCHttpManager.instance.get(
+        url: SCUrl.kMaterialFrmLossDetailUrl,
+        params: {'id': editId},
+        success: (value) {
+          SCLoadingUtils.hide();
+          SCMaterialTaskDetailModel model =
+          SCMaterialTaskDetailModel.fromJson(value);
+          List<SCMaterialListModel> materials = model.materials ?? [];
+          for (SCMaterialListModel subModel in materials) {
+            subModel.localNum = subModel.number ?? 1;
+            subModel.isSelect = true;
+            subModel.name = subModel.materialName ?? '';
+          }
+          updateSelectedMaterial(materials);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
         });
   }
 
