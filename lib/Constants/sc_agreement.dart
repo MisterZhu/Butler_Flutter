@@ -6,5 +6,5 @@ class SCAgreement {
   /// 隐私政策
   static const String privacyProtocolUrl = 'https://saasprod.4001113900.com:10020/h5new/newUser/index.html#/privacyPolicy?agreementType=32&mobileType=1657';
   /// 关于
-  static const String aboutUS = "";
+  static const String aboutUSUrl = "https://sq.wisharetec.com/h5new/public/homepage/indexSSGL.html";
 }

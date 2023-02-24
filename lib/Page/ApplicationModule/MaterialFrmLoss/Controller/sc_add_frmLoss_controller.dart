@@ -254,7 +254,8 @@ class SCAddFrmLossController extends GetxController {
       print("报损物资数据===${model.toJson()}");
       var params = model.toJson();
       params['num'] = model.localNum;
-      params['materialName'] = model.name;
+      params['materialName'] = model.materialName;
+      params['reportId'] = editId;
       SCLoadingUtils.show();
       SCHttpManager.instance.post(
           url: SCUrl.kEditFrmLossMaterialUrl,

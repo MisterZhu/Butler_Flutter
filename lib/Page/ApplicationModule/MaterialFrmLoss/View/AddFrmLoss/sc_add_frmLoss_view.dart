@@ -26,7 +26,7 @@ import '../../../MaterialOutbound/Controller/sc_select_department_controller.dar
 import '../../../MaterialOutbound/Model/sc_receiver_model.dart';
 import '../../Controller/sc_add_frmLoss_controller.dart';
 
-/// 新增调拨view
+/// 新增报损view
 
 class SCAddFrmLossView extends StatefulWidget {
   /// SCAddFrmLossController
@@ -281,7 +281,8 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
   addMaterialAction() async {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
-      'wareHouseId': widget.state.wareHouseId
+      'wareHouseId': widget.state.wareHouseId,
+      "materialType" : 3
     });
     if (list != null) {
       onlyAddMaterial(list);
@@ -294,6 +295,7 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
       'isEdit': true,
+      "materialType" : 3
     });
     if (list != null) {
       editAddMaterial(list);
@@ -363,8 +365,6 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
     for (SCMaterialListModel model in widget.state.selectedList) {
       var params = model.toJson();
       params['num'] = model.localNum;
-      params['materialId'] = model.id;
-      params['materialName'] = model.name;
       materialList.add(params);
     }
 
@@ -607,6 +607,10 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
 
   /// 新增物资-编辑
   editAddMaterial(List<SCMaterialListModel> list) {
+    print("原始数据===${widget.state.selectedList}");
+
+    print("添加===$list");
+
     // 编辑的物资
     List<SCMaterialListModel> editList = [];
     // 新增的物资
@@ -619,7 +623,7 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
       SCMaterialListModel tempModel = SCMaterialListModel();
 
       for (SCMaterialListModel subModel in widget.state.selectedList) {
-        if (model.id == subModel.materialId) {
+        if (model.materialId == subModel.materialId) {
           contains = true;
           tempModel = SCMaterialListModel.fromJson(subModel.toJson());
           if (model.localNum == subModel.localNum) {
@@ -644,21 +648,22 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
       }
     }
 
-    for (SCMaterialListModel model in editList) {}
+    for (SCMaterialListModel model in editList) {
+      print("编辑的物资===${model.toJson()}");
+    }
 
     List<SCMaterialListModel> newList = widget.state.selectedList;
     List addJsonList = [];
     for (SCMaterialListModel model in addList) {
       model.inId = widget.state.editId;
-      model.materialId = model.id;
-      model.materialName = model.name;
       newList.add(model);
       var subParams = model.toJson();
-      subParams['materialId'] = model.id;
-      subParams['materialName'] = model.name;
+      subParams['materialId'] = model.materialId;
+      subParams['materialName'] = model.materialName;
       subParams['num'] = model.localNum;
-      subParams['inId'] = widget.state.editId;
+      subParams['reportId'] = widget.state.editId;
       addJsonList.add(subParams);
+      print("新增的物资===${subParams}");
     }
 
     if (editList.isNotEmpty) {

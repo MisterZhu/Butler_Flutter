@@ -16,7 +16,7 @@ class SCMaterialEntryPage extends StatefulWidget {
   SCMaterialEntryPageState createState() => SCMaterialEntryPageState();
 }
 
-class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
+class SCMaterialEntryPageState extends State<SCMaterialEntryPage> with AutomaticKeepAliveClientMixin{
   /// SCMaterialEntryController
   late SCMaterialEntryController controller;
 
@@ -82,4 +82,7 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> {
       }
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

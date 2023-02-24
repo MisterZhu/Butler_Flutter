@@ -22,7 +22,7 @@ import '../../../MaterialOutbound/Controller/sc_select_department_controller.dar
 import '../../../MaterialOutbound/Model/sc_receiver_model.dart';
 import '../../Controller/sc_add_check_controller.dart';
 
-/// 新增调拨view
+/// 盘点任务view
 
 class SCAddCheckView extends StatefulWidget {
   /// SCAddCheckController
@@ -248,13 +248,20 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
 
   /// 添加物资
   addAction() async {
-    if (widget.state.wareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
-      return;
-    }
-    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {'data': widget.state.selectedList, 'wareHouseId': widget.state.wareHouseId});
-    if (list != null) {
-      widget.state.updateSelectedMaterial(list);
+    // if (widget.state.wareHouseId.isEmpty) {
+    //   SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
+    //   return;
+    // }
+    if (widget.state.range == 1) {
+      var list = await SCRouterHelper.pathPage(SCRouterPath.checkSelectCategoryPage, {'data': widget.state.selectedCategoryList, 'wareHouseId': widget.state.wareHouseId});
+      if (list != null) {
+        widget.state.updateSelectedMaterial(list);
+      }
+    } else if (widget.state.range == 2) {
+      var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {'data': widget.state.selectedList, 'wareHouseId': widget.state.wareHouseId, "materialType" : 5});
+      if (list != null) {
+        widget.state.updateSelectedMaterial(list);
+      }
     }
   }
 

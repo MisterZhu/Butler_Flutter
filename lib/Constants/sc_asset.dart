@@ -138,6 +138,8 @@ class SCAsset {
   static const String iconMineCareModel = "images/mine/icon_mine_care_model.png";
   /// 我的服务
   static const String iconMineService = "images/mine/icon_mine_service.png";
+  /// 我的设置
+  static const String iconMineNewSetting= "images/mine/icon_mine_new_setting.png";
 
   /// 切换身份-企业icon
   static const String iconSwitchIdentityProjectIcon = "images/mine/icon_switch_identity_project_icon.png";

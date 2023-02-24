@@ -168,7 +168,7 @@ class SCDefaultValue {
   static const String selectOperatorName = "请选择处理人";
 
   /// 设置-注销账号提示
-  static const String logOffTip = "确定要注销账号吗";
+  static const String logOffTip = "你正在申请注销你在$appName下的账号。注销后，你将退出$appName，该账号将无法继续使用，账号下的所有数据也无法处理，清确认是否注销";
 
   /// 上传中tip
   static const String uploadingTip = "上传中...";

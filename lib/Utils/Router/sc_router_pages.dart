@@ -22,6 +22,7 @@ import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_problem_
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_select_page.dart';
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_to_be_upload_page.dart';
 import '../../Page/ApplicationModule/MaterialCheck/Page/sc_add_check_page.dart';
+import '../../Page/ApplicationModule/MaterialCheck/Page/sc_material_check_category_page.dart';
 import '../../Page/ApplicationModule/MaterialCheck/Page/sc_material_check_detail_page.dart';
 import '../../Page/ApplicationModule/MaterialCheck/Page/sc_material_check_page.dart';
 import '../../Page/ApplicationModule/MaterialEntry/Page/sc_add_material_page.dart';
@@ -125,6 +126,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.materialCheckPage, page: () => SCMaterialCheckPage()),
     /*盘点详情*/
     GetPage(name: SCRouterPath.checkDetailPage, page: () => SCMaterialCheckDetailPage()),
+    /*盘点选择物资分类*/
+    GetPage(name: SCRouterPath.checkSelectCategoryPage, page: () => SCMaterialCheckSelectCategoryPage()),
   ];
 
   /*根据code使用路由*/

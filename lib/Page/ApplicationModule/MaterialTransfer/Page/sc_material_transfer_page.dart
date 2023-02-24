@@ -16,7 +16,7 @@ class SCMaterialTransferPage extends StatefulWidget {
   SCMaterialTransferPageState createState() => SCMaterialTransferPageState();
 }
 
-class SCMaterialTransferPageState extends State<SCMaterialTransferPage> {
+class SCMaterialTransferPageState extends State<SCMaterialTransferPage> with AutomaticKeepAliveClientMixin{
 
   /// SCMaterialTransferController
   late SCMaterialTransferController controller;
@@ -75,4 +75,7 @@ class SCMaterialTransferPageState extends State<SCMaterialTransferPage> {
       }
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

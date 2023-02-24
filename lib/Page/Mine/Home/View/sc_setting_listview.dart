@@ -38,7 +38,7 @@ class SCSettingListView extends StatelessWidget {
   Widget getCell(int index, BuildContext context) {
     if (index == 0) {
       return SCSettingCell(title: '关于', onTap: (){
-        var params = {'title' : '关于${SCDefaultValue.appName}', 'url' : SCAgreement.userAgreementUrl, 'removeLoginCheck' : true};
+        var params = {'title' : '关于${SCDefaultValue.appName}', 'url' : SCAgreement.aboutUSUrl, 'removeLoginCheck' : true};
         SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
       },);
     } else if (index == 1) {
@@ -87,6 +87,7 @@ class SCSettingListView extends StatelessWidget {
   logOff(BuildContext context) {
     SCDialogUtils.instance.showMiddleDialog(
       context: context,
+      title: '注销提示',
       content: SCDefaultValue.logOffTip,
       customWidgetButtons: [
         defaultCustomButton(context,

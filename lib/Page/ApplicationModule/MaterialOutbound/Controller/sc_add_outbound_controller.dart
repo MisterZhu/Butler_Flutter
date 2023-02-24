@@ -232,7 +232,7 @@ class SCAddOutboundController extends GetxController {
       print("物资数据===${model.toJson()}");
       var params = model.toJson();
       params['num'] = model.localNum;
-      params['materialName'] = model.name;
+      params['materialName'] = model.materialName;
       SCLoadingUtils.show();
       SCHttpManager.instance.post(
           url: SCUrl.kEditOutEntryUrl,

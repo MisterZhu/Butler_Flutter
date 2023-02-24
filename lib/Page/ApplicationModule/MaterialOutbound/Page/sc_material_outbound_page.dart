@@ -16,7 +16,7 @@ class SCMaterialOutboundPage extends StatefulWidget {
   SCMaterialOutboundPageState createState() => SCMaterialOutboundPageState();
 }
 
-class SCMaterialOutboundPageState extends State<SCMaterialOutboundPage> {
+class SCMaterialOutboundPageState extends State<SCMaterialOutboundPage> with AutomaticKeepAliveClientMixin{
 
   /// SCMaterialOutboundController
   late SCMaterialOutboundController controller;
@@ -80,5 +80,8 @@ class SCMaterialOutboundPageState extends State<SCMaterialOutboundPage> {
       }
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
 }

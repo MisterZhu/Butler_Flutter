@@ -16,7 +16,7 @@ class SCMaterialFrmLossPage extends StatefulWidget {
   SCMaterialFrmLossPageState createState() => SCMaterialFrmLossPageState();
 }
 
-class SCMaterialFrmLossPageState extends State<SCMaterialFrmLossPage> {
+class SCMaterialFrmLossPageState extends State<SCMaterialFrmLossPage> with AutomaticKeepAliveClientMixin{
 
   /// SCMaterialFrmLossController
   late SCMaterialFrmLossController controller;
@@ -75,4 +75,7 @@ class SCMaterialFrmLossPageState extends State<SCMaterialFrmLossPage> {
       }
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

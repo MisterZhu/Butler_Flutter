@@ -89,7 +89,7 @@ class SCMaterialEntryViewState extends State<SCMaterialEntryView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SCMaterialSearchItem(
-          name: '搜索仓库名称',
+          name: '搜索仓库名称/操作人',
           searchAction: () {
             SCRouterHelper.pathPage(SCRouterPath.entrySearchPage,
                 {'type': SCWarehouseManageType.entry});

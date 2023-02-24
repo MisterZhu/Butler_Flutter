@@ -104,7 +104,7 @@
 - (void)registerAllHandler {
     __weak typeof(self) weakSelf = self;
     // 更改nav标题
-    [_bridge registerHandler:@"_app_setTitle" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridge registerHandler:@"_app_setTitle" handler:^(id data, WVJBResponseCallback responseCallback) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if ([data isKindOfClass:[NSString class]]) {
             strongSelf.navBar.title = (NSString *)data;
@@ -116,11 +116,11 @@
     }];
     
     // 扫一扫
-    [_bridge registerHandler:@"_app_scan" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridge registerHandler:@"_app_scan" handler:^(id data, WVJBResponseCallback responseCallback) {
         
     }];
     // 返回
-    [_bridge registerHandler:@"sc_app_back" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridge registerHandler:@"sc_app_back" handler:^(id data, WVJBResponseCallback responseCallback) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf dismissViewControllerAnimated:YES completion:nil];
     }];
