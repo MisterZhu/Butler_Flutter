@@ -16,7 +16,7 @@ class SCBasicInfoCell extends StatefulWidget {
   final List list;
 
   /// 备注
-  final String? remark;
+  String? remark;
 
   /// 需要备注
   final bool requiredRemark;
@@ -148,7 +148,7 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
               color: Colors.white, borderRadius: BorderRadius.circular(4.0)),
           child: SCDeliverExplainCell(
             title: '备注信息',
-            content: widget.remark ?? '',
+            content: widget.remark,
             inputHeight: 92.0,
             inputAction: (String content) {
               widget.inputAction?.call(content);

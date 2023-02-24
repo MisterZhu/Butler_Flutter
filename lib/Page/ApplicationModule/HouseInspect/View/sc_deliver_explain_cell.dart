@@ -11,7 +11,7 @@ class SCDeliverExplainCell extends StatefulWidget {
   final String title;
 
   /// 输入框的内容
-  final String? content;
+  String? content;
 
   /// 输入框高度
   final double inputHeight;
@@ -30,10 +30,32 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
   TextEditingController controller = TextEditingController();
   FocusNode node = FocusNode();
 
+  /// 字数
+  int count = 0;
   @override
   initState() {
     super.initState();
+    if (widget.content != null) {
+      count = widget.content?.length ?? 0;
+      controller.value = TextEditingValue(
+          text: widget.content ?? '',
+          selection: TextSelection.fromPosition(TextPosition(
+              affinity: TextAffinity.downstream, offset: widget.content?.length ?? 0)));
 
+    }
+  }
+
+  @override
+  void didUpdateWidget(SCDeliverExplainCell oldWidget) {
+    if (widget.content != null) {
+      count = widget.content?.length ?? 0;
+      controller.value = TextEditingValue(
+          text: widget.content ?? '',
+          selection: TextSelection.fromPosition(TextPosition(
+              affinity: TextAffinity.downstream, offset: widget.content?.length ?? 0)));
+
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -45,13 +67,6 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.content != null) {
-      controller.value = controller.value.copyWith(
-        text: widget.content,
-        selection: TextSelection(baseOffset: widget.content?.length ?? 0, extentOffset: widget.content?.length ?? 0),
-        composing: TextRange.empty,
-      );
-    }
     return body();
   }
 
@@ -87,10 +102,18 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
     return Container(
       width: double.infinity,
       height: widget.inputHeight,
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+      padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0, bottom: 6.0),
       decoration: BoxDecoration(
         color: SCColors.color_F7F8FA, borderRadius: BorderRadius.circular(4.0)),
-      child: textField(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Expanded(child: textField()),
+          countItem(),
+        ],
+      )
     );
   }
 
@@ -99,7 +122,7 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
     return TextField(
       controller: controller,
       maxLines: null,
-      style: const TextStyle(fontSize: SCFonts.f14, fontWeight:  FontWeight.w400, color: SCColors.color_1B1D33),
+      style: const TextStyle(fontSize: SCFonts.f16, fontWeight:  FontWeight.w400, color: SCColors.color_1B1D33),
       cursorColor: SCColors.color_1B1C33,
       cursorWidth: 2,
       focusNode: node,
@@ -122,10 +145,28 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
       ),
       onChanged: (value) {
         widget.inputAction?.call(value);
+        count = value.length;
+        setState(() {
+
+        });
       },
       keyboardType: TextInputType.text,
       keyboardAppearance: Brightness.light,
       textInputAction: TextInputAction.done,
+    );
+  }
+
+  /// 字数
+  Widget countItem() {
+    return Text(
+      '$count/200',
+      textAlign: TextAlign.right,
+      overflow: TextOverflow.ellipsis,
+      style: const TextStyle(
+        fontSize: SCFonts.f12,
+        color: SCColors.color_8D8E99,
+        fontWeight: FontWeight.w400,
+      ),
     );
   }
 

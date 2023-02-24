@@ -104,12 +104,16 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
         frmLossTimeView(),
       ]);
     } else if (type == SCWarehouseManageType.check) {
-      // 盘点任务，显示任务时间、仓库名称
+      // 盘点任务，显示任务开始时间、结束时间、仓库名称
       return Column(children: [
         const SizedBox(
           height: 10.0,
         ),
-        taskTimeView(),
+        taskStartTimeView(),
+        const SizedBox(
+          height: 10.0,
+        ),
+        taskEndTimeView(),
         const SizedBox(
           height: 10.0,
         ),
@@ -120,10 +124,17 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
     }
   }
 
-  /// 任务时间
-  Widget taskTimeView() {
+  /// 任务开始时间
+  Widget taskStartTimeView() {
     return Row(
-      children: [desLabel('任务时间'), textView(1, '${model?.gmtCreate}')],
+      children: [desLabel('开始时间'), textView(1, '${model?.gmtCreate}')],
+    );
+  }
+
+  /// 任务结束时间
+  Widget taskEndTimeView() {
+    return Row(
+      children: [desLabel('结束时间'), textView(1, '${model?.gmtCreate}')],
     );
   }
 
@@ -217,10 +228,10 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 备注
   Widget entryRemarkView() {
     return Offstage(
-      offstage: model?.remark == "",
+      offstage: model?.remark == "" || model?.remark == null,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [desLabel('备注'), textView(10, '${model?.remark}')],
+        children: [desLabel('备注'), textView(100, '${model?.remark}')],
       ),
     );
   }

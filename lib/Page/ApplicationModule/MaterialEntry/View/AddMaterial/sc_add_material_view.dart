@@ -201,6 +201,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
                 init: widget.categoryAlertController,
                 builder: (value) {
                   return SCSelectCategoryAlert(
+                    title: '选择分类',
                     headerList: widget.categoryAlertController.headerList,
                     footerList: widget.categoryAlertController.footerList,
                     headerTap: (int index, SCSelectCategoryModel model) {

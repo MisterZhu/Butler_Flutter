@@ -349,6 +349,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
                     init: widget.selectDepartmentController,
                     builder: (value) {
                       return SCSelectCategoryAlert(
+                        title: '选择部门',
                         headerList: widget.selectDepartmentController.headerList,
                         footerList: widget.selectDepartmentController.footerList,
                         headerTap: (int index, SCSelectCategoryModel model) {
@@ -473,6 +474,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       var params = {
         'receiverModel': receiverModel,
         'orgId': widget.state.fetchOrgId,
+        'title': '选择领用人',
       };
       var backParams = await SCRouterHelper.pathPage(SCRouterPath.selectReceiverPage, params);
       if (backParams != null) {

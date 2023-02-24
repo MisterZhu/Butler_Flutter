@@ -13,8 +13,8 @@ import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../../Constants/sc_enum.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
-import '../../MaterialEntry/Controller/sc_material_entry_controller.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart';
+import '../Controller/sc_material_transfer_controller.dart';
 
 
 /// 调拨详情
@@ -194,8 +194,8 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
 
   /// 提交
   submitAction() {
-    SCMaterialEntryController materialEntryController = SCMaterialEntryController();
-    materialEntryController.submit(id: controller.id, completeHandler: (bool success){
+    SCMaterialTransferController materialTransferController = SCMaterialTransferController();
+    materialTransferController.submit(id: controller.id, completeHandler: (bool success){
       SCScaffoldManager.instance.eventBus
           .fire({'key': SCKey.kRefreshMaterialTransferPage});
       SCRouterHelper.back( null);

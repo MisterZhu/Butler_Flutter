@@ -38,7 +38,6 @@ class SCAddMaterialController extends GetxController {
   @override
   onInit() {
     super.onInit();
-    //loadMaterialSortData();
   }
 
   /// 新增物资-物资列表数据

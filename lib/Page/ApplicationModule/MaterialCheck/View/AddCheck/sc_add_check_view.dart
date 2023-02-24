@@ -115,15 +115,15 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
             // 结束时间
             showTimeAlert(context, 1);
           } else if (index == 3) {
-            // 部门
-            showSelectDepartmentAlert();
-          } else if (index == 4) {
-            // 处理人
-            selectUser();
-          } else if (index == 5) {
             // 仓库名称
             List list = widget.state.wareHouseList.map((e) => e.name).toList();
             showAlert(1, '仓库名称', list);
+          } else if (index == 4) {
+            // 部门
+            showSelectDepartmentAlert();
+          } else if (index == 5) {
+            // 处理人
+            selectUser();
           }
         },
       );
@@ -228,7 +228,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
         context: context,
         dateType: PickerDateTimeType.kYMDHM,
         minValue: DateTime(now.year - 1, 1, 1, 00, 00),
-        maxValue: DateTime(now.year + 9, 12, 31, 23, 59)
+        maxValue: DateTime(now.year + 1, 12, 31, 23, 59)
     );
   }
 
@@ -357,6 +357,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
                     init: widget.selectDepartmentController,
                     builder: (value) {
                       return SCSelectCategoryAlert(
+                        title: '选择部门',
                         headerList: widget.selectDepartmentController.headerList,
                         footerList: widget.selectDepartmentController.footerList,
                         headerTap: (int index, SCSelectCategoryModel model) {
@@ -481,6 +482,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       var params = {
         'receiverModel': receiverModel,
         'orgId': widget.state.orgId,
+        'title': '选择处理人',
       };
       var backParams = await SCRouterHelper.pathPage(SCRouterPath.selectReceiverPage, params);
       if (backParams != null) {
