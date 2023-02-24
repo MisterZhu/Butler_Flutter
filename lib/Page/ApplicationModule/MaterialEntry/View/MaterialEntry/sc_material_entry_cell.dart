@@ -65,7 +65,7 @@ class SCMaterialEntryCell extends StatelessWidget {
             const SizedBox(
               height: 4.0,
             ),
-            nameItem('$text：${model?.materialNums}'),
+            nameItem('$text：${model?.materialNums ?? 0}'),
             const SizedBox(
               height: 6.0,
             ),

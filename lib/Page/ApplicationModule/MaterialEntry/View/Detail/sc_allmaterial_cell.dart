@@ -64,6 +64,9 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
                 ],
               ),
             ),
+          ),
+          const SizedBox(
+            height: 4.0,
           )
         ],
       ),

@@ -18,7 +18,7 @@ class SCAllMaterialTitleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 14.0), child: Column(
+    return  Padding(padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0), child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         titleView(),
@@ -58,7 +58,7 @@ class SCAllMaterialTitleView extends StatelessWidget {
     return Container(
       height: 22.0,
       alignment: Alignment.centerLeft,
-      child: Text('共 ${model?.materials?.length} 种 总数量 ${model?.materialNums}', maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(
+      child: Text('共 ${model?.materials?.length ?? 0} 种 总数量 ${model?.materialNums ?? 0}', maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(
           fontSize: SCFonts.f14,
           fontWeight: FontWeight.w400,
           color: SCColors.color_5E5F66
