@@ -207,6 +207,7 @@ class SCAddTransferController extends GetxController {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kEditDeleteTransferMaterialUrl,
+        isQuery: true,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();

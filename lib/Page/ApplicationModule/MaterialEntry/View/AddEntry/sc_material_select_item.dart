@@ -150,7 +150,7 @@ class SCMaterialSelectItemState extends State<SCMaterialSelectItem> {
       cursorWidth: 2,
       focusNode: node,
       inputFormatters: [
-        LengthLimitingTextInputFormatter(20),
+        LengthLimitingTextInputFormatter(50),
       ],
       decoration: const InputDecoration(
         contentPadding: EdgeInsets.zero,

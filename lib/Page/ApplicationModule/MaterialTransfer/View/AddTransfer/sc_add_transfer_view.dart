@@ -203,10 +203,17 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
                   widget.state.inWareHouseId = subModel.id ?? '';
                 } else if (index == 1) {
                   // 调出仓库
-                  SCWareHouseModel subModel = widget.state.outWareHouseList[selectIndex];
-                  widget.state.outNameIndex = selectIndex;
-                  widget.state.outWareHouseName = model.name ?? '';
-                  widget.state.outWareHouseId = subModel.id ?? '';
+                  if (widget.state.outNameIndex == selectIndex) {
+                    /// 选择同一个仓库，不刷新页面
+                  } else {
+                    /// 选择不同的仓库，清空选中的物资，刷新页面
+                    SCWareHouseModel subModel = widget.state.outWareHouseList[selectIndex];
+                    widget.state.outNameIndex = selectIndex;
+                    widget.state.outWareHouseName = model.name ?? '';
+                    widget.state.outWareHouseId = subModel.id ?? '';
+                    /// 清空选中的物资
+                    widget.state.updateSelectedMaterial([]);
+                  }
                 } else if (index == 2) {
                   // 类型
                   SCEntryTypeModel subModel = widget.state.typeList[selectIndex];

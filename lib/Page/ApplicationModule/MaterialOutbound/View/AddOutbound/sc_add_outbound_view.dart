@@ -203,10 +203,17 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
               setState(() {
                 if (index == 0) {
                   // 仓库名称
-                  SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
-                  widget.state.nameIndex = selectIndex;
-                  widget.state.wareHouseName = model.name ?? '';
-                  widget.state.wareHouseId = subModel.id ?? '';
+                  if (widget.state.nameIndex == selectIndex) {
+                    /// 选择同一个仓库，不刷新页面
+                  } else {
+                    /// 选择不同的仓库，清空选中的物资，刷新页面
+                    SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
+                    widget.state.nameIndex = selectIndex;
+                    widget.state.wareHouseName = model.name ?? '';
+                    widget.state.wareHouseId = subModel.id ?? '';
+                    /// 清空选中的物资
+                    widget.state.updateSelectedMaterial([]);
+                  }
                 } else if (index == 1) {
                   // 类型
                   SCEntryTypeModel subModel = widget.state.typeList[selectIndex];

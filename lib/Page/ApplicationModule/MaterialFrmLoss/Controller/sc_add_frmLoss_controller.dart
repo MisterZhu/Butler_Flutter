@@ -12,7 +12,6 @@ import '../../MaterialEntry/Model/sc_material_list_model.dart';
 import '../../MaterialEntry/Model/sc_material_task_detail_model.dart';
 import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
 
-
 /// 新增报损controller
 
 class SCAddFrmLossController extends GetxController {
@@ -79,14 +78,15 @@ class SCAddFrmLossController extends GetxController {
   @override
   onInit() {
     super.onInit();
-    reportOrgId = SCScaffoldManager.instance.user.orgIds?.first.toString() ?? '';
-    reportOrgName = SCScaffoldManager.instance.user.orgNames?.first.toString() ?? '';
+    reportOrgId =
+        SCScaffoldManager.instance.user.orgIds?.first.toString() ?? '';
+    reportOrgName =
+        SCScaffoldManager.instance.user.orgNames?.first.toString() ?? '';
     reportUserId = SCScaffoldManager.instance.user.id ?? '';
     reportUserName = SCScaffoldManager.instance.user.userName ?? '';
     loadUserOrg();
     loadWareHouseList();
     loadFrmLossType();
-
   }
 
   /// 初始化编辑的参数
@@ -126,7 +126,8 @@ class SCAddFrmLossController extends GetxController {
 
       if (reportTime != '') {
         /// 报损日期Str
-        reportTimeStr = formatDate(DateTime.parse(reportTime), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+        reportTimeStr = formatDate(DateTime.parse(reportTime),
+            [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
       }
 
       /// 备注
@@ -218,7 +219,8 @@ class SCAddFrmLossController extends GetxController {
   }
 
   /// 编辑-新增物资
-  editAddMaterial({required List list, Function(bool success)? completeHandler}) {
+  editAddMaterial(
+      {required List list, Function(bool success)? completeHandler}) {
     var params = {"reportId": editId, "materialReportRelations": list};
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
@@ -234,12 +236,14 @@ class SCAddFrmLossController extends GetxController {
   }
 
   /// 编辑-删除物资
-  editDeleteMaterial({required String materialInRelationId, Function(bool success)? completeHandler}) {
+  editDeleteMaterial(
+      {required String materialInRelationId,
+      Function(bool success)? completeHandler}) {
     var params = {"materialReportRelationId": materialInRelationId};
     print("删除报损参数：$params");
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-      isQuery: true,
+        isQuery: true,
         url: SCUrl.kEditDeleteFrmLossMaterialUrl,
         params: params,
         success: (value) {
@@ -254,7 +258,7 @@ class SCAddFrmLossController extends GetxController {
 
   /// 编辑-编辑物资
   editMaterial({required List list, Function(bool success)? completeHandler}) {
-    for(SCMaterialListModel model in list) {
+    for (SCMaterialListModel model in list) {
       print("报损物资数据===${model.toJson()}");
       var params = model.toJson();
       params['num'] = model.localNum;
@@ -319,7 +323,7 @@ class SCAddFrmLossController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           SCMaterialTaskDetailModel model =
-          SCMaterialTaskDetailModel.fromJson(value);
+              SCMaterialTaskDetailModel.fromJson(value);
           List<SCMaterialListModel> materials = model.materials ?? [];
           for (SCMaterialListModel subModel in materials) {
             subModel.localNum = subModel.number ?? 1;
@@ -358,8 +362,10 @@ class SCAddFrmLossController extends GetxController {
           value['token'] = token;
           SCUserModel userModel = SCUserModel.fromJson(value);
           SCScaffoldManager.instance.user = userModel;
-          reportOrgId = SCScaffoldManager.instance.user.orgIds?.first.toString() ?? '';
-          reportOrgName = SCScaffoldManager.instance.user.orgNames?.first.toString() ?? '';
+          reportOrgId =
+              SCScaffoldManager.instance.user.orgIds?.first.toString() ?? '';
+          reportOrgName =
+              SCScaffoldManager.instance.user.orgNames?.first.toString() ?? '';
           update();
         });
   }
