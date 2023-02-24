@@ -5,6 +5,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Network/sc_config.dart';
+import '../../../../../Utils/Preview/sc_image_preview_utils.dart';
 import '../../Model/sc_material_task_detail_model.dart';
 
 /// 入库信息cell
@@ -368,17 +369,28 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   Widget photoItem(int index) {
     Files? file = model?.files?[index];
     String fileKey = file?.fileKey ?? '';
-    return SizedBox(
-      width: 79.0,
-      height:  79.0,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(4.0),
-        child: SCImage(
-          url: SCConfig.getImageUrl(fileKey),
+    String url = SCConfig.getImageUrl(fileKey);
+    return GestureDetector(
+      onTap: () {
+        previewImage(url);
+      },
+      child: SizedBox(
           width: 79.0,
-          height: 79.0,
-          fit: BoxFit.fill,),
-      )
+          height:  79.0,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4.0),
+            child: SCImage(
+              url: url,
+              width: 79.0,
+              height: 79.0,
+              fit: BoxFit.fill,),
+          )
+      ),
     );
+  }
+
+  /// 图片预览
+  previewImage(String url) {
+    SCImagePreviewUtils.previewImage(imageList: [url]);
   }
 }

@@ -67,6 +67,8 @@ class SCAsset {
   static const String iconPhone = "images/common/icon_phone.png";
   /// 黑色关闭
   static const String iconBlackClose = "images/common/icon_close_black.png";
+  /// 白色关闭
+  static const String iconWhiteClose = "images/common/icon_close_white.png";
   /// 清除按钮
   static const String iconSearchClear =  "images/common/icon_search_clear.png";
 
