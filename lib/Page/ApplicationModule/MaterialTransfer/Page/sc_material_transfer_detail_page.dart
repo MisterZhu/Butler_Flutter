@@ -16,7 +16,6 @@ import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart';
 import '../Controller/sc_material_transfer_controller.dart';
 
-
 /// 调拨详情
 
 class SCMaterialTransferDetailPage extends StatefulWidget {
@@ -25,7 +24,8 @@ class SCMaterialTransferDetailPage extends StatefulWidget {
       SCMaterialTransferDetailPageState();
 }
 
-class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPage> {
+class SCMaterialTransferDetailPageState
+    extends State<SCMaterialTransferDetailPage> {
   /// SCMaterialEntryDetailController
   late SCMaterialEntryDetailController controller;
 
@@ -38,7 +38,8 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
   @override
   initState() {
     super.initState();
-    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCMaterialTransferDetailPage).toString());
+    controllerTag = SCScaffoldManager.instance
+        .getXControllerTag((SCMaterialTransferDetailPage).toString());
     controller = Get.put(SCMaterialEntryDetailController(), tag: controllerTag);
     Map<String, dynamic> params = Get.arguments;
     if (params.isNotEmpty) {
@@ -55,7 +56,8 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
 
   @override
   dispose() {
-    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialTransferDetailPage).toString(), controllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag(
+        (SCMaterialTransferDetailPage).toString(), controllerTag);
     controller.dispose();
     super.dispose();
   }
@@ -72,10 +74,7 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
       height: double.infinity,
       color: SCColors.color_F2F3F5,
       child: Column(
-        children: [
-          Expanded(child: topView()),
-          bottomView()
-        ],
+        children: [Expanded(child: topView()), bottomView()],
       ),
     );
   }
@@ -86,9 +85,12 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
         tag: controllerTag,
         init: controller,
         builder: (state) {
-          return SCMaterialDetailListView(
-            state: controller,
-            type: SCWarehouseManageType.transfer,
+          return Offstage(
+            offstage: !controller.success,
+            child: SCMaterialDetailListView(
+              state: controller,
+              type: SCWarehouseManageType.transfer,
+            ),
           );
         });
   }
@@ -116,7 +118,7 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
               onTap: (value) {
                 if (value == '编辑') {
                   editAction();
-                } else if(value == '提交') {
+                } else if (value == '提交') {
                   submitAction();
                 }
                 // if (value == "驳回") {
@@ -163,7 +165,7 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
   }
 
   /// 编辑
-  editAction() async{
+  editAction() async {
     String inWareHouseName = controller.model.inWareHouseName ?? '';
     String inWareHouseId = controller.model.inWareHouseId ?? '';
     String outWareHouseName = controller.model.outWareHouseName ?? '';
@@ -180,17 +182,16 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
       //model.id = model.materialId;
     }
     SCRouterHelper.pathPage(SCRouterPath.addTransferPage, {
-      'isEdit' : true,
-      'data' : materials,
-      "inWareHouseName" : inWareHouseName,
-      "inWareHouseId" : inWareHouseId,
-      "outWareHouseName" : outWareHouseName,
-      "outWareHouseId" : outWareHouseId,
-      "typeName" : typeName,
-      "type" : type,
-      "remark" : remark,
-      "id" : id
-
+      'isEdit': true,
+      'data': materials,
+      "inWareHouseName": inWareHouseName,
+      "inWareHouseId": inWareHouseId,
+      "outWareHouseName": outWareHouseName,
+      "outWareHouseId": outWareHouseId,
+      "typeName": typeName,
+      "type": type,
+      "remark": remark,
+      "id": id
     })?.then((value) {
       controller.loadMaterialTransferDetail();
     });
@@ -198,11 +199,14 @@ class SCMaterialTransferDetailPageState extends State<SCMaterialTransferDetailPa
 
   /// 提交
   submitAction() {
-    SCMaterialTransferController materialTransferController = SCMaterialTransferController();
-    materialTransferController.submit(id: controller.id, completeHandler: (bool success){
-      SCScaffoldManager.instance.eventBus
-          .fire({'key': SCKey.kRefreshMaterialTransferPage});
-      SCRouterHelper.back( null);
-    });
+    SCMaterialTransferController materialTransferController =
+        SCMaterialTransferController();
+    materialTransferController.submit(
+        id: controller.id,
+        completeHandler: (bool success) {
+          SCScaffoldManager.instance.eventBus
+              .fire({'key': SCKey.kRefreshMaterialTransferPage});
+          SCRouterHelper.back(null);
+        });
   }
 }
