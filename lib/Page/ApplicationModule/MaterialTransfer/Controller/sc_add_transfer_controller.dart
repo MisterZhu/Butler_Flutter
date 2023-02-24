@@ -281,7 +281,7 @@ class SCAddTransferController extends GetxController {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kWareHouseTypeUrl,
-        params: {'dictionaryCode': 'WAREHOUSING'},
+        params: {'dictionaryCode': 'TRANSFER_TYPE'},
         success: (value) {
           SCLoadingUtils.hide();
           typeList = List<SCEntryTypeModel>.from(

@@ -104,8 +104,9 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
               state: state,
               categoryAlertController: categoryAlertController,
               refreshController: refreshController,
+              type: state.materialType,
               sureAction: (List<SCMaterialListModel> list){
-              SCRouterHelper.back(list);
+                SCRouterHelper.back(list);
             },);
           }),
     );

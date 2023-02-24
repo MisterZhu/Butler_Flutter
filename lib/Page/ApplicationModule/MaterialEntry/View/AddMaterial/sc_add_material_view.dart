@@ -5,6 +5,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
 import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
@@ -25,6 +26,7 @@ class SCAddMaterialView extends StatefulWidget {
       required this.state,
       required this.categoryAlertController,
       required this.refreshController,
+      required this.type,
       this.sureAction})
       : super(key: key);
 
@@ -39,6 +41,8 @@ class SCAddMaterialView extends StatefulWidget {
 
   /// RefreshController
   final RefreshController refreshController;
+
+  final SCWarehouseManageType type;
 
   @override
   SCAddMaterialViewState createState() => SCAddMaterialViewState();
@@ -251,7 +255,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
   searchAction() async {
     var backParams = await SCRouterHelper.pathPage(
         SCRouterPath.materialSearchPage,
-        {'wareHouseId': widget.state.wareHouseId});
+        {'wareHouseId': widget.state.wareHouseId, 'type': widget.type});
     if (backParams != null) {
       if (backParams['list'] != null) {
         List<SCMaterialListModel> list = backParams['list'] ?? [];

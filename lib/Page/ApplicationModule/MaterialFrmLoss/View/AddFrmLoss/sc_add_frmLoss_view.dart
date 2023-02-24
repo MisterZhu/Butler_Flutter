@@ -282,7 +282,7 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
-      "materialType" : 3
+      "materialType" : SCWarehouseManageType.frmLoss
     });
     if (list != null) {
       onlyAddMaterial(list);
@@ -295,7 +295,7 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
       'isEdit': true,
-      "materialType" : 3
+      "materialType" : SCWarehouseManageType.frmLoss
     });
     if (list != null) {
       editAddMaterial(list);

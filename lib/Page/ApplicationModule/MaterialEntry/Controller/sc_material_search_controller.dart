@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import '../../../../Constants/sc_enum.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../Model/sc_material_list_model.dart';
@@ -22,6 +23,9 @@ class SCMaterialSearchController extends GetxController {
 
   /// 仓库id
   String wareHouseId = '';
+
+  /// 页面类型
+  SCWarehouseManageType type = SCWarehouseManageType.entry;
 
   /// 更新搜索内容
   updateSearchString(String value) {
@@ -53,7 +57,7 @@ class SCMaterialSearchController extends GetxController {
       "pageSize": 20
     };
     SCHttpManager.instance.post(
-        url: SCUrl.kMaterialListUrl,
+        url: type == SCWarehouseManageType.entry ? SCUrl.kMaterialListUrl : SCUrl.kOtherMaterialListUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();

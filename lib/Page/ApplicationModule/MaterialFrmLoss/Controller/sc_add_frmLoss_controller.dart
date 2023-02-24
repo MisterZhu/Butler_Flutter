@@ -295,7 +295,7 @@ class SCAddFrmLossController extends GetxController {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kWareHouseTypeUrl,
-        params: {'dictionaryCode': 'WAREHOUSING'},
+        params: {'dictionaryCode': 'REPORTLOSS_TYPE'},
         success: (value) {
           SCLoadingUtils.hide();
           typeList = List<SCEntryTypeModel>.from(

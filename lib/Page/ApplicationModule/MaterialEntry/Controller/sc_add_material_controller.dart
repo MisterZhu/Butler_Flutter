@@ -27,7 +27,7 @@ class SCAddMaterialController extends GetxController {
   bool isEdit = false;
 
   /// 物资类型，1-入库，2-出库，3-报损，4-调拨，5-盘点
-  int materialType = 1;
+  SCWarehouseManageType materialType = SCWarehouseManageType.entry;
 
   /// 数据源
   List<SCMaterialListModel> materialList = [];
@@ -64,7 +64,7 @@ class SCAddMaterialController extends GetxController {
       "pageSize": 20
     };
     String url = '';
-    if (materialType == 1) {
+    if (materialType == SCWarehouseManageType.entry) {
       url = SCUrl.kMaterialListUrl;
     } else {
       url = SCUrl.kOtherMaterialListUrl;
@@ -94,7 +94,7 @@ class SCAddMaterialController extends GetxController {
           for (SCMaterialListModel model in materialList) {
             for (SCMaterialListModel subModel in originalList) {
               if (isEdit) {
-                if (materialType == 1) {
+                if (materialType == SCWarehouseManageType.entry) {
                   if (model.id == subModel.materialId) {
                     model.localNum = subModel.localNum;
                     model.isSelect = true;

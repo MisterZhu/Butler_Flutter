@@ -8,6 +8,7 @@ import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_basic_info_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_material_info_cell.dart';
+import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
@@ -257,7 +258,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
-      "materialType" : 2
+      "materialType" : SCWarehouseManageType.outbound
     });
     if (list != null) {
       onlyAddMaterial(list);
@@ -270,7 +271,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
       'isEdit': true,
-      "materialType" : 2
+      "materialType" : SCWarehouseManageType.outbound
     });
     if (list != null) {
       editAddMaterial(list);

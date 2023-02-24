@@ -100,7 +100,7 @@ class SCUrl {
   /// 选择搜索仓库列表
   static const String kWareHouseListUrl = "/api/warehouse/manage/warehouse/chooseWareHouseList";
 
-  /// 选择搜索仓库类型
+  /// 选择类型
   static const String kWareHouseTypeUrl = "/api/config/dictionary/listTree";
 
   /// 物资列表-分页
