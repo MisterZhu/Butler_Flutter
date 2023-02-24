@@ -124,7 +124,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 任务时间
   Widget taskTimeView() {
     return Row(
-      children: [desLabel('任务时间'), textView(1, '${model?.gmtCreate}')],
+      children: [desLabel('任务时间'), textView(1, model?.gmtCreate ?? '')],
     );
   }
 
@@ -156,7 +156,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 报损时间
   Widget frmLossTimeView() {
     return Row(
-      children: [desLabel('报损时间'), textView(1, '${model?.reportTime}')],
+      children: [desLabel('报损时间'), textView(1, model?.reportTime ?? '')],
     );
   }
 
@@ -204,14 +204,14 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// 单号
   Widget entryNumView() {
     return Row(
-      children: [desLabel('单号'), numView('${model?.number}')],
+      children: [desLabel('单号'), numView(model?.number ?? '')],
     );
   }
 
   /// 操作时间
   Widget entryTimeView() {
     return Row(
-      children: [desLabel('操作时间'), textView(1, '${model?.gmtCreate}')],
+      children: [desLabel('操作时间'), textView(1, model?.gmtCreate ?? '')],
     );
   }
 
