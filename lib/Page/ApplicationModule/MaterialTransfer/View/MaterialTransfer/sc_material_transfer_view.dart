@@ -65,12 +65,13 @@ class SCMaterialTransferViewState extends State<SCMaterialTransferView> {
   void initState() {
     super.initState();
     sortIndex = widget.state.sort == true ? 0 : 1;
-    widget.state.loadWareHouseType(() {
-      List list = widget.state.typeList.map((e) => e.name).toList();
-      setState(() {
-        typeList.addAll(list);
-      });
-    });
+    // widget.state.loadTransferType(() {
+    //   List list = widget.state.typeList.map((e) => e.name).toList();
+    //   setState(() {
+    //     typeList.addAll(list);
+    //   });
+    // });
+    typeList = ['全部', '组织内调拨', '跨组织调拨' ,'店间调拨'];
   }
 
   @override
@@ -91,7 +92,7 @@ class SCMaterialTransferViewState extends State<SCMaterialTransferView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SCMaterialSearchItem(name: '搜索仓库名称/操作人', searchAction: () {
-          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.check});
+          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.transfer});
         },),
         SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
           if (index == 0) {
