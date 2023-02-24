@@ -16,9 +16,6 @@ class SCAddCheckController extends GetxController {
   /// 仓库列表数组
   List<SCWareHouseModel> wareHouseList = [];
 
-  /// 任务数组
-  List<SCWareHouseModel> taskList = [];
-
   /// 已选择的物资数据
   List<SCMaterialListModel> selectedList = [];
 
@@ -43,11 +40,6 @@ class SCAddCheckController extends GetxController {
   /// 任务名称
   String taskName = '';
 
-  /// 任务id
-  String taskId = '';
-
-  /// 任务index
-  int taskIndex = -1;
 
   /// 开始时间，接口使用
   String startTime = '';
@@ -99,9 +91,6 @@ class SCAddCheckController extends GetxController {
       /// 任务名称
       taskName = params['taskName'];
 
-      /// 任务id
-      taskId = params['taskId'];
-
       /// 开始时间
       startTime = params['startTime'];
 
@@ -123,13 +112,6 @@ class SCAddCheckController extends GetxController {
         SCWareHouseModel model = wareHouseList[i];
         if (model.id == wareHouseId) {
           nameIndex = i;
-          break;
-        }
-      }
-      for (int i = 0; i < taskList.length; i++) {
-        SCWareHouseModel model = taskList[i];
-        if (model.id == taskId) {
-          taskIndex = i;
           break;
         }
       }

@@ -31,6 +31,9 @@ class SCBasicInfoCell extends StatefulWidget {
   /// 点击选择
   final Function(int index)? selectAction;
 
+  /// 输入任务名称
+  final Function(String content)? inputNameAction;
+
   /// 点击选择盘点范围
   final Function(int index)? selectRangeAction;
 
@@ -46,6 +49,7 @@ class SCBasicInfoCell extends StatefulWidget {
     this.remark,
     this.files,
     this.selectAction,
+    this.inputNameAction,
     this.inputAction,
     this.updatePhoto,
     this.selectRangeAction,
@@ -126,13 +130,21 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
           if (dic.containsKey('disable')) {
             disable = dic['disable'];
           }
+          bool isInput = false;
+          if (dic.containsKey('isInput')) {
+            isInput = dic['isInput'];
+          }
           return SCMaterialSelectItem(
             isRequired: dic['isRequired'],
             title: dic['title'],
+            isInput: isInput,
             content: dic['content'],
             disable: disable,
             selectAction: () {
               widget.selectAction?.call(index);
+            },
+            inputNameAction: (value) {
+              widget.inputNameAction?.call(value);
             },
           );
         },

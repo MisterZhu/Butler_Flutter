@@ -225,7 +225,7 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
     /// 基础信息数组
     List baseInfoList = [
       {'isRequired': true,'title': '调入仓库','content': widget.state.inWareHouseName, 'disable' : widget.state.isEdit},
-      {'isRequired': true,'title': '调出仓库','content': widget.state.outWareHouseName},
+      {'isRequired': true,'title': '调出仓库','content': widget.state.outWareHouseName, 'disable' : widget.state.isEdit},
       {'isRequired': true, 'title': '类型', 'content': widget.state.type},
     ];
     return baseInfoList;
