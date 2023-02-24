@@ -39,10 +39,13 @@ class SCEntrySearchController extends GetxController {
     var params = {
       "conditions": {
         "fields": [{
-          "map": {},
+          "map": {
+            "wareHouseName": searchString,
+            "operatorName": searchString
+          },
           "method": 7,
-          "name": "wareHouseName",
-          "value": searchString
+          "name": "searchs",
+          "value": ""
         }],
         "specialMap": {}
       },
@@ -57,6 +60,8 @@ class SCEntrySearchController extends GetxController {
       url =  SCUrl.kMaterialOutboundListUrl;
     } else if (type == SCWarehouseManageType.frmLoss) {
       url = SCUrl.kMaterialFrmLossListUrl;
+    } else if (type == SCWarehouseManageType.transfer) {
+      url = SCUrl.kMaterialTransferListUrl;
     }
     SCHttpManager.instance.post(
         url: url,

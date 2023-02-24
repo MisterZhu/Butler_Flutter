@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
@@ -15,8 +14,11 @@ import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
 /// 新增调拨controller
 
 class SCAddTransferController extends GetxController {
-  /// 仓库列表数组
-  List<SCWareHouseModel> wareHouseList = [];
+  /// 调入仓库列表数组
+  List<SCWareHouseModel> inWareHouseList = [];
+
+  /// 调出仓库列表数组
+  List<SCWareHouseModel> outWareHouseList = [];
 
   /// 类型数组
   List<SCEntryTypeModel> typeList = [];
@@ -66,8 +68,11 @@ class SCAddTransferController extends GetxController {
   @override
   onInit() {
     super.onInit();
-    loadWareHouseList();
-    loadWareHouseType();
+    loadInWareHouseList();
+    loadOutWareHouseList();
+    //loadTransferType();
+    List list = [{'code': '1', 'name': '组织内调拨'}, {'code': '2', 'name': '跨组织调拨'}, {'code': '3', 'name': '店间调拨'},];
+    typeList = list.map((e) => SCEntryTypeModel.fromJson(e)).toList();
   }
 
   /// 初始化编辑的参数
@@ -98,15 +103,15 @@ class SCAddTransferController extends GetxController {
 
       /// 主键id
       editId = params['id'];
-      for (int i = 0; i < wareHouseList.length; i++) {
-        SCWareHouseModel model = wareHouseList[i];
+      for (int i = 0; i < inWareHouseList.length; i++) {
+        SCWareHouseModel model = inWareHouseList[i];
         if (model.id == inWareHouseId) {
           inNameIndex = i;
           break;
         }
       }
-      for (int i = 0; i < wareHouseList.length; i++) {
-        SCWareHouseModel model = wareHouseList[i];
+      for (int i = 0; i < outWareHouseList.length; i++) {
+        SCWareHouseModel model = outWareHouseList[i];
         if (model.id == outWareHouseId) {
           outNameIndex = i;
           break;
@@ -237,15 +242,33 @@ class SCAddTransferController extends GetxController {
     }
   }
 
-  /// 仓库列表
-  loadWareHouseList() {
+  /// 调入仓库列表，跟入库、出库仓库接口一样
+  loadInWareHouseList() {
     SCLoadingUtils.show();
     SCHttpManager.instance.get(
         url: SCUrl.kWareHouseListUrl,
         params: null,
         success: (value) {
           SCLoadingUtils.hide();
-          wareHouseList = List<SCWareHouseModel>.from(
+          inWareHouseList = List<SCWareHouseModel>.from(
+              value.map((e) => SCWareHouseModel.fromJson(e)).toList());
+          initEditParams();
+          update();
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+        });
+  }
+
+  /// 调出仓库列表
+  loadOutWareHouseList() {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.get(
+        url: SCUrl.kWareHouseListUrl,
+        params: null,
+        success: (value) {
+          SCLoadingUtils.hide();
+          outWareHouseList = List<SCWareHouseModel>.from(
               value.map((e) => SCWareHouseModel.fromJson(e)).toList());
           initEditParams();
           update();
@@ -256,7 +279,7 @@ class SCAddTransferController extends GetxController {
   }
 
   /// 调拨类型
-  loadWareHouseType() {
+  loadTransferType() {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kWareHouseTypeUrl,

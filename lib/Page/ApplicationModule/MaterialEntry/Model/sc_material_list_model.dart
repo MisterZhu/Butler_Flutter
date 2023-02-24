@@ -1,7 +1,7 @@
 /// barCode : ""
 /// classifyId : ""
 /// classifyName : ""
-/// code : ""
+/// code : ""   关联物资编码
 /// enabled : true
 /// id : ""
 /// name : ""
@@ -14,6 +14,8 @@
 /// unitId : ""
 /// unitName : ""
 /// "num": 0,  数量
+/// "changeId": "关联调拨ID"
+/// "locations": "货位信息json数据"
 
 /// 物资列表model
 
@@ -39,6 +41,8 @@ class SCMaterialListModel {
     String? thirdCode,
     String? unitId,
     String? unitName,
+    String? changeId,
+    String? locations,
     int? localNum,// 本地物资数量，默认1
     bool? isSelect,// 是否选中
   }) {
@@ -62,6 +66,8 @@ class SCMaterialListModel {
     _thirdCode = thirdCode;
     _unitId = unitId;
     _unitName = unitName;
+    _changeId = changeId;
+    _locations = locations;
     _localNum = localNum;
     _isSelect = isSelect;
   }
@@ -89,6 +95,8 @@ class SCMaterialListModel {
     _thirdCode = json['thirdCode'];
     _unitId = json['unitId'];
     _unitName = json['unitName'];
+    _changeId = json['changeId'];
+    _locations = json['locations'];
     _localNum = 1;
     _isSelect = json['isSelect'];
   }
@@ -112,6 +120,8 @@ class SCMaterialListModel {
   String? _thirdCode;
   String? _unitId;
   String? _unitName;
+  String? _changeId;
+  String? _locations;
   int? _localNum;
   bool? _isSelect;
   SCMaterialListModel copyWith({
@@ -134,6 +144,8 @@ class SCMaterialListModel {
     String? thirdCode,
     String? unitId,
     String? unitName,
+    String? changeId,
+    String? locations,
     int? localNum,
     bool? isSelect,
   }) =>
@@ -157,6 +169,8 @@ class SCMaterialListModel {
         thirdCode: thirdCode ?? _thirdCode,
         unitId: unitId ?? _unitId,
         unitName: unitName ?? _unitName,
+        changeId: changeId ?? _changeId,
+        locations: locations ?? _locations,
         localNum: localNum ?? _localNum,
         isSelect: isSelect ?? _isSelect,
       );
@@ -180,6 +194,8 @@ class SCMaterialListModel {
   String? get thirdCode => _thirdCode;
   String? get unitId => _unitId;
   String? get unitName => _unitName;
+  String? get changeId => _changeId;
+  String? get locations => _locations;
   int? get localNum => _localNum;
   bool? get isSelect => _isSelect;
 
@@ -241,6 +257,8 @@ class SCMaterialListModel {
     map['thirdCode'] = _thirdCode;
     map['unitId'] = _unitId;
     map['unitName'] = _unitName;
+    map['changeId'] = _changeId;
+    map['locations'] = _locations;
     map['localNum'] = _localNum;
     map['isSelect'] = _isSelect;
     return map;

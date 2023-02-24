@@ -158,7 +158,7 @@ class SCMaterialEntryCell extends StatelessWidget {
           ),
           Expanded(
               child: Text(
-                type == SCWarehouseManageType.transfer ? '调入：${model?.wareHouseName}  调出：${model?.wareHouseName}' : model?.wareHouseName ?? '',
+                type == SCWarehouseManageType.transfer ? '调入：${model?.inWareHouseName}  调出：${model?.outWareHouseName}' : model?.wareHouseName ?? '',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(

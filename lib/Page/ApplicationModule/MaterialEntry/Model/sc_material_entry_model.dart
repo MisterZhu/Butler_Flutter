@@ -11,8 +11,8 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_mat
 /// materials : [{"barCode":"","code":"","id":"","inId":"","locations":"","materialId":"","materialName":"","norms":"","num":0,"referPrice":0,"thirdCode":"","totalPrice":0,"unitId":"","unitName":""}]
 /// operator : ""
 /// operatorName : ""
-/// orgId : ""      所属组织ID
-/// orgName : ""    所属组织名称
+/// orgId : ""      所属组织ID(调入仓库所属)
+/// orgName : ""    所属组织名称(调入仓库所属)
 /// remark : ""    备注
 /// status : 0     单据状态(0：待提交，1：待审批，2：审批中，3：已拒绝，4：已驳回，5：已撤回，6：已入库)
 /// type : 0     入库类型（1：采购入库，2：调拨入库，3：盘盈入库，4：领料归还入库，5：借用归还入库，6：退货入库，99：其它入库）
@@ -24,7 +24,13 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_mat
 /// fetchOrgName : ""    领用组织名称
 /// fetchUserId : ""    领用人ID
 /// fetchUserName : ""   领用人名称
-
+/// inWareHouseId : "调入仓库ID"
+/// inWareHouseName: "调入仓库名称"
+/// outWareHouseId : "调出仓库ID"
+/// outWareHouseName	: "调出仓库名称	"
+///
+///
+///
 /// 入库列表model
 
 class SCMaterialEntryModel {
@@ -56,6 +62,10 @@ class SCMaterialEntryModel {
     String? fetchOrgName,
     String? fetchUserId,
     String? fetchUserName,
+    String? inWareHouseId,
+    String? inWareHouseName,
+    String? outWareHouseId,
+    String? outWareHouseName,
   }) {
     _creator = creator;
     _creatorName = creatorName;
@@ -84,6 +94,10 @@ class SCMaterialEntryModel {
     _fetchOrgName = fetchOrgName;
     _fetchUserId = fetchUserId;
     _fetchUserName = fetchUserName;
+    _inWareHouseId = inWareHouseId;
+    _inWareHouseName = inWareHouseName;
+    _outWareHouseId = outWareHouseId;
+    _outWareHouseName = outWareHouseName;
   }
 
   SCMaterialEntryModel.fromJson(dynamic json) {
@@ -119,6 +133,10 @@ class SCMaterialEntryModel {
     _fetchOrgName = json['fetchOrgName'];
     _fetchUserId = json['fetchUserId'];
     _fetchUserName = json['fetchUserName'];
+    _inWareHouseId = json['inWareHouseId'];
+    _inWareHouseName = json['inWareHouseName'];
+    _outWareHouseId = json['outWareHouseId'];
+    _outWareHouseName = json['outWareHouseName'];
   }
   String? _creator;
   String? _creatorName;
@@ -147,6 +165,10 @@ class SCMaterialEntryModel {
   String? _fetchOrgName;
   String? _fetchUserId;
   String? _fetchUserName;
+  String? _inWareHouseId;
+  String? _inWareHouseName;
+  String? _outWareHouseId;
+  String? _outWareHouseName;
   SCMaterialEntryModel copyWith({
     String? creator,
     String? creatorName,
@@ -174,6 +196,10 @@ class SCMaterialEntryModel {
     String? fetchOrgName,
     String? fetchUserId,
     String? fetchUserName,
+    String? inWareHouseId,
+    String? inWareHouseName,
+    String? outWareHouseId,
+    String? outWareHouseName,
   }) =>
       SCMaterialEntryModel(
         creator: creator ?? _creator,
@@ -203,6 +229,10 @@ class SCMaterialEntryModel {
         fetchOrgName: fetchOrgName ?? _fetchOrgName,
         fetchUserId: fetchUserId ?? _fetchUserId,
         fetchUserName: fetchUserName ?? _fetchUserName,
+        inWareHouseId: inWareHouseId ?? _inWareHouseId,
+        inWareHouseName: inWareHouseName ?? _inWareHouseName,
+        outWareHouseId: outWareHouseId ?? _outWareHouseId,
+        outWareHouseName: outWareHouseName ?? _outWareHouseName,
       );
   String? get creator => _creator;
   String? get creatorName => _creatorName;
@@ -231,6 +261,10 @@ class SCMaterialEntryModel {
   String? get fetchOrgName => _fetchOrgName;
   String? get fetchUserId => _fetchUserId;
   String? get fetchUserName => _fetchUserName;
+  String? get inWareHouseId => _inWareHouseId;
+  String? get inWareHouseName => _inWareHouseName;
+  String? get outWareHouseId => _outWareHouseId;
+  String? get outWareHouseName => _outWareHouseName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -263,6 +297,10 @@ class SCMaterialEntryModel {
     map['fetchOrgName'] = _fetchOrgName;
     map['fetchUserId'] = _fetchUserId;
     map['fetchUserName'] = _fetchUserName;
+    map['inWareHouseId'] = _inWareHouseId;
+    map['inWareHouseName'] = _inWareHouseName;
+    map['outWareHouseId'] = _outWareHouseId;
+    map['outWareHouseName'] = _outWareHouseName;
     return map;
   }
 }

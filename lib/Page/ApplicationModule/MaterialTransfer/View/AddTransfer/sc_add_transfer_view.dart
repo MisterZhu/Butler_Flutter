@@ -119,11 +119,11 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
         selectAction: (index) async {
           if (index == 0) {
             // 调入仓库
-            List list = widget.state.wareHouseList.map((e) => e.name).toList();
+            List list = widget.state.inWareHouseList.map((e) => e.name).toList();
             showAlert(0, '调入仓库', list);
           } else if (index == 1) {
             // 调出仓库
-            List list = widget.state.wareHouseList.map((e) => e.name).toList();
+            List list = widget.state.outWareHouseList.map((e) => e.name).toList();
             showAlert(1, '调出仓库', list);
           } else if (index == 2) {
             // 类型
@@ -196,13 +196,13 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
               setState(() {
                 if (index == 0) {
                   // 调入仓库
-                  SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
+                  SCWareHouseModel subModel = widget.state.inWareHouseList[selectIndex];
                   widget.state.inNameIndex = selectIndex;
                   widget.state.inWareHouseName = model.name ?? '';
                   widget.state.inWareHouseId = subModel.id ?? '';
                 } else if (index == 1) {
                   // 调出仓库
-                  SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
+                  SCWareHouseModel subModel = widget.state.outWareHouseList[selectIndex];
                   widget.state.outNameIndex = selectIndex;
                   widget.state.outWareHouseName = model.name ?? '';
                   widget.state.outWareHouseId = subModel.id ?? '';
@@ -236,7 +236,7 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
       SCToast.showTip(SCDefaultValue.selectOutWareHouseTip);
       return;
     }
-    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {'data': widget.state.selectedList, 'inWareHouseId': widget.state.inWareHouseId, 'outWareHouseId': widget.state.outWareHouseId, "materialType" : 4});
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {'data': widget.state.selectedList, 'wareHouseId': widget.state.outWareHouseId, "materialType" : 4});
     if (list != null) {
       widget.state.updateSelectedMaterial(list);
     }
