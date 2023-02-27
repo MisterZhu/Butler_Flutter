@@ -75,8 +75,8 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
           height: 10.0,
         ),
         taskEndTimeView(),
-        const SizedBox(
-          height: 10.0,
+        SizedBox(
+          height: model?.dealStartTime == null ? 0.0 : 10.0,
         ),
         dealTimeView(),
         const SizedBox(
@@ -172,8 +172,11 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
 
   /// 盘点时间
   Widget dealTimeView() {
-    return Row(
-      children: [desLabel('盘点时间'), textView(1, model?.dealStartTime ?? '')],
+    return Offstage(
+      offstage: model?.dealStartTime == null,
+      child: Row(
+        children: [desLabel('盘点时间'), textView(1, model?.dealStartTime ?? '')],
+      ),
     );
   }
 
