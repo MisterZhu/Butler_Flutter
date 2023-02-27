@@ -95,14 +95,20 @@ class SCMaterialEntryCell extends StatelessWidget {
       icon = SCAsset.iconMaterialFrmLoss;
     } else if (type == SCWarehouseManageType.transfer) {
       icon = SCAsset.iconMaterialTransfer;
+    } else if (type == SCWarehouseManageType.check) {
+      icon = SCAsset.iconMaterialCheck;
     }
     String statusDesc = SCUtils.getEntryStatusText(model?.status ?? 0);
+    Color statusColor = SCUtils.getEntryStatusTextColor(model?.status ?? 0);
     if (type == SCWarehouseManageType.entry) {
       statusDesc = SCUtils.getEntryStatusText(model?.status ?? 0);
+      statusColor = SCUtils.getEntryStatusTextColor(model?.status ?? 0);
     } else if (type == SCWarehouseManageType.outbound) {
       statusDesc = SCUtils.getOutboundStatusText(model?.status ?? 0);
+      statusColor = SCUtils.getOutboundStatusTextColor(model?.status ?? 0);
     } else {
       statusDesc = model?.statusDesc ?? '';
+      statusColor = SCUtils.getCheckStatusTextColor(model?.status ?? 0);
     }
 
     return Padding(

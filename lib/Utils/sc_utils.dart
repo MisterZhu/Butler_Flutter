@@ -377,6 +377,29 @@ class SCUtils {
     }
   }
 
+  /// 根据status获取盘点单据状态文本颜色text
+  //任务状态(0：未开始，1：待盘点（超时），2：待盘点，3：盘点中（超时），4：盘点中，5：已完成（超时），6：已完成，7：已作废)
+  static Color getCheckStatusTextColor(int status) {
+    switch (status) {
+      case 0:
+        return SCColors.color_FF7F09;
+      case 1:
+        return SCColors.color_0849B5;
+      case 2:
+        return SCColors.color_0849B5;
+      case 3:
+        return SCColors.color_0849B5;
+      case 4:
+        return SCColors.color_0849B5;
+      case 5:
+        return SCColors.color_1B1D33;
+      case 6:
+        return SCColors.color_1B1D33;
+      default:
+        return SCColors.color_B0B1B8;
+    }
+  }
+
   /// 复制粘贴板
   static pasteData(String data) {
     if (data.isNotEmpty && data != '') {

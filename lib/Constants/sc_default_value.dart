@@ -179,6 +179,12 @@ class SCDefaultValue {
   /// 添加物资分类tip
   static const String addMaterialCategoryTip = "请添加物资分类";
 
+  /// 盘点-作废tip
+  static const String checkCancelTip = "请确认是否作废？";
+
+  /// 盘点-提交tip
+  static const String checkSubmitTip = "盘点结果提交后不可修改，将自动生成盘盈入库单或盘亏出库单，并更新库存数量";
+
   /// 图片路径
   static const files = "/files/";
 }

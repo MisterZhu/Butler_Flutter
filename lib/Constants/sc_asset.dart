@@ -247,5 +247,9 @@ class SCAsset {
 
   /// 物资调拨icon
   static const String iconMaterialTransfer = "images/materialTransfer/icon_material_transfer.png";
+  /// ****************  物资盘点 ****************/
+
+  /// 物资调拨icon
+  static const String iconMaterialCheck = "images/materialCheck/icon_material_check.png";
 
 }

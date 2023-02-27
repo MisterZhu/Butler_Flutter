@@ -157,6 +157,7 @@ flutter:
     - images/materialOutbound/
     - images/materialTransfer/
     - images/materialFrmLoss/
+    - images/materialCheck/
     - json/
 
   # To add assets to your application, add an assets section, like this:
