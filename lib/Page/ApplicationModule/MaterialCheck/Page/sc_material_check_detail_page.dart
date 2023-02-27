@@ -209,7 +209,9 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
 
   /// 盘点
   checkAction() {
-
+    controller.startCheckTask(id: controller.model.id ?? '', successHandler: () {
+      controller.loadMaterialCheckDetail();
+    });
   }
 
   /// 删除

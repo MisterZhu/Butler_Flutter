@@ -29,6 +29,19 @@ class SCAllMaterialTitleView extends StatelessWidget {
   
   /// titleView
   Widget titleView() {
+    String statusDesc = SCUtils.getEntryStatusText(model?.status ?? 0);
+    Color statusColor = SCUtils.getEntryStatusTextColor(model?.status ?? 0);
+    if (type == SCWarehouseManageType.entry) {
+      statusDesc = SCUtils.getEntryStatusText(model?.status ?? 0);
+      statusColor = SCUtils.getEntryStatusTextColor(model?.status ?? 0);
+    } else if (type == SCWarehouseManageType.outbound) {
+      statusDesc = SCUtils.getOutboundStatusText(model?.status ?? 0);
+      statusColor = SCUtils.getOutboundStatusTextColor(model?.status ?? 0);
+    } else {
+      statusDesc = model?.statusDesc ?? '';
+      statusColor = SCUtils.getCheckStatusTextColor(model?.status ?? 0);
+    }
+    //任务状态(0：未开始，1：待盘点（超时），2：待盘点，3：盘点中（超时），4：盘点中，5：已完成（超时），6：已完成，7：已作废)
     return Container(
       height: 22.0,
       alignment: Alignment.centerLeft,
@@ -43,11 +56,11 @@ class SCAllMaterialTitleView extends StatelessWidget {
           ),)),
           const SizedBox(width: 6.0,),
           Text(
-            type == SCWarehouseManageType.entry ? SCUtils.getEntryStatusText(model?.status ?? 0) : SCUtils.getOutboundStatusText(model?.status ?? 0),
+            statusDesc,
             style: TextStyle(
               fontSize: SCFonts.f14,
               fontWeight: FontWeight.w400,
-              color: type == SCWarehouseManageType.entry ? SCUtils.getEntryStatusTextColor(model?.status ?? 0) : SCUtils.getOutboundStatusTextColor(model?.status ?? 0),))
+              color: statusColor,))
         ],
       ),
     );
