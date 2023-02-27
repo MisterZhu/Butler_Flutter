@@ -7,7 +7,7 @@ import '../../Model/sc_material_list_model.dart';
 /// 入库详情-所有物资listview
 
 class SCAllMaterialListView extends StatelessWidget {
-  const SCAllMaterialListView({Key? key, this.list, this.onTap, this.type}) : super(key: key);
+  const SCAllMaterialListView({Key? key, this.list, this.onTap, this.type, this.status}) : super(key: key);
 
   /// 所有物资
   final List<SCMaterialListModel>? list;
@@ -17,6 +17,9 @@ class SCAllMaterialListView extends StatelessWidget {
 
   /// 类型，type=entry入库详情，type=outbound出库详情
   final SCWarehouseManageType? type;
+
+  /// 盘点状态
+  final int? status;
 
   @override
   Widget build(BuildContext context) {
