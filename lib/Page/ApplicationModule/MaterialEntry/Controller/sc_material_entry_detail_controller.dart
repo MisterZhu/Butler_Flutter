@@ -81,6 +81,23 @@ class SCMaterialEntryDetailController extends GetxController {
         });
   }
 
+  /// 盘点详情
+  loadMaterialCheckDetail() {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.get(
+        url: SCUrl.kMaterialCheckDetailUrl+id,
+        params: null,
+        success: (value) {
+          SCLoadingUtils.hide();
+          success = true;
+          model = SCMaterialTaskDetailModel.fromJson(value);
+          update();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
   /// 调拨详情
   loadMaterialTransferDetail() {
     SCLoadingUtils.show();

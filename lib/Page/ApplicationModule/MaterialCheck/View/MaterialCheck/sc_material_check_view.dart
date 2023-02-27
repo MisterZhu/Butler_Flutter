@@ -36,13 +36,14 @@ class SCMaterialCheckViewState extends State<SCMaterialCheckView> {
 
   List statusList = [
     {'name': '全部', 'code': -1},
-    {'name': '待提交', 'code': 0},
-    {'name': '待审批', 'code': 1},
-    {'name': '审批中', 'code': 2},
-    {'name': '已拒绝', 'code': 3},
-    {'name': '已驳回', 'code': 4},
-    {'name': '已撤回', 'code': 5},
-    {'name': '已通过', 'code': 6},
+    {'name': '未开始', 'code': 0},
+    {'name': '待盘点（超时）', 'code': 1},
+    {'name': '待盘点', 'code': 2},
+    {'name': '盘点中（超时）', 'code': 3},
+    {'name': '盘点中', 'code': 4},
+    {'name': '已完成（超时）', 'code': 5},
+    {'name': '已完成', 'code': 6},
+    {'name': '已作废', 'code': 7},
   ];
   List typeList = ['全部'];
 

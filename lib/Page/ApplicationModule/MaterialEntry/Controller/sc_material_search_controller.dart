@@ -27,6 +27,9 @@ class SCMaterialSearchController extends GetxController {
   /// 页面类型
   SCWarehouseManageType type = SCWarehouseManageType.entry;
 
+  /// 是否隐藏数量输入框
+  bool hideNumTextField = false;
+
   /// 更新搜索内容
   updateSearchString(String value) {
     searchString = value;

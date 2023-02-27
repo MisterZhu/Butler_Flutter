@@ -4,7 +4,6 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialCheck/View/SelectC
 import 'package:smartcommunity/Page/ApplicationModule/MaterialCheck/View/SelectCategory/sc_check_selectcategory_headerview.dart';
 
 import '../../Controller/sc_materialcheck_selectcategory_controller.dart';
-import '../../Model/sc_check_selectcategory_model.dart';
 
 /// 选择分类view
 

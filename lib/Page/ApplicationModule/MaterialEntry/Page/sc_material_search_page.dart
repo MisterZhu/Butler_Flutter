@@ -40,9 +40,14 @@ class SCMaterialSearchPageState extends State<SCMaterialSearchPage> {
       if (wareHouseId != null) {
         controller.wareHouseId = wareHouseId;
       }
+
       var type = params['type'];
       if (wareHouseId != null) {
         controller.type = type;
+      }
+
+      if (params.containsKey('hideNumTextField')) {
+        controller.hideNumTextField = params['hideNumTextField'];
       }
     }
   }

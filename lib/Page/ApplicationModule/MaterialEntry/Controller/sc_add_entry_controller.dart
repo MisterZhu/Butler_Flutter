@@ -42,7 +42,7 @@ class SCAddEntryController extends GetxController {
   /// 类型
   String type = '';
 
-  /// 仓库类型id
+  /// 入库类型id
   int typeID = 0;
 
   /// 类型index

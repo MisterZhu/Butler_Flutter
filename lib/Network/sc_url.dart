@@ -235,4 +235,19 @@ class SCUrl {
 
   /// 提交调拨
   static const String kSubmitTransferUrl = "/api/warehouse/app/warehouse/change/submitWareHouseChange";
+
+  /************************* 盘点任务 *************************/
+  /// 入库列表
+  static const String kMaterialCheckListUrl = "/api/warehouse/app/warehouse/check/pageFront";
+
+  /// 新增盘点
+  static const String kAddMaterialCheckUrl = "/api/warehouse/app/warehouse/check/save";
+
+  /// 盘点详情
+  static const String kMaterialCheckDetailUrl = "/api/warehouse/app/warehouse/check/detail/";
+
+
+  /// 查询物资分类树
+  static const String kMaterialClassTreeUrl = "/api/warehouse/manage/materialClass/tree";
+
 }

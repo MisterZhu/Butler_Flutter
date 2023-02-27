@@ -16,6 +16,9 @@ class SCAddCheckController extends GetxController {
   /// 仓库列表数组
   List<SCWareHouseModel> wareHouseList = [];
 
+  /// 盘点类型数组
+  List<SCEntryTypeModel> typeList = [];
+
   /// 已选择的物资数据
   List<SCMaterialListModel> selectedList = [];
 
@@ -40,6 +43,14 @@ class SCAddCheckController extends GetxController {
   /// 任务名称
   String taskName = '';
 
+  /// 类型
+  String type = '';
+
+  /// 盘点类型id
+  int typeID = 0;
+
+  /// 盘点类型index
+  int typeIndex = -1;
 
   /// 开始时间，接口使用
   String startTime = '';
@@ -54,19 +65,19 @@ class SCAddCheckController extends GetxController {
   String endTimeStr = '';
 
   /// 部门
-  String orgName = '';
+  String dealOrgName = '';
 
   /// 部门id
-  String orgId = '';
+  String dealOrgId = '';
 
   /// 处理人名称
-  String operatorName = '';
+  String dealUserName = '';
 
   /// 处理人id
-  String operator = '';
+  String dealUserId = '';
 
-  /// 范围,0-全部，1-物资分类，2-物品名称
-  int range = 0;
+  /// 范围,1-全部，2-物资分类，3-物品名称
+  int rangeValue = 1;
 
   /// 主键id
   String editId = '';
@@ -75,6 +86,9 @@ class SCAddCheckController extends GetxController {
   onInit() {
     super.onInit();
     loadWareHouseList();
+    loadTypeData();
+    loadRangeData();
+    loadMaterialClassTree();
   }
 
   /// 初始化编辑的参数
@@ -98,13 +112,13 @@ class SCAddCheckController extends GetxController {
       endTime = params['endTime'];
 
       ///处理人名称
-      operatorName = params['operatorName'];
+      dealOrgName = params['dealOrgName'];
 
       ///处理人id
-      operator = params['operator'];
+      dealUserId = params['dealUserId'];
 
       /// 范围
-      range = params['range'];
+      rangeValue = params['rangeValue'];
 
       /// 主键id
       editId = params['id'];
@@ -115,27 +129,35 @@ class SCAddCheckController extends GetxController {
           break;
         }
       }
+      for (int i = 0; i < typeList.length; i++) {
+        SCEntryTypeModel model = typeList[i];
+        if (model.code == typeID) {
+          typeIndex = i;
+          break;
+        }
+      }
     }
   }
 
-  /// 新增调拨, status=0暂存，1提交
+  /// 新增盘点, status=0暂存，1提交
   addTransfer({required int status, required dynamic data}) {
     var params = {
-      "materials": data['materialList'],
-      "status": status,
-      "wareHouseId": data['wareHouseId'],
-      "wareHouseName": data['wareHouseName'],
-      "taskId": data['taskId'],
+      "classifyIdList": [],
+      "dealOrgId": data['dealOrgId'],
+      "dealUserId": data['dealUserId'],
+      "materialIdList": data['materialIdList'],
+      "rangeValue": data['rangeValue'],
+      "status": 0,
+      "taskEndTime": data['endTime'],
       "taskName": data['taskName'],
-      "range": data['range'],
-      "operator": data['operator'],
-      "operatorName": data['operatorName'],
-      "startTime": data['startTime'],
-      "endTime": data['endTime'],
+      "taskStartTime": data['startTime'],
+      "type": 1,
+      "wareHouseId": data['wareHouseId'],
     };
+    print("新增盘点参数:$params");
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kAddEntryUrl,
+        url: SCUrl.kAddMaterialCheckUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
@@ -148,7 +170,7 @@ class SCAddCheckController extends GetxController {
         });
   }
 
-  /// 编辑入库基础信息
+  /// 编辑盘点基础信息
   editMaterialBaseInfo({required dynamic data}) {
     //List materialList = data['materialList'];
     var params = {
@@ -254,6 +276,35 @@ class SCAddCheckController extends GetxController {
         });
   }
 
+  /// 类型
+  loadTypeData() {
+    SCHttpManager.instance.post(
+        url: SCUrl.kWareHouseTypeUrl,
+        params: {'dictionaryCode' : 'CHECK_TASK_TYPE'},
+        success: (value) {
+          typeList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
+          initEditParams();
+          update();
+        },
+        failure: (value) {
+        });
+  }
+
+  /// 盘点范围
+  loadRangeData() {
+    SCHttpManager.instance.post(
+        url: SCUrl.kWareHouseTypeUrl,
+        params: {'dictionaryCode' : 'CHECK_TASK_RANGE'},
+        success: (value) {
+          print('盘点范围===============$value');
+          //typeList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
+          initEditParams();
+          update();
+        },
+        failure: (value) {
+        });
+  }
+
   /// 更新已选的物资数据
   updateSelectedMaterial(List<SCMaterialListModel> list) {
     selectedList = list;
@@ -267,4 +318,26 @@ class SCAddCheckController extends GetxController {
       update();
     }
   }
+
+
+
+
+
+  /// 查询物资分类树
+  loadMaterialClassTree() {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kMaterialClassTreeUrl,
+        params: null,
+        success: (value) {
+          SCLoadingUtils.hide();
+          print('物资分类树============$value');
+
+          update();
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+        });
+  }
+
 }

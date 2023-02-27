@@ -27,7 +27,9 @@ class SCAddMaterialView extends StatefulWidget {
       required this.categoryAlertController,
       required this.refreshController,
       required this.type,
-      this.sureAction})
+      this.sureAction,
+      this.hideNumTextField
+      })
       : super(key: key);
 
   /// SCAddMaterialController
@@ -42,7 +44,11 @@ class SCAddMaterialView extends StatefulWidget {
   /// RefreshController
   final RefreshController refreshController;
 
+  /// type
   final SCWarehouseManageType type;
+
+  /// 隐藏数量输入框
+  final bool? hideNumTextField;
 
   @override
   SCAddMaterialViewState createState() => SCAddMaterialViewState();
@@ -83,6 +89,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
   /// listview
   Widget listview(BuildContext context) {
     return SCAddMaterialListView(
+      hideNumTextField: widget.hideNumTextField,
       state: widget.state,
       refreshController: widget.refreshController,
       list: widget.state.materialList,
@@ -255,7 +262,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
   searchAction() async {
     var backParams = await SCRouterHelper.pathPage(
         SCRouterPath.materialSearchPage,
-        {'wareHouseId': widget.state.wareHouseId, 'type': widget.type});
+        {'wareHouseId': widget.state.wareHouseId, 'type': widget.type, 'hideNumTextField' : widget.state.hideNumTextField});
     if (backParams != null) {
       if (backParams['list'] != null) {
         List<SCMaterialListModel> list = backParams['list'] ?? [];

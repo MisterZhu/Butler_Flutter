@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,6 @@ import '../Detail/sc_material_cell.dart';
 /// 物资搜索view
 
 class SCMaterialSearchView extends StatefulWidget {
-
   /// SCMaterialSearchController
   final SCMaterialSearchController state;
 
@@ -26,7 +24,6 @@ class SCMaterialSearchView extends StatefulWidget {
 }
 
 class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
-
   final TextEditingController controller = TextEditingController();
 
   final FocusNode node = FocusNode();
@@ -34,7 +31,8 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
   bool showCancel = true;
 
   /// RefreshController
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
 
   late StreamSubscription<bool> keyboardSubscription;
 
@@ -58,7 +56,7 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
 
   /// 弹出键盘
   showKeyboard(BuildContext context) {
-    Future.delayed(const Duration(milliseconds: 100),(){
+    Future.delayed(const Duration(milliseconds: 100), () {
       node.requestFocus();
     });
   }
@@ -68,18 +66,13 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          headerItem(),
-          Expanded(child: contentView()),
-          bottomView()
-        ]
-    );
+        children: [headerItem(), Expanded(child: contentView()), bottomView()]);
   }
 
   /// 底部按钮
   Widget bottomView() {
     return SCBottomButtonItem(
-        list: const ['确定'],
+      list: const ['确定'],
       buttonType: 0,
       tapAction: () {
         sureAction();
@@ -150,51 +143,49 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
   /// 输入框
   Widget textField() {
     return Expanded(
-      child: TextField(
-        controller: controller,
-        maxLines: 1,
-        cursorColor: SCColors.color_1B1C33,
-        cursorWidth: 2,
-        focusNode: node,
-        style: const TextStyle(
+        child: TextField(
+      controller: controller,
+      maxLines: 1,
+      cursorColor: SCColors.color_1B1C33,
+      cursorWidth: 2,
+      focusNode: node,
+      style: const TextStyle(
           fontSize: SCFonts.f14,
           fontWeight: FontWeight.w400,
           color: SCColors.color_1B1C33),
-        keyboardType: TextInputType.text,
-        keyboardAppearance: Brightness.light,
-        textInputAction: TextInputAction.search,
-        decoration: const InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 4),
-          hintText: "搜索物资名称",
-          hintStyle: TextStyle(
+      keyboardType: TextInputType.text,
+      keyboardAppearance: Brightness.light,
+      textInputAction: TextInputAction.search,
+      decoration: const InputDecoration(
+        contentPadding: EdgeInsets.symmetric(vertical: 4),
+        hintText: "搜索物资名称",
+        hintStyle: TextStyle(
             fontSize: SCFonts.f14,
             fontWeight: FontWeight.w400,
             color: SCColors.color_B0B1B8),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 0, color: Colors.transparent)),
-          disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 0, color: Colors.transparent)),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 0, color: Colors.transparent)),
-          border: OutlineInputBorder(
-              borderSide: BorderSide(width: 0, color: Colors.transparent)),
-          isCollapsed: true,
-        ),
-        onChanged: (value) {
-
-        },
-        onSubmitted: (value) {
-          widget.state.updateSearchString(value);
-          widget.state.searchData();
-          node.unfocus();
-        },
-        onTap: () {
-          if (!showCancel) {
-            setState(() {
-              showCancel = true;
-            });
-          }
-        },
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 0, color: Colors.transparent)),
+        disabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 0, color: Colors.transparent)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 0, color: Colors.transparent)),
+        border: OutlineInputBorder(
+            borderSide: BorderSide(width: 0, color: Colors.transparent)),
+        isCollapsed: true,
+      ),
+      onChanged: (value) {},
+      onSubmitted: (value) {
+        widget.state.updateSearchString(value);
+        widget.state.searchData();
+        node.unfocus();
+      },
+      onTap: () {
+        if (!showCancel) {
+          setState(() {
+            showCancel = true;
+          });
+        }
+      },
     ));
   }
 
@@ -237,24 +228,29 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
         enablePullUp: true,
         enablePullDown: true,
         header: const SCCustomHeader(
-        style: SCCustomHeaderStyle.noNavigation,
-    ),
-    onRefresh: onRefresh, onLoading: loadMore, child: ListView.separated(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 11.0),
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          SCMaterialListModel model = widget.state.materialList[index];
-          return cell(model);
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(height: 10.0,);
-        },
-        itemCount: widget.state.materialList.length));
+          style: SCCustomHeaderStyle.noNavigation,
+        ),
+        onRefresh: onRefresh,
+        onLoading: loadMore,
+        child: ListView.separated(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 11.0),
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              SCMaterialListModel model = widget.state.materialList[index];
+              return cell(model);
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return const SizedBox(
+                height: 10.0,
+              );
+            },
+            itemCount: widget.state.materialList.length));
   }
 
   Widget cell(SCMaterialListModel model) {
     return SCMaterialCell(
+      hideMaterialNumTextField: widget.state.hideNumTextField,
       model: model,
       type: scMaterialCellTypeRadio,
       numChangeAction: (int value) {
@@ -273,8 +269,7 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(top: 104.0),
-      child: Text(
-          widget.state.tips,
+      child: Text(widget.state.tips,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
@@ -287,20 +282,24 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
 
   /// 下拉刷新
   Future onRefresh() async {
-    widget.state.searchData(isMore: false, completeHandler: (bool success, bool last){
-      refreshController.refreshCompleted();
-      refreshController.loadComplete();
-    });
+    widget.state.searchData(
+        isMore: false,
+        completeHandler: (bool success, bool last) {
+          refreshController.refreshCompleted();
+          refreshController.loadComplete();
+        });
   }
 
   /// 上拉加载
-  void loadMore() async{
-    widget.state.searchData(isMore: true, completeHandler: (bool success, bool last){
-      if (last) {
-        refreshController.loadNoData();
-      } else {
-        refreshController.loadComplete();
-      }
-    });
+  void loadMore() async {
+    widget.state.searchData(
+        isMore: true,
+        completeHandler: (bool success, bool last) {
+          if (last) {
+            refreshController.loadNoData();
+          } else {
+            refreshController.loadComplete();
+          }
+        });
   }
 }

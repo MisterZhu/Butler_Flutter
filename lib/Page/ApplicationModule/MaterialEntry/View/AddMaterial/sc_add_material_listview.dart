@@ -10,13 +10,13 @@ import '../Detail/sc_material_cell.dart';
 
 class SCAddMaterialListView extends StatelessWidget {
   SCAddMaterialListView(
-      {
-        Key? key,
-        required this.state,
-        required this.list,
-        required this.refreshController,
-        this.radioTap,
-        this.loadMoreAction})
+      {Key? key,
+      required this.state,
+      required this.list,
+      required this.refreshController,
+      this.radioTap,
+      this.loadMoreAction,
+      this.hideNumTextField})
       : super(key: key);
 
   /// SCAddMaterialController
@@ -33,6 +33,9 @@ class SCAddMaterialListView extends StatelessWidget {
 
   /// 加载更多
   final Function? loadMoreAction;
+
+  /// 隐藏数量输入框
+  final bool? hideNumTextField;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +60,7 @@ class SCAddMaterialListView extends StatelessWidget {
 
   Widget cell(SCMaterialListModel model) {
     return SCMaterialCell(
+      hideMaterialNumTextField: hideNumTextField,
       model: model,
       type: scMaterialCellTypeRadio,
       numChangeAction: (int value) {

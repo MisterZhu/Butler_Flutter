@@ -102,6 +102,7 @@ class SCLoginController extends GetxController {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kPhoneCodeLoginUrl,
+        isQuery: true,
         params: {'mobileNum' : phone, 'code' : code, 'appCode' : SCDefaultValue.appCode},
         success: (value) {
           SCLoadingUtils.hide();

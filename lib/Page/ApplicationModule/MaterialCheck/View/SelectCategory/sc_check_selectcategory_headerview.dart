@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
-
-import '../../Model/sc_check_selectcategory_model.dart';
+import '../../Model/sc_check_type_model.dart';
 
 /// 选择分类-header
 
@@ -10,7 +9,7 @@ class SCCheckSelectCategoryHeaderView extends StatefulWidget {
   const SCCheckSelectCategoryHeaderView({Key? key, required this.list, this.onTap})
       : super(key: key);
 
-  final List<SCCheckSelectCategoryModel> list;
+  final List<SCCheckTypeModel> list;
 
   /// cell 点击
   final Function(int index)? onTap;
@@ -48,12 +47,15 @@ class SCCheckSelectCategoryHeaderViewState
 
   /// cell
   Widget cell(int index) {
-    SCCheckSelectCategoryModel model = widget.list[index];
-    String title = model.title ?? '';
+    SCCheckTypeModel model = widget.list[index];
+    String title = model.name ?? '';
+    bool disable = model.disable ?? false;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: (){
-        widget.onTap?.call(index);
+        if (!disable) {
+          widget.onTap?.call(index);
+        }
       },
       child: Container(
         alignment: Alignment.centerLeft,

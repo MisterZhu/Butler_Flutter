@@ -78,6 +78,9 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
       if (params.containsKey('materialType')) {
         controller.materialType = params['materialType'];
       }
+      if (params.containsKey('hideNumTextField')) {
+        controller.hideNumTextField = params['hideNumTextField'];
+      }
     }
   }
 
@@ -105,6 +108,7 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
               categoryAlertController: categoryAlertController,
               refreshController: refreshController,
               type: state.materialType,
+              hideNumTextField: state.hideNumTextField,
               sureAction: (List<SCMaterialListModel> list){
                 SCRouterHelper.back(list);
             },);

@@ -30,6 +30,9 @@ class SCMaterialSelectItem extends StatefulWidget {
   /// 输入内容
   final Function(String value)? inputNameAction;
 
+  /// 隐藏详情icon
+  final bool? hideArrow;
+
   SCMaterialSelectItem({Key? key,
     required this.isRequired,
     required this.title,
@@ -37,7 +40,8 @@ class SCMaterialSelectItem extends StatefulWidget {
     this.content,
     this.selectAction,
     this.inputNameAction,
-    this.disable
+    this.disable,
+    this.hideArrow
   }) : super(key: key);
 
 
@@ -65,6 +69,7 @@ class SCMaterialSelectItemState extends State<SCMaterialSelectItem> {
     Color textColor;
     String subContent = widget.content ?? '';
     bool subDisable = widget.disable ?? false;
+    bool hideArrow = widget.hideArrow ?? false;
     if (subContent.isEmpty) {
       textColor = SCColors.color_B0B1B8;
     } else {
@@ -114,12 +119,18 @@ class SCMaterialSelectItemState extends State<SCMaterialSelectItem> {
             const SizedBox(width: 12.0,),
             Expanded(child: contentItem(textColor)),
             const SizedBox(width: 12.0,),
-            Image.asset(
-              SCAsset.iconMineSettingArrow,
-              width: 16.0,
-              height: 16.0,
+            Offstage(
+              offstage: hideArrow,
+              child: Image.asset(
+                SCAsset.iconMineSettingArrow,
+                width: 16.0,
+                height: 16.0,
+              ),
             ),
-            const SizedBox(width: 12.0,),
+            Offstage(
+              offstage: hideArrow,
+              child: const SizedBox(width: 12.0,),
+            ),
           ],
         ),
       ),
