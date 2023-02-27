@@ -141,7 +141,7 @@ class SCAddCheckController extends GetxController {
   }
 
   /// 新增盘点, status=0暂存，1提交
-  addTransfer({required int status, required dynamic data}) {
+  addCheck({required int status, required dynamic data}) {
     var params = {
       "dealOrgId": data['dealOrgId'],
       "dealUserId": data['dealUserId'],
@@ -152,7 +152,7 @@ class SCAddCheckController extends GetxController {
       "taskEndTime": data['endTime'],
       "taskName": data['taskName'],
       "taskStartTime": data['startTime'],
-      "type": 1,
+      "type": data['type'],
       "wareHouseId": data['wareHouseId'],
     };
     print("新增盘点参数:$params");

@@ -458,9 +458,10 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       "rangeValue": widget.state.rangeValue,
       "materialIdList": widget.state.getMaterialIDList(),
       "categoryIDList" : widget.state.getMaterialCategoryIDList(),
-      "dealOrgId": widget.state.dealOrgId
+      "dealOrgId": widget.state.dealOrgId,
+      "type": widget.state.typeID
     };
-    widget.state.addTransfer(status: status, data: params);
+    widget.state.addCheck(status: status, data: params);
   }
 
   /// 选择部门
