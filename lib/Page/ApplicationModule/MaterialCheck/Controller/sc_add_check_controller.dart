@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialCheck/Model/sc_check_type_model.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Network/sc_http_manager.dart';
@@ -23,7 +24,7 @@ class SCAddCheckController extends GetxController {
   List<SCMaterialListModel> selectedList = [];
 
   /// 已选择的物资分类数据
-  List<SCMaterialListModel> selectedCategoryList = [];
+  List<SCCheckTypeModel> selectedCategoryList = [];
 
   /// 是否是编辑
   bool isEdit = false;
@@ -142,10 +143,10 @@ class SCAddCheckController extends GetxController {
   /// 新增盘点, status=0暂存，1提交
   addTransfer({required int status, required dynamic data}) {
     var params = {
-      "classifyIdList": [],
       "dealOrgId": data['dealOrgId'],
       "dealUserId": data['dealUserId'],
       "materialIdList": data['materialIdList'],
+      "classifyIdList": data['categoryIDList'],
       "rangeValue": data['rangeValue'],
       "status": 0,
       "taskEndTime": data['endTime'],
@@ -311,6 +312,16 @@ class SCAddCheckController extends GetxController {
     update();
   }
 
+  /// 更新已选的物资分类数据
+  updateSelectedMaterialCategory(List list) {
+    List<SCCheckTypeModel> newList = [];
+    for (SCCheckTypeModel model in list) {
+      newList.add(model);
+    }
+    selectedCategoryList = newList;
+    update();
+  }
+
   /// 删除物资
   deleteMaterial(int index) {
     if (index < selectedList.length) {
@@ -319,9 +330,31 @@ class SCAddCheckController extends GetxController {
     }
   }
 
+  /// 删除物资分类
+  deleteMaterialCategory(int index) {
+    if (index < selectedCategoryList.length) {
+      selectedCategoryList.removeAt(index);
+      update();
+    }
+  }
 
+  /// 获取物资idList
+  List<String> getMaterialIDList() {
+    List<String> list = [];
+    for (SCMaterialListModel model in selectedList) {
+      list.add(model.materialId ?? '');
+    }
+    return list;
+  }
 
-
+  /// 获取物资分类idList
+  List<String> getMaterialCategoryIDList() {
+    List<String> list = [];
+    for (SCCheckTypeModel model in selectedCategoryList) {
+      list.add(model.id ?? '');
+    }
+    return list;
+  }
 
   /// 查询物资分类树
   loadMaterialClassTree() {

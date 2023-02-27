@@ -173,6 +173,12 @@ class SCDefaultValue {
   /// 上传中tip
   static const String uploadingTip = "上传中...";
 
+  /// 选择分类tip
+  static const String selectMaterialCategoryTip = "请选择物资分类";
+
+  /// 添加物资分类tip
+  static const String addMaterialCategoryTip = "请添加物资分类";
+
   /// 图片路径
   static const files = "/files/";
 }

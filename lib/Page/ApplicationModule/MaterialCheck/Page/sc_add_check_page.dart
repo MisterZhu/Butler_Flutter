@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -10,7 +9,6 @@ import '../../MaterialOutbound/Controller/sc_select_department_controller.dart';
 import '../Controller/sc_add_check_controller.dart';
 import '../View/AddCheck/sc_add_check_view.dart';
 
-
 /// 新增任务page
 
 class SCAddCheckPage extends StatefulWidget {
@@ -19,7 +17,6 @@ class SCAddCheckPage extends StatefulWidget {
 }
 
 class SCAddCheckPageState extends State<SCAddCheckPage> {
-
   /// SCAddCheckController
   late SCAddCheckController controller;
 
@@ -35,11 +32,13 @@ class SCAddCheckPageState extends State<SCAddCheckPage> {
   @override
   initState() {
     super.initState();
-    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCAddCheckPage).toString());
+    controllerTag = SCScaffoldManager.instance
+        .getXControllerTag((SCAddCheckPage).toString());
     controller = Get.put(SCAddCheckController(), tag: controllerTag);
     selectDepartmentControllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCAddCheckPage).toString());
-    selectDepartmentController = Get.put(SCSelectDepartmentController(), tag: selectDepartmentControllerTag);
+    selectDepartmentController = Get.put(SCSelectDepartmentController(),
+        tag: selectDepartmentControllerTag);
     selectDepartmentController.tag = selectDepartmentControllerTag;
     initEditData();
   }
@@ -66,7 +65,8 @@ class SCAddCheckPageState extends State<SCAddCheckPage> {
 
   @override
   dispose() {
-    SCScaffoldManager.instance.deleteGetXControllerTag((SCAddCheckPage).toString(), controllerTag);
+    SCScaffoldManager.instance
+        .deleteGetXControllerTag((SCAddCheckPage).toString(), controllerTag);
     controller.dispose();
     super.dispose();
   }
@@ -95,15 +95,12 @@ class SCAddCheckPageState extends State<SCAddCheckPage> {
             tag: controllerTag,
             init: controller,
             builder: (state) {
-              return SCAddCheckView(state: state, selectDepartmentController: selectDepartmentController,);
+              return SCAddCheckView(
+                state: state,
+                selectDepartmentController: selectDepartmentController,
+              );
             }),
       ),
     );
   }
-
 }
-
-
-
-
-

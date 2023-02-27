@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:smartcommunity/Page/ApplicationModule/MaterialCheck/View/SelectCategory/sc_bottom_checkall_view.dart';
+import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialCheck/View/SelectCategory/sc_check_category_listview.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialCheck/View/SelectCategory/sc_check_selectcategory_headerview.dart';
-
+import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../Controller/sc_materialcheck_selectcategory_controller.dart';
+import '../AddCheck/sc_check_category_bottom_view.dart';
 
 /// 选择分类view
 
@@ -52,11 +54,27 @@ class SCCheckSelectCategoryViewState extends State<SCCheckSelectCategoryView> {
 
   /// footer
   Widget footerView() {
-    return SCBottomCheckAllView();
+    return SCCheckCategoryBottomView(
+      selectAllAction: (bool value) {
+        selectAll(value);
+      },
+      sureAction: () {
+        sure();
+      },
+    );
   }
 
-  /// 展开
-  detailAction() {
+  /// 全选
+  selectAll(bool isSelect) {
+    widget.controller.selectAllAction(isSelect);
+  }
 
+  /// 确定
+  sure() {
+    if (widget.controller.selectList.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectMaterialCategoryTip);
+      return;
+    }
+    SCRouterHelper.back({"data" : List.from(widget.controller.selectList)});
   }
 }

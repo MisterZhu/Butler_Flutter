@@ -15,8 +15,8 @@ class SCMaterialCheckPage extends StatefulWidget {
   SCMaterialCheckPageState createState() => SCMaterialCheckPageState();
 }
 
-class SCMaterialCheckPageState extends State<SCMaterialCheckPage> with AutomaticKeepAliveClientMixin{
-
+class SCMaterialCheckPageState extends State<SCMaterialCheckPage>
+    with AutomaticKeepAliveClientMixin {
   /// SCMaterialCheckController
   late SCMaterialCheckController controller;
 
@@ -39,7 +39,8 @@ class SCMaterialCheckPageState extends State<SCMaterialCheckPage> with Automatic
   @override
   dispose() {
     subscription.cancel();
-    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialCheckPage).toString(), controllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag(
+        (SCMaterialCheckPage).toString(), controllerTag);
     controller.dispose();
     super.dispose();
   }
@@ -60,7 +61,9 @@ class SCMaterialCheckPageState extends State<SCMaterialCheckPage> with Automatic
           tag: controllerTag,
           init: controller,
           builder: (state) {
-            return SCMaterialCheckView(state: state,);
+            return SCMaterialCheckView(
+              state: state,
+            );
           }),
     );
   }

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialCheck/View/AddCheck/sc_all_category_listview.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_add_entry_allmaterial_view.dart';
 import '../../../../../Constants/sc_asset.dart';
+import '../../../MaterialCheck/Model/sc_check_type_model.dart';
 import '../../Model/sc_material_list_model.dart';
 
 /// 物资信息cell
@@ -21,6 +23,9 @@ class SCMaterialInfoCell extends StatelessWidget {
 
   /// 物资数据源
   final List<SCMaterialListModel> list;
+
+  /// 物资分类数据源
+  final List<SCCheckTypeModel>? categoryList;
 
   /// 刷新数量
   final Function(int index, int value)? updateNumAction;
@@ -45,6 +50,7 @@ class SCMaterialInfoCell extends StatelessWidget {
       this.selectTypeAction,
       this.addAction,
       required this.list,
+      this.categoryList,
       this.deleteAction,
       this.updateNumAction,
       required this.showAdd,
@@ -132,7 +138,13 @@ class SCMaterialInfoCell extends StatelessWidget {
 
   /// 数量
   Widget numItem() {
-    return Text('共 ${getTypeNumber()} 种  总数量 ${getNumber()}',
+    String subTitle = '';
+    if ((materialType ?? 0) == 2) {// 物资分类
+      subTitle = '共 ${getCategoryNumber()} 类';
+    } else {// 物资
+      subTitle = '共 ${getTypeNumber()} 种  总数量 ${getNumber()}';
+    }
+    return Text(subTitle,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(
@@ -141,30 +153,36 @@ class SCMaterialInfoCell extends StatelessWidget {
             color: SCColors.color_5E5F66));
   }
 
+  /// listview
   Widget listview() {
-    if (materialType == 2) {
+    if (materialType == 2) {// 分类列表
       return classifyView();
-    } else {
-      return SCAddEntryAllMaterialView(
-        hideMaterialNumTextField: hideMaterialNumTextField,
-        list: list,
-        deleteAction: (int index) {
-          deleteAction?.call(index);
-        },
-        updateNumAction: (int index, int value) {
-          updateNumAction?.call(index, value);
-        },
-      );
+    } else {// 物资列表
+      return materialListView();
     }
+  }
+
+  /// 物资列表
+  Widget materialListView() {
+    return SCAddEntryAllMaterialView(
+      hideMaterialNumTextField: hideMaterialNumTextField,
+      list: list,
+      deleteAction: (int index) {
+        deleteAction?.call(index);
+      },
+      updateNumAction: (int index, int value) {
+        updateNumAction?.call(index, value);
+      },
+    );
   }
 
   /// 物资分类列表
   Widget classifyView() {
-    return Container(
-      decoration: BoxDecoration(
-          color: SCColors.color_FFFFFF,
-          borderRadius: BorderRadius.circular(4.0)),
-      height: 100,
+    return SCAllCategoryListView(
+        list: categoryList ?? [],
+        deleteAction: (int index) {
+          deleteAction?.call(index);
+        },
     );
   }
 
@@ -188,5 +206,10 @@ class SCMaterialInfoCell extends StatelessWidget {
       count += model.localNum ?? 0;
     }
     return count;
+  }
+
+  /// 分类
+  int getCategoryNumber() {
+   return categoryList?.length ?? 0;
   }
 }

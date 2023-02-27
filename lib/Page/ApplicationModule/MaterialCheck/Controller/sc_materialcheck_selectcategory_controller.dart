@@ -24,7 +24,7 @@ class SCMaterialCheckSelectCategoryController extends GetxController {
   List<SCCheckTypeModel> typeList = [];
 
   /// 已选的model
-  List<SCCheckTypeModel> seelctList = [];
+  List<SCCheckTypeModel> selectList = [];
 
   @override
   onInit() {
@@ -96,22 +96,58 @@ class SCMaterialCheckSelectCategoryController extends GetxController {
     SCCheckTypeModel model = footerList[index];
     bool isSelected = !(model.isSelected ?? false);
     model.isSelected = isSelected;
-    if (isSelected) {
-      seelctList.add(model);
+    updateSelectList(isSelected, model);
+    // if (isSelected) {
+    //   selectList.add(model);
+    // } else {
+    //   int index = -1;
+    //   for (int i=0; i<selectList.length; i++) {
+    //     SCCheckTypeModel subModel = selectList[i];
+    //     if (subModel.id == model.id) {
+    //       index = i;
+    //       break;
+    //     }
+    //   }
+    //   if (index >= 0) {
+    //     selectList.removeAt(index);
+    //   }
+    // }
+
+    for (SCCheckTypeModel subModel in selectList) {
+      print("已选的modelID===${subModel.id}");
+    }
+    update();
+  }
+
+  /// 更新已选的model
+  updateSelectList(bool isSelect, SCCheckTypeModel model) {
+    if (isSelect) {
+      selectList.add(model);
     } else {
       int index = -1;
-      for (int i=0; i<seelctList.length; i++) {
-        SCCheckTypeModel subModel = seelctList[i];
+      for (int i=0; i<selectList.length; i++) {
+        SCCheckTypeModel subModel = selectList[i];
         if (subModel.id == model.id) {
           index = i;
           break;
         }
       }
       if (index >= 0) {
-        seelctList.removeAt(index);
+        selectList.removeAt(index);
       }
     }
+  }
+
+  /// 全选
+  selectAllAction(bool isSelect) {
+    for (SCCheckTypeModel model in footerList) {
+      model.isSelected = isSelect;
+      updateSelectList(isSelect, model);
+    }
     update();
+    for (SCCheckTypeModel subModel in selectList) {
+      print("已选的modelID===${subModel.id}");
+    }
   }
 
 }

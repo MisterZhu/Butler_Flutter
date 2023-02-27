@@ -6,6 +6,7 @@ import 'package:flutter_picker/Picker.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialCheck/Model/sc_check_type_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_basic_info_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_material_info_cell.dart';
@@ -121,6 +122,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
         itemCount: 3);
   }
 
+  /// cell
   Widget getCell(int index) {
     if (index == 0) {
       return SCBasicInfoCell(
@@ -160,17 +162,19 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       if (widget.state.rangeValue == 1) {
         return const SizedBox();
       } else {
+        int materialType = widget.state.rangeValue == 2 ? 2 : 1;
         return SCMaterialInfoCell(
           hideMaterialNumTextField: true,
           title: widget.state.rangeValue == 2 ? '物资分类' : '物资名称',
-          materialType: widget.state.rangeValue == 2 ? 2 : 1,
+          materialType: materialType,
           showAdd: true,
           list: widget.state.selectedList,
+          categoryList: widget.state.selectedCategoryList,
           addAction: () {
             addAction();
           },
           deleteAction: (int subIndex) {
-            deleteAction(subIndex);
+            deleteAction(subIndex, materialType);
           },
           updateNumAction: (int index, int value) {
             widget.state.update();
@@ -302,13 +306,13 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       return;
     }
     if (widget.state.rangeValue == 2) {
-      var list =
+      var json =
           await SCRouterHelper.pathPage(SCRouterPath.checkSelectCategoryPage, {
-        'data': widget.state.selectedCategoryList,
         'wareHouseId': widget.state.wareHouseId,
       });
-      if (list != null) {
-        widget.state.updateSelectedMaterial(list);
+      if (json != null) {
+        print("已选的分类===$json");
+        widget.state.updateSelectedMaterialCategory(json['data']);
       }
     } else if (widget.state.rangeValue == 3) {
       if (widget.state.isEdit) {
@@ -349,29 +353,38 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
   }
 
   /// 删除物资
-  deleteAction(int index) {
-    if (widget.state.isEdit) {
-      SCMaterialListModel model = widget.state.selectedList[index];
-      print("物资id===${model.id}");
-      widget.state.deleteMaterial(index);
-      widget.state.editDeleteMaterial(materialInRelationId: model.id ?? '');
-    } else {
-      widget.state.deleteMaterial(index);
+  deleteAction(int index, int materialType) {
+    if (materialType == 2) {// 物资分类
+      if (widget.state.isEdit) {
+
+      } else {
+        widget.state.deleteMaterialCategory(index);
+      }
+    } else {// 物资
+      if (widget.state.isEdit) {
+        SCMaterialListModel model = widget.state.selectedList[index];
+        print("物资id===${model.id}");
+        widget.state.deleteMaterial(index);
+        widget.state.editDeleteMaterial(materialInRelationId: model.id ?? '');
+      } else {
+        widget.state.deleteMaterial(index);
+      }
     }
   }
 
-  /// 暂存
+  /// 取消
   save() {
     checkMaterialData(0);
   }
 
-  /// 提交
+  /// 确定
   submit() {
     checkMaterialData(1);
   }
 
   /// 检查物资数据
   checkMaterialData(int status) {
+    int rangeValue = widget.state.rangeValue;
     if (widget.state.taskName.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectTaskName);
       return;
@@ -396,15 +409,20 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       return;
     }
 
-    if (widget.state.rangeValue != 1 && widget.state.selectedList.isEmpty) {
-      SCToast.showTip(SCDefaultValue.addMaterialInfoTip);
-      return;
+    if (rangeValue != 1) {
+      if (rangeValue == 2 && widget.state.selectedCategoryList.isEmpty) {
+        SCToast.showTip(SCDefaultValue.addMaterialCategoryTip);
+        return;
+      } else if (rangeValue == 3 && widget.state.selectedList.isEmpty) {
+        SCToast.showTip(SCDefaultValue.addMaterialInfoTip);
+        return;
+      }
     }
 
-    List materialIdList = [];
-    for (SCMaterialListModel model in widget.state.selectedList) {
-      materialIdList.add(model.materialId);
-    }
+    // List materialIdList = [];
+    // for (SCMaterialListModel model in widget.state.selectedList) {
+    //   materialIdList.add(model.materialId);
+    // }
 
     var params = {
       "wareHouseName": widget.state.wareHouseName,
@@ -415,7 +433,8 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       "dealUserName": widget.state.dealUserName,
       "dealUserId": widget.state.dealUserId,
       "rangeValue": widget.state.rangeValue,
-      "materialIdList": materialIdList,
+      "materialIdList": widget.state.getMaterialIDList(),
+      "categoryIDList" : widget.state.getMaterialCategoryIDList(),
       "dealOrgId": widget.state.dealOrgId
     };
     widget.state.addTransfer(status: status, data: params);
@@ -596,7 +615,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
     if (widget.state.isEdit) {
       return ["确定"];
     } else {
-      return ['暂存', '提交'];
+      return ['取消', '确定'];
     }
   }
 
