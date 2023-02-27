@@ -190,8 +190,25 @@ class SCMaterialEntryDetailController extends GetxController {
   cancelCheckTask({required String id, Function? successHandler}) {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kCancelCheckTaskUrl+id,
-        params: null,
+        url: SCUrl.kCancelCheckTaskUrl,
+        isQuery: true,
+        params: {"id" : id},
+        success: (value) {
+          SCLoadingUtils.hide();
+          successHandler?.call();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 删除盘点任务
+  deleteCheckTask({required String id, Function? successHandler}) {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kDeleteCheckTaskUrl,
+        isQuery: true,
+        params: {"id" : id},
         success: (value) {
           SCLoadingUtils.hide();
           successHandler?.call();

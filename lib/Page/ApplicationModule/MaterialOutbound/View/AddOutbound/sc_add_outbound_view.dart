@@ -124,8 +124,9 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       return SCBasicInfoCell(
         list: getBaseInfoList(),
         requiredRemark: true,
-        requiredPhotos: false,
+        requiredPhotos: widget.state.isEdit ? false : true,
         remark: widget.state.remark,
+        files: widget.state.files,
         selectAction: (index) async {
           if (index == 0) {
             // 仓库名称
@@ -145,7 +146,10 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
         inputAction: (content) {
           widget.state.remark = content;
         },
-        updatePhoto: (list) {},
+        updatePhoto: (list) {
+          widget.state.files = list;
+          widget.state.update();
+        },
       );
     } else if (index == 1) {
       return SCMaterialInfoCell(
@@ -332,6 +336,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     }
 
     var params = {
+      "files": widget.state.files,
       "wareHouseName" : widget.state.wareHouseName,
       "wareHouseId" : widget.state.wareHouseId,
       "typeName" : widget.state.type,

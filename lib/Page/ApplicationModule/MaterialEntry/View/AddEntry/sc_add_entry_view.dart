@@ -112,8 +112,9 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         // 基础信息
         list: getBaseInfoList(),
         requiredRemark: true,
-        requiredPhotos: false,
+        requiredPhotos: widget.state.isEdit ? false : true,
         remark: widget.state.remark,
+        files: widget.state.files,
         selectAction: (index) {
           if (index == 0) {
             // 仓库名称
@@ -128,7 +129,10 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         inputAction: (content) {
           widget.state.remark = content;
         },
-        updatePhoto: (list) {},
+        updatePhoto: (list) {
+          widget.state.files = list;
+          widget.state.update();
+        },
       );
     } else if (index == 1) {
       // 物资信息
@@ -315,7 +319,8 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       "typeName": widget.state.type,
       "typeId": widget.state.typeID,
       "remark": widget.state.remark,
-      "materialList": materialList
+      "materialList": materialList,
+      "files": widget.state.files,
     };
     widget.state.addEntry(status: status, data: params);
   }

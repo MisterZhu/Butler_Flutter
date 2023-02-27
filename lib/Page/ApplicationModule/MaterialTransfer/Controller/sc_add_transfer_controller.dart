@@ -66,6 +66,9 @@ class SCAddTransferController extends GetxController {
   /// 主键id
   String editId = '';
 
+  /// 上传的图片文件数组
+  List files = [];
+
   @override
   onInit() {
     super.onInit();
@@ -129,6 +132,7 @@ class SCAddTransferController extends GetxController {
   /// 新增调拨, status=0暂存，1提交
   addTransfer({required int status, required dynamic data}) {
     var params = {
+      "files": data['files'],
       "materials": data['materialList'],
       "remark": data['remark'],
       "status": status,

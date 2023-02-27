@@ -216,6 +216,10 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
 
   /// 删除
   deleteAction() {
-
+    controller.deleteCheckTask(id: controller.model.id ?? '', successHandler: () {
+      SCScaffoldManager.instance.eventBus
+          .fire({'key': SCKey.kRefreshMaterialCheckPage});
+      SCRouterHelper.back(null);
+    });
   }
 }

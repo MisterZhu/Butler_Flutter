@@ -115,8 +115,9 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
       return SCBasicInfoCell(
         list: getBaseInfoList(),
         requiredRemark: true,
-        requiredPhotos: false,
+        requiredPhotos: widget.state.isEdit ? false : true,
         remark: widget.state.remark,
+        files: widget.state.files,
         selectAction: (index) async {
           if (index == 0) {
             // 调入仓库
@@ -136,6 +137,8 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
           widget.state.remark = content;
         },
         updatePhoto: (list) {
+          widget.state.files = list;
+          widget.state.update();
         },
       );
     } else if (index == 1) {
@@ -329,6 +332,7 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
     }
 
     var params = {
+      "files": widget.state.files,
       "inWareHouseName" : widget.state.inWareHouseName,
       "inWareHouseId" : widget.state.inWareHouseId,
       "outWareHouseName" : widget.state.outWareHouseName,

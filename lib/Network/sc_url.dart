@@ -257,6 +257,9 @@ class SCUrl {
   static const String kCheckSubmitUrl = "/api/warehouse/app/warehouse/check/saveOrSubmit";
 
   /// 作废盘点任务
-  static const String kCancelCheckTaskUrl = "/api/warehouse/app/warehouse/check/cancel/";
+  static const String kCancelCheckTaskUrl = "/api/warehouse/app/warehouse/check/cancel";
+
+  /// 删除盘点任务
+  static const String kDeleteCheckTaskUrl = "/api/warehouse/app/warehouse/check/delete";
 
 }

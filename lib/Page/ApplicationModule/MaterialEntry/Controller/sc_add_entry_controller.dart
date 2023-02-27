@@ -54,6 +54,9 @@ class SCAddEntryController extends GetxController {
   /// 主键id
   String editId = '';
 
+  /// 上传的图片文件数组
+  List files = [];
+
   @override
   onInit() {
     super.onInit();
@@ -103,6 +106,7 @@ class SCAddEntryController extends GetxController {
   /// 新增入库, status=0暂存，1提交
   addEntry({required int status, required dynamic data}) {
     var params = {
+      "files": data['files'],
       "materials": data['materialList'],
       "remark": data['remark'],
       "status": status,

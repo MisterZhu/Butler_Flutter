@@ -67,6 +67,9 @@ class SCAddOutboundController extends GetxController {
   /// 主键id
   String editId = '';
 
+  /// 上传的图片文件数组
+  List files = [];
+
   @override
   onInit() {
     super.onInit();
@@ -114,6 +117,7 @@ class SCAddOutboundController extends GetxController {
   addEntry({required int status, required dynamic data}) {
 
     var params = {
+      "files": data['files'],
       "materials": data['materialList'],
       "remark": data['remark'],
       "status": status,
