@@ -32,9 +32,6 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
   /// SCMaterialEntryDetailController - tag
   String controllerTag = '';
 
-  /// 是否允许编辑
-  bool canEdit = false;
-
   @override
   initState() {
     super.initState();
@@ -46,9 +43,6 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
       var id = params['id'];
       if (id != null) {
         controller.id = id;
-      }
-      if (params.containsKey("canEdit")) {
-        canEdit = params['canEdit'];
       }
       controller.loadMaterialCheckDetail();
     }
@@ -111,27 +105,56 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
         tag: controllerTag,
         init: controller,
         builder: (state) {
-          bool offstage = true;
-          if (controller.success) {
-            offstage = !canEdit;
-          }
-          if (state.model.status == 0) {
-
+          bool showBottomBtn = true;
+          // state 任务状态(0：未开始，1：待盘点（超时），2：待盘点，3：盘点中（超时），4：盘点中，5：已完成（超时），6：已完成，7：已作废
+          if (state.model.status == 0) {// 未开始
+            list = [
+              {"type": scMaterialBottomViewType1, "title": "作废",},
+              {"type": scMaterialBottomViewType2, "title": "编辑",},
+            ];
+          } else if (state.model.status == 2) {// 待盘点
+            list = [
+              {"type": scMaterialBottomViewType2, "title": "盘点",},
+            ];
+          } else if (state.model.status == 3 || state.model.status ==  4) {// 盘点中（超时）、盘点中
+            list = [
+              {"type": scMaterialBottomViewType1, "title": "暂存",},
+              {"type": scMaterialBottomViewType2, "title": "提交",},
+            ];
+          } else if (state.model.status == 7) {// 已作废
+            list = [
+              {"type": scMaterialBottomViewType2, "title": "删除",},
+            ];
+          } else {
+            showBottomBtn = false;
           }
           return Offstage(
-            offstage: offstage,
+            offstage: !showBottomBtn,
             child: SCMaterialDetailBottomView(
               list: list,
               onTap: (value) {
                 if (value == '编辑') {
                   editAction();
+                } else if (value == '暂存') {
+                  saveAction();
                 } else if (value == '提交') {
                   submitAction();
+                } else if (value == '作废') {
+                  cancelAction();
+                } else if (value == '盘点') {
+                  checkAction();
+                } else if (value == '删除') {
+                  deleteAction();
                 }
               },
             ),
           );
         });
+  }
+
+  /// 暂存
+  saveAction() {
+
   }
 
   /// 编辑
@@ -175,5 +198,22 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
               .fire({'key': SCKey.kRefreshMaterialTransferPage});
           SCRouterHelper.back(null);
         });
+  }
+
+  /// 作废
+  cancelAction() {
+    controller.cancelCheckTask(id: controller.model.id ?? '', successHandler: () {
+
+    });
+  }
+
+  /// 盘点
+  checkAction() {
+
+  }
+
+  /// 删除
+  deleteAction() {
+
   }
 }

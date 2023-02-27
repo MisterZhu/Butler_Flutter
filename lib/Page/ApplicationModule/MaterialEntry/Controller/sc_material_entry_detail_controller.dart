@@ -158,6 +158,50 @@ class SCMaterialEntryDetailController extends GetxController {
         });
   }
 
+  /// 开始处理盘点任务
+  startCheckTask({required String id, Function? successHandler}) {
+    SCHttpManager.instance.post(
+        url: SCUrl.kStartCheckTaskUrl+id,
+        params: null,
+        success: (value) {
+          successHandler?.call();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 暂存或提交盘点任务
+  checkSubmit({required int action, required String checkId, required List materials, Function? successHandler}) {
+    SCHttpManager.instance.post(
+        url: SCUrl.kCheckSubmitUrl,
+        params: {
+          "action": action,
+          "checkId": checkId,
+          "materials": materials
+        },
+        success: (value) {
+          successHandler?.call();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 作废盘点任务
+  cancelCheckTask({required String id, Function? successHandler}) {
+    SCHttpManager.instance.post(
+        url: SCUrl.kCancelCheckTaskUrl+id,
+        params: null,
+        success: (value) {
+          successHandler?.call();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
+
   /// 出库确认
   outboundConfirm(
       {required String outTime,

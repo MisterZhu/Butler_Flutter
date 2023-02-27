@@ -42,7 +42,17 @@ class SCMaterialTaskDetailModel {
       this.fetchOrgName,
       this.fetchOrgId,
       this.fetchUserMobileNum,
+    this.taskName,
     this.taskEndTime,
+    this.taskStartTime,
+    this.dealEndTime,
+    this.dealOrgId,
+    this.dealOrgName,
+    this.dealStartTime,
+    this.dealUserId,
+    this.dealUserName,
+    this.rangeName,
+    this.rangeValue,
   });
 
   SCMaterialTaskDetailModel.fromJson(dynamic json) {
@@ -101,7 +111,17 @@ class SCMaterialTaskDetailModel {
     fetchUserId = json['fetchUserId'];
     fetchUserName = json['fetchUserName'];
     fetchUserMobileNum = json['fetchUserMobileNum'];
+    taskStartTime = json['taskStartTime'];
     taskEndTime = json['taskEndTime'];
+    taskName = json['taskName'];
+    rangeName = json['rangeName'];
+    rangeValue = json['rangeValue'];
+    dealUserId = json['dealUserId'];
+    dealUserName = json['dealUserName'];
+    dealStartTime = json['dealStartTime'];
+    dealEndTime = json['dealEndTime'];
+    dealOrgId = json['dealOrgId'];
+    dealOrgName = json['dealOrgName'];
   }
   String? creator;
   String? creatorName;
@@ -143,7 +163,17 @@ class SCMaterialTaskDetailModel {
   String? fetchUserId;
   String? fetchUserName;
   String? fetchUserMobileNum;
+  String? dealEndTime;
+  String? dealStartTime;
+  String? dealOrgId;
+  String? dealOrgName;
+  String? dealUserId;
+  String? dealUserName;
+  String? rangeName;
+  int? rangeValue;
   String? taskEndTime;
+  String? taskStartTime;
+  String? taskName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -193,7 +223,17 @@ class SCMaterialTaskDetailModel {
     map['fetchOrgName'] = fetchOrgName;
     map['fetchOrgId'] = fetchOrgId;
     map['fetchUserMobileNum'] = fetchUserMobileNum;
+    map['taskStartTime'] = taskStartTime;
     map['taskEndTime'] = taskEndTime;
+    map['taskName'] = taskName;
+    map['rangeName'] = rangeName;
+    map['rangeValue'] = rangeValue;
+    map['dealUserId'] = dealUserId;
+    map['dealUserName'] = dealUserName;
+    map['dealStartTime'] = dealStartTime;
+    map['dealEndTime'] = dealEndTime;
+    map['dealOrgId'] = dealOrgId;
+    map['dealOrgName'] = dealOrgName;
     return map;
   }
 

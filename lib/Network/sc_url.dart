@@ -250,4 +250,13 @@ class SCUrl {
   /// 查询物资分类树
   static const String kMaterialClassTreeUrl = "/api/warehouse/manage/materialClass/tree";
 
+  /// 开始盘点任务
+  static const String kStartCheckTaskUrl = "/api/warehouse/app/warehouse/check/start/";
+
+  /// 暂存或提交盘点任务
+  static const String kCheckSubmitUrl = "/api/warehouse/app/warehouse/check/saveOrSubmit";
+
+  /// 作废盘点任务
+  static const String kCancelCheckTaskUrl = "/api/warehouse/app/warehouse/check/cancel/";
+
 }

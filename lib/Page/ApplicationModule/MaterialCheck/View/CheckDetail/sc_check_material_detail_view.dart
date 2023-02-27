@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
+import '../../../MaterialEntry/View/AddMaterial/sc_material_stepper.dart';
 import '../../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import '../../Controller/sc_check_material_detail_controller.dart';
 
@@ -31,7 +32,7 @@ class SCCheckMaterialDetailViewState extends State<SCCheckMaterialDetailView> {
       {'name':'条形码', 'content': widget.state.materialModel.barCode ?? ''},
       {'name':'规格', 'content': widget.state.materialModel.norms},
       {'name':'账面库存', 'content': '${widget.state.materialModel.number ?? 0}'},
-      {'name':'盘点数量', 'content': '${widget.state.materialModel.checkNum ?? 0}'},];
+      {'name':'盘点数量', 'content': '${widget.state.materialModel.checkNum ?? 0}', 'isInput': true},];
   }
 
   @override
@@ -70,7 +71,7 @@ class SCCheckMaterialDetailViewState extends State<SCCheckMaterialDetailView> {
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            return cell(list[index]['name'] ?? '', list[index]['content'] ?? '');
+            return cell(list[index]['name'] ?? '', list[index]['content'] ?? '', list[index]['isInput'] ?? false);
           },
           separatorBuilder: (BuildContext context, int index) {
             return const SizedBox(height: 10.0,);
@@ -81,7 +82,7 @@ class SCCheckMaterialDetailViewState extends State<SCCheckMaterialDetailView> {
 
   /// bottomView
   Widget bottomView() {
-    List list = [{"type": scMaterialBottomViewType2, "title": "提交",}];
+    List list = [{"type": scMaterialBottomViewType2, "title": "确定",}];
     return SCMaterialDetailBottomView(
         list: list,
         onTap: (value) {
@@ -89,11 +90,14 @@ class SCCheckMaterialDetailViewState extends State<SCCheckMaterialDetailView> {
         });
   }
 
-  Widget cell(String leftText, String rightText) {
+  Widget cell(String leftText, String rightText, bool isInput) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         leftLabel(leftText),
-        rightLabel(rightText)
+        rightLabel(rightText, isInput)
       ],
     );
   }
@@ -121,22 +125,31 @@ class SCCheckMaterialDetailViewState extends State<SCCheckMaterialDetailView> {
   }
 
   /// rightLabel
-  Widget rightLabel(String text) {
-    return Expanded(
-        child: Text(
-          text,
-          textAlign: TextAlign.right,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          strutStyle: const StrutStyle(
-            fontSize: SCFonts.f14,
-            height: 1.25,
-            forceStrutHeight: true,
-          ),
-          style: const TextStyle(
+  Widget rightLabel(String text, bool isInput) {
+    if (isInput == true) {
+      return SCStepper(
+        num: widget.state.materialModel.checkNum ?? 0,
+        numChangeAction: (int value) {
+          widget.state.materialModel.checkNum = value;
+        },
+      );
+    } else {
+      return Expanded(
+          child: Text(
+            text,
+            textAlign: TextAlign.right,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            strutStyle: const StrutStyle(
               fontSize: SCFonts.f14,
-              fontWeight: FontWeight.w400,
-              color: SCColors.color_1B1D33),
-        ));
+              height: 1.25,
+              forceStrutHeight: true,
+            ),
+            style: const TextStyle(
+                fontSize: SCFonts.f14,
+                fontWeight: FontWeight.w400,
+                color: SCColors.color_1B1D33),
+          ));
+    }
   }
 }
