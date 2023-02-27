@@ -37,6 +37,7 @@ import '../../Page/ApplicationModule/MaterialFrmLoss/Page/sc_material_frmLoss_pa
 import '../../Page/ApplicationModule/MaterialOutbound/Page/sc_material_outbound_detail_page.dart';
 import '../../Page/ApplicationModule/MaterialOutbound/Page/sc_material_outbound_page.dart';
 import '../../Page/ApplicationModule/MaterialOutbound/Page/sc_select_receiver_page.dart';
+import '../../Page/ApplicationModule/MaterialRequisition/Page/sc_material_requisition_page.dart';
 import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_add_transfer_page.dart';
 import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_material_transfer_detail_page.dart';
 import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_material_transfer_page.dart';
@@ -131,6 +132,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.checkSelectCategoryPage, page: () => SCMaterialCheckSelectCategoryPage()),
     /*盘点-物资详情*/
     GetPage(name: SCRouterPath.checkMaterialDetailPage, page: () => SCCheckMaterialDetailPage()),
+    /*领料出入库*/
+    GetPage(name: SCRouterPath.materialRequisitionPage, page: () => SCMaterialRequisitionPage()),
   ];
 
   /*根据code使用路由*/

@@ -193,7 +193,7 @@ class SCUtils {
   }
 
   /*获取webView的url*/
-  static String getWebViewUrl({required String url, required bool needJointParams}) {
+  static String getWebViewUrl({required String url, required String title, required bool needJointParams}) {
     String token = SCScaffoldManager.instance.user.token ?? "";
     String client = SCDefaultValue.client;
     String defOrgId = SCScaffoldManager.instance.user.tenantId ?? '';
@@ -204,6 +204,7 @@ class SCUtils {
     String spaceIds = SCScaffoldManager.instance.spaceIds ?? '';
     String userName =
     Uri.encodeComponent(SCScaffoldManager.instance.user.userName ?? '');
+    int reportPageCode = 1;
 
     /// 拼接符号
     String jointSymbol = "";
@@ -230,11 +231,11 @@ class SCUtils {
     }
     if (Platform.isAndroid) {
       String newUrl =
-          "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&latitude=$latitude&longitude=$longitude";
+          "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&latitude=$latitude&longitude=$longitude&reportPageCode=$reportPageCode&title=$title";
       return newUrl;
     } else {
       String newUrl =
-          "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&latitude=$latitude&longitude=$longitude";
+          "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&latitude=$latitude&longitude=$longitude&reportPageCode=$reportPageCode&title=$title";
       return newUrl;
     }
   }

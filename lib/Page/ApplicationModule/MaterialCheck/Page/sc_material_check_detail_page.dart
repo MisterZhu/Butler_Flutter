@@ -167,6 +167,14 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
     String remark = controller.model.remark ?? '';
     List<SCMaterialListModel> materials = controller.model.materials ?? [];
     String id = controller.model.id ?? '';
+    String taskName = controller.model.taskName ?? '';
+    String taskStartTime = controller.model.taskStartTime ?? '';
+    String taskEndTime = controller.model.taskEndTime ?? '';
+    String orgName = controller.model.orgName ?? '';
+    String orgId = controller.model.orgId ?? '';
+    String operatorName = controller.model.operatorName ?? '';
+    String operator = controller.model.operator ?? '';
+    int rangeValue = controller.model.rangeValue ?? 1;
 
     for (SCMaterialListModel model in materials) {
       model.localNum = model.number ?? 1;
@@ -174,7 +182,7 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
       model.name = model.materialName ?? '';
       //model.id = model.materialId;
     }
-    SCRouterHelper.pathPage(SCRouterPath.addCheckPage, {
+    var params = {
       'isEdit': true,
       'data': materials,
       "wareHouseName": wareHouseName,
@@ -182,8 +190,17 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
       "typeName": typeName,
       "type": type,
       "remark": remark,
-      "id": id
-    })?.then((value) {
+      "id": id,
+      "taskName": taskName,
+      "startTime": taskStartTime,
+      "endTime": taskEndTime,
+      "dealOrgName": orgName,
+      "dealOrgId": orgId,
+      "dealUserName": operatorName,
+      "dealUserId": operator,
+      "rangeValue": rangeValue
+    };
+    SCRouterHelper.pathPage(SCRouterPath.addCheckPage, params)?.then((value) {
       controller.loadMaterialCheckDetail();
     });
   }

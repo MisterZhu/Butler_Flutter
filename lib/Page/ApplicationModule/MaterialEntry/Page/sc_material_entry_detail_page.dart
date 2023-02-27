@@ -34,6 +34,9 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
   /// 是否允许编辑
   bool canEdit = false;
 
+  /// 是否隐藏底部按钮
+  bool hideBottomBtn = false;
+
   @override
   initState() {
     super.initState();
@@ -51,6 +54,9 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
       }
       if (params.containsKey("status")) {
         controller.status = params['status'];
+      }
+      if (params.containsKey('hideBottomBtn')) {
+        hideBottomBtn = params['hideBottomBtn'];
       }
       controller.loadMaterialEntryDetail();
     }
@@ -101,6 +107,9 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
 
   /// bottomView
   Widget bottomView() {
+    if (hideBottomBtn) {
+      return const SizedBox();
+    }
     List list = [
       {
         "type": scMaterialBottomViewType1,

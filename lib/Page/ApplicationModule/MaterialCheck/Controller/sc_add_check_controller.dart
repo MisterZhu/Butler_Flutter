@@ -108,18 +108,30 @@ class SCAddCheckController extends GetxController {
 
       /// 开始时间
       startTime = params['startTime'];
+      startTimeStr = params['startTime'];
 
       /// 结束时间
       endTime = params['endTime'];
+      endTimeStr = params['endTime'];
 
-      ///处理人名称
+      /// 部门名称
       dealOrgName = params['dealOrgName'];
 
-      ///处理人id
+      /// 部门id
+      dealOrgId = params['dealOrgId'];
+
+      /// 处理人名称
+      dealUserName = params['dealUserName'];
+
+      /// 处理人id
       dealUserId = params['dealUserId'];
 
       /// 范围
       rangeValue = params['rangeValue'];
+
+      typeIndex = params['type'];
+
+      typeName = params['typeName'];
 
       /// 主键id
       editId = params['id'];

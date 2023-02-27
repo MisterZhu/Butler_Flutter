@@ -118,7 +118,7 @@ class SCApplicationPageState extends State<SCApplicationPage>
     }
 
     if (Platform.isAndroid) {
-      String realUrl = SCUtils.getWebViewUrl(url: url, needJointParams: true);
+      String realUrl = SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
 
       /// 调用Android WebView
       var params = {"title": title, "url": realUrl};
@@ -129,7 +129,7 @@ class SCApplicationPageState extends State<SCApplicationPage>
       /// todo 刷新控制台数据
       print("-------$result-------");
     } else if (Platform.isIOS) {
-      String realUrl = SCUtils.getWebViewUrl(url: url, needJointParams: true);
+      String realUrl = SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
       SCRouterHelper.pathPage(SCRouterPath.webViewPath,
           {"title": title, "url": realUrl, "needJointParams": false});
     } else {

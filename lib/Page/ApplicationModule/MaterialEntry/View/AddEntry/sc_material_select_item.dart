@@ -54,9 +54,26 @@ class SCMaterialSelectItemState extends State<SCMaterialSelectItem> {
   TextEditingController controller = TextEditingController();
   FocusNode node = FocusNode();
 
+  @override
   initState() {
     super.initState();
+    if ((widget.content ?? '').isNotEmpty && (widget.isInput ?? false) == true) {
+      controller.value = TextEditingValue(
+          text: (widget.content ?? ''),
+          selection: TextSelection.fromPosition(TextPosition(
+              affinity: TextAffinity.downstream, offset: (widget.content ?? '').length)));
+    }
+  }
 
+  @override
+  void didUpdateWidget(SCMaterialSelectItem oldWidget) {
+    if ((widget.content ?? '').isNotEmpty && (widget.isInput ?? false) == true) {
+      controller.value = TextEditingValue(
+          text: (widget.content ?? ''),
+          selection: TextSelection.fromPosition(TextPosition(
+              affinity: TextAffinity.downstream, offset: (widget.content ?? '').length)));
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override

@@ -44,6 +44,9 @@ class SCBasicInfoCell extends StatefulWidget {
   /// 添加/删除图片
   final Function(List list)? updatePhoto;
 
+  /// 范围
+  final int? rangeValue;
+
   SCBasicInfoCell({
     Key? key,
     required this.list,
@@ -57,6 +60,7 @@ class SCBasicInfoCell extends StatefulWidget {
     required this.requiredRemark,
     required this.requiredPhotos,
     this.rangeList,
+    this.rangeValue
   }) : super(key: key);
 
   @override
@@ -68,6 +72,7 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
 
   @override
   Widget build(BuildContext context) {
+    selectRangeIndex = (widget.rangeValue ?? 1) - 1;
     return body();
   }
 

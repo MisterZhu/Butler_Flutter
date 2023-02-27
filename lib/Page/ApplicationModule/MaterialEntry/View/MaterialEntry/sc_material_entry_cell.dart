@@ -232,7 +232,11 @@ class SCMaterialEntryCell extends StatelessWidget {
         showBtn = true;
       }
     } else {
-      showBtn = model?.status == 0 ? true : false;
+      if (type == SCWarehouseManageType.requisition) {
+        showBtn = false;
+      } else {
+        showBtn = model?.status == 0 ? true : false;
+      }
     }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0), 

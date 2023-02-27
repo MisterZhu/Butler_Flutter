@@ -68,4 +68,6 @@ enum SCWarehouseManageType {
   transfer,
   // 盘点任务
   check,
+  // 领料
+  requisition,
 }

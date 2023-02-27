@@ -131,6 +131,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
         requiredRemark: false,
         requiredPhotos: false,
         rangeList: rangeList,
+        rangeValue: widget.state.rangeValue,
         selectRangeAction: (index) {
           widget.state.rangeValue = index + 1;
           widget.state.update();

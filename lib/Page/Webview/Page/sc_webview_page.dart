@@ -77,7 +77,7 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
     String subUrl =
         StringUtils.isNotNullOrEmpty(params?["url"]) ? params!["url"] : "";
     if (needJointParams) {
-      _url = SCUtils.getWebViewUrl(url: subUrl, needJointParams: true);
+      _url = SCUtils.getWebViewUrl(url: subUrl,title: _title,  needJointParams: true);
     } else {
       _url = subUrl;
     }

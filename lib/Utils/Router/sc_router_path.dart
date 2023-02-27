@@ -142,4 +142,9 @@ class SCRouterPath {
   static String checkMaterialDetailPage = "/lib/Page/MaterialCheck/Page/sc_check_material_detail_page";
 
 
+  /// *************************** 领料物资出入任务 ******************************/
+
+  /// 领料出入库
+  static String materialRequisitionPage = "/lib/Page/MaterialCheck/Page/sc_material_requisition_page";
+
 }

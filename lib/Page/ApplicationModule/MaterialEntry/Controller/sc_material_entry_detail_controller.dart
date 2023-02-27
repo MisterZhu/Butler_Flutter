@@ -122,6 +122,7 @@ class SCMaterialEntryDetailController extends GetxController {
         url: SCUrl.kMaterialCheckDetailUrl+id,
         params: null,
         success: (value) {
+          log('盘点详情===$value');
           SCLoadingUtils.hide();
           success = true;
           model = SCMaterialTaskDetailModel.fromJson(value);
