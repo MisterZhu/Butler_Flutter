@@ -315,6 +315,24 @@ class SCUtils {
     }
   }
 
+  /// 根据status获取盘点单据处理按钮text
+  static String getCheckStatusButtonText(int status) {
+    switch (status) {
+      case 0:
+        return "编辑";
+      case 1:
+        return " ";
+      case 2:
+        return "盘点";
+      case 3:
+        return " ";
+      case 4:
+        return "盘点";
+      default:
+        return " ";
+    }
+  }
+
   /// 根据status获取入库单据状态文本颜色text
   static Color getEntryStatusTextColor(int status) {
     switch (status) {

@@ -189,7 +189,7 @@ class SCMaterialCheckViewState extends State<SCMaterialCheckView> {
               detailAction(model);
             },
             btnTapAction: () {
-              submit(index);
+              detailAction(model);
             },
             callAction: (String phone) {
               call(phone);

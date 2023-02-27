@@ -114,9 +114,9 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
         init: controller,
         builder: (state) {
           bool showBtns = false;
-          if ( state.model.status == 0) {
+          if (state.model.status == 0) {
             showBtns = true;
-          } else if ( state.model.status == 6) {/// 已通过
+          } else if (state.model.status == 6) {/// 已通过
             showBtns = true;
             list = [
               {
