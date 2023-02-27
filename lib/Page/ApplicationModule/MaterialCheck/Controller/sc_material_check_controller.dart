@@ -54,7 +54,7 @@ class SCMaterialCheckController extends GetxController {
     loadData(isMore: false);
   }
 
-  /// 入库列表数据
+  /// 盘点列表数据
   loadData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
@@ -94,7 +94,7 @@ class SCMaterialCheckController extends GetxController {
       "pageSize": 20
     };
     SCHttpManager.instance.post(
-        url: SCUrl.kMaterialEntryListUrl,
+        url: SCUrl.kMaterialCheckListUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
@@ -133,7 +133,7 @@ class SCMaterialCheckController extends GetxController {
   loadTypeData(Function? resultHandler) {
     SCHttpManager.instance.post(
         url: SCUrl.kWareHouseTypeUrl,
-        params: {'dictionaryCode' : 'WAREHOUSING'},
+        params: {'dictionaryCode' : 'CHECK_TASK_TYPE'},
         success: (value) {
           typeList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
           update();
@@ -143,7 +143,7 @@ class SCMaterialCheckController extends GetxController {
         });
   }
 
-  /// 提交入库
+  /// 提交
   submit({required String id, Function(bool success)? completeHandler}) async{
     var params = {
       "wareHouseInId": id,

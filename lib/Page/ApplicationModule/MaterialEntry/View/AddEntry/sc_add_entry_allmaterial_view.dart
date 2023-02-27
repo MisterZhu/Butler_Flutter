@@ -6,7 +6,7 @@ import '../Detail/sc_material_cell.dart';
 
 class SCAddEntryAllMaterialView extends StatelessWidget {
 
-  const SCAddEntryAllMaterialView({Key? key, required this.list, this.deleteAction, this.updateNumAction}) : super(key: key);
+  const SCAddEntryAllMaterialView({Key? key, required this.list, this.deleteAction, this.updateNumAction, this.hideMaterialNumTextField}) : super(key: key);
 
   /// 数据源
   final List<SCMaterialListModel> list;
@@ -16,6 +16,9 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
 
   /// 刷新数量
   final Function(int index, int value)? updateNumAction;
+
+  /// 隐藏物资数量输入框
+  final bool? hideMaterialNumTextField;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +44,7 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
   Widget cell(int index) {
     SCMaterialListModel model = list[index];
     return SCMaterialCell(
+      hideMaterialNumTextField: hideMaterialNumTextField,
       type: scMaterialCellTypeDelete,
       model: model,
       onTap: () {

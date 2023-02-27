@@ -4,6 +4,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_enum.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_material_select_item.dart';
 import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Utils/sc_utils.dart';
 import '../../../HouseInspect/View/sc_deliver_evidence_cell.dart';
 import '../../../HouseInspect/View/sc_deliver_explain_cell.dart';
 
@@ -127,6 +128,7 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
         itemBuilder: (BuildContext context, int index) {
           var dic = widget.list[index];
           bool disable = false;
+          bool hideArrow = false;
           if (dic.containsKey('disable')) {
             disable = dic['disable'];
           }
@@ -134,13 +136,18 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
           if (dic.containsKey('isInput')) {
             isInput = dic['isInput'];
           }
+          if (dic.containsKey('hideArrow')) {
+            hideArrow = dic['hideArrow'];
+          }
           return SCMaterialSelectItem(
             isRequired: dic['isRequired'],
             title: dic['title'],
             isInput: isInput,
             content: dic['content'],
             disable: disable,
+            hideArrow: hideArrow,
             selectAction: () {
+              SCUtils().hideKeyboard(context: context);
               widget.selectAction?.call(index);
             },
             inputNameAction: (value) {

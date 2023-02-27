@@ -26,6 +26,9 @@ class SCAddMaterialController extends GetxController {
   /// 是否是编辑
   bool isEdit = false;
 
+  /// 是否隐藏数量输入框
+  bool hideNumTextField = false;
+
   /// 物资类型，1-入库，2-出库，3-报损，4-调拨，5-盘点
   SCWarehouseManageType materialType = SCWarehouseManageType.entry;
 

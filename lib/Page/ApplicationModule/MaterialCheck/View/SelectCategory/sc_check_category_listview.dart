@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
-
-import '../../Model/sc_check_selectcategory_model.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialCheck/Model/sc_check_type_model.dart';
 
 /// 分类列表listview
 
@@ -56,13 +55,13 @@ class SCCheckSelectCategoryListView extends StatelessWidget {
 
   /// cell
   Widget cell(int index) {
-    SCCheckSelectCategoryModel model = list[index];
-    String title = model.title ?? '';
+    SCCheckTypeModel model = list[index];
+    String title = model.name ?? '';
     bool isSelected = model.isSelected ?? false;
     String radioPath = isSelected
         ? SCAsset.iconMaterialSelected
         : SCAsset.iconMaterialUnselect;
-    bool offstage = (model.childList ?? []).isEmpty;
+    bool offstage = (model.children ?? []).isEmpty;
     return SizedBox(
       height: 48.0,
       child: Padding(
@@ -137,8 +136,8 @@ class SCCheckSelectCategoryListView extends StatelessWidget {
 
   /// 详情
   detailAction(int index) {
-    SCCheckSelectCategoryModel model = list[index];
-    if ((model.childList ?? []).isNotEmpty) {
+    SCCheckTypeModel model = list[index];
+    if ((model.children ?? []).isNotEmpty) {
       onTap?.call(index);
     }
   }

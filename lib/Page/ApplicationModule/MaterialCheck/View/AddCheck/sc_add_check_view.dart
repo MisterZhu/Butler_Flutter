@@ -129,8 +129,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
         requiredPhotos: false,
         rangeList: rangeList,
         selectRangeAction: (index) {
-          print('盘点范围==========$index');
-          widget.state.range = index;
+          widget.state.rangeValue = index + 1;
           widget.state.update();
         },
         inputNameAction: (value) {
@@ -158,12 +157,13 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
         },
       );
     } else if (index == 1) {
-      if (widget.state.range == 0) {
+      if (widget.state.rangeValue == 1) {
         return const SizedBox();
       } else {
         return SCMaterialInfoCell(
-          title: widget.state.range == 1 ? '物资分类' : '物资名称',
-          materialType: widget.state.range == 1 ? 1 : 0,
+          hideMaterialNumTextField: true,
+          title: widget.state.rangeValue == 2 ? '物资分类' : '物资名称',
+          materialType: widget.state.rangeValue == 2 ? 2 : 1,
           showAdd: true,
           list: widget.state.selectedList,
           addAction: () {
@@ -271,7 +271,8 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
         'isRequired': true,
         'title': '任务名称',
         'content': widget.state.taskName,
-        'isInput': true
+        'isInput': true,
+        'hideArrow' : true,
       },
       {
         'isRequired': true,
@@ -284,11 +285,11 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
         'title': '仓库名称',
         'content': widget.state.wareHouseName
       },
-      {'isRequired': true, 'title': '部门', 'content': widget.state.orgName},
+      {'isRequired': true, 'title': '部门', 'content': widget.state.dealOrgName},
       {
         'isRequired': true,
         'title': '处理人',
-        'content': widget.state.operatorName
+        'content': widget.state.dealUserName
       },
     ];
     return baseInfoList;
@@ -300,16 +301,16 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
       return;
     }
-    if (widget.state.range == 1) {
+    if (widget.state.rangeValue == 2) {
       var list =
           await SCRouterHelper.pathPage(SCRouterPath.checkSelectCategoryPage, {
         'data': widget.state.selectedCategoryList,
-        'wareHouseId': widget.state.wareHouseId
+        'wareHouseId': widget.state.wareHouseId,
       });
       if (list != null) {
         widget.state.updateSelectedMaterial(list);
       }
-    } else if (widget.state.range == 2) {
+    } else if (widget.state.rangeValue == 3) {
       if (widget.state.isEdit) {
         print("编辑-添加物资");
         addExitsMaterialAction();
@@ -325,7 +326,8 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
-      "materialType": SCWarehouseManageType.outbound
+      "materialType": SCWarehouseManageType.check,
+      'hideNumTextField': true
     });
     if (list != null) {
       onlyAddMaterial(list);
@@ -338,7 +340,8 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
       'isEdit': true,
-      "materialType": SCWarehouseManageType.outbound
+      "materialType": SCWarehouseManageType.check,
+      'hideNumTextField': true
     });
     if (list != null) {
       editAddMaterial(list);
@@ -388,23 +391,19 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       return;
     }
 
-    if (widget.state.operatorName.isEmpty) {
+    if (widget.state.dealUserName.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectOperatorName);
       return;
     }
 
-    if (widget.state.range != 0 && widget.state.selectedList.isEmpty) {
+    if (widget.state.rangeValue != 1 && widget.state.selectedList.isEmpty) {
       SCToast.showTip(SCDefaultValue.addMaterialInfoTip);
       return;
     }
 
-    List materialList = [];
+    List materialIdList = [];
     for (SCMaterialListModel model in widget.state.selectedList) {
-      var params = model.toJson();
-      params['num'] = model.localNum;
-      params['materialId'] = model.id;
-      params['materialName'] = model.name;
-      materialList.add(params);
+      materialIdList.add(model.materialId);
     }
 
     var params = {
@@ -413,10 +412,11 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       "taskName": widget.state.taskName,
       "startTime": widget.state.startTime,
       "endTime": widget.state.endTime,
-      "operatorName": widget.state.operatorName,
-      "operator": widget.state.operator,
-      "range": widget.state.range,
-      "materialList": materialList
+      "dealUserName": widget.state.dealUserName,
+      "dealUserId": widget.state.dealUserId,
+      "rangeValue": widget.state.rangeValue,
+      "materialIdList": materialIdList,
+      "dealOrgId": widget.state.dealOrgId
     };
     widget.state.addTransfer(status: status, data: params);
   }
@@ -546,17 +546,20 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
 
   /// 确定选择部门
   sureSelectDepartment() {
+    print("部门===${widget.selectDepartmentController.currentDepartmentModel.toJson()}");
     bool enable =
         widget.selectDepartmentController.currentDepartmentModel.enable ??
             false;
     if (enable) {
-      if (widget.state.orgId !=
+      print("111");
+      if (widget.state.dealOrgId !=
           (widget.selectDepartmentController.currentDepartmentModel.id ?? '')) {
-        widget.state.operator = '';
-        widget.state.operatorName = '';
-        widget.state.orgId =
+        print("222");
+        widget.state.dealUserId = '';
+        widget.state.dealUserName = '';
+        widget.state.dealOrgId =
             widget.selectDepartmentController.currentDepartmentModel.id ?? '';
-        widget.state.orgName =
+        widget.state.dealOrgName =
             widget.selectDepartmentController.currentDepartmentModel.title ??
                 '';
         widget.state.update();
@@ -568,12 +571,12 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
 
   /// 选择处理人
   selectUser() async {
-    if (widget.state.orgId.isEmpty) {
+    if (widget.state.dealOrgId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectFrmLossDepartment);
     } else {
       var params = {
         'receiverModel': receiverModel,
-        'orgId': widget.state.orgId,
+        'orgId': widget.state.dealOrgId,
         'title': '选择处理人',
       };
       var backParams = await SCRouterHelper.pathPage(
@@ -581,8 +584,8 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       if (backParams != null) {
         setState(() {
           receiverModel = backParams['receiverModel'];
-          widget.state.operator = receiverModel.personId ?? '';
-          widget.state.operatorName = receiverModel.personName ?? '';
+          widget.state.dealUserId = receiverModel.personId ?? '';
+          widget.state.dealUserName = receiverModel.personName ?? '';
         });
       }
     }
@@ -619,12 +622,12 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       return;
     }
 
-    if (widget.state.operatorName.isEmpty) {
+    if (widget.state.dealUserName.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectOperatorName);
       return;
     }
 
-    if (widget.state.range != 0 && widget.state.selectedList.isEmpty) {
+    if (widget.state.rangeValue != 1 && widget.state.selectedList.isEmpty) {
       SCToast.showTip(SCDefaultValue.addMaterialInfoTip);
       return;
     }
@@ -634,9 +637,11 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       "taskName": widget.state.taskName,
       "startTime": widget.state.startTime,
       "endTime": widget.state.endTime,
-      "operatorName": widget.state.operatorName,
-      "operator": widget.state.operator,
-      "range": widget.state.range,
+      "dealUserName": widget.state.dealUserName,
+      "dealUserId": widget.state.dealUserId,
+      "dealOrgId": widget.state.dealOrgId,
+      "dealOrgName": widget.state.dealOrgName,
+      "rangeValue": widget.state.rangeValue,
       "id": widget.state.editId
     };
     widget.state.editMaterialBaseInfo(data: params);

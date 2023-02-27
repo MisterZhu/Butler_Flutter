@@ -184,6 +184,13 @@ public class SSWebView extends AppCompatActivity implements BridgeWebChromeClien
      * 初始化桥 原生跟H5交互的桥
      */
     private void initProjBridge() {
+        System.out.println("===>start!");
+        mWebView.registerHandler("sc_app_back", (e, function) -> {
+            System.out.println("===>end!");
+            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
+            finish();
+        });
     }
 
     private void initListener() {

@@ -18,7 +18,7 @@ const int scMaterialCellTypeDelete = 2;
 /// 物资cell
 class SCMaterialCell extends StatefulWidget {
 
-  const SCMaterialCell({Key? key, required this.type, this.model, this.onTap, this.numChangeAction, this.radioTap, this.deleteAction}) : super(key: key);
+  const SCMaterialCell({Key? key, required this.type, this.model, this.onTap, this.numChangeAction, this.radioTap, this.deleteAction, this.hideMaterialNumTextField}) : super(key: key);
 
   final SCMaterialListModel? model;
 
@@ -36,6 +36,9 @@ class SCMaterialCell extends StatefulWidget {
 
   /// 删除物资
   final Function? deleteAction;
+
+  /// 隐藏物资数量输入框
+  final bool? hideMaterialNumTextField;
 
   @override
   SCMaterialCellState createState() => SCMaterialCellState();
@@ -169,6 +172,20 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// 物资信息-选择
   Widget selectInfoView() {
+    bool hidenNumTextField = widget.hideMaterialNumTextField ?? false;
+    Widget stepper;
+    if (hidenNumTextField) {
+      stepper = const SizedBox(
+        height: 1,
+      );
+    } else {
+      stepper = SCStepper(
+        num: widget.model?.localNum,
+        numChangeAction: (int value) {
+          widget.numChangeAction?.call(value);
+        },
+      );
+    }
     return Expanded(
         child: SizedBox(
           height: 80.0,
@@ -183,13 +200,8 @@ class SCMaterialCellState extends State<SCMaterialCell> {
                       Expanded(child: infoLabel(2)),
                       Column(
                         children: [
-                          Expanded(child: Container(color: Colors.orange,),),
-                          SCStepper(
-                            num: widget.model?.localNum,
-                            numChangeAction: (int value) {
-                              widget.numChangeAction?.call(value);
-                            },
-                          )
+                          Expanded(child: Container(color: Colors.transparent),),
+                          stepper
                         ],
                       )
                     ],

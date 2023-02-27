@@ -50,7 +50,7 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
       if (params.containsKey("canEdit")) {
         canEdit = params['canEdit'];
       }
-      controller.loadMaterialEntryDetail();
+      controller.loadMaterialCheckDetail();
     }
   }
 
@@ -157,7 +157,7 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
       "remark": remark,
       "id": id
     })?.then((value) {
-      controller.loadMaterialEntryDetail();
+      controller.loadMaterialCheckDetail();
     });
   }
 

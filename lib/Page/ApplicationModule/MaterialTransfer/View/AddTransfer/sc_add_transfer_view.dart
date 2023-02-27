@@ -258,7 +258,7 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.outWareHouseId,
-      "materialType" : SCWarehouseManageType.outbound
+      "materialType" : SCWarehouseManageType.transfer
     });
     if (list != null) {
       onlyAddMaterial(list);
@@ -271,7 +271,7 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.outWareHouseId,
       'isEdit': true,
-      "materialType" : SCWarehouseManageType.outbound
+      "materialType" : SCWarehouseManageType.transfer
     });
     if (list != null) {
       editAddMaterial(list);

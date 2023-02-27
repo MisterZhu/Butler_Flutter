@@ -32,6 +32,7 @@ class SCMaterialCheckSelectCategoryPageState
         .getXControllerTag((SCMaterialCheckSelectCategoryPage).toString());
     controller =
         Get.put(SCMaterialCheckSelectCategoryController(), tag: controllerTag);
+    controller.loadMaterialClassTree();
   }
 
   @override

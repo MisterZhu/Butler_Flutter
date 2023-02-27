@@ -28,10 +28,14 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 是否显示添加
   final bool showAdd;
 
-  /// 0显示物资信息，1显示物资分类
+  /// 2显示物资分类,其它显示物资信息，
   final int? materialType;
 
+  /// title
   final String title;
+
+  /// 隐藏物资数量输入框
+  final bool? hideMaterialNumTextField;
 
   SCMaterialInfoCell(
       {Key? key,
@@ -43,7 +47,8 @@ class SCMaterialInfoCell extends StatelessWidget {
       required this.list,
       this.deleteAction,
       this.updateNumAction,
-      required this.showAdd
+      required this.showAdd,
+      this.hideMaterialNumTextField
       })
       : super(key: key);
 
@@ -137,10 +142,11 @@ class SCMaterialInfoCell extends StatelessWidget {
   }
 
   Widget listview() {
-    if (materialType == 1) {
+    if (materialType == 2) {
       return classifyView();
     } else {
       return SCAddEntryAllMaterialView(
+        hideMaterialNumTextField: hideMaterialNumTextField,
         list: list,
         deleteAction: (int index) {
           deleteAction?.call(index);
