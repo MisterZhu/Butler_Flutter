@@ -96,6 +96,14 @@ class SCMaterialEntryCell extends StatelessWidget {
     } else if (type == SCWarehouseManageType.transfer) {
       icon = SCAsset.iconMaterialTransfer;
     }
+    String statusDesc = SCUtils.getEntryStatusText(model?.status ?? 0);
+    if (type == SCWarehouseManageType.entry) {
+      statusDesc = SCUtils.getEntryStatusText(model?.status ?? 0);
+    } else if (type == SCWarehouseManageType.outbound) {
+      statusDesc = SCUtils.getOutboundStatusText(model?.status ?? 0);
+    } else {
+      statusDesc = model?.statusDesc ?? '';
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -115,7 +123,7 @@ class SCMaterialEntryCell extends StatelessWidget {
               color: SCColors.color_1B1D33)),),
           const SizedBox(width: 6.0,),
           Text(
-            type == SCWarehouseManageType.entry ? SCUtils.getEntryStatusText(model?.status ?? 0) : SCUtils.getOutboundStatusText(model?.status ?? 0),
+            statusDesc,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -212,6 +220,14 @@ class SCMaterialEntryCell extends StatelessWidget {
 
   /// bottomItem
   Widget bottomItem() {
+    bool showBtn = false;
+    if (type == SCWarehouseManageType.check) {
+      if (model?.status == 0 || model?.status == 2 || model?.status == 4) {
+        showBtn = true;
+      }
+    } else {
+      showBtn = model?.status == 0 ? true : false;
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0), 
       child: Row(
@@ -231,7 +247,7 @@ class SCMaterialEntryCell extends StatelessWidget {
             width: 100.0,
             height: 40.0,
             child: Offstage(
-              offstage: model?.status == 0 ? false : true,
+              offstage: !showBtn,
               child: CupertinoButton(
                   alignment: Alignment.center,
                   borderRadius: BorderRadius.circular(4.0),
@@ -239,7 +255,7 @@ class SCMaterialEntryCell extends StatelessWidget {
                   color: SCColors.color_4285F4,
                   padding: EdgeInsets.zero,
                   child: Text(
-                    SCUtils.getEntryStatusButtonText(model?.status ?? 0),
+                    type == SCWarehouseManageType.check ? SCUtils.getCheckStatusButtonText(model?.status ?? 0) : SCUtils.getEntryStatusButtonText(model?.status ?? 0),
                     style: const TextStyle(
                         fontSize: SCFonts.f16,
                         fontWeight: FontWeight.w400,

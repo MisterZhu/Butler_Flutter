@@ -30,7 +30,13 @@ class SCCheckMaterialDetailPageState extends State<SCCheckMaterialDetailPage> wi
     controllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCCheckMaterialDetailPage).toString());
     controller = Get.put(SCCheckMaterialDetailController(), tag: controllerTag);
-
+    Map<String, dynamic> params = Get.arguments;
+    if (params.isNotEmpty) {
+      var model = params['model'];
+      if (model != null) {
+        controller.materialModel = model;
+      }
+    }
   }
 
   @override

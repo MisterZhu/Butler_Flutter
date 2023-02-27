@@ -14,6 +14,7 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_mat
 /// orgId : ""      所属组织ID(调入仓库所属)
 /// orgName : ""    所属组织名称(调入仓库所属)
 /// remark : ""    备注
+/// statusDesc : "" 单据状态描述
 /// status : 0     单据状态(0：待提交，1：待审批，2：审批中，3：已拒绝，4：已驳回，5：已撤回，6：已入库)
 /// type : 0     入库类型（1：采购入库，2：调拨入库，3：盘盈入库，4：领料归还入库，5：借用归还入库，6：退货入库，99：其它入库）
 /// typeName : ""    入库类型名称
@@ -50,6 +51,7 @@ class SCMaterialEntryModel {
     String? orgId, // 所属组织ID
     String? orgName,
     String? remark,
+    String? statusDesc,
     int? status, // 单据状态(0：待提交，1：待审批，2：审批中，3：已拒绝，4：已驳回，5：已撤回，6：已入库)
     int? type, // 入库类型（1：采购入库，2：调拨入库，3：盘盈入库，4：领料归还入库，5：借用归还入库，6：退货入库，99：其它入库）
     String? typeName,
@@ -82,6 +84,7 @@ class SCMaterialEntryModel {
     _orgId = orgId;
     _orgName = orgName;
     _remark = remark;
+    _statusDesc = statusDesc;
     _status = status;
     _type = type;
     _typeName = typeName;
@@ -121,6 +124,7 @@ class SCMaterialEntryModel {
     _orgId = json['orgId'];
     _orgName = json['orgName'];
     _remark = json['remark'];
+    _statusDesc = json['statusDesc'];
     _status = json['status'];
     _type = json['type'];
     _typeName = json['typeName'];
@@ -153,6 +157,7 @@ class SCMaterialEntryModel {
   String? _orgId;
   String? _orgName;
   String? _remark;
+  String? _statusDesc;
   int? _status;
   int? _type;
   String? _typeName;
@@ -184,6 +189,7 @@ class SCMaterialEntryModel {
     String? orgId,
     String? orgName,
     String? remark,
+    String? statusDesc,
     int? status,
     int? type,
     String? typeName,
@@ -217,6 +223,7 @@ class SCMaterialEntryModel {
         orgId: orgId ?? _orgId,
         orgName: orgName ?? _orgName,
         remark: remark ?? _remark,
+        statusDesc: statusDesc ?? _statusDesc,
         status: status ?? _status,
         type: type ?? _type,
         typeName: typeName ?? _typeName,
@@ -249,6 +256,7 @@ class SCMaterialEntryModel {
   String? get orgId => _orgId;
   String? get orgName => _orgName;
   String? get remark => _remark;
+  String? get statusDesc => _statusDesc;
   int? get status => _status;
   int? get type => _type;
   String? get typeName => _typeName;
@@ -285,6 +293,7 @@ class SCMaterialEntryModel {
     map['orgId'] = _orgId;
     map['orgName'] = _orgName;
     map['remark'] = _remark;
+    map['statusDesc'] = _statusDesc;
     map['status'] = _status;
     map['type'] = _type;
     map['typeName'] = _typeName;

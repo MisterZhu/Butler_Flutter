@@ -23,6 +23,7 @@ class SCMaterialEntryDetailController extends GetxController {
 
   /// 状态 单据状态(0：待提交，1：待审批，2：审批中，3：已拒绝，4：已驳回，5：已撤回，6：已入库)
   int status = -1;
+
   SCMaterialTaskDetailModel model = SCMaterialTaskDetailModel();
 
   @override

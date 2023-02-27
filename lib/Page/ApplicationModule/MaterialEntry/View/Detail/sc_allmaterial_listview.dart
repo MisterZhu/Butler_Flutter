@@ -12,7 +12,7 @@ class SCAllMaterialListView extends StatelessWidget {
   final List<SCMaterialListModel>? list;
 
   /// cell点击
-  final Function(int index)? onTap;
+  final Function(SCMaterialListModel model)? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class SCAllMaterialListView extends StatelessWidget {
         model: subModel,
         type: scMaterialCellTypeNormal,
         onTap: () {
-          onTap?.call(index);
+          onTap?.call(subModel);
         },
       );
     } else {

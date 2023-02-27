@@ -16,6 +16,7 @@ import '../../../../../Utils/sc_utils.dart';
 import '../../../../WorkBench/Home/Model/sc_home_task_model.dart';
 import '../../../../WorkBench/Home/View/Alert/sc_task_module_alert.dart';
 import '../../../HouseInspect/View/sc_bottom_button_item.dart';
+import '../../../MaterialEntry/Model/sc_entry_type_model.dart';
 import '../../../MaterialEntry/Model/sc_selectcategory_model.dart';
 import '../../../MaterialEntry/Model/sc_selectcategory_tree_model.dart';
 import '../../../MaterialEntry/Model/sc_wareHouse_model.dart';
@@ -50,7 +51,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
   /// 是否弹起键盘
   bool isShowKeyboard = false;
 
-  List rangeList = ['全盘', '物资分类', '物资名称'];
+  List rangeList = ['全部', '物资分类', '物资名称'];
 
   @override
   void initState() {
@@ -138,19 +139,23 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
         },
         selectAction: (index) async {
           if (index == 1) {
+            // 类型
+            List list = widget.state.typeList.map((e) => e.name).toList();
+            showAlert(1, '类型', list);
+          } else if (index == 2) {
             // 开始时间
             showTimeAlert(context, 0);
-          } else if (index == 2) {
+          } else if (index == 3) {
             // 结束时间
             showTimeAlert(context, 1);
-          } else if (index == 3) {
+          } else if (index == 4) {
             // 仓库名称
             List list = widget.state.wareHouseList.map((e) => e.name).toList();
-            showAlert(1, '仓库名称', list);
-          } else if (index == 4) {
+            showAlert(2, '仓库名称', list);
+          } else if (index == 5) {
             // 部门
             showSelectDepartmentAlert();
-          } else if (index == 5) {
+          } else if (index == 6) {
             // 处理人
             selectUser();
           }
@@ -194,6 +199,9 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
     }
     int currentIndex = -1;
     if (index == 1) {
+      // 类型
+      currentIndex = widget.state.typeIndex;
+    } else if (index == 2) {
       // 仓库名称
       currentIndex = widget.state.nameIndex;
     }
@@ -214,6 +222,12 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
             closeTap: (SCHomeTaskModel model, int selectIndex) {
               setState(() {
                 if (index == 1) {
+                  // 类型
+                  SCEntryTypeModel subModel = widget.state.typeList[selectIndex];
+                  widget.state.typeIndex = selectIndex;
+                  widget.state.type = model.name ?? '';
+                  widget.state.typeID = subModel.code ?? 0;
+                } else if (index == 2) {
                   // 仓库名称
                   if (widget.state.nameIndex == selectIndex) {
                     /// 选择同一个仓库，不刷新页面
@@ -276,6 +290,11 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       },
       {
         'isRequired': true,
+        'title': '类型',
+        'content': widget.state.type,
+      },
+      {
+        'isRequired': true,
         'title': '开始时间',
         'content': widget.state.startTimeStr
       },
@@ -285,10 +304,10 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
         'title': '仓库名称',
         'content': widget.state.wareHouseName
       },
-      {'isRequired': true, 'title': '部门', 'content': widget.state.dealOrgName},
+      {'isRequired': true, 'title': '盘点部门', 'content': widget.state.dealOrgName},
       {
         'isRequired': true,
-        'title': '处理人',
+        'title': '盘点人',
         'content': widget.state.dealUserName
       },
     ];

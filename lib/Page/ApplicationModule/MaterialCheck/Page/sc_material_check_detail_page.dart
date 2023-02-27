@@ -115,6 +115,9 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
           if (controller.success) {
             offstage = !canEdit;
           }
+          if (state.model.status == 0) {
+
+          }
           return Offstage(
             offstage: offstage,
             child: SCMaterialDetailBottomView(

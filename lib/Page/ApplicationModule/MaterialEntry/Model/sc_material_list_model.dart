@@ -36,7 +36,10 @@ class SCMaterialListModel {
     String? pic,
     PicFileVo? picFileVo,
     num? referPrice,
-    int? number,
+    int? number,  // 账存数量
+    int? checkNum, // 盘点数量
+    int? resultNum, // 赢亏数量
+    String? checkId, // 关联盘点id
     String? remark,
     String? thirdCode,
     String? unitId,
@@ -62,6 +65,9 @@ class SCMaterialListModel {
     _picFileVo = picFileVo;
     _referPrice = referPrice;
     _number = number;
+    _checkNum = checkNum;
+    _resultNum = resultNum;
+    _checkId = checkId;
     _remark = remark;
     _thirdCode = thirdCode;
     _unitId = unitId;
@@ -91,6 +97,9 @@ class SCMaterialListModel {
         : null;
     _referPrice = json['referPrice'];
     _number = json['num'];
+    _checkNum = json['checkNum'];
+    _resultNum = json['resultNum'];
+    _checkId = json['checkId'];
     _remark = json['remark'];
     _thirdCode = json['thirdCode'];
     _unitId = json['unitId'];
@@ -116,6 +125,9 @@ class SCMaterialListModel {
   PicFileVo? _picFileVo;
   num? _referPrice;
   int? _number;
+  int? _checkNum;
+  int? _resultNum;
+  String? _checkId;
   String? _remark;
   String? _thirdCode;
   String? _unitId;
@@ -140,6 +152,10 @@ class SCMaterialListModel {
     String? pic,
     PicFileVo? picFileVo,
     double? referPrice,
+    int? number,
+    int? checkNum,
+    int? resultNum,
+    String? checkId,
     String? remark,
     String? thirdCode,
     String? unitId,
@@ -165,6 +181,10 @@ class SCMaterialListModel {
         pic: pic ?? _pic,
         picFileVo: picFileVo ?? _picFileVo,
         referPrice: referPrice ?? _referPrice,
+        number: number ?? _number,
+        checkNum: checkNum ?? _checkNum,
+        resultNum: resultNum ?? _resultNum,
+        checkId: checkId ?? _checkId,
         remark: remark ?? _remark,
         thirdCode: thirdCode ?? _thirdCode,
         unitId: unitId ?? _unitId,
@@ -190,6 +210,9 @@ class SCMaterialListModel {
   PicFileVo? get picFileVo => _picFileVo;
   num? get referPrice => _referPrice;
   int? get number => _number;
+  int? get checkNum => _checkNum;
+  int? get resultNum => _resultNum;
+  String? get checkId => _checkId;
   String? get remark => _remark;
   String? get thirdCode => _thirdCode;
   String? get unitId => _unitId;
@@ -253,6 +276,8 @@ class SCMaterialListModel {
     }
     map['referPrice'] = _referPrice;
     map['number'] = _number;
+    map['resultNum'] = _resultNum;
+    map['checkId'] = _checkId;
     map['remark'] = _remark;
     map['thirdCode'] = _thirdCode;
     map['unitId'] = _unitId;
