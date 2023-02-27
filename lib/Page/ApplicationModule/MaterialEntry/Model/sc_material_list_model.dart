@@ -222,6 +222,11 @@ class SCMaterialListModel {
   int? get localNum => _localNum;
   bool? get isSelect => _isSelect;
 
+  /// set checkNum
+  set checkNum(int? value) {
+    _checkNum = value;
+  }
+
   /// set num
   set localNum(int? value) {
     _localNum = value;

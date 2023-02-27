@@ -408,6 +408,10 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       SCToast.showTip(SCDefaultValue.selectTaskName);
       return;
     }
+    if (widget.state.type.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
+      return;
+    }
     if (widget.state.startTimeStr.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectStartTime);
       return;

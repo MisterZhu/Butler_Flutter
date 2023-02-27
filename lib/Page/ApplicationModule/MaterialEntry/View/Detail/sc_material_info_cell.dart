@@ -46,12 +46,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
             const SizedBox(
               height: 10.0,
             ),
-            entryUserView(),
-            const SizedBox(
-              height: 10.0,
-            ),
-            entryTimeView(),
-            receiveView(),
+            middleView(),
             SizedBox(
               height: model?.remark == "" ? 0.0 : 10.0,
             ),
@@ -61,6 +56,46 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget middleView() {
+    if (type == SCWarehouseManageType.check) {
+      // 盘点任务，显示任务开始时间、结束时间、盘点时间、仓库名称
+      return Column(children: [
+        dealUserNameView(),
+        const SizedBox(
+          height: 10.0,
+        ),
+        dealOrgNameView(),
+        const SizedBox(
+          height: 10.0,
+        ),
+        taskStartTimeView(),
+        const SizedBox(
+          height: 10.0,
+        ),
+        taskEndTimeView(),
+        const SizedBox(
+          height: 10.0,
+        ),
+        dealTimeView(),
+        const SizedBox(
+          height: 10.0,
+        ),
+        wareHouseView(),
+      ]);
+    } else {
+      return Column(
+        children: [
+          entryUserView(),
+          const SizedBox(
+            height: 10.0,
+          ),
+          entryTimeView(),
+          receiveView(),
+        ],
+      );
+    }
   }
 
   Widget receiveView() {
@@ -104,27 +139,41 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
         ),
         frmLossTimeView(),
       ]);
-    } else if (type == SCWarehouseManageType.check) {
-      // 盘点任务，显示任务开始时间、结束时间、仓库名称
-      return Column(children: [
-        const SizedBox(
-          height: 10.0,
-        ),
-        taskTimeView(),
-        const SizedBox(
-          height: 10.0,
-        ),
-        wareHouseView(),
-      ]);
     } else {
       return const SizedBox();
     }
   }
-
-  /// 任务时间
-  Widget taskTimeView() {
+  /// 盘点人
+  Widget dealUserNameView() {
     return Row(
-      children: [desLabel('任务时间'), textView(1, model?.gmtCreate ?? '')],
+      children: [desLabel('盘点人'), textView(1, model?.dealUserName ?? '')],
+    );
+  }
+  /// 盘点部门
+  Widget dealOrgNameView() {
+    return Row(
+      children: [desLabel('盘点部门'), textView(1, model?.dealOrgName ?? '')],
+    );
+  }
+
+  /// 任务开始时间
+  Widget taskStartTimeView() {
+    return Row(
+      children: [desLabel('任务开始时间'), textView(1, model?.taskStartTime ?? '')],
+    );
+  }
+
+  /// 任务结束时间
+  Widget taskEndTimeView() {
+    return Row(
+      children: [desLabel('任务结束时间'), textView(1, model?.taskEndTime ?? '')],
+    );
+  }
+
+  /// 盘点时间
+  Widget dealTimeView() {
+    return Row(
+      children: [desLabel('盘点时间'), textView(1, model?.dealStartTime ?? '')],
     );
   }
 
