@@ -126,7 +126,7 @@ class SCMaterialEntryDetailController extends GetxController {
           success = true;
           model = SCMaterialTaskDetailModel.fromJson(value);
           int subStatus = model.status ?? -1;
-          if (subStatus == 3) {
+          if (subStatus == 2 || subStatus == 4) {
             String timeString = model.taskEndTime ?? '';
             remainingTime = SCDateUtils.stringToDateTime(dateString: timeString, formateString: '').millisecondsSinceEpoch;
             closeTimer();
@@ -188,10 +188,12 @@ class SCMaterialEntryDetailController extends GetxController {
 
   /// 作废盘点任务
   cancelCheckTask({required String id, Function? successHandler}) {
+    SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kCancelCheckTaskUrl+id,
         params: null,
         success: (value) {
+          SCLoadingUtils.hide();
           successHandler?.call();
         },
         failure: (value) {
