@@ -10,6 +10,7 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/
 import 'package:smartcommunity/Skin/View/sc_custom_scaffold.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
+import '../../../../Constants/sc_default_value.dart';
 import '../../../../Constants/sc_enum.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
@@ -189,24 +190,57 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
 
   /// 提交
   submitAction() {
-    SCMaterialCheckController materialCheckController =
-        SCMaterialCheckController();
-    materialCheckController.submit(
-        id: controller.id,
-        completeHandler: (bool success) {
-          SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialCheckPage});
-          SCRouterHelper.back(null);
-        });
+    SCDialogUtils.instance.showMiddleDialog(
+      context: context,
+      content: SCDefaultValue.checkSubmitTip,
+      customWidgetButtons: [
+        defaultCustomButton(context,
+            text: '取消',
+            textColor: SCColors.color_1B1C33,
+            fontWeight: FontWeight.w400),
+        defaultCustomButton(context,
+            text: '确定',
+            textColor: SCColors.color_4285F4,
+            fontWeight: FontWeight.w400,
+            onTap: () {
+              controller.checkSubmit(
+                action: 1,
+                checkId: controller.model.id ?? '',
+                materials: [],
+                successHandler: (bool success) {
+                  SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshMaterialCheckPage});
+                  SCRouterHelper.back(null);
+              });
+            }
+        ),
+      ],
+    );
   }
 
   /// 作废
   cancelAction() {
-    controller.cancelCheckTask(id: controller.model.id ?? '', successHandler: () {
-      SCScaffoldManager.instance.eventBus
-          .fire({'key': SCKey.kRefreshMaterialCheckPage});
-      SCRouterHelper.back(null);
-    });
+    SCDialogUtils.instance.showMiddleDialog(
+      context: context,
+      content: SCDefaultValue.checkCancelTip,
+      customWidgetButtons: [
+        defaultCustomButton(context,
+            text: '取消',
+            textColor: SCColors.color_1B1C33,
+            fontWeight: FontWeight.w400),
+        defaultCustomButton(context,
+            text: '确定',
+            textColor: SCColors.color_4285F4,
+            fontWeight: FontWeight.w400,
+            onTap: () {
+              controller.cancelCheckTask(id: controller.model.id ?? '', successHandler: () {
+                SCScaffoldManager.instance.eventBus
+                    .fire({'key': SCKey.kRefreshMaterialCheckPage});
+                SCRouterHelper.back(null);
+              });
+            }
+        ),
+      ],
+    );
   }
 
   /// 盘点
