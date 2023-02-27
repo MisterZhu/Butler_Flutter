@@ -135,7 +135,7 @@ class SCMaterialEntryCell extends StatelessWidget {
             style: TextStyle(
               fontSize: SCFonts.f14,
               fontWeight: FontWeight.w400,
-              color: type == SCWarehouseManageType.entry ? SCUtils.getEntryStatusTextColor(model?.status ?? 0) : SCUtils.getOutboundStatusTextColor(model?.status ?? 0),))
+              color: statusColor))
         ],
       ),
     );

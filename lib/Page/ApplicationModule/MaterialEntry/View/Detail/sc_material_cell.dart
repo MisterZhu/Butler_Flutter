@@ -299,7 +299,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
       );
     } else {
       stepper = SCStepper(
-        num: widget.check == true ? widget.model?.number : widget.model?.localNum,
+        num: widget.model?.localNum,
         numChangeAction: (int value) {
           widget.numChangeAction?.call(value);
         },

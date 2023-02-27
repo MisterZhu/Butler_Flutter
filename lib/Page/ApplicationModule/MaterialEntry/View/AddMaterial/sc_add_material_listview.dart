@@ -69,11 +69,8 @@ class SCAddMaterialListView extends StatelessWidget {
       type: scMaterialCellTypeRadio,
       check: check,
       numChangeAction: (int value) {
-        if (check == true) {
-          model.checkNum = value;
-        } else {
-          model.localNum = value;
-        }
+        model.localNum = value;
+        model.checkNum = value;
       },
       radioTap: (bool value) {
         model.isSelect = value;

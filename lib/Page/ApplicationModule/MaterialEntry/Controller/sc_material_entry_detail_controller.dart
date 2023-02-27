@@ -124,6 +124,8 @@ class SCMaterialEntryDetailController extends GetxController {
 
   /// 盘点详情
   loadMaterialCheckDetail() {
+    checkedList.clear();
+    uncheckedList.clear();
     SCLoadingUtils.show();
     SCHttpManager.instance.get(
         url: SCUrl.kMaterialCheckDetailUrl+id,
@@ -190,6 +192,7 @@ class SCMaterialEntryDetailController extends GetxController {
 
   /// 暂存或提交盘点任务
   checkSubmit({required int action, required String checkId, required List materials, Function? successHandler}) {
+    SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kCheckSubmitUrl,
         params: {
@@ -198,6 +201,8 @@ class SCMaterialEntryDetailController extends GetxController {
           "materials": materials
         },
         success: (value) {
+          SCLoadingUtils.hide();
+          print('暂存或提交盘点任务成功==============');
           successHandler?.call();
         },
         failure: (value) {
