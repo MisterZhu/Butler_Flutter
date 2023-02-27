@@ -53,6 +53,7 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
           SCAllMaterialListView(
             list: getRealList(),
             type: widget.type,
+            status: widget.model?.status,
             onTap: (SCMaterialListModel model) async {
               if (widget.type == SCWarehouseManageType.check) {
                 /// 待盘点或盘点中时 status == 2 || status == 4

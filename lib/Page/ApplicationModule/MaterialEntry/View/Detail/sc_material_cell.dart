@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import '../../../../../Network/sc_config.dart';
@@ -28,7 +29,9 @@ class SCMaterialCell extends StatefulWidget {
       this.numChangeAction,
       this.radioTap,
       this.deleteAction,
-      this.hideMaterialNumTextField})
+      this.hideMaterialNumTextField,
+      this.status
+      })
       : super(key: key);
 
   final SCMaterialListModel? model;
@@ -50,6 +53,9 @@ class SCMaterialCell extends StatefulWidget {
 
   /// 隐藏物资数量输入框
   final bool? hideMaterialNumTextField;
+
+  /// 盘点状态
+  final int? status;
 
   @override
   SCMaterialCellState createState() => SCMaterialCellState();
@@ -201,6 +207,12 @@ class SCMaterialCellState extends State<SCMaterialCell> {
   /// 盘点的物资图片
   Widget inventoryImageView() {
     String url = SCConfig.getImageUrl(widget.model?.pic ?? '');
+    bool isShow = true;
+    if ((widget.status ?? 0) == 2 || (widget.status ?? 0) == 4) {
+      isShow = true;
+    } else {
+      isShow = false;
+    }
     return Container(
         width: 80.0,
         height: 80.0,
@@ -216,10 +228,11 @@ class SCMaterialCellState extends State<SCMaterialCell> {
               fit: BoxFit.cover,
             ),
             Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: inventoryNumberView())
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: isShow ? inventoryNumberView() : const SizedBox(height: 1,),
+            )
           ],
         ));
   }
@@ -243,7 +256,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     } else {// 盘平
       bgColor = SCColors.color_F7F8FA;
       textColor = SCColors.color_5E5F66;
-      text = "盘平$resultNum";
+      text = "盘平";
     }
     return Container(
       width: 80.0,
