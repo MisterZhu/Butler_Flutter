@@ -89,7 +89,7 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
           gridView(),
           Container(
             color: SCColors.color_FFFFFF,
-            height: SCUtils().getBottomSafeArea(),
+            height: MediaQuery.of(context).padding.bottom,
           )
         ],
       ),
