@@ -14,9 +14,7 @@ import '../../../../Constants/sc_default_value.dart';
 import '../../../../Constants/sc_enum.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
-import '../../MaterialEntry/Controller/sc_material_entry_controller.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart';
-import '../Controller/sc_material_check_controller.dart';
 
 /// 盘点详情
 
@@ -114,14 +112,28 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
               {"type": scMaterialBottomViewType2, "title": "编辑",},
             ];
           } else if (state.model.status == 2) {// 待盘点
-            list = [
-              {"type": scMaterialBottomViewType2, "title": "盘点",},
-            ];
+            if (controller.checkedList.length > 1) {
+              list = [
+                {"type": scMaterialBottomViewType1, "title": "暂存",},
+                {"type": scMaterialBottomViewType2, "title": "盘点",},
+              ];
+            } else {
+              list = [
+                {"type": scMaterialBottomViewType2, "title": "盘点",},
+              ];
+            }
           } else if (state.model.status == 3 || state.model.status ==  4) {// 盘点中（超时）、盘点中
-            list = [
-              {"type": scMaterialBottomViewType1, "title": "暂存",},
-              {"type": scMaterialBottomViewType2, "title": "提交",},
-            ];
+            if (controller.checkedList.length == state.model.materials?.length) {
+              list = [
+                {"type": scMaterialBottomViewType1, "title": "暂存",},
+                {"type": scMaterialBottomViewType2, "title": "提交",},
+              ];
+            } else {
+              list = [
+                {"type": scMaterialBottomViewType1, "title": "暂存",},
+                {"type": scMaterialBottomViewType2, "title": "盘点",},
+              ];
+            }
           } else if (state.model.status == 7) {// 已作废
             list = [
               {"type": scMaterialBottomViewType2, "title": "删除",},
@@ -139,7 +151,7 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
                 } else if (value == '暂存') {
                   saveAction();
                 } else if (value == '提交') {
-                  submitAction();
+                  submitAlert();
                 } else if (value == '作废') {
                   cancelAction();
                 } else if (value == '盘点') {
@@ -155,7 +167,24 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
 
   /// 暂存
   saveAction() {
-
+    List list = [];
+    for (int i = 0; i < controller.checkedList.length; i++) {
+      SCMaterialListModel model = controller.checkedList[i];
+      var dict = {
+        "id": model.id,
+        "checkId": model.checkId,
+        "checkNum": model.checkNum,
+      };
+      list.add(dict);
+    }
+    print('暂存===========$list');
+    controller.checkSubmit(
+        action: 0,
+        checkId: controller.model.id ?? '',
+        materials: list,
+        successHandler: () {
+          controller.loadMaterialCheckDetail();
+        });
   }
 
   /// 编辑
@@ -205,8 +234,8 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
     });
   }
 
-  /// 提交
-  submitAction() {
+  /// 提交确认弹窗
+  submitAlert() {
     SCDialogUtils.instance.showMiddleDialog(
       context: context,
       content: SCDefaultValue.checkSubmitTip,
@@ -220,19 +249,38 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
             textColor: SCColors.color_4285F4,
             fontWeight: FontWeight.w400,
             onTap: () {
-              controller.checkSubmit(
-                action: 1,
-                checkId: controller.model.id ?? '',
-                materials: [],
-                successHandler: (bool success) {
-                  SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshMaterialCheckPage});
-                  SCRouterHelper.back(null);
-              });
+              submitAction();
             }
         ),
       ],
     );
   }
+
+  /// 提交
+  submitAction() {
+    List list = [];
+    for (int i = 0; i < controller.checkedList.length; i++) {
+      SCMaterialListModel model = controller.checkedList[i];
+      var dict = {
+        "id": model.id,
+        "checkId": model.checkId,
+        "checkNum": model.checkNum,
+      };
+      list.add(dict);
+    }
+    print('提交===========$list');
+    controller.checkSubmit(
+        action: 1,
+        checkId: controller.model.id ?? '',
+        materials: list,
+        successHandler: () {
+          SCScaffoldManager.instance.eventBus
+              .fire({'key': SCKey.kRefreshMaterialCheckPage});
+          SCRouterHelper.back(null);
+        });
+  }
+
+
 
   /// 作废
   cancelAction() {
@@ -262,10 +310,31 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
 
   /// 盘点
   checkAction() {
-    controller.startCheckTask(id: controller.model.id ?? '', successHandler: () {
-      controller.loadMaterialCheckDetail();
-    });
+    selectMaterialAction();
   }
+
+  /// 盘点-选择物资
+  selectMaterialAction() async {
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
+      'unCheckList': controller.uncheckedList,
+      "materialType": SCWarehouseManageType.check,
+      'hideNumTextField': false,
+      'check': true
+    });
+    if (list != null) {
+      print('已盘点的物资==============$list');
+      List<SCMaterialListModel> newList = list;
+      setState(() {
+        controller.checkedList.addAll(newList);
+      });
+      for (int i = 0; i < newList.length; i++) {
+        SCMaterialListModel model = newList[i];
+        controller.uncheckedList.remove(model);
+      }
+    }
+
+  }
+
 
   /// 删除
   deleteAction() {

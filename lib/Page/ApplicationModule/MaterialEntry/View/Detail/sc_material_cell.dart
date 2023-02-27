@@ -30,9 +30,9 @@ class SCMaterialCell extends StatefulWidget {
       this.radioTap,
       this.deleteAction,
       this.hideMaterialNumTextField,
+      this.check,
       this.status
-      })
-      : super(key: key);
+      }) : super(key: key);
 
   final SCMaterialListModel? model;
 
@@ -53,6 +53,9 @@ class SCMaterialCell extends StatefulWidget {
 
   /// 隐藏物资数量输入框
   final bool? hideMaterialNumTextField;
+
+  /// 是否是盘点
+  final bool? check;
 
   /// 盘点状态
   final int? status;
@@ -392,6 +395,10 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     } else {
       text =
           '单位:${widget.model?.unitName} 条形码:${widget.model?.barCode}\n规格:${widget.model?.norms}';
+    }
+    if (widget.check == true) {
+      text =
+      '单位:${widget.model?.unitName} 条形码:${widget.model?.barCode}\n规格:${widget.model?.norms}\n账面库存:${widget.model?.number}';
     }
     return Text(
       text,

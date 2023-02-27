@@ -3,6 +3,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/sc_utils.dart';
+import '../../Model/sc_material_list_model.dart';
 import '../../Model/sc_material_task_detail_model.dart';
 
 /// 入库详情-所有物资cell-titleview
@@ -68,10 +69,31 @@ class SCAllMaterialTitleView extends StatelessWidget {
   
   /// 数量view 
   Widget numView() {
+    String text = '共 ${model?.materials?.length ?? 0} 种 总数量 ${model?.materialNums ?? 0}';
+    if (type == SCWarehouseManageType.check) {
+      if (model?.status == 0 || model?.status == 1 || model?.status == 2) {
+        text = '共 ${model?.materials?.length ?? 0} 种 盘点数量 0';
+      } else if (model?.status == 3 || model?.status == 4) {
+        text = '共 0/${model?.materials?.length ?? 0}种 盘点数量 0';
+        if (model?.materials != null) {
+          List<SCMaterialListModel> list = model!.materials!;
+          int checkNum = 0;
+          int checkCount = 0;
+          for (int i = 0; i < list.length; i++) {
+            SCMaterialListModel model = list[i];
+            if (model.checkNum != null) {
+              checkNum = checkNum + model.checkNum!;
+              checkCount = checkCount + 1;
+            }
+          }
+          text = '共 $checkCount/${list.length}种 盘点数量 $checkNum';
+        }
+      }
+    }
     return Container(
       height: 22.0,
       alignment: Alignment.centerLeft,
-      child: Text('共 ${model?.materials?.length ?? 0} 种 总数量 ${model?.materialNums ?? 0}', maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(
+      child: Text(text, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(
           fontSize: SCFonts.f14,
           fontWeight: FontWeight.w400,
           color: SCColors.color_5E5F66

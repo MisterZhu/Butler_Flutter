@@ -48,7 +48,11 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
     categoryAlertController = Get.put(SCCategoryAlertController(), tag: categoryAlertControllerTag);
     categoryAlertController.tag = categoryAlertControllerTag;
     initPageData();
-    controller.loadMaterialListData();
+    if (controller.check == true) {
+
+    } else {
+      controller.loadMaterialListData();
+    }
   }
 
   @override
@@ -81,13 +85,23 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
       if (params.containsKey('hideNumTextField')) {
         controller.hideNumTextField = params['hideNumTextField'];
       }
+      if (params.containsKey('check')) {
+        controller.check = params['check'];
+      }
+      if (params.containsKey('unCheckList')) {
+        if (controller.check == true) {
+          setState(() {
+            controller.materialList = params['unCheckList'];
+          });
+        }
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: "新增物资",
+        title: controller.check == true ? '选择物资' : "新增物资",
         centerTitle: true,
         elevation: 0,
         resizeToAvoidBottomInset: false,
@@ -109,6 +123,7 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
               refreshController: refreshController,
               type: state.materialType,
               hideNumTextField: state.hideNumTextField,
+              check: state.check,
               sureAction: (List<SCMaterialListModel> list){
                 SCRouterHelper.back(list);
             },);

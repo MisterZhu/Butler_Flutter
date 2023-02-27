@@ -39,6 +39,7 @@ class SCMaterialListModel {
     int? number,  // 账存数量
     int? checkNum, // 盘点数量
     int? resultNum, // 赢亏数量
+    int? result, // 盘点结果（1：盘赢，0：盘平，-1：盘亏）
     String? checkId, // 关联盘点id
     String? remark,
     String? thirdCode,
@@ -67,6 +68,7 @@ class SCMaterialListModel {
     _number = number;
     _checkNum = checkNum;
     _resultNum = resultNum;
+    _result = result;
     _checkId = checkId;
     _remark = remark;
     _thirdCode = thirdCode;
@@ -99,6 +101,7 @@ class SCMaterialListModel {
     _number = json['num'];
     _checkNum = json['checkNum'];
     _resultNum = json['resultNum'];
+    _result = json['result'];
     _checkId = json['checkId'];
     _remark = json['remark'];
     _thirdCode = json['thirdCode'];
@@ -127,6 +130,7 @@ class SCMaterialListModel {
   int? _number;
   int? _checkNum;
   int? _resultNum;
+  int? _result;
   String? _checkId;
   String? _remark;
   String? _thirdCode;
@@ -155,6 +159,7 @@ class SCMaterialListModel {
     int? number,
     int? checkNum,
     int? resultNum,
+    int? result,
     String? checkId,
     String? remark,
     String? thirdCode,
@@ -184,6 +189,7 @@ class SCMaterialListModel {
         number: number ?? _number,
         checkNum: checkNum ?? _checkNum,
         resultNum: resultNum ?? _resultNum,
+        result: result ?? _result,
         checkId: checkId ?? _checkId,
         remark: remark ?? _remark,
         thirdCode: thirdCode ?? _thirdCode,
@@ -212,6 +218,7 @@ class SCMaterialListModel {
   int? get number => _number;
   int? get checkNum => _checkNum;
   int? get resultNum => _resultNum;
+  int? get result => _result;
   String? get checkId => _checkId;
   String? get remark => _remark;
   String? get thirdCode => _thirdCode;
