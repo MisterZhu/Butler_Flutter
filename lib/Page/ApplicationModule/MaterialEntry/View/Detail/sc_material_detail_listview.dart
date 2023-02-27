@@ -31,7 +31,7 @@ class SCMaterialDetailListView extends StatelessWidget {
   /// cell
   Widget cell(int index) {
     if (index == 0) {// 所有物资
-      return SCAllMaterialCell(type: type, model: state.model);
+      return SCAllMaterialCell(type: type, model: state.model, remainingTime: state.remainingTime,);
     // } else if(index == 1) {// 审批流程
     //   return SCMaterialApproveFlowCell(title: '审批流程', onTap: () {
     //

@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Constant/sc_
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
+import '../../../../Utils/Date/sc_date_utils.dart';
 import '../View/Detail/sc_material_bottom_view.dart';
 import '../Model/sc_material_task_detail_model.dart';
 
@@ -24,11 +26,44 @@ class SCMaterialEntryDetailController extends GetxController {
   /// 状态 单据状态(0：待提交，1：待审批，2：审批中，3：已拒绝，4：已驳回，5：已撤回，6：已入库)
   int status = -1;
 
+  /// 详情model
   SCMaterialTaskDetailModel model = SCMaterialTaskDetailModel();
+
+  /// 定时器
+  late Timer timer;
+
+  /// 盘点剩余时间
+  int remainingTime = 0;
 
   @override
   onInit() {
     super.onInit();
+  }
+
+  @override
+  onClose() {
+    super.onClose();
+    closeTimer();
+  }
+
+  /// 定时器
+  startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (remainingTime > 0) {
+        remainingTime--;
+        update();
+      } else {
+        closeTimer();
+        update();
+      }
+    });
+  }
+
+  /// 关闭定时器
+  closeTimer() {
+    if (timer.isActive) {
+      timer.cancel();
+    }
   }
 
   /// 入库详情
@@ -92,6 +127,13 @@ class SCMaterialEntryDetailController extends GetxController {
           SCLoadingUtils.hide();
           success = true;
           model = SCMaterialTaskDetailModel.fromJson(value);
+          int subStatus = model.status ?? -1;
+          if (subStatus == 3) {
+            String timeString = model.taskEndTime ?? '';
+            remainingTime = SCDateUtils.stringToDateTime(dateString: timeString, formateString: '').millisecondsSinceEpoch;
+            closeTimer();
+            startTimer();
+          }
           update();
         },
         failure: (value) {

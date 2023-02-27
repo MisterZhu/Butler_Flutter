@@ -5,7 +5,6 @@ import '../../MaterialEntry/Model/sc_material_list_model.dart';
 /// 盘点-物资详情controller
 
 class SCCheckMaterialDetailController extends GetxController {
-
   SCMaterialListModel materialModel = SCMaterialListModel();
 
   @override

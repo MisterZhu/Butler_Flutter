@@ -42,6 +42,7 @@ class SCMaterialTaskDetailModel {
       this.fetchOrgName,
       this.fetchOrgId,
       this.fetchUserMobileNum,
+    this.taskEndTime,
   });
 
   SCMaterialTaskDetailModel.fromJson(dynamic json) {
@@ -100,6 +101,7 @@ class SCMaterialTaskDetailModel {
     fetchUserId = json['fetchUserId'];
     fetchUserName = json['fetchUserName'];
     fetchUserMobileNum = json['fetchUserMobileNum'];
+    taskEndTime = json['taskEndTime'];
   }
   String? creator;
   String? creatorName;
@@ -141,6 +143,7 @@ class SCMaterialTaskDetailModel {
   String? fetchUserId;
   String? fetchUserName;
   String? fetchUserMobileNum;
+  String? taskEndTime;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -190,7 +193,7 @@ class SCMaterialTaskDetailModel {
     map['fetchOrgName'] = fetchOrgName;
     map['fetchOrgId'] = fetchOrgId;
     map['fetchUserMobileNum'] = fetchUserMobileNum;
-
+    map['taskEndTime'] = taskEndTime;
     return map;
   }
 

@@ -1,9 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_allmaterial_titleview.dart';
+import 'package:smartcommunity/Utils/Date/sc_date_utils.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../../../Constants/sc_enum.dart';
+import '../../../MaterialCheck/View/CheckDetail/sc_check_timer_view.dart';
 import '../../Model/sc_material_list_model.dart';
 import '../../Model/sc_material_task_detail_model.dart';
 import 'sc_allmaterial_listview.dart';
@@ -17,7 +19,10 @@ class SCAllMaterialCell extends StatefulWidget {
   /// 类型，type=entry入库详情，type=outbound出库详情
   final SCWarehouseManageType type;
 
-  SCAllMaterialCell({Key? key, required this.type, this.model}) : super(key: key);
+  /// 盘点剩余时间
+  final int? remainingTime;
+
+  SCAllMaterialCell({Key? key, required this.type, this.model, this.remainingTime}) : super(key: key);
 
   @override
   SCAllMaterialCellState createState() => SCAllMaterialCellState();
@@ -43,6 +48,7 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          timerView(),
           SCAllMaterialTitleView(type: widget.type, model: widget.model,),
           SCAllMaterialListView(
             list: getRealList(),
@@ -85,6 +91,24 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
         ],
       ),
     );
+  }
+
+  /// 定时器
+  Widget timerView() {
+    if (widget.type == SCWarehouseManageType.check) {
+      int status = widget.model?.status ?? -1;
+      if (status == 3) {
+        if ((widget.remainingTime ?? 0) <= 0) {
+          return const SizedBox();
+        } else {
+          return Padding(padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0), child: SCCheckDetailTimerView(model: widget.model!, remainingTime: widget.remainingTime ?? 0,),);
+        }
+      } else {
+        return const SizedBox();
+      }
+    } else {
+      return const SizedBox();
+    }
   }
 
   /// 数据

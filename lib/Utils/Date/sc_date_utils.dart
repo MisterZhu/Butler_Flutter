@@ -17,6 +17,11 @@ class SCDateUtils {
     return DateTime.now().millisecondsSinceEpoch;
   }
 
+  /// 字符串转DateTime
+  static DateTime stringToDateTime({required String dateString, required String formateString}) {
+    return DateFormat(formateString).parse(dateString);
+  }
+
   /// 天数差
   static int difference(String start, String end) {
     DateTime startDateTime = DateTime.parse(start);
