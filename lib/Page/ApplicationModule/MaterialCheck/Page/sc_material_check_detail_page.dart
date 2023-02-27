@@ -136,20 +136,25 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
                 if (value == '编辑') {
                   editAction();
                 } else if (value == '暂存') {
-
+                  saveAction();
                 } else if (value == '提交') {
                   submitAction();
                 } else if (value == '作废') {
-
+                  cancelAction();
                 } else if (value == '盘点') {
-
+                  checkAction();
                 } else if (value == '删除') {
-
+                  deleteAction();
                 }
               },
             ),
           );
         });
+  }
+
+  /// 暂存
+  saveAction() {
+
   }
 
   /// 编辑
@@ -193,5 +198,22 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
               .fire({'key': SCKey.kRefreshMaterialTransferPage});
           SCRouterHelper.back(null);
         });
+  }
+
+  /// 作废
+  cancelAction() {
+    controller.cancelCheckTask(id: controller.model.id ?? '', successHandler: () {
+
+    });
+  }
+
+  /// 盘点
+  checkAction() {
+
+  }
+
+  /// 删除
+  deleteAction() {
+
   }
 }

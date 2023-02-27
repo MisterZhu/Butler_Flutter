@@ -44,11 +44,11 @@ class SCAddCheckController extends GetxController {
   /// 任务名称
   String taskName = '';
 
-  /// 类型
-  String type = '';
+  /// 类型名称
+  String typeName = '';
 
   /// 盘点类型id
-  int typeID = 0;
+  int type = 0;
 
   /// 盘点类型index
   int typeIndex = -1;
@@ -132,7 +132,7 @@ class SCAddCheckController extends GetxController {
       }
       for (int i = 0; i < typeList.length; i++) {
         SCEntryTypeModel model = typeList[i];
-        if (model.code == typeID) {
+        if (model.code == type) {
           typeIndex = i;
           break;
         }
@@ -153,6 +153,7 @@ class SCAddCheckController extends GetxController {
       "taskName": data['taskName'],
       "taskStartTime": data['startTime'],
       "type": data['type'],
+      "typeName": data['typeName'],
       "wareHouseId": data['wareHouseId'],
     };
     print("新增盘点参数:$params");
@@ -180,11 +181,13 @@ class SCAddCheckController extends GetxController {
       "wareHouseName": data['wareHouseName'],
       "taskId": data['taskId'],
       "taskName": data['taskName'],
-      "range": data['range'],
-      "operator": data['operator'],
-      "operatorName": data['operatorName'],
-      "startTime": data['startTime'],
-      "endTime": data['endTime'],
+      "rangeValue": data['rangeValue'],
+      "taskEndTime": data['endTime'],
+      "taskStartTime": data['startTime'],
+      "type": data['type'],
+      "typeName": data['typeName'],
+      "dealOrgId": data['dealOrgId'],
+      "dealUserId": data['dealUserId'],
       "status": 0
     };
     SCLoadingUtils.show();

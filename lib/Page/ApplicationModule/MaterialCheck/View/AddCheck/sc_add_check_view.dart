@@ -229,8 +229,8 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
                   // 类型
                   SCEntryTypeModel subModel = widget.state.typeList[selectIndex];
                   widget.state.typeIndex = selectIndex;
-                  widget.state.type = model.name ?? '';
-                  widget.state.typeID = subModel.code ?? 0;
+                  widget.state.typeName = model.name ?? '';
+                  widget.state.type = subModel.code ?? 0;
                 } else if (index == 2) {
                   // 仓库名称
                   if (widget.state.nameIndex == selectIndex) {
@@ -295,7 +295,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       {
         'isRequired': true,
         'title': '类型',
-        'content': widget.state.type,
+        'content': widget.state.typeName,
       },
       {
         'isRequired': true,
@@ -408,7 +408,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       SCToast.showTip(SCDefaultValue.selectTaskName);
       return;
     }
-    if (widget.state.type.isEmpty) {
+    if (widget.state.typeName.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
       return;
     }
@@ -459,7 +459,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       "materialIdList": widget.state.getMaterialIDList(),
       "categoryIDList" : widget.state.getMaterialCategoryIDList(),
       "dealOrgId": widget.state.dealOrgId,
-      "type": widget.state.typeID
+      "type": widget.state.type
     };
     widget.state.addCheck(status: status, data: params);
   }
@@ -620,7 +620,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       var params = {
         'receiverModel': receiverModel,
         'orgId': widget.state.dealOrgId,
-        'title': '选择处理人',
+        'title': '选择盘点人',
       };
       var backParams = await SCRouterHelper.pathPage(
           SCRouterPath.selectReceiverPage, params);
@@ -685,6 +685,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       "dealOrgId": widget.state.dealOrgId,
       "dealOrgName": widget.state.dealOrgName,
       "rangeValue": widget.state.rangeValue,
+      "type": widget.state.type,
       "id": widget.state.editId
     };
     widget.state.editMaterialBaseInfo(data: params);
