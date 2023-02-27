@@ -195,7 +195,7 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
         id: controller.id,
         completeHandler: (bool success) {
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialTransferPage});
+              .fire({'key': SCKey.kRefreshMaterialCheckPage});
           SCRouterHelper.back(null);
         });
   }
@@ -203,7 +203,9 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
   /// 作废
   cancelAction() {
     controller.cancelCheckTask(id: controller.model.id ?? '', successHandler: () {
-
+      SCScaffoldManager.instance.eventBus
+          .fire({'key': SCKey.kRefreshMaterialCheckPage});
+      SCRouterHelper.back(null);
     });
   }
 

@@ -56,11 +56,14 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
             onTap: (SCMaterialListModel model) async {
               if (widget.type == SCWarehouseManageType.check) {
                 /// 待盘点或盘点中时 status == 2 || status == 4
-                var backParams = await SCRouterHelper.pathPage(SCRouterPath.checkMaterialDetailPage, {'model': model});
-                if (backParams != null) {
-                  setState(() {
-                    model = backParams['model'];
-                  });
+                int subStatus = widget.model?.status ?? -1;
+                if (subStatus == 2 || subStatus == 4) {
+                  var backParams = await SCRouterHelper.pathPage(SCRouterPath.checkMaterialDetailPage, {'model': model});
+                  if (backParams != null) {
+                    setState(() {
+                      model = backParams['model'];
+                    });
+                  }
                 }
               }
             },
@@ -97,7 +100,7 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
   Widget timerView() {
     if (widget.type == SCWarehouseManageType.check) {
       int status = widget.model?.status ?? -1;
-      if (status == 3) {
+      if (status == 2 || status == 4) {
         if ((widget.remainingTime ?? 0) <= 0) {
           return const SizedBox();
         } else {
