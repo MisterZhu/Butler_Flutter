@@ -20,10 +20,14 @@ class SCAllMaterialListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: allMaterialList(),
-    );
+    if (type == SCWarehouseManageType.check && list == null) {
+      return checkEmptyView();
+    } else {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: allMaterialList(),
+      );
+    }
     // double height = 104.5 * list.length;
     // return SizedBox(
     //   height: height,
@@ -39,6 +43,22 @@ class SCAllMaterialListView extends StatelessWidget {
     //       },
     //       itemCount: list.length),
     // );
+  }
+
+  Widget checkEmptyView() {
+    return Container(
+      color: SCColors.color_FFFFFF,
+      height: 100.0,
+      alignment: Alignment.center,
+      child: const Text(
+        '暂无盘点物资',
+        style: TextStyle(
+          fontSize: SCFonts.f14,
+          fontWeight: FontWeight.w400,
+          color: SCColors.color_8D8E99,
+        ),
+      ),
+    );
   }
 
   /// 所有物资列表

@@ -16,7 +16,8 @@ class SCAddMaterialListView extends StatelessWidget {
       required this.refreshController,
       this.radioTap,
       this.loadMoreAction,
-      this.hideNumTextField})
+      this.hideNumTextField,
+      this.check})
       : super(key: key);
 
   /// SCAddMaterialController
@@ -37,16 +38,19 @@ class SCAddMaterialListView extends StatelessWidget {
   /// 隐藏数量输入框
   final bool? hideNumTextField;
 
+  /// 是否是盘点物资
+  final bool? check;
+
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
         controller: refreshController,
-        enablePullUp: true,
+        enablePullUp: check == true ? false : true,
         enablePullDown: false,
         onLoading: loadMore,
         child: ListView.separated(
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 11.0),
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 11.0, bottom: 12.0),
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
               SCMaterialListModel model = list[index];
@@ -63,8 +67,13 @@ class SCAddMaterialListView extends StatelessWidget {
       hideMaterialNumTextField: hideNumTextField,
       model: model,
       type: scMaterialCellTypeRadio,
+      check: check,
       numChangeAction: (int value) {
-        model.localNum = value;
+        if (check == true) {
+          model.checkNum = value;
+        } else {
+          model.localNum = value;
+        }
       },
       radioTap: (bool value) {
         model.isSelect = value;

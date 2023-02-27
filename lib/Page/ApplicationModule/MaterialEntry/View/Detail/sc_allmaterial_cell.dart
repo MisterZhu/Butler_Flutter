@@ -6,6 +6,7 @@ import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../../../Constants/sc_enum.dart';
 import '../../../MaterialCheck/View/CheckDetail/sc_check_timer_view.dart';
+import '../../Controller/sc_material_entry_detail_controller.dart';
 import '../../Model/sc_material_list_model.dart';
 import '../../Model/sc_material_task_detail_model.dart';
 import 'sc_allmaterial_listview.dart';
@@ -21,8 +22,9 @@ class SCAllMaterialCell extends StatefulWidget {
 
   /// 盘点剩余时间
   final int? remainingTime;
-
-  SCAllMaterialCell({Key? key, required this.type, this.model, this.remainingTime}) : super(key: key);
+  /// SCMaterialEntryDetailController
+  final SCMaterialEntryDetailController state;
+  SCAllMaterialCell({Key? key, required this.state,required this.type, this.model, this.remainingTime}) : super(key: key);
 
   @override
   SCAllMaterialCellState createState() => SCAllMaterialCellState();
@@ -40,6 +42,9 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
     bool hiddenUnfold = true;
     if (widget.model?.materials != null && widget.model!.materials!.length > maxLength) {
       hiddenUnfold = false;
+    }
+    if (widget.type == SCWarehouseManageType.check) {
+      hiddenUnfold = true;
     }
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -116,14 +121,18 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
 
   /// 数据
   getRealList() {
-    if (widget.model?.materials != null && widget.model!.materials!.length > maxLength) {
-      if (!isShowAll) {
-        return widget.model!.materials!.sublist(0, maxLength);
-      } else {
-        return widget.model!.materials!;
-      }
+    if (widget.type == SCWarehouseManageType.check) {
+      return widget.state.checkedList;
     } else {
-      return widget.model?.materials;
+      if (widget.model?.materials != null && widget.model!.materials!.length > maxLength) {
+        if (!isShowAll) {
+          return widget.model!.materials!.sublist(0, maxLength);
+        } else {
+          return widget.model!.materials!;
+        }
+      } else {
+        return widget.model?.materials;
+      }
     }
   }
 

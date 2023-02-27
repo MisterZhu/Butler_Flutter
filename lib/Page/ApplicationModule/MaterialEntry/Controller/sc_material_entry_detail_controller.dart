@@ -10,6 +10,7 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_mat
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../../../../Utils/Date/sc_date_utils.dart';
+import '../Model/sc_material_list_model.dart';
 import '../View/Detail/sc_material_bottom_view.dart';
 import '../Model/sc_material_task_detail_model.dart';
 
@@ -34,6 +35,12 @@ class SCMaterialEntryDetailController extends GetxController {
 
   /// 盘点剩余时间
   int remainingTime = 0;
+
+  /// 已盘点的物资
+  List<SCMaterialListModel> checkedList = [];
+
+  /// 未增盘点的物资
+  List<SCMaterialListModel> uncheckedList = [];
 
   @override
   onInit() {
@@ -125,6 +132,17 @@ class SCMaterialEntryDetailController extends GetxController {
           SCLoadingUtils.hide();
           success = true;
           model = SCMaterialTaskDetailModel.fromJson(value);
+          if (model.materials != null) {
+            List<SCMaterialListModel> list = model.materials!;
+            for (int i = 0; i < list.length; i++) {
+              SCMaterialListModel model = list[i];
+              if (model.checkNum == null) {
+                uncheckedList.add(model);
+              } else {
+                checkedList.add(model);
+              }
+            }
+          }
           int subStatus = model.status ?? -1;
           if (subStatus == 2 || subStatus == 4) {
             String timeString = model.taskEndTime ?? '';
@@ -162,6 +180,7 @@ class SCMaterialEntryDetailController extends GetxController {
         url: SCUrl.kStartCheckTaskUrl+id,
         params: null,
         success: (value) {
+          print('开始盘点==========================');
           successHandler?.call();
         },
         failure: (value) {

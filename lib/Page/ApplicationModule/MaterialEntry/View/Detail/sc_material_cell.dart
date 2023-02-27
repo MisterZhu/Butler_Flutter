@@ -28,7 +28,8 @@ class SCMaterialCell extends StatefulWidget {
       this.numChangeAction,
       this.radioTap,
       this.deleteAction,
-      this.hideMaterialNumTextField})
+      this.hideMaterialNumTextField,
+      this.check})
       : super(key: key);
 
   final SCMaterialListModel? model;
@@ -51,6 +52,7 @@ class SCMaterialCell extends StatefulWidget {
   /// 隐藏物资数量输入框
   final bool? hideMaterialNumTextField;
 
+  final bool? check;
   @override
   SCMaterialCellState createState() => SCMaterialCellState();
 }
@@ -283,7 +285,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
       );
     } else {
       stepper = SCStepper(
-        num: widget.model?.localNum,
+        num: widget.check == true ? widget.model?.number : widget.model?.localNum,
         numChangeAction: (int value) {
           widget.numChangeAction?.call(value);
         },
@@ -379,6 +381,11 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     } else {
       text =
           '单位:${widget.model?.unitName} 条形码:${widget.model?.barCode}\n规格:${widget.model?.norms}';
+    }
+    print('check==========${widget.check}');
+    if (widget.check == true) {
+      text =
+      '单位:${widget.model?.unitName} 条形码:${widget.model?.barCode}\n规格:${widget.model?.norms}\n账面库存:${widget.model?.number}';
     }
     return Text(
       text,

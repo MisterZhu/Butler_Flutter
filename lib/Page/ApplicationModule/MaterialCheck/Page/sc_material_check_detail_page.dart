@@ -14,9 +14,7 @@ import '../../../../Constants/sc_default_value.dart';
 import '../../../../Constants/sc_enum.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
-import '../../MaterialEntry/Controller/sc_material_entry_controller.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart';
-import '../Controller/sc_material_check_controller.dart';
 
 /// 盘点详情
 
@@ -118,10 +116,17 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
               {"type": scMaterialBottomViewType2, "title": "盘点",},
             ];
           } else if (state.model.status == 3 || state.model.status ==  4) {// 盘点中（超时）、盘点中
-            list = [
-              {"type": scMaterialBottomViewType1, "title": "暂存",},
-              {"type": scMaterialBottomViewType2, "title": "提交",},
-            ];
+            if (controller.checkedList.length == state.model.materials?.length) {
+              list = [
+                {"type": scMaterialBottomViewType1, "title": "暂存",},
+                {"type": scMaterialBottomViewType2, "title": "提交",},
+              ];
+            } else {
+              list = [
+                {"type": scMaterialBottomViewType1, "title": "暂存",},
+                {"type": scMaterialBottomViewType2, "title": "盘点",},
+              ];
+            }
           } else if (state.model.status == 7) {// 已作废
             list = [
               {"type": scMaterialBottomViewType2, "title": "删除",},
@@ -155,7 +160,14 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
 
   /// 暂存
   saveAction() {
-
+    controller.checkSubmit(
+        action: 0,
+        checkId: controller.model.id ?? '',
+        materials: [],
+        successHandler: (bool success) {
+          SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshMaterialCheckPage});
+          SCRouterHelper.back(null);
+        });
   }
 
   /// 编辑
@@ -245,10 +257,33 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
 
   /// 盘点
   checkAction() {
-    controller.startCheckTask(id: controller.model.id ?? '', successHandler: () {
-      controller.loadMaterialCheckDetail();
+    //controller.startCheckTask(id: controller.model.id ?? '', successHandler: () {
+      selectMaterialAction();
+    //});
+  }
+
+
+  /// 盘点-选择物资
+  selectMaterialAction() async {
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
+      'unCheckList': controller.uncheckedList,
+      "materialType": SCWarehouseManageType.check,
+      'hideNumTextField': false,
+      'check': true
+    });
+    if (list != null) {
+      print('已盘点的物资==============$list');
+      List<SCMaterialListModel> newList = list;
+      controller.checkedList.addAll(newList);
+      for (int i = 0; i < newList.length; i++) {
+        SCMaterialListModel model = newList[i];
+        controller.uncheckedList.remove(model);
+      }
+    }
+    setState(() {
     });
   }
+
 
   /// 删除
   deleteAction() {

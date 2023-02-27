@@ -28,7 +28,8 @@ class SCAddMaterialView extends StatefulWidget {
       required this.refreshController,
       required this.type,
       this.sureAction,
-      this.hideNumTextField
+      this.hideNumTextField,
+      this.check,
       })
       : super(key: key);
 
@@ -50,6 +51,7 @@ class SCAddMaterialView extends StatefulWidget {
   /// 隐藏数量输入框
   final bool? hideNumTextField;
 
+  final bool? check;
   @override
   SCAddMaterialViewState createState() => SCAddMaterialViewState();
 }
@@ -93,6 +95,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
       state: widget.state,
       refreshController: widget.refreshController,
       list: widget.state.materialList,
+      check: widget.check,
       radioTap: () {
         setState(() {});
       },
