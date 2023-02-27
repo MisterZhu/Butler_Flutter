@@ -30,7 +30,7 @@ class SCMaterialEntryDetailController extends GetxController {
   SCMaterialTaskDetailModel model = SCMaterialTaskDetailModel();
 
   /// 定时器
-  late Timer timer;
+  Timer? timer;
 
   /// 盘点剩余时间
   int remainingTime = 0;
@@ -61,9 +61,7 @@ class SCMaterialEntryDetailController extends GetxController {
 
   /// 关闭定时器
   closeTimer() {
-    if (timer.isActive) {
-      timer.cancel();
-    }
+    timer?.cancel();
   }
 
   /// 入库详情
