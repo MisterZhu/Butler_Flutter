@@ -12,6 +12,7 @@ import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
+import '../../../MaterialEntry/Model/sc_material_list_model.dart';
 import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
 import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
 import '../../Controller/sc_material_check_controller.dart';
@@ -189,7 +190,7 @@ class SCMaterialCheckViewState extends State<SCMaterialCheckView> {
               detailAction(model);
             },
             btnTapAction: () {
-              detailAction(model);
+              btnTapAction(model);
             },
             callAction: (String phone) {
               call(phone);
@@ -202,11 +203,68 @@ class SCMaterialCheckViewState extends State<SCMaterialCheckView> {
         itemCount: widget.state.dataList.length),);
   }
 
+  /// 按钮点击
+  btnTapAction(SCMaterialEntryModel model) {
+    int status = model.status ?? -1;
+    bool canEdit = (status == 0);
+    if (status == 0) {
+      editAction(model);
+    } else {
+      SCRouterHelper.pathPage(SCRouterPath.checkDetailPage, {'id': model.id, 'canEdit' : canEdit});
+    }
+  }
+
   /// 详情
   detailAction(SCMaterialEntryModel model) {
     int status = model.status ?? -1;
     bool canEdit = (status == 0);
     SCRouterHelper.pathPage(SCRouterPath.checkDetailPage, {'id': model.id, 'canEdit' : canEdit});
+  }
+
+  /// 编辑
+  editAction(SCMaterialEntryModel model) async {
+    String wareHouseName = model.wareHouseName ?? '';
+    String wareHouseId = model.wareHouseId ?? '';
+    String typeName = model.typeName ?? '';
+    int type = model.type ?? 0;
+    String remark = model.remark ?? '';
+    List<SCMaterialListModel> materials = model.materials ?? [];
+    String id = model.id ?? '';
+    String taskName = model.taskName ?? '';
+    String taskStartTime = model.taskStartTime ?? '';
+    String taskEndTime = model.taskEndTime ?? '';
+    String orgName = model.orgName ?? '';
+    String orgId = model.orgId ?? '';
+    String operatorName = model.operatorName ?? '';
+    String operator = model.operator ?? '';
+    int rangeValue = model.rangeValue ?? 1;
+
+    for (SCMaterialListModel model in materials) {
+      model.localNum = model.number ?? 1;
+      model.isSelect = true;
+      model.name = model.materialName ?? '';
+    }
+    var params = {
+      'isEdit': true,
+      'data': materials,
+      "wareHouseName": wareHouseName,
+      "wareHouseId": wareHouseId,
+      "typeName": typeName,
+      "type": type,
+      "remark": remark,
+      "id": id,
+      "taskName": taskName,
+      "startTime": taskStartTime,
+      "endTime": taskEndTime,
+      "dealOrgName": orgName,
+      "dealOrgId": orgId,
+      "dealUserName": operatorName,
+      "dealUserId": operator,
+      "rangeValue": rangeValue
+    };
+    SCRouterHelper.pathPage(SCRouterPath.addCheckPage, params)?.then((value) {
+      widget.state.loadData(isMore: false);
+    });
   }
 
   /// 状态弹窗

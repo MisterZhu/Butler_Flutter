@@ -68,6 +68,10 @@ class SCMaterialEntryModel {
     String? inWareHouseName,
     String? outWareHouseId,
     String? outWareHouseName,
+    String? taskName,
+    String? taskStartTime,
+    String? taskEndTime,
+    int? rangeValue,
   }) {
     _creator = creator;
     _creatorName = creatorName;
@@ -101,6 +105,10 @@ class SCMaterialEntryModel {
     _inWareHouseName = inWareHouseName;
     _outWareHouseId = outWareHouseId;
     _outWareHouseName = outWareHouseName;
+    _taskName = taskName;
+    _taskStartTime = taskStartTime;
+    _taskEndTime = taskEndTime;
+    _rangeValue = rangeValue;
   }
 
   SCMaterialEntryModel.fromJson(dynamic json) {
@@ -141,6 +149,10 @@ class SCMaterialEntryModel {
     _inWareHouseName = json['inWareHouseName'];
     _outWareHouseId = json['outWareHouseId'];
     _outWareHouseName = json['outWareHouseName'];
+    _taskName = json['taskName'];
+    _taskStartTime= json['taskStartTime'];
+    _taskEndTime = json['taskEndTime'];
+    _rangeValue = json['rangeValue'];
   }
   String? _creator;
   String? _creatorName;
@@ -174,6 +186,10 @@ class SCMaterialEntryModel {
   String? _inWareHouseName;
   String? _outWareHouseId;
   String? _outWareHouseName;
+  String? _taskName;
+  String? _taskStartTime;
+      String? _taskEndTime;
+  int? _rangeValue;
   SCMaterialEntryModel copyWith({
     String? creator,
     String? creatorName,
@@ -206,6 +222,10 @@ class SCMaterialEntryModel {
     String? inWareHouseName,
     String? outWareHouseId,
     String? outWareHouseName,
+    String? taskName,
+    String? taskStartTime,
+    String? taskEndTime,
+    int? rangeValue,
   }) =>
       SCMaterialEntryModel(
         creator: creator ?? _creator,
@@ -240,6 +260,10 @@ class SCMaterialEntryModel {
         inWareHouseName: inWareHouseName ?? _inWareHouseName,
         outWareHouseId: outWareHouseId ?? _outWareHouseId,
         outWareHouseName: outWareHouseName ?? _outWareHouseName,
+          taskName: taskName ?? _taskName,
+          taskStartTime: taskStartTime ?? _taskStartTime,
+          taskEndTime: taskEndTime ?? _taskEndTime,
+          rangeValue: rangeValue ?? _rangeValue,
       );
   String? get creator => _creator;
   String? get creatorName => _creatorName;
@@ -273,6 +297,10 @@ class SCMaterialEntryModel {
   String? get inWareHouseName => _inWareHouseName;
   String? get outWareHouseId => _outWareHouseId;
   String? get outWareHouseName => _outWareHouseName;
+  String? get taskName => _taskName;
+  String? get taskStartTime => _taskStartTime;
+  String? get taskEndTime => _taskEndTime;
+  int? get rangeValue => _rangeValue;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -310,6 +338,10 @@ class SCMaterialEntryModel {
     map['inWareHouseName'] = _inWareHouseName;
     map['outWareHouseId'] = _outWareHouseId;
     map['outWareHouseName'] = _outWareHouseName;
+    map['taskName'] = _taskName;
+    map['taskStartTime'] = _taskStartTime;
+    map['taskEndTime'] = _taskEndTime;
+    map['rangeValue'] = _rangeValue;
     return map;
   }
 }

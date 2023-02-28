@@ -322,7 +322,7 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: SCFonts.f16,
-              color: disableEditRange ? SCColors.color_EDEDF0 : SCColors.color_1B1D33,
+              color: disableEditRange ? SCColors.color_B0B1B8 : SCColors.color_1B1D33,
               fontWeight: FontWeight.w400,
             ),
           )
