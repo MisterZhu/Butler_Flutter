@@ -67,6 +67,30 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
 
   /// body
   Widget body() {
+    return Stack(
+      children: [
+        Positioned(left: 0, top: 0, right: 0, bottom: 0, child: contentItem()),
+        Positioned(
+          left: 0.0,
+          right: 0.0,
+          top: 44.0,
+          bottom: 0.0,
+          child: statusAlert(),
+        ),
+        Positioned(
+          left: 0.0,
+          right: 0.0,
+          top: 44.0,
+          bottom: 0.0,
+          child: sortAlert(),
+        ),
+      ],
+    );
+  }
+
+
+  /// contentItem
+  Widget contentItem() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,30 +121,7 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
           },
         ),
         topCategoryView(),
-        Expanded(child: contentItem())
-      ],
-    );
-  }
-
-  /// contentItem
-  Widget contentItem() {
-    return Stack(
-      children: [
-        Positioned(left: 0, top: 0, right: 0, bottom: 0, child: listview()),
-        Positioned(
-          left: 0.0,
-          right: 0.0,
-          top: 0.0,
-          bottom: 0.0,
-          child: statusAlert(),
-        ),
-        Positioned(
-          left: 0.0,
-          right: 0.0,
-          top: 0.0,
-          bottom: 0.0,
-          child: sortAlert(),
-        ),
+        Expanded(child: listview())
       ],
     );
   }
@@ -142,11 +143,11 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
       children: [
         categoryBtn(widget.state.categoryIndex == 0, list[0], () {
           if (widget.state.categoryIndex != 0) {
-            setState(() {
+            //setState(() {
               showStatusAlert = false;
-              selectStatus = -1;
+              selectStatus = 0;
               siftList[0] = '状态';
-            });
+            //});
             widget.state.updateCategoryIndex(0);
             widget.state.update();
           }
@@ -154,11 +155,11 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
         const SizedBox(width: 13.0,),
         categoryBtn(widget.state.categoryIndex == 1, list[1], () {
           if (widget.state.categoryIndex != 1) {
-            setState(() {
+            //setState(() {
               showStatusAlert = false;
-              selectStatus = -1;
+              selectStatus = 0;
               siftList[0] = '状态';
-            });
+            //});
             widget.state.updateCategoryIndex(1);
             widget.state.update();
           }
@@ -240,7 +241,7 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
     }
   }
 
-  /// 入库状态弹窗
+  /// 状态弹窗
   Widget statusAlert() {
     List list = [];
     for (int i = 0; i < widget.state.statusList.length; i++) {
@@ -258,6 +259,7 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
           });
         },
         tapAction: (value) {
+          print('状态=============$value');
           if (selectStatus != value) {
             setState(() {
               showStatusAlert = false;

@@ -60,6 +60,7 @@ class SCSiftAlertState extends State<SCSiftAlert> {
 
   /// contentView
   Widget contentView() {
+    print("index========${widget.selectIndex}");
     return Container(
       color: SCColors.color_FFFFFF,
       padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 8.0),

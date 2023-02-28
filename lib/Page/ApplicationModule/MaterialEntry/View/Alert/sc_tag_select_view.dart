@@ -66,6 +66,12 @@ class SCTagSelectViewState extends State<SCTagSelectView> {
   }
 
   @override
+  void didUpdateWidget(SCTagSelectView oldWidget) {
+    currentIndex = widget.currentIndex;
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return body();
   }
