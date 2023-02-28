@@ -22,6 +22,10 @@ class SCMaterialRequisitionController extends GetxController {
   int categoryIndex = 0;
 
   List statusList = [];
+
+  /// 工单id
+  String orderId = '';
+
   @override
   onInit() {
     super.onInit();
@@ -33,7 +37,8 @@ class SCMaterialRequisitionController extends GetxController {
       {'name': '已拒绝', 'code': 3},
       {'name': '已驳回', 'code': 4},
       {'name': '已撤回', 'code': 5},
-      {'name': '已入库', 'code': 6},
+      {'name': '已通过', 'code': 6},
+      {'name': '已出库', 'code': 7},
     ];
   }
 

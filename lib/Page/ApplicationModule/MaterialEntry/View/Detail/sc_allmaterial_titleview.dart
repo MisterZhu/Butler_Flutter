@@ -30,6 +30,18 @@ class SCAllMaterialTitleView extends StatelessWidget {
   
   /// titleView
   Widget titleView() {
+    String icon = SCAsset.iconMaterialIcon;
+    if (type == SCWarehouseManageType.entry) {
+      icon = SCAsset.iconMaterialEntry;
+    } else if (type == SCWarehouseManageType.outbound) {
+      icon = SCAsset.iconMaterialOutbound;
+    } else if (type == SCWarehouseManageType.frmLoss) {
+      icon = SCAsset.iconMaterialFrmLoss;
+    } else if (type == SCWarehouseManageType.transfer) {
+      icon = SCAsset.iconMaterialTransfer;
+    } else if (type == SCWarehouseManageType.check) {
+      icon = SCAsset.iconMaterialCheck;
+    }
     String statusDesc = SCUtils.getEntryStatusText(model?.status ?? 0);
     Color statusColor = SCUtils.getEntryStatusTextColor(model?.status ?? 0);
     if (type == SCWarehouseManageType.entry) {
@@ -56,7 +68,7 @@ class SCAllMaterialTitleView extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Row(
         children: [
-          Image.asset(SCAsset.iconMaterialIcon, width: 18.0, height: 18.0,),
+          Image.asset(icon, width: 18.0, height: 18.0,),
           const SizedBox(width: 6.0,),
           Expanded(child: Text(model?.typeName ?? '', maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(
               fontSize: SCFonts.f14,

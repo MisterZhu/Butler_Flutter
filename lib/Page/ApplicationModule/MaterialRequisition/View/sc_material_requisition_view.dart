@@ -208,15 +208,23 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             SCMaterialEntryModel model = widget.state.dataList[index];
+            bool hideBtn = true;
+            if (widget.state.categoryIndex == 0 && model.status == 7) {
+              hideBtn = false;
+            }
             return SCMaterialEntryCell(
               model: model,
               type: widget.state.categoryIndex == 0 ? SCWarehouseManageType.outbound : SCWarehouseManageType.entry,
-              hideBtn: true,
+              hideBtn: hideBtn,
+              btnText: '归还',
               detailTapAction: () {
                 detailAction(model);
               },
               callAction: (String phone) {
                 call(phone);
+              },
+              btnTapAction: () {
+                SCRouterHelper.pathPage(SCRouterPath.addEntryPage, {'orderId': widget.state.orderId});
               },
             );
           },
@@ -259,7 +267,6 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
           });
         },
         tapAction: (value) {
-          print('状态=============$value');
           if (selectStatus != value) {
             setState(() {
               showStatusAlert = false;
