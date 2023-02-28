@@ -23,8 +23,12 @@ class SCAllMaterialListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (type == SCWarehouseManageType.check && list == null) {
-      return checkEmptyView();
+    if ((list ?? []).isEmpty) {
+      if (type == SCWarehouseManageType.check) {
+        return checkEmptyView();
+      } else {
+        return const SizedBox();
+      }
     } else {
       return Column(
         mainAxisSize: MainAxisSize.min,
