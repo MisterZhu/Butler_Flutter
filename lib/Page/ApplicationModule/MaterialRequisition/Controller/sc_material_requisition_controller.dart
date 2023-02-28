@@ -13,41 +13,71 @@ class SCMaterialRequisitionController extends GetxController {
   /// 选中的状态，默认显示全部
   int selectStatusId = -1;
 
-  /// 选中的类型，默认显示全部
-  int selectTypeId = -1;
-
   /// 排序，true操作时间正序，false操作时间倒序
   bool sort = false;
 
   List<SCMaterialEntryModel> dataList = [];
 
-  /// 入库类型数组
-  List<SCEntryTypeModel> typeList = [];
-
   /// 分类index
   int categoryIndex = 0;
 
+  List statusList = [];
   @override
   onInit() {
     super.onInit();
+    statusList = [
+      {'name': '全部', 'code': -1},
+      {'name': '待提交', 'code': 0},
+      {'name': '待审批', 'code': 1},
+      {'name': '审批中', 'code': 2},
+      {'name': '已拒绝', 'code': 3},
+      {'name': '已驳回', 'code': 4},
+      {'name': '已撤回', 'code': 5},
+      {'name': '已入库', 'code': 6},
+    ];
+  }
+
+  updateCategoryIndex(int value) {
+    categoryIndex = value;
+    selectStatusId = -1;
+    if (categoryIndex == 0) {
+      statusList = [
+        {'name': '全部', 'code': -1},
+        {'name': '待提交', 'code': 0},
+        {'name': '待审批', 'code': 1},
+        {'name': '审批中', 'code': 2},
+        {'name': '已拒绝', 'code': 3},
+        {'name': '已驳回', 'code': 4},
+        {'name': '已撤回', 'code': 5},
+        {'name': '已通过', 'code': 6},
+        {'name': '已出库', 'code': 7},
+      ];
+      loadOutboundData(isMore: false);
+    } else {
+      statusList = [
+        {'name': '全部', 'code': -1},
+        {'name': '待提交', 'code': 0},
+        {'name': '待审批', 'code': 1},
+        {'name': '审批中', 'code': 2},
+        {'name': '已拒绝', 'code': 3},
+        {'name': '已驳回', 'code': 4},
+        {'name': '已撤回', 'code': 5},
+        {'name': '已入库', 'code': 6},
+      ];
+      loadEntryData(isMore: false);
+    }
   }
 
   /// 选择状态，刷新页面数据
   updateStatus(int value) {
     selectStatusId = value;
     pageNum = 1;
-
     /// 重新获取数据
-    loadData(isMore: false);
-  }
-
-  /// 选择类型，刷新页面数据
-  updateType(int value) {
-    selectTypeId = value;
-    pageNum = 1;
-
-    /// 重新获取数据
-    loadData(isMore: false);
+    if (categoryIndex == 0) {
+      loadOutboundData(isMore: false);
+    } else {
+      loadEntryData(isMore: false);
+    }
   }
 
   /// 更新排序，刷新页面数据
@@ -56,11 +86,15 @@ class SCMaterialRequisitionController extends GetxController {
     pageNum = 1;
 
     /// 重新获取数据
-    loadData(isMore: false);
+    if (categoryIndex == 0) {
+      loadOutboundData(isMore: false);
+    } else {
+      loadEntryData(isMore: false);
+    }
   }
 
-  /// 入库列表数据
-  loadData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
+  /// 物资归还入库列表数据
+  loadEntryData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       pageNum++;
@@ -69,10 +103,13 @@ class SCMaterialRequisitionController extends GetxController {
       SCLoadingUtils.show();
     }
     List fields = [];
-    if (selectTypeId >= 0) {
-      var dic = {"map": {}, "method": 1, "name": "type", "value": selectTypeId};
-      fields.add(dic);
-    }
+    var dic = {
+        "map": {},
+        "method": 1,
+        "name": "type",
+        "value": 4
+    };
+    fields.add(dic);
     if (selectStatusId >= 0) {
       var dic = {
         "map": {},
@@ -128,19 +165,79 @@ class SCMaterialRequisitionController extends GetxController {
         });
   }
 
-  /// 入库类型
-  loadWareHouseType(Function? resultHandler) {
+
+  /// 出库列表数据
+  loadOutboundData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
+    bool isLoadMore = isMore ?? false;
+    if (isLoadMore == true) {
+      pageNum++;
+    } else {
+      pageNum = 1;
+      SCLoadingUtils.show();
+    }
+    List fields = [];
+    var dic = {
+        "map": {},
+        "method": 1,
+        "name": "type",
+        "value": 1
+    };
+    fields.add(dic);
+    if (selectStatusId >= 0) {
+      var dic = {
+        "map": {},
+        "method": 1,
+        "name": "status",
+        "value": selectStatusId
+      };
+      fields.add(dic);
+    }
+    var params = {
+      "conditions": {
+        "fields": fields,
+        "specialMap": {}
+      },
+      "count": false,
+      "last": false,
+      "orderBy": [{"asc": sort, "field": "gmtModify"}],
+      "pageNum": pageNum,
+      "pageSize": 20
+    };
     SCHttpManager.instance.post(
-        url: SCUrl.kWareHouseTypeUrl,
-        params: {'dictionaryCode': 'WAREHOUSING'},
+        url: SCUrl.kMaterialOutboundListUrl,
+        params: params,
         success: (value) {
-          typeList = List<SCEntryTypeModel>.from(
-              value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
+          SCLoadingUtils.hide();
+          if (value is Map) {
+            List list = value['records'];
+            if (isLoadMore == true) {
+              dataList.addAll(List<SCMaterialEntryModel>.from(
+                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+            } else {
+              dataList = List<SCMaterialEntryModel>.from(
+                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+            }
+          } else {
+            if (isLoadMore == false) {
+              dataList = [];
+            }
+          }
           update();
-          resultHandler?.call();
+          bool last = false;
+          if (isLoadMore) {
+            last = value['last'];
+          }
+          completeHandler?.call(true, last);
         },
-        failure: (value) {});
+        failure: (value) {
+          if (isLoadMore) {
+            pageNum--;
+          }
+          SCToast.showTip(value['message']);
+          completeHandler?.call(false, false);
+        });
   }
+
 
   /// 提交入库
   submit({required String id, Function(bool success)? completeHandler}) async {

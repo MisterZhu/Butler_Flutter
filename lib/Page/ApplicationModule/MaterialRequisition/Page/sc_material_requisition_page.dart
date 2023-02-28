@@ -30,7 +30,7 @@ class SCMaterialRequisitionPageState extends State<SCMaterialRequisitionPage> wi
     controllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCMaterialRequisitionPage).toString());
     controller = Get.put(SCMaterialRequisitionController(), tag: controllerTag);
-    controller.loadData(isMore: false);
+    controller.loadOutboundData(isMore: false);
   }
 
   @override
