@@ -218,7 +218,8 @@ class SCAsset {
   static const String iconDeleteMaterial = "images/materialEntry/icon_material_delete.png";
   /// 电话icon
   static const String iconContactPhone = "images/materialEntry/icon_contact_phone.png";
-
+  /// 物资空白占位图
+  static const String iconMaterialEmpty = "images/materialEntry/icon_material_empty.png";
   /// 测试图片
   static const String iconTestMaterial = "images/materialEntry/icon_test_material.png";
 
