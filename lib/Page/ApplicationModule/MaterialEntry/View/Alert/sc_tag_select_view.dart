@@ -129,7 +129,7 @@ class SCTagSelectViewState extends State<SCTagSelectView> {
         tagAction(index);
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6.0),
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
         alignment: Alignment.center,
         height: widget.tagHeight,
         decoration: BoxDecoration(
@@ -143,11 +143,11 @@ class SCTagSelectViewState extends State<SCTagSelectView> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-              fontSize: SCFonts.f12,
+              fontSize: SCFonts.f14,
               fontWeight: FontWeight.w400,
               color: textColor),
           strutStyle: const StrutStyle(
-            fontSize: SCFonts.f12,
+            fontSize: SCFonts.f14,
             height: 1.25,
             forceStrutHeight: true,
           ),

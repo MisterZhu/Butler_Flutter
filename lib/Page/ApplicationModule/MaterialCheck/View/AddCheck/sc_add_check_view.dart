@@ -261,7 +261,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
     DateTime now = DateTime.now();
     SCPickerUtils pickerUtils = SCPickerUtils();
     pickerUtils.title = timeIndex == 0 ? '开始时间' : '结束时间';
-    pickerUtils.cancelText = '上一步';
+    pickerUtils.cancelText = '取消';
     pickerUtils.pickerType = SCPickerType.date;
     pickerUtils.completionHandler = (selectedValues, selecteds) {
       DateTime value = selectedValues.first;

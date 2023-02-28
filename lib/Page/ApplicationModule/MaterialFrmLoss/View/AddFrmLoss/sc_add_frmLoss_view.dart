@@ -242,7 +242,7 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
     DateTime now = DateTime.now();
     SCPickerUtils pickerUtils = SCPickerUtils();
     pickerUtils.title = '报损日期';
-    pickerUtils.cancelText = '上一步';
+    pickerUtils.cancelText = '取消';
     pickerUtils.pickerType = SCPickerType.date;
     pickerUtils.completionHandler = (selectedValues, selecteds) {
       DateTime value = selectedValues.first;

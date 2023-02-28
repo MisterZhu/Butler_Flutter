@@ -132,6 +132,12 @@ class SCTaskModuleAlertState extends State<SCTaskModuleAlert> {
         height: (widget.tagHeight + widget.mainSpacing) * 8 + widget.topSpacing + widget.bottomSpacing,
         child: gridView,
       );
+    } else if (widget.list.length < widget.columnCount * 3) {
+      return SizedBox(
+        width: double.infinity,
+        height: (widget.tagHeight + widget.mainSpacing) * 3,
+        child: gridView,
+      );
     } else {
       return gridView;
     }
