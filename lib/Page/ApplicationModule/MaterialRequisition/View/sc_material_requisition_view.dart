@@ -28,18 +28,8 @@ class SCMaterialRequisitionView extends StatefulWidget {
 }
 
 class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
-  List siftList = ['状态', '类型', '排序'];
+  List siftList = ['状态', '排序'];
 
-  List statusList = [
-    {'name': '全部', 'code': -1},
-    {'name': '待提交', 'code': 0},
-    {'name': '待审批', 'code': 1},
-    {'name': '审批中', 'code': 2},
-    {'name': '已拒绝', 'code': 3},
-    {'name': '已驳回', 'code': 4},
-    {'name': '已撤回', 'code': 5},
-    {'name': '已入库', 'code': 6},
-  ];
   List typeList = ['全部'];
 
   int selectStatus = 0;
@@ -62,12 +52,6 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
   void initState() {
     super.initState();
     sortIndex = widget.state.sort == true ? 0 : 1;
-    widget.state.loadWareHouseType(() {
-      List list = widget.state.typeList.map((e) => e.name).toList();
-      setState(() {
-        typeList.addAll(list);
-      });
-    });
   }
 
   @override
@@ -106,12 +90,6 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
             } else if (index == 1) {
               setState(() {
                 showStatusAlert = false;
-                showTypeAlert = !showTypeAlert;
-                showSortAlert = false;
-              });
-            } else if (index == 2) {
-              setState(() {
-                showStatusAlert = false;
                 showTypeAlert = false;
                 showSortAlert = !showSortAlert;
               });
@@ -141,13 +119,6 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
           right: 0.0,
           top: 0.0,
           bottom: 0.0,
-          child: typeAlert(),
-        ),
-        Positioned(
-          left: 0.0,
-          right: 0.0,
-          top: 0.0,
-          bottom: 0.0,
           child: sortAlert(),
         ),
       ],
@@ -171,14 +142,24 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
       children: [
         categoryBtn(widget.state.categoryIndex == 0, list[0], () {
           if (widget.state.categoryIndex != 0) {
-            widget.state.categoryIndex = 0;
+            setState(() {
+              showStatusAlert = false;
+              selectStatus = -1;
+              siftList[0] = '状态';
+            });
+            widget.state.updateCategoryIndex(0);
             widget.state.update();
           }
         }),
         const SizedBox(width: 13.0,),
         categoryBtn(widget.state.categoryIndex == 1, list[1], () {
           if (widget.state.categoryIndex != 1) {
-            widget.state.categoryIndex = 1;
+            setState(() {
+              showStatusAlert = false;
+              selectStatus = -1;
+              siftList[0] = '状态';
+            });
+            widget.state.updateCategoryIndex(1);
             widget.state.update();
           }
         }),
@@ -228,12 +209,10 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
             SCMaterialEntryModel model = widget.state.dataList[index];
             return SCMaterialEntryCell(
               model: model,
-              type: SCWarehouseManageType.requisition,
+              type: widget.state.categoryIndex == 0 ? SCWarehouseManageType.outbound : SCWarehouseManageType.entry,
+              hideBtn: true,
               detailTapAction: () {
                 detailAction(model);
-              },
-              btnTapAction: () {
-                submit(index);
               },
               callAction: (String phone) {
                 call(phone);
@@ -254,20 +233,23 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
     int status = model.status ?? -1;
     bool canEdit = (status == 0);
     print("status===$status");
-    SCRouterHelper.pathPage(
-        SCRouterPath.entryDetailPage, {'id': model.id, 'canEdit': canEdit, 'status' : status, 'hideBottomBtn' : true});
+    if (widget.state.categoryIndex == 0) {
+      SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, {'id': model.id, 'canEdit': canEdit, 'status' : status, 'hideBottomBtn' : true});
+    } else {
+      SCRouterHelper.pathPage(SCRouterPath.entryDetailPage, {'id': model.id, 'canEdit': canEdit, 'status' : status, 'hideBottomBtn' : true});
+    }
   }
 
   /// 入库状态弹窗
   Widget statusAlert() {
     List list = [];
-    for (int i = 0; i < statusList.length; i++) {
-      list.add(statusList[i]['name']);
+    for (int i = 0; i < widget.state.statusList.length; i++) {
+      list.add(widget.state.statusList[i]['name']);
     }
     return Offstage(
       offstage: !showStatusAlert,
       child: SCSiftAlert(
-        title: '入库状态',
+        title: '状态',
         list: list,
         selectIndex: selectStatus,
         closeAction: () {
@@ -280,35 +262,8 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
             setState(() {
               showStatusAlert = false;
               selectStatus = value;
-              siftList[0] = value == 0 ? '状态' : statusList[value]['name'];
-              widget.state.updateStatus(statusList[value]['code']);
-            });
-          }
-        },
-      ),
-    );
-  }
-
-  /// 入库类型弹窗
-  Widget typeAlert() {
-    return Offstage(
-      offstage: !showTypeAlert,
-      child: SCSiftAlert(
-        title: '入库类型',
-        list: typeList,
-        selectIndex: selectType,
-        closeAction: () {
-          setState(() {
-            showTypeAlert = false;
-          });
-        },
-        tapAction: (value) {
-          if (selectType != value) {
-            setState(() {
-              showTypeAlert = false;
-              selectType = value;
-              siftList[1] = value == 0 ? '类型' : typeList[value];
-              widget.state.updateType(value == 0 ? -1 : widget.state.typeList[value - 1].code ?? -1);
+              siftList[0] = value == 0 ? '状态' : widget.state.statusList[value]['name'];
+              widget.state.updateStatus(widget.state.statusList[value]['code']);
             });
           }
         },
@@ -351,30 +306,52 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
     widget.state.submit(
         id: model.id ?? '',
         completeHandler: (bool success) {
-          widget.state.loadData(isMore: false);
+          //widget.state.loadData(isMore: false);
         });
   }
 
   /// 下拉刷新
   Future onRefresh() async {
-    widget.state.loadData(
-        isMore: false,
-        completeHandler: (bool success, bool last) {
-          refreshController.refreshCompleted();
-          refreshController.loadComplete();
-        });
+    if (widget.state.categoryIndex == 0) {
+      widget.state.loadOutboundData(
+          isMore: false,
+          completeHandler: (bool success, bool last) {
+            refreshController.refreshCompleted();
+            refreshController.loadComplete();
+          });
+    } else {
+      widget.state.loadEntryData(
+          isMore: false,
+          completeHandler: (bool success, bool last) {
+            refreshController.refreshCompleted();
+            refreshController.loadComplete();
+          });
+    }
+
   }
 
   /// 上拉加载
   void loadMore() async {
-    widget.state.loadData(
-        isMore: true,
-        completeHandler: (bool success, bool last) {
-          if (last) {
-            refreshController.loadNoData();
-          } else {
-            refreshController.loadComplete();
-          }
-        });
+    if (widget.state.categoryIndex == 0) {
+      widget.state.loadOutboundData(
+          isMore: true,
+          completeHandler: (bool success, bool last) {
+            if (last) {
+              refreshController.loadNoData();
+            } else {
+              refreshController.loadComplete();
+            }
+          });
+    } else {
+      widget.state.loadEntryData(
+          isMore: true,
+          completeHandler: (bool success, bool last) {
+            if (last) {
+              refreshController.loadNoData();
+            } else {
+              refreshController.loadComplete();
+            }
+          });
+    }
   }
 }

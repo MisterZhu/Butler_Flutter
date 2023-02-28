@@ -24,9 +24,11 @@ class SCMaterialEntryCell extends StatelessWidget {
   /// 详情
   final Function? detailTapAction;
 
+  final bool? hideBtn;
   SCMaterialEntryCell({Key? key,
     required this.type,
     this.model,
+    this.hideBtn,
     this.callAction,
     this.btnTapAction,
     this.detailTapAction,
@@ -232,10 +234,9 @@ class SCMaterialEntryCell extends StatelessWidget {
         showBtn = true;
       }
     } else {
-      if (type == SCWarehouseManageType.requisition) {
+      showBtn = model?.status == 0 ? true : false;
+      if (hideBtn == true) {
         showBtn = false;
-      } else {
-        showBtn = model?.status == 0 ? true : false;
       }
     }
     return Padding(
