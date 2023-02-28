@@ -38,14 +38,10 @@ public class MainActivity extends FlutterActivity {
 
     private static final int toWebViewCode = 0x001;
     private MethodChannel.Result methodChannelResult;
-
     public static final int OCR_LICENSE_PLATE = 0x002;
     private MethodChannel.Result methodChannelResult_licensePlate;
     public static final int OCR_ID_CARD = 0x003;
     private MethodChannel.Result methodChannelResult_idCard;
-    public static final int GETORDERID = 0x004;
-    private MethodChannel.Result methodChannelResult_id;
-
 
 
     // 是否初始化成功了百度OCR
@@ -139,7 +135,10 @@ public class MainActivity extends FlutterActivity {
                     return;
                 }
                 // 回调数据给flutter
-                methodChannelResult.success("success");
+//                methodChannelResult.success("success");
+                if (methodChannelResult != null){
+                    methodChannelResult.success(data.getStringExtra("orgId"));
+                }
             } else if (requestCode == OCR_LICENSE_PLATE) {
                 if (methodChannelResult_licensePlate == null) {
                     return;
@@ -167,10 +166,6 @@ public class MainActivity extends FlutterActivity {
                             recIDCard(IDCardParams.ID_CARD_SIDE_BACK, filePath);
                         }
                     }
-                }
-            } else  if (requestCode ==GETORDERID){
-                if (methodChannelResult_id != null){
-                    methodChannelResult_id.success(data.getStringExtra("orgId"));
                 }
             }
         }
