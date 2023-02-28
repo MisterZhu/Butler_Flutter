@@ -57,6 +57,9 @@ class SCAddEntryController extends GetxController {
   /// 上传的图片文件数组
   List files = [];
 
+  /// 工单id
+  String orderId = '';
+
   @override
   onInit() {
     super.onInit();
@@ -113,7 +116,8 @@ class SCAddEntryController extends GetxController {
       "type": data['typeId'],
       "typeName": data['typeName'],
       "wareHouseId": data['wareHouseId'],
-      "wareHouseName": data['wareHouseName']
+      "wareHouseName": data['wareHouseName'],
+      "workOrderId": orderId,
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(

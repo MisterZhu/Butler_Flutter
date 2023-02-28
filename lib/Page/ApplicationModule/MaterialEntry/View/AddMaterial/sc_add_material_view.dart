@@ -255,6 +255,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
   sureAction() {
     List<SCMaterialListModel> list = [];
     for (SCMaterialListModel model in widget.state.materialList) {
+      model.checkNum = model.localNum;
       bool isSelect = model.isSelect ?? false;
       if (isSelect) {
         list.add(model);

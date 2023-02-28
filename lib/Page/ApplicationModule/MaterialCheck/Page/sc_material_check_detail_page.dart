@@ -112,7 +112,7 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
               {"type": scMaterialBottomViewType2, "title": "编辑",},
             ];
           } else if (state.model.status == 2) {// 待盘点
-            if (controller.checkedList.length > 1) {
+            if (controller.checkedList.isNotEmpty) {
               list = [
                 {"type": scMaterialBottomViewType1, "title": "暂存",},
                 {"type": scMaterialBottomViewType2, "title": "盘点",},

@@ -25,10 +25,14 @@ class SCMaterialEntryCell extends StatelessWidget {
   final Function? detailTapAction;
 
   final bool? hideBtn;
+
+  final String? btnText;
+
   SCMaterialEntryCell({Key? key,
     required this.type,
     this.model,
     this.hideBtn,
+    this.btnText,
     this.callAction,
     this.btnTapAction,
     this.detailTapAction,
@@ -237,7 +241,14 @@ class SCMaterialEntryCell extends StatelessWidget {
       showBtn = model?.status == 0 ? true : false;
       if (hideBtn == true) {
         showBtn = false;
+      } else if (hideBtn == false) {
+        showBtn = true;
       }
+    }
+
+    String btnTitle = type == SCWarehouseManageType.check ? SCUtils.getCheckStatusButtonText(model?.status ?? 0) : SCUtils.getEntryStatusButtonText(model?.status ?? 0);
+    if (btnText != null) {
+     btnTitle = btnText ?? '';
     }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0), 
@@ -266,7 +277,7 @@ class SCMaterialEntryCell extends StatelessWidget {
                   color: SCColors.color_4285F4,
                   padding: EdgeInsets.zero,
                   child: Text(
-                    type == SCWarehouseManageType.check ? SCUtils.getCheckStatusButtonText(model?.status ?? 0) : SCUtils.getEntryStatusButtonText(model?.status ?? 0),
+                    btnTitle,
                     style: const TextStyle(
                         fontSize: SCFonts.f16,
                         fontWeight: FontWeight.w400,

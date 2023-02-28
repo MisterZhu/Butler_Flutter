@@ -150,7 +150,7 @@ class SCAddOutboundController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           if (isLL) {
-            SCRouterHelper.pathOffPage(SCRouterPath.materialRequisitionPage, null);
+            SCRouterHelper.pathOffPage(SCRouterPath.materialRequisitionPage, {"orderId" : llMap['orderId']});
           } else {
             SCScaffoldManager.instance.eventBus
                 .fire({'key': SCKey.kRefreshMaterialOutboundPage});

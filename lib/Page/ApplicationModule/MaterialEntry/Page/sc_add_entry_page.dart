@@ -48,6 +48,9 @@ class SCAddEntryPageState extends State<SCAddEntryPage> {
             }
           }
         }
+        if (params.containsKey('orderId')) {
+          controller.orderId = params['orderId'];
+        }
       }
     }
   }

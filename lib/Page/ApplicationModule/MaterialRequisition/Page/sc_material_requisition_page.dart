@@ -31,6 +31,16 @@ class SCMaterialRequisitionPageState extends State<SCMaterialRequisitionPage> wi
         .getXControllerTag((SCMaterialRequisitionPage).toString());
     controller = Get.put(SCMaterialRequisitionController(), tag: controllerTag);
     controller.loadOutboundData(isMore: false);
+    initPageParams();
+  }
+
+  initPageParams() {
+    var params = Get.arguments;
+    if (params != null && params is Map) {
+      if (params.containsKey('orderId')) {
+        controller.orderId = params['orderId'];
+      }
+    }
   }
 
   @override

@@ -44,11 +44,11 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
           children: [
             entryNumView(),
             const SizedBox(
-              height: 10.0,
+              height: 12.0,
             ),
             middleView(),
             SizedBox(
-              height: model?.remark == "" || model?.remark == null ? 0.0 : 10.0,
+              height: model?.remark == "" || model?.remark == null ? 0.0 : 12.0,
             ),
             entryRemarkView(),
             photosItem()
@@ -64,23 +64,23 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
       return Column(children: [
         dealUserNameView(),
         const SizedBox(
-          height: 10.0,
+          height: 12.0,
         ),
         dealOrgNameView(),
         const SizedBox(
-          height: 10.0,
+          height: 12.0,
         ),
         taskStartTimeView(),
         const SizedBox(
-          height: 10.0,
+          height: 12.0,
         ),
         taskEndTimeView(),
         SizedBox(
-          height: model?.dealStartTime == null ? 0.0 : 10.0,
+          height: model?.dealStartTime == null ? 0.0 : 12.0,
         ),
         dealTimeView(),
         const SizedBox(
-          height: 10.0,
+          height: 12.0,
         ),
         wareHouseView(),
       ]);
@@ -89,7 +89,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
         children: [
           entryUserView(),
           const SizedBox(
-            height: 10.0,
+            height: 12.0,
           ),
           entryTimeView(),
           receiveView(),
