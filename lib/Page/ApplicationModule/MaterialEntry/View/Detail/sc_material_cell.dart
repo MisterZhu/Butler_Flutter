@@ -248,10 +248,10 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     Color bgColor = SCColors.color_F7F8FA;// 背景颜色
     Color textColor = SCColors.color_5E5F66;// 文字颜色
     String text = '';
-    if (number < checkNum) {// 盘赢
+    if (number < checkNum) {// 盘盈
       bgColor = SCColors.color_E3FFF1.withOpacity(0.9);
       textColor = SCColors.color_00B42A;
-      text = "盘赢${checkNum - number}";
+      text = "盘盈${checkNum - number}";
     } else if (number > checkNum) {// 盘亏
       bgColor = SCColors.color_FFF1F0;
       textColor = SCColors.color_FF4040;

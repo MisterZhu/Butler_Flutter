@@ -39,7 +39,7 @@ class SCMaterialListModel {
     int? number,  // 账存数量
     int? checkNum, // 盘点数量
     int? resultNum, // 赢亏数量
-    int? result, // 盘点结果（1：盘赢，0：盘平，-1：盘亏）
+    int? result, // 盘点结果（1：盘盈，0：盘平，-1：盘亏）
     String? checkId, // 关联盘点id
     String? remark,
     String? thirdCode,

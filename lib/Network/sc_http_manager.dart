@@ -60,7 +60,8 @@ class SCHttpManager {
             (X509Certificate cert, String host, int port) => true;
         // 设置抓包代理，ip+端口号
         // client.findProxy = (uri) {
-        //   return "PROXY 172.16.171.30:13920";
+        //   /// 172.16.171.69、172.16.171.30、172.16.171.63
+        //   return "PROXY 172.16.171.63:13920";
         // };
         return null;
       };
