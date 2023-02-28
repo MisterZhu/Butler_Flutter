@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:smartcommunity/Utils/sc_sp_utils.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
 import '../../../../Constants/sc_default_value.dart';
+import '../../../../Constants/sc_flutter_key.dart';
 import '../../../../Constants/sc_h5.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
@@ -131,7 +133,21 @@ class SCApplicationPageState extends State<SCApplicationPage>
     } else if (Platform.isIOS) {
       String realUrl = SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
       SCRouterHelper.pathPage(SCRouterPath.webViewPath,
-          {"title": title, "url": realUrl, "needJointParams": false});
+          {"title": title, "url": realUrl, "needJointParams": false})?.then((value) {
+            if (value != null && value is Map) {
+              if (value.containsKey("key")) {
+                String key = value['key'];
+                if (key == SCFlutterKey.kGotoMaterialKey) {
+                  SCLoadingUtils.show();
+                  Future.delayed(const Duration(milliseconds: 1000), (){
+                    SCLoadingUtils.hide();
+                    SCRouterHelper.pathPage(SCRouterPath.addOutboundPage, {"isLL" : true, "llData" : jsonDecode(value['data'])});
+                  });
+                }
+              }
+            }
+        print("返回的结果===$value");
+      });
     } else {
       SCRouterHelper.pathPage(SCRouterPath.webViewPath,
           {"title": title, "url": url, "needJointParams": true});

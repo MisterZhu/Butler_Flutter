@@ -1,6 +1,7 @@
 
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
@@ -27,6 +28,12 @@ class SCAddOutboundController extends GetxController {
 
   /// 是否是编辑
   bool isEdit = false;
+
+  /// 是否是领料
+  bool isLL = false;
+
+  /// 领料数据
+  Map<String, dynamic> llMap = {};
 
   /// 编辑的参数
   Map<String, dynamic> editParams = {};
@@ -132,6 +139,9 @@ class SCAddOutboundController extends GetxController {
     if (fetchUserId.isNotEmpty && data['typeName'] == '领料出库') {
       params.addAll({"fetchUserId": fetchUserId});
     }
+    if (isLL) {
+      params.addAll({"workOrderId" : llMap['orderId']});
+    }
 
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
@@ -139,9 +149,13 @@ class SCAddOutboundController extends GetxController {
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
-          SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialOutboundPage});
-          SCRouterHelper.back(null);
+          if (isLL) {
+            SCRouterHelper.pathOffPage(SCRouterPath.materialRequisitionPage, null);
+          } else {
+            SCScaffoldManager.instance.eventBus
+                .fire({'key': SCKey.kRefreshMaterialOutboundPage});
+            SCRouterHelper.back(null);
+          }
         },
         failure: (value) {
           SCToast.showTip(value['message']);

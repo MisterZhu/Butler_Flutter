@@ -262,4 +262,7 @@ class SCUrl {
   /// 删除盘点任务
   static const String kDeleteCheckTaskUrl = "/api/warehouse/app/warehouse/check/delete";
 
+  /// 编辑盘点基础信息
+  static const String kEditCheckBaseInfoUrl = "/api/warehouse/app/warehouse/check/update";
+
 }

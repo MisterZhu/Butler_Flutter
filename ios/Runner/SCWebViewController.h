@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// url
 @property (nonatomic, copy) NSString  *urlString;
 
+/// 完成回调
+@property (nonatomic, copy) void(^completeHandler)(id data);
+
 @end
 
 NS_ASSUME_NONNULL_END
