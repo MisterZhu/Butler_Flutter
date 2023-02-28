@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../../Constants/sc_asset.dart';
@@ -40,9 +43,28 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
   /// 出库时间，出库确认接口传参需要
   String outTime = '';
 
+  /// 监听键盘
+  late StreamSubscription<bool> keyboardSubscription;
+
+  /// 是否显示键盘
+  bool keyboardVisible = false;
+
   @override
   initState() {
     super.initState();
+    var keyboardVisibilityController = KeyboardVisibilityController();
+    keyboardSubscription =
+        keyboardVisibilityController.onChange.listen((bool visible) {
+          setState(() {
+            keyboardVisible = visible;
+          });
+        });
+  }
+
+  @override
+  void dispose() {
+    keyboardSubscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -53,7 +75,7 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
         },
         child: Container(
           width: double.infinity,
-          height: 395.0 + 54.0 + SCUtils().getBottomSafeArea(),
+          height: keyboardVisible ? (MediaQuery.of(context).size.height - 160.0) : (395.0 + 54.0 + MediaQuery.of(context).padding.bottom),
           decoration: const BoxDecoration(
               color: SCColors.color_F2F3F5,
               borderRadius: BorderRadius.only(

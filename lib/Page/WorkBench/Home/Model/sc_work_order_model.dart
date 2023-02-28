@@ -85,7 +85,7 @@ class SCWorkOrderModel {
       int? sendApplyStatus, 
       String? serialNumber, 
       String? source, 
-      int? spaceId, 
+      String? spaceId,
       int? status, 
       int? taskType, 
       String? videos,}){
@@ -221,7 +221,7 @@ class SCWorkOrderModel {
   int? _sendApplyStatus;
   String? _serialNumber;
   String? _source;
-  int? _spaceId;
+  String? _spaceId;
   int? _status;
   int? _taskType;
   String? _videos;
@@ -265,7 +265,7 @@ class SCWorkOrderModel {
   int? sendApplyStatus,
   String? serialNumber,
   String? source,
-  int? spaceId,
+  String? spaceId,
   int? status,
   int? taskType,
   String? videos,
@@ -354,7 +354,7 @@ class SCWorkOrderModel {
   int? get sendApplyStatus => _sendApplyStatus;
   String? get serialNumber => _serialNumber;
   String? get source => _source;
-  int? get spaceId => _spaceId;
+  String? get spaceId => _spaceId;
   int? get status => _status;
   int? get taskType => _taskType;
   String? get videos => _videos;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
+import 'package:smartcommunity/Utils/Strings/sc_string.dart';
 import '../../../../../Network/sc_config.dart';
 import '../../Model/sc_material_list_model.dart';
 import '../AddMaterial/sc_material_stepper.dart';
@@ -291,9 +292,9 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// 物资信息-选择
   Widget selectInfoView() {
-    bool hidenNumTextField = widget.hideMaterialNumTextField ?? false;
+    bool hideNumTextField = widget.hideMaterialNumTextField ?? false;
     Widget stepper;
-    if (hidenNumTextField) {
+    if (hideNumTextField) {
       stepper = const SizedBox(
         height: 1,
       );
@@ -308,8 +309,6 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     if (widget.check ?? false) {
       return Expanded(
           child: SizedBox(
-            // color: Colors.orange,
-            // height: 80.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -328,26 +327,18 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     } else {
       return Expanded(
           child: SizedBox(
-            height: 80.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 nameLabel(),
-                Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(child: infoLabel(3)),
-                        Column(
-                          children: [
-                            Expanded(
-                              child: Container(color: Colors.transparent),
-                            ),
-                            stepper
-                          ],
-                        )
-                      ],
-                    ))
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(child: infoLabel(30)),
+                    stepper
+                  ],
+                )
               ],
             ),
           ));
@@ -423,10 +414,9 @@ class SCMaterialCellState extends State<SCMaterialCell> {
       '单位:${widget.model?.unitName} 条形码:${widget.model?.barCode}\n规格:${widget.model?.norms}\n账面库存:${widget.model?.number}';
     }
     return Text(
-      text,
+      SCStrings.autoLineString(text),
       maxLines: maxLength,
-      overflow: widget.check == true ? TextOverflow.visible : TextOverflow.ellipsis,
-      softWrap: false,
+      softWrap: true,
       style: const TextStyle(
           fontSize: SCFonts.f12,
           fontWeight: FontWeight.w400,
