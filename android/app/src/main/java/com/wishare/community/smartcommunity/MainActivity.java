@@ -43,6 +43,10 @@ public class MainActivity extends FlutterActivity {
     private MethodChannel.Result methodChannelResult_licensePlate;
     public static final int OCR_ID_CARD = 0x003;
     private MethodChannel.Result methodChannelResult_idCard;
+    public static final int GETORDERID = 0x004;
+    private MethodChannel.Result methodChannelResult_id;
+
+
 
     // 是否初始化成功了百度OCR
     private boolean hasGotToken = false;
@@ -163,6 +167,10 @@ public class MainActivity extends FlutterActivity {
                             recIDCard(IDCardParams.ID_CARD_SIDE_BACK, filePath);
                         }
                     }
+                }
+            } else  if (requestCode ==GETORDERID){
+                if (methodChannelResult_id != null){
+                    methodChannelResult_id.success(data.getStringExtra("orgId"));
                 }
             }
         }
