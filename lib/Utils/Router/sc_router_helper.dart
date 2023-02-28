@@ -32,6 +32,12 @@ class SCRouterHelper {
     return Get.offAllNamed(path!, arguments: params);
   }
 
+  /*通过path跳转页面并关闭上一个页面*/
+  static Future? pathOffPage(String path, dynamic params) {
+    params ??= '';
+    return Get.offAndToNamed(path, arguments: params);
+  }
+
   /*通过path跳转页面
   * 默认页面跳转都需要做登录验证
   * 如果页面需要去掉登录验证，params需要传参removeLoginCheck=true

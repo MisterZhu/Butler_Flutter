@@ -7,6 +7,7 @@
 
 #import "SCWebViewController.h"
 #import "SCCustomNavigationBar.h"
+#import "SCFlutterKey.h"
 #import <LMWebViewJavascriptBridge/WKWebViewJavascriptBridge.h>
 #import <WebKit/WebKit.h>
 #import <Masonry/Masonry.h>
@@ -122,6 +123,12 @@
     // 返回
     [self.bridge registerHandler:@"sc_app_back" handler:^(id data, WVJBResponseCallback responseCallback) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf dismissViewControllerAnimated:YES completion:nil];
+    }];
+    // 领料
+    [self.bridge registerHandler:@"goToMaterial" handler:^(id data, WVJBResponseCallback responseCallback) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        strongSelf.completeHandler(@{@"key" : kGotoMaterialKey, @"data" : data});
         [strongSelf dismissViewControllerAnimated:YES completion:nil];
     }];
 

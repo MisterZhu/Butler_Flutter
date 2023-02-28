@@ -204,7 +204,7 @@ class SCAddCheckController extends GetxController {
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kEditAddEntryBaseInfoUrl,
+        url: SCUrl.kEditCheckBaseInfoUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();

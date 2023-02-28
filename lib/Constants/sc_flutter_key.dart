@@ -12,4 +12,7 @@ class SCFlutterKey {
 
   /// 调用安卓原生webView
   static const String kAndroidNativeWebView = "kAndroidNativeWebView";
+
+  /// 原生调用领料物资
+  static const String kGotoMaterialKey = "kGotoMaterialKey";
 }

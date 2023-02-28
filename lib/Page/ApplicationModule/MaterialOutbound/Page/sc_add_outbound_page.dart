@@ -58,6 +58,11 @@ class SCAddOutboundPageState extends State<SCAddOutboundPage> {
               controller.selectedList = selectedList;
             }
           }
+        } else {
+          if (params.containsKey('isLL')) {
+            controller.isLL = true;
+            controller.llMap = params['llData'];
+          }
         }
       }
     }

@@ -132,6 +132,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
         requiredPhotos: false,
         rangeList: rangeList,
         rangeValue: widget.state.rangeValue,
+        disableEditRange: true,
         selectRangeAction: (index) {
           widget.state.rangeValue = index + 1;
           widget.state.update();
@@ -168,6 +169,9 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       if (widget.state.rangeValue == 1) {
         return const SizedBox();
       } else {
+        if (widget.state.isEdit) {
+          return const SizedBox();
+        }
         int materialType = widget.state.rangeValue == 2 ? 2 : 1;
         return SCMaterialInfoCell(
           hideMaterialNumTextField: true,
@@ -307,7 +311,8 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
       {
         'isRequired': true,
         'title': '仓库名称',
-        'content': widget.state.wareHouseName
+        'content': widget.state.wareHouseName,
+        'disable': true
       },
       {'isRequired': true, 'title': '盘点部门', 'content': widget.state.dealOrgName},
       {

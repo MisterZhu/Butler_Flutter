@@ -95,8 +95,11 @@ static SCFlutterNativePlugin *plugin;
     vc.modalPresentationStyle = UIModalPresentationFullScreen;
     vc.titleString = params[@"title"];
     vc.urlString = params[@"url"];
+    vc.completeHandler = ^(id  _Nonnull data) {
+        completeHandler(data);
+    };
     [[SCCurrentViewController presentViewController] presentViewController:vc animated:YES completion:^{
-        completeHandler(@{});
+        
     }];
 }
 

@@ -47,6 +47,9 @@ class SCBasicInfoCell extends StatefulWidget {
   /// 范围
   final int? rangeValue;
 
+  /// 是否可以编辑范围
+  final bool? disableEditRange;
+
   SCBasicInfoCell({
     Key? key,
     required this.list,
@@ -60,7 +63,8 @@ class SCBasicInfoCell extends StatefulWidget {
     required this.requiredRemark,
     required this.requiredPhotos,
     this.rangeList,
-    this.rangeValue
+    this.rangeValue,
+    this.disableEditRange
   }) : super(key: key);
 
   @override
@@ -285,12 +289,15 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
 
   /// rangeCell
   Widget rangeCell(int index) {
+    bool disableEditRange = widget.disableEditRange ?? false;
     return GestureDetector(
       onTap: () {
-        setState(() {
-          selectRangeIndex = index;
-          widget.selectRangeAction?.call(index);
-        });
+        if (!disableEditRange) {
+          setState(() {
+            selectRangeIndex = index;
+            widget.selectRangeAction?.call(index);
+          });
+        }
       },
       behavior: HitTestBehavior.opaque,
       child: Row(
@@ -313,9 +320,9 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
             widget.rangeList?[index],
             textAlign: TextAlign.left,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: SCFonts.f16,
-              color: SCColors.color_1B1D33,
+              color: disableEditRange ? SCColors.color_EDEDF0 : SCColors.color_1B1D33,
               fontWeight: FontWeight.w400,
             ),
           )

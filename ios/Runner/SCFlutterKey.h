@@ -14,5 +14,8 @@
 
 #define kWebView @"kNativeIOSWebView"
 
+/// 领料
+#define kGotoMaterialKey @"kGotoMaterialKey"
+
 
 #endif /* SCFlutterKey_h */
