@@ -140,6 +140,7 @@ class SCMaterialEntryDetailController extends GetxController {
             for (int i = 0; i < list.length; i++) {
               SCMaterialListModel model = list[i];
               if (model.checkNum == null) {
+                model.localNum = model.number;
                 uncheckedList.add(model);
               } else {
                 checkedList.add(model);
@@ -203,7 +204,11 @@ class SCMaterialEntryDetailController extends GetxController {
         },
         success: (value) {
           SCLoadingUtils.hide();
-          print('暂存或提交盘点任务成功==============');
+          if (action == 0) {
+            SCToast.showTip(SCDefaultValue.checkSaveSuccessTip);
+          } else {
+            SCToast.showTip(SCDefaultValue.checkSubmitSuccessTip);
+          }
           successHandler?.call();
         },
         failure: (value) {

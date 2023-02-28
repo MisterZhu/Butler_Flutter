@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
+import '../../../../../Utils/sc_utils.dart';
 import '../../../MaterialEntry/View/AddMaterial/sc_material_stepper.dart';
 import '../../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import '../../Controller/sc_check_material_detail_controller.dart';
@@ -47,7 +48,12 @@ class SCCheckMaterialDetailViewState extends State<SCCheckMaterialDetailView> {
 
   /// body
   Widget body() {
-    return Column(
+    return GestureDetector(
+      onTap: () {
+        SCUtils().hideKeyboard(context: context);
+      },
+      behavior: HitTestBehavior.opaque,
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -55,6 +61,7 @@ class SCCheckMaterialDetailViewState extends State<SCCheckMaterialDetailView> {
           Expanded(child: Container()),
           bottomView(),
         ],
+      ),
     );
   }
 
@@ -86,6 +93,7 @@ class SCCheckMaterialDetailViewState extends State<SCCheckMaterialDetailView> {
     return SCMaterialDetailBottomView(
         list: list,
         onTap: (value) {
+          SCUtils().hideKeyboard(context: context);
           SCRouterHelper.back({'model': widget.state.materialModel});
         });
   }

@@ -152,7 +152,7 @@ class SCAddCheckController extends GetxController {
     }
   }
 
-  /// 新增盘点, status=0暂存，1提交
+  /// 新增盘点
   addCheck({required int status, required dynamic data}) {
     var params = {
       "dealOrgId": data['dealOrgId'],
@@ -160,13 +160,12 @@ class SCAddCheckController extends GetxController {
       "materialIdList": data['materialIdList'],
       "classifyIdList": data['categoryIDList'],
       "rangeValue": data['rangeValue'],
-      "status": 0,
       "taskEndTime": data['endTime'],
       "taskName": data['taskName'],
       "taskStartTime": data['startTime'],
       "type": data['type'],
-      "typeName": data['typeName'],
       "wareHouseId": data['wareHouseId'],
+      "taskTime":[data['startTime'], data['endTime']],
     };
     print("新增盘点参数:$params");
     SCLoadingUtils.show();

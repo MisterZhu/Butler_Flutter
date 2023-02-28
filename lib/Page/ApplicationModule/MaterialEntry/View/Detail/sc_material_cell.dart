@@ -210,11 +210,11 @@ class SCMaterialCellState extends State<SCMaterialCell> {
   /// 盘点的物资图片
   Widget inventoryImageView() {
     String url = SCConfig.getImageUrl(widget.model?.pic ?? '');
-    bool isShow = true;
-    if ((widget.status ?? 0) == 2 || (widget.status ?? 0) == 4) {
-      isShow = true;
-    } else {
-      isShow = false;
+    bool isShow = false;
+    if (widget.type == scMaterialCellTypeInventory) {
+      if ((widget.status ?? 0) == 1 || (widget.status ?? 0) == 2 || (widget.status ?? 0) == 3 || (widget.status ?? 0) == 4) {
+        isShow = true;
+      }
     }
     return Container(
         width: 80.0,
@@ -251,11 +251,11 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     if (number < checkNum) {// 盘赢
       bgColor = SCColors.color_E3FFF1.withOpacity(0.9);
       textColor = SCColors.color_00B42A;
-      text = "盘赢$resultNum";
+      text = "盘赢${checkNum - number}";
     } else if (number > checkNum) {// 盘亏
       bgColor = SCColors.color_FFF1F0;
       textColor = SCColors.color_FF4040;
-      text = "盘亏$resultNum";
+      text = "盘亏${number - checkNum}";
     } else {// 盘平
       bgColor = SCColors.color_F7F8FA;
       textColor = SCColors.color_5E5F66;
@@ -316,7 +316,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
           Expanded(
               child: Row(
             children: [
-              Expanded(child: infoLabel(2)),
+              Expanded(child: infoLabel(3)),
               Column(
                 children: [
                   Expanded(

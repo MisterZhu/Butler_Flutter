@@ -61,9 +61,9 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
             status: widget.model?.status,
             onTap: (SCMaterialListModel model) async {
               if (widget.type == SCWarehouseManageType.check) {
-                /// 待盘点或盘点中时 status == 2 || status == 4
+                /// 待盘点或盘点中时
                 int subStatus = widget.model?.status ?? -1;
-                if (subStatus == 2 || subStatus == 4) {
+                if (subStatus == 1 || subStatus == 2 || subStatus == 3 || subStatus == 4) {
                   var backParams = await SCRouterHelper.pathPage(SCRouterPath.checkMaterialDetailPage, {'model': model});
                   if (backParams != null) {
                     setState(() {
