@@ -305,31 +305,53 @@ class SCMaterialCellState extends State<SCMaterialCell> {
         },
       );
     }
-    return Expanded(
-        child: SizedBox(
-      height: 80.0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          nameLabel(),
-          Expanded(
-              child: Row(
-            children: [
-              Expanded(child: infoLabel(3)),
-              Column(
-                children: [
-                  Expanded(
-                    child: Container(color: Colors.transparent),
-                  ),
-                  stepper
-                ],
-              )
-            ],
-          ))
-        ],
-      ),
-    ));
+    if (widget.check ?? false) {
+      return Expanded(
+          child: SizedBox(
+            // color: Colors.orange,
+            // height: 80.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                nameLabel(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(child: infoLabel(30)),
+                    stepper
+                  ],
+                )
+              ],
+            ),
+          ));
+    } else {
+      return Expanded(
+          child: SizedBox(
+            height: 80.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                nameLabel(),
+                Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(child: infoLabel(3)),
+                        Column(
+                          children: [
+                            Expanded(
+                              child: Container(color: Colors.transparent),
+                            ),
+                            stepper
+                          ],
+                        )
+                      ],
+                    ))
+              ],
+            ),
+          ));
+    }
   }
 
   /// 物资信息-删除
@@ -403,7 +425,8 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     return Text(
       text,
       maxLines: maxLength,
-      overflow: TextOverflow.ellipsis,
+      overflow: widget.check == true ? TextOverflow.visible : TextOverflow.ellipsis,
+      softWrap: false,
       style: const TextStyle(
           fontSize: SCFonts.f12,
           fontWeight: FontWeight.w400,
