@@ -283,6 +283,11 @@ class SCAddCheckController extends GetxController {
           SCLoadingUtils.hide();
           wareHouseList = List<SCWareHouseModel>.from(
               value.map((e) => SCWareHouseModel.fromJson(e)).toList());
+          if (wareHouseList.length == 1) {
+            SCWareHouseModel model = wareHouseList.first;
+            wareHouseId = model.id!;
+            wareHouseName = model.name!;
+          }
           initEditParams();
           update();
         },

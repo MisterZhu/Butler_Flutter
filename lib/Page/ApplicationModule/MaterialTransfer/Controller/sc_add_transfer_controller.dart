@@ -254,6 +254,11 @@ class SCAddTransferController extends GetxController {
           SCLoadingUtils.hide();
           inWareHouseList = List<SCWareHouseModel>.from(
               value.map((e) => SCWareHouseModel.fromJson(e)).toList());
+          if (inWareHouseList.length == 1) {
+            SCWareHouseModel model = inWareHouseList.first;
+            inWareHouseId = model.id!;
+            inWareHouseName = model.name!;
+          }
           initEditParams();
           update();
         },
@@ -272,6 +277,11 @@ class SCAddTransferController extends GetxController {
           SCLoadingUtils.hide();
           outWareHouseList = List<SCWareHouseModel>.from(
               value.map((e) => SCWareHouseModel.fromJson(e)).toList());
+          if (outWareHouseList.length == 1) {
+            SCWareHouseModel model = outWareHouseList.first;
+            outWareHouseId = model.id!;
+            outWareHouseName = model.name!;
+          }
           initEditParams();
           update();
         },
