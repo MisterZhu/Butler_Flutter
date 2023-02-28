@@ -237,7 +237,7 @@ class SCUrl {
   static const String kSubmitTransferUrl = "/api/warehouse/app/warehouse/change/submitWareHouseChange";
 
   /************************* 盘点任务 *************************/
-  /// 入库列表
+  /// 盘点列表
   static const String kMaterialCheckListUrl = "/api/warehouse/app/warehouse/check/pageFront";
 
   /// 新增盘点

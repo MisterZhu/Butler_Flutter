@@ -70,17 +70,23 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SCMaterialSearchItem(
-          name: '搜索物资名称',
-          searchAction: () {
-            searchAction();
-          },
+        Offstage(
+          offstage: widget.check == true ? true : false,
+          child: SCMaterialSearchItem(
+            name: '搜索物资名称',
+            searchAction: () {
+              searchAction();
+            },
+          ),
         ),
-        SCMaterialSiftItem(
-          tagList: const ['分类'],
-          tapAction: (index) {
-            showCategoryAlert();
-          },
+        Offstage(
+          offstage: widget.check == true ? true : false,
+          child: SCMaterialSiftItem(
+            tagList: const ['分类'],
+            tapAction: (index) {
+              showCategoryAlert();
+            },
+          ),
         ),
         Expanded(child: listview(context)),
         bottomItem(),

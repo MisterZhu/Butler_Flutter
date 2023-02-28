@@ -185,6 +185,12 @@ class SCDefaultValue {
   /// 盘点-提交tip
   static const String checkSubmitTip = "盘点结果提交后不可修改，将自动生成盘盈入库单或盘亏出库单，并更新库存数量";
 
+  /// 盘点-暂存成功tip
+  static const String checkSaveSuccessTip = "暂存成功";
+
+  /// 盘点-提交成功tip
+  static const String checkSubmitSuccessTip = "提交成功";
+
   /// 图片路径
   static const files = "/files/";
 }

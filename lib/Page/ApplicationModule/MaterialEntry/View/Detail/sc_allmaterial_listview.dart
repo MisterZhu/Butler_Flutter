@@ -90,6 +90,7 @@ class SCAllMaterialListView extends StatelessWidget {
       return SCMaterialCell(
         model: subModel,
         type: cellType,
+        status: status,
         onTap: () {
           onTap?.call(subModel);
         },

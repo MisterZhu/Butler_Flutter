@@ -48,7 +48,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
             ),
             middleView(),
             SizedBox(
-              height: model?.remark == "" ? 0.0 : 10.0,
+              height: model?.remark == "" || model?.remark == null ? 0.0 : 10.0,
             ),
             entryRemarkView(),
             photosItem()
