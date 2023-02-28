@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:developer';
 
@@ -128,7 +127,7 @@ class SCMaterialEntryDetailController extends GetxController {
     uncheckedList.clear();
     SCLoadingUtils.show();
     SCHttpManager.instance.get(
-        url: SCUrl.kMaterialCheckDetailUrl+id,
+        url: SCUrl.kMaterialCheckDetailUrl + id,
         params: null,
         success: (value) {
           log('盘点详情===$value');
@@ -150,7 +149,11 @@ class SCMaterialEntryDetailController extends GetxController {
           int subStatus = model.status ?? -1;
           if (subStatus == 2 || subStatus == 4) {
             String timeString = model.taskEndTime ?? '';
-            remainingTime = SCDateUtils.stringToDateTime(dateString: timeString, formateString: '').millisecondsSinceEpoch;
+            DateTime endDate = SCDateUtils.stringToDateTime(
+                dateString: timeString, formateString: 'yyyy-MM-dd HH:mm:ss');
+            remainingTime =
+                (endDate.millisecondsSinceEpoch - SCDateUtils.timestamp()) ~/
+                    1000;
             closeTimer();
             startTimer();
           }
@@ -181,7 +184,7 @@ class SCMaterialEntryDetailController extends GetxController {
   /// 开始处理盘点任务
   startCheckTask({required String id, Function? successHandler}) {
     SCHttpManager.instance.post(
-        url: SCUrl.kStartCheckTaskUrl+id,
+        url: SCUrl.kStartCheckTaskUrl + id,
         params: null,
         success: (value) {
           print('开始盘点==========================');
@@ -193,15 +196,15 @@ class SCMaterialEntryDetailController extends GetxController {
   }
 
   /// 暂存或提交盘点任务
-  checkSubmit({required int action, required String checkId, required List materials, Function? successHandler}) {
+  checkSubmit(
+      {required int action,
+      required String checkId,
+      required List materials,
+      Function? successHandler}) {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kCheckSubmitUrl,
-        params: {
-          "action": action,
-          "checkId": checkId,
-          "materials": materials
-        },
+        params: {"action": action, "checkId": checkId, "materials": materials},
         success: (value) {
           SCLoadingUtils.hide();
           if (action == 0) {
@@ -222,7 +225,7 @@ class SCMaterialEntryDetailController extends GetxController {
     SCHttpManager.instance.post(
         url: SCUrl.kCancelCheckTaskUrl,
         isQuery: true,
-        params: {"id" : id},
+        params: {"id": id},
         success: (value) {
           SCLoadingUtils.hide();
           successHandler?.call();
@@ -238,7 +241,7 @@ class SCMaterialEntryDetailController extends GetxController {
     SCHttpManager.instance.post(
         url: SCUrl.kDeleteCheckTaskUrl,
         isQuery: true,
-        params: {"id" : id},
+        params: {"id": id},
         success: (value) {
           SCLoadingUtils.hide();
           successHandler?.call();
@@ -247,7 +250,6 @@ class SCMaterialEntryDetailController extends GetxController {
           SCToast.showTip(value['message']);
         });
   }
-
 
   /// 出库确认
   outboundConfirm(
@@ -308,8 +310,7 @@ class SCMaterialEntryDetailController extends GetxController {
         },
       ];
     } else if (status == SCMaterialEntryEnum.orderStatusRefuse) {
-      list = [
-      ];
+      list = [];
     } else if (status == SCMaterialEntryEnum.orderStatusReject) {
       list = [
         {
@@ -333,8 +334,7 @@ class SCMaterialEntryDetailController extends GetxController {
         },
       ];
     } else if (status == SCMaterialEntryEnum.orderStatusDone) {
-      list = [
-      ];
+      list = [];
     }
 
     return list;

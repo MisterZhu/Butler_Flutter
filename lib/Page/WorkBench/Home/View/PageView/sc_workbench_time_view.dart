@@ -95,9 +95,13 @@ class SCWorkBenchTimeView extends StatelessWidget {
   Widget build(BuildContext context) {
     if (time > 0) {
       Map<String, dynamic> timeMap = getTimeData(type: 2);
+      int days = int.parse(timeMap['day']);
+      print("时间===$timeMap");
+      int hours = int.parse(timeMap['hour']);
+      int newHours = days * 24 + hours;
       return Row(
         children: [
-          timeView(timeMap['hour']),
+          timeView(newHours.toString()),
           colonView(),
           timeView(timeMap['minute']),
           colonView(),
