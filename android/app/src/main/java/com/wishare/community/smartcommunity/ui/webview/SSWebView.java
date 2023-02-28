@@ -191,6 +191,14 @@ public class SSWebView extends AppCompatActivity implements BridgeWebChromeClien
             setResult(RESULT_OK, intent);
             finish();
         });
+
+        //通过工单3.0跳转领料
+        mWebView.registerHandler("goToMaterial", (data, callBackFunction) -> {
+            Intent intent = new Intent();
+            intent.putExtra("orgId",data);
+            setResult(RESULT_OK, intent);
+            finish();
+        });
     }
 
     private void initListener() {
