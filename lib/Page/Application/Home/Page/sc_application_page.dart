@@ -129,33 +129,46 @@ class SCApplicationPageState extends State<SCApplicationPage>
     }
 
     if (Platform.isAndroid) {
-      String realUrl = SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
-
-      /// 调用Android WebView
-      var params = {"title": title, "url": realUrl};
-      var channel = SCScaffoldManager.flutterToNative;
-      var result =
-          await channel.invokeMethod(SCScaffoldManager.android_webview, params);
-
-      /// todo 刷新控制台数据
-      print("-------$result-------");
+      String realUrl =
+          SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+        "title": title,
+        "url": realUrl,
+        "needJointParams": false
+      })?.then((value) {
+        if (value != null) {
+          var params = jsonDecode(value);
+          if (params.containsKey("orderId")) {
+            SCLoadingUtils.show();
+            Future.delayed(const Duration(milliseconds: 1000), () {
+              SCLoadingUtils.hide();
+              SCRouterHelper.pathPage(SCRouterPath.addOutboundPage,
+                  {"isLL": true, "llData": params});
+            });
+          }
+        }
+      });
     } else if (Platform.isIOS) {
-      String realUrl = SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
-      SCRouterHelper.pathPage(SCRouterPath.webViewPath,
-          {"title": title, "url": realUrl, "needJointParams": false})?.then((value) {
-            if (value != null && value is Map) {
-              if (value.containsKey("key")) {
-                String key = value['key'];
-                if (key == SCFlutterKey.kGotoMaterialKey) {
-                  SCLoadingUtils.show();
-                  Future.delayed(const Duration(milliseconds: 1000), (){
-                    SCLoadingUtils.hide();
-                    SCRouterHelper.pathPage(SCRouterPath.addOutboundPage, {"isLL" : true, "llData" : jsonDecode(value['data'])});
-                  });
-                }
-              }
+      String realUrl =
+          SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+        "title": title,
+        "url": realUrl,
+        "needJointParams": false
+      })?.then((value) {
+        if (value != null && value is Map) {
+          if (value.containsKey("key")) {
+            String key = value['key'];
+            if (key == SCFlutterKey.kGotoMaterialKey) {
+              SCLoadingUtils.show();
+              Future.delayed(const Duration(milliseconds: 1000), () {
+                SCLoadingUtils.hide();
+                SCRouterHelper.pathPage(SCRouterPath.addOutboundPage,
+                    {"isLL": true, "llData": jsonDecode(value['data'])});
+              });
             }
-        print("返回的结果===$value");
+          }
+        }
       });
     } else {
       SCRouterHelper.pathPage(SCRouterPath.webViewPath,
