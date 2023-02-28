@@ -132,7 +132,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
         requiredPhotos: false,
         rangeList: rangeList,
         rangeValue: widget.state.rangeValue,
-        disableEditRange: true,
+        disableEditRange: widget.state.isEdit,
         selectRangeAction: (index) {
           widget.state.rangeValue = index + 1;
           widget.state.update();
@@ -312,7 +312,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
         'isRequired': true,
         'title': '仓库名称',
         'content': widget.state.wareHouseName,
-        'disable': true
+        'disable': widget.state.isEdit
       },
       {'isRequired': true, 'title': '盘点部门', 'content': widget.state.dealOrgName},
       {
@@ -399,7 +399,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
 
   /// 取消
   save() {
-    checkMaterialData(0);
+    SCRouterHelper.back(null);
   }
 
   /// 确定
