@@ -33,7 +33,7 @@ class SCCheckDetailTimerViewState extends State<SCCheckDetailTimerView>{
         ),),
         const SizedBox(width: 6.0,),
         SCWorkBenchTimeView(time: widget.remainingTime),
-        const Expanded(child: Text('盘点中', textAlign: TextAlign.right, style: TextStyle(
+        Expanded(child: Text(widget.model?.statusDesc ?? '', textAlign: TextAlign.right, style: const TextStyle(
             fontSize: SCFonts.f14,
             fontWeight: FontWeight.w400,
             color: SCColors.color_0849B5

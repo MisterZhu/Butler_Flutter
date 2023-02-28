@@ -38,6 +38,14 @@ class SCAllMaterialTitleView extends StatelessWidget {
     } else if (type == SCWarehouseManageType.outbound) {
       statusDesc = SCUtils.getOutboundStatusText(model?.status ?? 0);
       statusColor = SCUtils.getOutboundStatusTextColor(model?.status ?? 0);
+    } else if (type == SCWarehouseManageType.check) {
+      int subStatus = model?.status ?? -1;
+      if (subStatus == 2 || subStatus == 4) {
+        statusDesc = '';
+      } else {
+        statusDesc = model?.statusDesc ?? '';
+      }
+      statusColor = SCUtils.getCheckStatusTextColor(model?.status ?? 0);
     } else {
       statusDesc = model?.statusDesc ?? '';
       statusColor = SCUtils.getCheckStatusTextColor(model?.status ?? 0);
