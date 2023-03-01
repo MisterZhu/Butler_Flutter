@@ -21,7 +21,7 @@ class SCQuickApplicationAlert extends StatelessWidget {
   /// 数据源
   final List<SCMenuItemModel> list;
   /// 按钮点击事件
-  final Function(int id, String title)? tapAction;
+  final Function(int id, String title, String url)? tapAction;
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +68,15 @@ class SCQuickApplicationAlert extends StatelessWidget {
       crossAxisSpacing: 10,
       crossAxisCount: 5,
       shrinkWrap: true,
-      itemCount: list.length + 1,
+      itemCount: list.length,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        if (index == list.length) {
-           return cell(id: 0,icon: SCAsset.iconHomeMoreApplication, name: '更多应用');
-        } else {
+        // if (index == list.length) {
+        //    return cell(id: 0,icon: SCAsset.iconHomeMoreApplication, name: '更多应用');
+        // } else {
           SCMenuItemModel model = list[index];
-           return cell(id: model.id!, icon: model.icon?.name ?? '', name: model.name ?? '');
-        }
+           return cell(id: model.id!, icon: model.icon?.name ?? '', name: model.name ?? '', model: model);
+        // }
       },
       staggeredTileBuilder: (int index) {
         return const StaggeredTile.fit(1);
@@ -84,10 +84,10 @@ class SCQuickApplicationAlert extends StatelessWidget {
   }
 
   /// cell
-  Widget cell({required int id, required String icon, required String name}) {
+  Widget cell({required int id, required String icon, required String name, required SCMenuItemModel model}) {
     return GestureDetector(
       onTap: () {
-        tapAction?.call(id, name);
+        tapAction?.call(id, name, model.url ?? '');
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,

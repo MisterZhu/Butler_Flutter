@@ -205,6 +205,7 @@ class SCUtils {
     String userName =
     Uri.encodeComponent(SCScaffoldManager.instance.user.userName ?? '');
     int reportPageCode = 1;
+    String titleString = Uri.encodeComponent(title);
 
     /// 拼接符号
     String jointSymbol = "";
@@ -231,11 +232,11 @@ class SCUtils {
     }
     if (Platform.isAndroid) {
       String newUrl =
-          "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&latitude=$latitude&longitude=$longitude&reportPageCode=$reportPageCode&title=$title";
+          "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&latitude=$latitude&longitude=$longitude&reportPageCode=$reportPageCode&title=$titleString";
       return newUrl;
     } else {
       String newUrl =
-          "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&latitude=$latitude&longitude=$longitude&reportPageCode=$reportPageCode&title=$title";
+          "$url${jointSymbol}Authorization=$token&client=$client&defOrgId=$defOrgId&defOrgName=$defOrgName&tenantId=$defOrgId&phoneNum=$phoneNum&spaceIds=$spaceIds&userId=$userId&userName=$userName&latitude=$latitude&longitude=$longitude&reportPageCode=$reportPageCode&title=$titleString";
       return newUrl;
     }
   }

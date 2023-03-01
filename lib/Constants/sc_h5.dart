@@ -34,4 +34,6 @@ class SCH5 {
   static const String verificationDetailUrl = "/h5Manage/#/inNucleartest/index";
   /// 酒店订单处理详情
   static const String hotelOrderDetailUrl = "/h5Manage/#/order/orderDetail";
+  /// 快捷报事
+  static const String quickReportUrl = "/h5Manage-order/#/workOrderReport/propertyReport";
 }
