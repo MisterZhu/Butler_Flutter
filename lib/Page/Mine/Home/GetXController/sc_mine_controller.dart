@@ -8,7 +8,7 @@ import '../../../../Constants/sc_asset.dart';
 class SCMineController extends GetxController {
 
   /// 用户头像
-  String headPicUrl = SCAsset.iconMineUserAvatarDefault;
+  String headPicUrl = SCAsset.iconUserDefault;
 
   /// 更换用户头像
   changeUserHeadPic({required String url}) {

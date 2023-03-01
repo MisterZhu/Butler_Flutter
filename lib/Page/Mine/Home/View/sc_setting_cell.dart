@@ -50,7 +50,7 @@ class SCSettingCell extends StatelessWidget {
   SCSettingCell({Key? key,
     this.title = '',
     this.content = '',
-    this.rightImage = SCAsset.iconMineUserAvatarDefault,
+    this.rightImage = SCAsset.iconUserDefault,
     this.cellType = SCSettingCellType.arrowType,
     this.leftIcon = SCAsset.iconMineService,
     this.showLeftIcon = false,

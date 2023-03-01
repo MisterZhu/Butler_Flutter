@@ -11,7 +11,7 @@ class SCMineHeaderItem extends StatelessWidget {
 
   SCMineHeaderItem({
     Key? key,
-    this.avatar = SCAsset.iconMineUserAvatarDefault,
+    this.avatar = SCAsset.iconUserDefault,
     this.nickname = '',
     this.space = '',
     this.qrCodeTapAction,
@@ -157,6 +157,10 @@ class SCMineHeaderItem extends StatelessWidget {
 
   /// 头像
   Widget avatarItem() {
+    double borderWidth = 1.0;
+    if (avatar == SCAsset.iconUserDefault) {
+      borderWidth = 0.0;
+    }
     return GestureDetector(
       onTap: () {
         avatarTapAction?.call();
@@ -168,9 +172,9 @@ class SCMineHeaderItem extends StatelessWidget {
           width: 42.0,
           height: 42.0,
           decoration: BoxDecoration(
-              color: SCColors.color_F2F3F5,
+              color: SCColors.color_FFFFFF,
               borderRadius: BorderRadius.circular(21.0),
-              border: Border.all(color: SCColors.color_FFFFFF, width: 1)),
+              border: Border.all(color: SCColors.color_FFFFFF, width: borderWidth)),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(21.0),
             child: SCImage(

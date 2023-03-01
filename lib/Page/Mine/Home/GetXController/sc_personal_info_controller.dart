@@ -21,7 +21,7 @@ class SCPersonalInfoController extends GetxController {
   @override
   onInit() {
     super.onInit();
-    userHeadPicUrl = SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri?.fileKey ?? '');
+    userHeadPicUrl = SCScaffoldManager.instance.user.headPicUri?.fileKey != null ? SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri?.fileKey ?? '') : SCAsset.iconUserDefault;
     birthday = SCScaffoldManager.instance.user.birthday ?? '';
   }
 
