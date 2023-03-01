@@ -47,7 +47,7 @@ class SCMineListView extends StatelessWidget {
     return Column(
       children: [
         SCMineHeaderItem(
-          avatar: SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri?.fileKey ?? ''),
+          avatar: SCScaffoldManager.instance.user.headPicUri?.fileKey != null ? SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri?.fileKey ?? '') : SCAsset.iconUserDefault,
           nickname: SCScaffoldManager.instance.user.userName ?? '',
           space: SCScaffoldManager.instance.user.tenantName ?? '',
           avatarTapAction: () {

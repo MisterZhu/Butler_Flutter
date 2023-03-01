@@ -7,6 +7,7 @@ import 'package:smartcommunity/Page/WorkBench/Home/View/AppBar/sc_workbench_swit
 import 'package:smartcommunity/Page/WorkBench/Home/View/AppBar/sc_workbench_tabbar.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
 
+import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Network/sc_config.dart';
 import '../../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../GetXController/sc_workbench_controller.dart';
@@ -103,7 +104,7 @@ class SCWorkBenchHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SCWorkBenchSwitchSpaceView(
-            avatar: SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri?.fileKey ?? ''),
+            avatar: SCScaffoldManager.instance.user.headPicUri?.fileKey != null ? SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri?.fileKey ?? '') : SCAsset.iconUserDefault,
             space: spaceName,
             onTap: () {
               switchSpaceAction?.call();
