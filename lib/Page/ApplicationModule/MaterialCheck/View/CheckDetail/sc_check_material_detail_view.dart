@@ -136,6 +136,7 @@ class SCCheckMaterialDetailViewState extends State<SCCheckMaterialDetailView> {
   Widget rightLabel(String text, bool isInput) {
     if (isInput == true) {
       return SCStepper(
+        isSupportZero: true,
         num: widget.state.materialModel.checkNum ?? 0,
         numChangeAction: (int value) {
           widget.state.materialModel.checkNum = value;

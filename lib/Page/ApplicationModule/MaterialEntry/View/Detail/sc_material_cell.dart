@@ -300,6 +300,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
       );
     } else {
       stepper = SCStepper(
+        isSupportZero: widget.check,
         num: widget.model?.localNum,
         numChangeAction: (int value) {
           widget.numChangeAction?.call(value);
