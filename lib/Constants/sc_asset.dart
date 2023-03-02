@@ -120,6 +120,8 @@ class SCAsset {
   /// 装修登记
   static const String iconApplicationDecorationRegistration = "images/application/icon_application_decoration_registration.png";
 
+  /// 快捷报事
+  static const String iconApplicationQuickReport = "images/application/icon_application_quick_report.png";
 
   /// ****************  我的 ****************/
   /// 背景图片

@@ -42,6 +42,9 @@ class SCDefaultValue {
   /// 正数正则表达式-不允许小数点
   static const String positiveNumberReg = r'^[1-9][0-9]*';
 
+  /// 非负数正则表达式
+  static const String nonNegativeReg = r'^([1-9][0-9]*|0)';
+
   /// 网络加载中
   static const String loadingMessage = '加载中...';
 

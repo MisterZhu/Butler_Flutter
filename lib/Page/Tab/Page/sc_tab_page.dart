@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
+import 'package:smartcommunity/Constants/sc_h5.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
+import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Page/AddressBook/Home/Page/sc_addressbook_page.dart';
 import 'package:smartcommunity/Page/Application/Home/Page/sc_application_page.dart';
 import 'package:smartcommunity/Page/Mine/Home/Page/sc_mine_page.dart';
@@ -139,12 +141,12 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
   /// floating点击，弹出
   floatingAction() {
     List testList = [
-      // {
-      //   "icon": {"fileKey": "", "name": SCAsset.iconApplicationWorkOrder},
-      //   "id": 1,
-      //   "name": "工单调度",
-      //   "url": ""
-      // },
+      {
+        "icon": {"fileKey": "", "name": SCAsset.iconApplicationQuickReport},
+        "id": 1,
+        "name": "快捷报事",
+        "url": SCConfig.getH5Url(SCH5.quickReportUrl)
+      },
       // {
       //   "icon": {
       //     "fileKey": "",
@@ -170,13 +172,13 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
           context: context,
           widget: SCQuickApplicationAlert(
             list: list,
-            tapAction: (id, text) {
-              if (id == 0) {
-                Navigator.of(context).pop();
-                SCRouterHelper.pathPage(SCRouterPath.applicationPath, null);
-              } else {
-                SCToast.showTip(SCDefaultValue.developingTip);
-              }
+            tapAction: (id, text, url) {
+              // if (id == 0) {
+              //   Navigator.of(context).pop();
+              //   SCRouterHelper.pathPage(SCRouterPath.applicationPath, null);
+              // } else {
+                SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title": text, "url": SCUtils.getWebViewUrl(url: url, title: text, needJointParams: true)});
+              // }
             },
           ));
     });

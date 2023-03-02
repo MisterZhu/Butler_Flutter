@@ -211,7 +211,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   detailAction(SCWorkOrderModel model) async{
     String title = Uri.encodeComponent(SCUtils.getWorkOrderButtonText(model.status ?? 0));
     String url =
-        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=${model.status}&title=$title&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}";
+        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=${model.status}&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}";
     if (Platform.isAndroid) {
       String realUrl = SCUtils.getWebViewUrl(url: url,title: title,  needJointParams: true);
 

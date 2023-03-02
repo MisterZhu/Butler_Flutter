@@ -13,7 +13,7 @@ import 'package:smartcommunity/Utils/sc_utils.dart';
 /// 数量步进器
 
 class SCStepper extends StatefulWidget {
-  SCStepper({Key? key, this.numChangeAction, this.num = 1, this.showDone}) : super(key: key);
+  SCStepper({Key? key, this.numChangeAction, this.num = 1, this.showDone, this.isSupportZero}) : super(key: key);
 
   /// 数量改变回调
   final Function(int num)? numChangeAction;
@@ -23,6 +23,9 @@ class SCStepper extends StatefulWidget {
 
   /// 是否显示完成按钮
   final bool? showDone;
+
+  /// 是否支持输入0
+  final bool? isSupportZero;
 
   @override
   SCStepperState createState() => SCStepperState();
@@ -163,6 +166,19 @@ class SCStepperState extends State<SCStepper> {
 
   /// 输入框
   Widget textField() {
+    bool isSupportZero = widget.isSupportZero ?? false;
+    List<TextInputFormatter> formatterList = [];
+    if (isSupportZero) {
+      formatterList = [
+        FilteringTextInputFormatter.allow(
+            RegExp(SCDefaultValue.nonNegativeReg))
+      ];
+    } else {
+      formatterList = [
+        FilteringTextInputFormatter.allow(
+            RegExp(SCDefaultValue.positiveNumberReg))
+      ];
+    }
     return Expanded(
         child: TextField(
       textAlign: TextAlign.center,
@@ -171,10 +187,7 @@ class SCStepperState extends State<SCStepper> {
       cursorColor: SCColors.color_5E5F66,
       cursorWidth: 2,
       focusNode: node,
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(
-            RegExp(SCDefaultValue.positiveNumberReg))
-      ],
+      inputFormatters: formatterList,
       style:
           const TextStyle(fontSize: SCFonts.f12, color: SCColors.color_5E5F66),
       decoration: const InputDecoration(
@@ -222,7 +235,8 @@ class SCStepperState extends State<SCStepper> {
   delete() {
     setState(() {
       int num = widget.num ?? 1;
-      if (num > 1) {
+      bool isSupportZero = widget.isSupportZero ?? false;
+      if (num > 1 || (num == 1 && isSupportZero)) {
         num--;
         textFiledController.value = TextEditingValue(
             text: num.toString(),
@@ -238,8 +252,9 @@ class SCStepperState extends State<SCStepper> {
   /// 更新输入框
   updateText(String value) {
     if (value.isNotEmpty) {
+      bool isSupportZero = widget.isSupportZero ?? false;
       int num = widget.num ?? 1;
-      if (SCUtils().isPositiveNumber(value)) {
+      if (SCUtils().isPositiveNumber(value) || isSupportZero) {
         num = int.parse(value);
         widget.numChangeAction?.call(num);
       }
