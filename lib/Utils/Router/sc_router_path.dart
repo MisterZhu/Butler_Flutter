@@ -41,6 +41,8 @@ class SCRouterPath {
   static String switchIdentityPath = "/lib/Page/Mine/Home/Page/sc_switch_identity_page";
   /// 个人资料
   static String personalInfoPath = "/lib/Page/Mine/Home/Page/sc_personal_info_page";
+  /// 抓包设置
+  static String proxyPage = "/lib/Page/Mine/Home/Page/sc_proxy_page";
 
   /// *************************** 入伙验房 ******************************/
 

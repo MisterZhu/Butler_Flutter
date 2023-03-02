@@ -42,6 +42,7 @@ import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_add_transfer_page.
 import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_material_transfer_detail_page.dart';
 import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_material_transfer_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
+import '../../Page/Mine/Home/Page/sc_proxy_page.dart';
 import 'sc_router_path.dart';
 
 /// 路由-pages
@@ -134,6 +135,9 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.checkMaterialDetailPage, page: () => SCCheckMaterialDetailPage()),
     /*领料出入库*/
     GetPage(name: SCRouterPath.materialRequisitionPage, page: () => SCMaterialRequisitionPage()),
+    /*抓包设置*/
+    GetPage(name: SCRouterPath.proxyPage, page: () => SCProxyPage()),
+
   ];
 
   /*根据code使用路由*/

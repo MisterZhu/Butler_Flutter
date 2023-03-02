@@ -52,13 +52,14 @@ class SCAllMaterialListView extends StatelessWidget {
     // );
   }
 
+  /// checkEmptyView
   Widget checkEmptyView() {
     return Container(
       color: SCColors.color_FFFFFF,
       height: 100.0,
       alignment: Alignment.center,
       child: const Text(
-        '暂无盘点物资',
+        '暂无已盘点物资',
         style: TextStyle(
           fontSize: SCFonts.f14,
           fontWeight: FontWeight.w400,

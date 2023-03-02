@@ -10,6 +10,9 @@ import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Network/sc_url.dart';
 import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
+import '../Constants/sc_enum.dart';
+import '../Constants/sc_key.dart';
+import '../Utils/sc_sp_utils.dart';
 
 class SCHttpManager {
   factory SCHttpManager() => _getInstance();
@@ -59,6 +62,7 @@ class SCHttpManager {
         client.badCertificateCallback =
             (X509Certificate cert, String host, int port) => true;
         // 设置抓包代理，ip+端口号
+        setProxy(client);
         // client.findProxy = (uri) {
         //   /// 172.16.171.69、172.16.171.30、172.16.171.63
         //   return "PROXY 172.16.171.63:13920";
@@ -69,6 +73,19 @@ class SCHttpManager {
           .add(LogInterceptor(responseBody: true, requestBody: true)); // 日志打印
       //print("options.headers-->" + options.headers.toString());
 
+    }
+  }
+
+  /// 设置代理
+  setProxy(HttpClient client) {
+    if (SCConfig.env != SCEnvironment.production) {
+      if (SCSpUtil.getKeys().contains(SCKey.kProxyMap)) {
+        var map = SCSpUtil.getMap(SCKey.kProxyMap);
+        client.findProxy = (uri) {
+          /// 172.16.171.69、172.16.171.30、172.16.171.63
+          return "PROXY ${map['IP']}:${map['port']}";
+        };
+      }
     }
   }
 

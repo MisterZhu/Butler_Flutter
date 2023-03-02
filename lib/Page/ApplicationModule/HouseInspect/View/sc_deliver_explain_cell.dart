@@ -92,7 +92,7 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
         style: const TextStyle(
           fontSize: SCFonts.f16,
           color: SCColors.color_1B1D33,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w400,
         ),
     );
   }
