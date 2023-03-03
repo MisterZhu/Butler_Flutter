@@ -40,6 +40,8 @@ target 'Runner' do
   pod 'KVOController', '~> 1.2.0'
   # 键盘
   pod 'IQKeyboardManager', '~> 6.5.0'
+  # OCR识别
+  pod 'SCOCRLib', :git=> 'http://10.100.10.22/ios_module/SCOCRLib.git', :tag => '0.1.0'
 end
 
 post_install do |installer|
