@@ -101,7 +101,7 @@ class SCProxyViewState extends State<SCProxyView> {
       ],
       decoration: const InputDecoration(
         contentPadding: EdgeInsets.symmetric(vertical: 10),
-        hintText: "请输IP地址",
+        hintText: "请输入IP地址",
         hintStyle: TextStyle(fontSize: 16, color: SCColors.color_8D8E99),
         focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(width: 0, color: Colors.transparent)),

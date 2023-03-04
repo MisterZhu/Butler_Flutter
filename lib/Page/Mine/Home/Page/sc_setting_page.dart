@@ -45,7 +45,7 @@ class SCSettingState extends State<SCSettingPage> {
 
   /// 抓包
   Widget proxyItem() {
-    if (SCConfig.env != SCEnvironment.production) {
+    if (SCConfig.env != SCEnvironment.production || SCConfig.isSupportProxyForProduction) {
       return CupertinoButton(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           minSize: 60.0,

@@ -7,6 +7,9 @@ class SCConfig {
   /// 环境
   static SCEnvironment env = SCEnvironment.develop;
 
+  /// 生产环境是否支持抓包
+  static bool isSupportProxyForProduction = false;
+
   /// base url
   static String get BASE_URL {
     switch (env) {

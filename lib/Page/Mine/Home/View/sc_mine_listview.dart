@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
+import 'package:smartcommunity/Constants/sc_enum.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_mine_header_item.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_setting_cell.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
@@ -67,6 +68,10 @@ class SCMineListView extends StatelessWidget {
   }
 
   Widget listview() {
+    int count = 7;
+    if (SCConfig.env == SCEnvironment.production && !SCConfig.isSupportProxyForProduction) {
+      count = 1;
+    }
     return Expanded(child: ListView.separated(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
@@ -76,7 +81,7 @@ class SCMineListView extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) {
           return line();
         },
-        itemCount: 1));
+        itemCount: count));
   }
 
   /// cell

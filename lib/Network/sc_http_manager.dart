@@ -78,7 +78,7 @@ class SCHttpManager {
 
   /// 设置代理
   setProxy(HttpClient client) {
-    if (SCConfig.env != SCEnvironment.production) {
+    if (SCConfig.env != SCEnvironment.production || SCConfig.isSupportProxyForProduction) {
       if (SCSpUtil.getKeys().contains(SCKey.kProxyMap)) {
         var map = SCSpUtil.getMap(SCKey.kProxyMap);
         client.findProxy = (uri) {
