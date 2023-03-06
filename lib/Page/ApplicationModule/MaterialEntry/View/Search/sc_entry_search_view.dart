@@ -211,7 +211,7 @@ class SCEntrySearchViewState extends State<SCEntrySearchView> {
           SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
             model: model,
-            type: SCWarehouseManageType.entry,
+            type: widget.state.type,
             detailTapAction: () {
               int status = model.status ?? -1;
               bool canEdit = (status == 0);
@@ -224,6 +224,12 @@ class SCEntrySearchViewState extends State<SCEntrySearchView> {
               } else if (widget.state.type == SCWarehouseManageType.frmLoss) {
                 /// 报损详情
                 SCRouterHelper.pathPage(SCRouterPath.frmLossDetailPage, {'id': model.id, 'canEdit': canEdit});
+              } else if (widget.state.type == SCWarehouseManageType.transfer) {
+                /// 调拨详情
+                SCRouterHelper.pathPage(SCRouterPath.transferDetailPage, {'id': model.id, 'canEdit': canEdit});
+              } else if (widget.state.type == SCWarehouseManageType.check) {
+                /// 盘点详情
+                SCRouterHelper.pathPage(SCRouterPath.checkDetailPage, {'id': model.id, 'canEdit': canEdit});
               }
             },
             btnTapAction: () {

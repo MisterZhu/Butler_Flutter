@@ -1,6 +1,6 @@
 /// barCode : ""
-/// classifyId : ""
-/// classifyName : ""
+/// classifyId : "" 物资分类ID
+/// classifyName : "" 物资分类名称
 /// code : ""   关联物资编码
 /// enabled : true
 /// id : ""
