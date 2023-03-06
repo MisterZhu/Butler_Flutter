@@ -30,6 +30,12 @@ class SCDefaultValue {
   /// 微信universalLink
   static const String kWeChatUniversalLink = "https://90ebce5254556de5a7c4db4334ced558.share2dlink.com/";
 
+  /// 极光appKey
+  static const String kJPushAppKey = "f02a45b9542a99cd79446472";
+
+  /// 极光channel
+  static const String kJPushChannel = "WishareAppStore";
+
   /// 网络超时时间
   static const int timeOut = 30000;
 

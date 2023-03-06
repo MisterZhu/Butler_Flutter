@@ -11,6 +11,7 @@ import 'package:smartcommunity/Constants/sc_flutter_key.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_default_config_model.dart';
+import 'package:smartcommunity/Utils/JPush/sc_jpush.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../Constants/sc_default_value.dart';
 import '../../Constants/sc_key.dart';
@@ -147,6 +148,9 @@ class SCScaffoldManager {
 
     bool hasScaffoldKey = _preferences.containsKey(SkinDefaultKey.scaffold_key);
 
+    /// 是否同意用户协议
+    bool agreeProtocol = _preferences.containsKey(SCKey.isShowPrivacyAlert);
+
     if (hasScaffoldKey) {
       String? scaffoldJsonString =
           _preferences.getString(SkinDefaultKey.scaffold_key);
@@ -166,7 +170,15 @@ class SCScaffoldManager {
         SCHexColor(_scaffoldModel.titleColor ?? scaffoldJson['titleColor']));
 
     getUserData();
+    initJPush(agreeProtocol);
     return _preferences;
+  }
+
+  /// 初始化极光
+  initJPush(bool agreeProtocol) {
+    if (agreeProtocol) {
+      SCJPush.initJPush();
+    }
   }
 
   /// 获取Router的BasePath

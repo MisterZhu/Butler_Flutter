@@ -93,6 +93,16 @@
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>jpush.cn</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+		</dict>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>允许App访问相册，您将可以上传相册照片及保存照片到相册。</string>
@@ -101,7 +111,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>允许App访问相机，您将可以在App中拍摄照片、视频、使用扫一扫功能。</string>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>善数管理App需要访问您的本地网络才能与善数管理服务器连接</string>
+	<string>"善数管理"需要您授权本地网络功能,"善数管理"不会连接到您所用网络上的设备,只会检测与您本地网关的连通性。</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>允许App访问定位信息，您将快速定位到所属园区。</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -112,6 +122,8 @@
 	<string>允许App访问相册，您将可以上传相册照片及保存照片到相册。</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>允许App访问相册，您将可以上传相册照片及保存照片到相册。</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -131,7 +143,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
 </dict>
 </plist>

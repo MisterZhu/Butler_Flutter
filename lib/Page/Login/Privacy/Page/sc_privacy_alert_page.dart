@@ -6,6 +6,7 @@ import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
 import 'package:smartcommunity/Page/Login/Privacy/GetXController/sc_base_privacy_controller.dart';
 import 'package:smartcommunity/Page/Login/Privacy/View/Privacy/sc_privacy_alert.dart';
+import 'package:smartcommunity/Utils/JPush/sc_jpush.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 
@@ -62,6 +63,7 @@ class SCPrivacyAlertPageState extends State<SCPrivacyAlertPage> {
             SharedPreferences preference =
                 await SharedPreferences.getInstance();
             preference.setBool(SCKey.isShowPrivacyAlert, false);
+            SCJPush.initJPush();
             SCRouterHelper.pathOffAllPage(SCRouterPath.loginPath, null);
           } else {
             SCToast.showTip(SCDefaultValue.agreeUserAgreementMessage);
