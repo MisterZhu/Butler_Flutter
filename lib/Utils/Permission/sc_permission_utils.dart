@@ -344,6 +344,13 @@ class SCPermissionUtils {
         });
   }
 
+  /// 系统通知
+  static Future<PermissionStatus> notification() async{
+    PermissionStatus permissionStatus =
+        await Permission.notification.request();
+    return permissionStatus;
+  }
+
   /// 无权限弹窗
   static noPermissionAlert(String message) {
     SCUtils.getCurrentContext(completionHandler: (context) async {
