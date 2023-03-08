@@ -3,20 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_listview_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_hotel_order_model.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/SwitchSpace/sc_workbench_changespace_alert.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Hotel/sc_hotel_listview.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/View/Material/sc_workbench_material_listview.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_listview.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/RealVerification/sc_realverification_listview.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
 
+import '../../../../../Constants/sc_enum.dart';
+import '../../../../../Utils/Router/sc_router_helper.dart';
+import '../../../../../Utils/Router/sc_router_path.dart';
+import '../../../../ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import '../../GetXController/sc_workbench_controller.dart';
 import '../AppBar/sc_workbench_header.dart';
+import '../PageView/sc_workbench_empty_view.dart';
 
 /// 工作台-view
 
@@ -178,30 +181,8 @@ class SCWorkBenchView extends StatelessWidget {
             tag: waitController.tag,
             init: waitController,
             builder: (value) {
-              if (state.currentPlateIndex == 2) {
-                return SCHotelListView(
-                  state: state,
-                  dataList: waitController.dataList,
-                  callAction: (phone) {
-                    callAction(phone);
-                  },
-                  doneAction: (SCHotelOrderModel model) {
-                    hotelOrderDoneAction(model);
-                  },
-                );
-              }
-              else if (state.currentPlateIndex == 1) {
-                return SCRealVerificationListView(
-                  state: state,
-                  dataList: waitController.dataList,
-                  callAction: (phone) {
-                    callAction(phone);
-                  },
-                  doneAction: (SCVerificationOrderModel model) {
-                    verificationDoneAction(model);
-                  },
-                );
-              } else {
+              if (state.currentPlateIndex == 0) {
+                // 工单处理
                 return SCWorkBenchListView(
                   state: state,
                   dataList: waitController.dataList,
@@ -212,28 +193,11 @@ class SCWorkBenchView extends StatelessWidget {
                     SCUtils.call(phone);
                   },
                 );
-              }
-            }),
-        GetBuilder<SCWorkBenchListViewController>(
-            tag: doingController.tag,
-            init: doingController,
-            builder: (value) {
-              if (state.currentPlateIndex == 2) {
-                return SCHotelListView(
-                  state: state,
-                  dataList: doingController.dataList,
-                  callAction: (phone) {
-                    callAction(phone);
-                  },
-                  doneAction: (SCHotelOrderModel model) {
-                      hotelOrderDoneAction(model);
-                  },
-                );
-              }
-              else if (state.currentPlateIndex == 1) {
+              } else if (state.currentPlateIndex == 1) {
+                // 实地核验
                 return SCRealVerificationListView(
                   state: state,
-                  dataList: doingController.dataList,
+                  dataList: waitController.dataList,
                   callAction: (phone) {
                     callAction(phone);
                   },
@@ -241,7 +205,68 @@ class SCWorkBenchView extends StatelessWidget {
                     verificationDoneAction(model);
                   },
                 );
+              } else if (state.currentPlateIndex == 2) {
+                // 订单处理
+                return SCHotelListView(
+                  state: state,
+                  dataList: waitController.dataList,
+                  callAction: (phone) {
+                    callAction(phone);
+                  },
+                  doneAction: (SCHotelOrderModel model) {
+                    hotelOrderDoneAction(model);
+                  },
+                );
+              } else if (state.currentPlateIndex >= 3 &&
+                  state.currentPlateIndex <= 6) {
+                // 物资入库、物资出库、物资报损、物资调拨
+                List<SCMaterialEntryModel> list = [];
+                SCWarehouseManageType type = SCWarehouseManageType.entry;
+                if (state.currentPlateIndex == 3) {
+                  // 物资入库
+                  list = waitController.materialEntryList;
+                  type = SCWarehouseManageType.entry;
+                } else if (state.currentPlateIndex == 4) {
+                  // 物资出库
+                  list = waitController.materialOutList;
+                  type = SCWarehouseManageType.outbound;
+                } else if (state.currentPlateIndex == 5) {
+                  // 物资报损
+                  list = waitController.materialReportList;
+                  type = SCWarehouseManageType.frmLoss;
+                } else if (state.currentPlateIndex == 6) {
+                  // 物资调拨
+                  list = waitController.materialTransferList;
+                  type = SCWarehouseManageType.transfer;
+                } else {
+                  // 其他
+                  list = [];
+                  type = SCWarehouseManageType.entry;
+                }
+                return SCWorkBenchMaterialListView(
+                  dataList: list,
+                  state: state,
+                  type: type,
+                  callAction: (phone) {
+                    callAction(phone);
+                  },
+                  detailAction: (subModel) {
+                    wareHouseDetail(subModel, type);
+                  },
+                  submitAction: (subModel) {
+                    materialSubmit(subModel, type);
+                  },
+                );
               } else {
+                return const SizedBox();
+              }
+            }),
+        GetBuilder<SCWorkBenchListViewController>(
+            tag: doingController.tag,
+            init: doingController,
+            builder: (value) {
+              if (state.currentPlateIndex == 0) {
+                // 工单处理
                 return SCWorkBenchListView(
                   state: state,
                   dataList: doingController.dataList,
@@ -252,6 +277,36 @@ class SCWorkBenchView extends StatelessWidget {
                     callAction(phone);
                   },
                 );
+              } else if (state.currentPlateIndex == 1) {
+                // 实地核验
+                return SCRealVerificationListView(
+                  state: state,
+                  dataList: doingController.dataList,
+                  callAction: (phone) {
+                    callAction(phone);
+                  },
+                  doneAction: (SCVerificationOrderModel model) {
+                    verificationDoneAction(model);
+                  },
+                );
+              } else if (state.currentPlateIndex == 2) {
+                // 订单处理
+                return SCHotelListView(
+                  state: state,
+                  dataList: doingController.dataList,
+                  callAction: (phone) {
+                    callAction(phone);
+                  },
+                  doneAction: (SCHotelOrderModel model) {
+                    hotelOrderDoneAction(model);
+                  },
+                );
+              } else if (state.currentPlateIndex >= 3 &&
+                  state.currentPlateIndex <= 6) {
+                // 物资入库、物资出库、物资报损、物资调拨
+                return SCWorkBenchEmptyView();
+              } else {
+                return const SizedBox();
               }
             }),
       ]),
@@ -290,5 +345,66 @@ class SCWorkBenchView extends StatelessWidget {
   /// 订单处理完成
   hotelOrderDoneAction(SCHotelOrderModel model) {
     hotelOrderDetailAction?.call(model);
+  }
+
+  /// 仓库详情
+  wareHouseDetail(SCMaterialEntryModel model, SCWarehouseManageType type) {
+    if (type == SCWarehouseManageType.entry) {
+      // 物资入库
+      int status = model.status ?? -1;
+      SCRouterHelper.pathPage(SCRouterPath.entryDetailPage,
+          {'id': model.id, 'canEdit': false, 'status': status});
+    } else if (type == SCWarehouseManageType.outbound) {
+      // 物资出库
+      SCRouterHelper.pathPage(
+          SCRouterPath.outboundDetailPage, {'id': model.id, 'canEdit': false});
+    } else if (type == SCWarehouseManageType.frmLoss) {
+      // 物资报损
+      SCRouterHelper.pathPage(
+          SCRouterPath.frmLossDetailPage, {'id': model.id, 'canEdit': false});
+    } else if (type == SCWarehouseManageType.transfer) {
+      // 物资调拨
+      SCRouterHelper.pathPage(
+          SCRouterPath.transferDetailPage, {'id': model.id, 'canEdit': false});
+    } else {
+      // 其他
+
+    }
+  }
+
+  /// 物资提交
+  materialSubmit(SCMaterialEntryModel model, SCWarehouseManageType type) {
+    if (type == SCWarehouseManageType.entry) {
+      // 物资入库
+      state.materialEntrySubmit(
+          id: model.id ?? '',
+          completeHandler: (success) {
+            state.getMaterialEntryWaitList(isMore: false);
+          });
+    } else if (type == SCWarehouseManageType.outbound) {
+      // 物资出库
+      state.materialOutSubmit(
+          id: model.id ?? '',
+          completeHandler: (success) {
+            state.getMaterialOutWaitList(isMore: false);
+          });
+    } else if (type == SCWarehouseManageType.frmLoss) {
+      // 物资报损
+      state.materialFrmLossSubmit(
+          id: model.id ?? '',
+          completeHandler: (success) {
+            state.getMaterialFrmLossWaitList(isMore: false);
+          });
+    } else if (type == SCWarehouseManageType.transfer) {
+      // 物资调拨
+      state.materialTransferSubmit(
+          id: model.id ?? '',
+          completeHandler: (success) {
+            state.getMaterialTransferWaitList(isMore: false);
+          });
+    } else {
+      // 其他
+
+    }
   }
 }

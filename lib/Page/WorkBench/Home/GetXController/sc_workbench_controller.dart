@@ -18,6 +18,7 @@ import 'package:smartcommunity/Utils/Permission/sc_permission_utils.dart';
 
 import '../../../../Constants/sc_asset.dart';
 import '../../../../Utils/Location/sc_location_model.dart';
+import '../../../ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import '../Model/sc_work_order_model.dart';
 
 /// 工作台Controller
@@ -73,6 +74,10 @@ class SCWorkBenchController extends GetxController {
     {"type": 0, "title": "工单处理"},
     {"type": 1, "title": "实地核验"},
     {"type": 2, "title": "订单处理"},
+    {"type": 3, "title": "物资入库"},
+    {"type": 4, "title": "物资出库"},
+    {"type": 5, "title": "物资报损"},
+    {"type": 6, "title": "物资调拨"},
   ];
 
   @override
@@ -94,6 +99,11 @@ class SCWorkBenchController extends GetxController {
   /// 更新当前板块index
   updatePlateIndex(int value) {
     currentPlateIndex = value;
+    if (currentWorkOrderIndex == 0) {
+      waitPageNum = 1;
+    } else {
+      processingPageNum = 1;
+    }
     update();
     if (currentPlateIndex == 0) {
       workOrderAPI();
@@ -101,6 +111,22 @@ class SCWorkBenchController extends GetxController {
       realVerificationAPI();
     } else if (currentPlateIndex == 2) {
       orderFormAPI();
+    } else if (currentPlateIndex == 3) {// 物资入库
+      if (currentWorkOrderIndex == 0) {
+        materialEntryAPI();
+      }
+    } else if (currentPlateIndex == 4) {// 物资出库
+      if (currentWorkOrderIndex == 0) {
+        materialOutAPI();
+      }
+    } else if (currentPlateIndex == 5) {// 物资报损
+      if (currentWorkOrderIndex == 0) {
+        materialFrmLossAPI();
+      }
+    } else if (currentPlateIndex == 6) {// 物资调拨
+      if (currentWorkOrderIndex == 0) {
+        materialTransferAPI();
+      }
     }
   }
 
@@ -108,20 +134,28 @@ class SCWorkBenchController extends GetxController {
   Future loadMore() async {
     if (currentWorkOrderIndex == 0) {
       /// 待处理
-      if (currentPlateIndex == 0) {
+      if (currentPlateIndex == 0) {// 工单处理
         return getWorkOrderList(isMore: true);
-      } else if (currentPlateIndex == 1) {
+      } else if (currentPlateIndex == 1) {// 实地核验
         return getRealVerificationWaitList(isMore: true);
-      } else {
+      } else if (currentPlateIndex == 2){// 订单处理
         return getOrderFormWaitList(isMore: true);
+      } else if (currentPlateIndex == 3){// 物资入库
+        return getMaterialEntryWaitList(isMore: true);
+      } else if (currentPlateIndex == 4){// 物资出库
+        return getMaterialOutWaitList(isMore: true);
+      } else if (currentPlateIndex == 5){// 物资报损
+        return getMaterialFrmLossWaitList(isMore: true);
+      }  else if (currentPlateIndex == 6){// 物资调拨
+        return getMaterialTransferWaitList(isMore: true);
       }
     } else {
       /// 处理中
-      if (currentPlateIndex == 0) {
+      if (currentPlateIndex == 0) {// 工单处理
         return getProcessingWorkOrderList(isMore: true);
-      } else if (currentPlateIndex == 1) {
+      } else if (currentPlateIndex == 1) {// 实地核验
         return getRealVerificationProcessingList(isMore: true);
-      } else {
+      } else if (currentPlateIndex == 2){// 订单处理
         return getOrderFormProcessingList(isMore: true);
       }
     }
@@ -143,6 +177,26 @@ class SCWorkBenchController extends GetxController {
   orderFormAPI({bool? isMore}) {
     getOrderFormWaitList(isMore: isMore);
     getOrderFormProcessingList(isMore: isMore);
+  }
+
+  /// 调用物资入库接口
+  materialEntryAPI({bool? isMore}) {
+    getMaterialEntryWaitList(isMore: isMore);
+  }
+
+  /// 调用物资出库接口
+  materialOutAPI({bool? isMore}) {
+    getMaterialOutWaitList(isMore: isMore);
+  }
+
+  /// 调用物资报损接口
+  materialFrmLossAPI({bool? isMore}) {
+    getMaterialFrmLossWaitList(isMore: isMore);
+  }
+
+  /// 调用物资调拨接口
+  materialTransferAPI({bool? isMore}) {
+    getMaterialTransferWaitList(isMore: isMore);
   }
 
   /// 更新头部数量数据
@@ -593,6 +647,314 @@ class SCWorkBenchController extends GetxController {
           if (currentPlateIndex == 2 && isLoadMore == true) {
             processingPageNum--;
           }
+        });
+  }
+
+  /// 物资入库-待处理数据
+  Future getMaterialEntryWaitList({bool? isMore}) {
+    bool isLoadMore = isMore ?? false;
+    if (isLoadMore == true) {
+      waitPageNum++;
+    } else {
+      SCLoadingUtils.show();
+    }
+    List fields = [];
+    var dic = {
+      "map": {},
+      "method": 1,
+      "name": "status",
+      "value": 1
+    };
+    fields.add(dic);
+    var params = {
+      "conditions": {"fields": fields, "specialMap": {}},
+      "count": false,
+      "last": false,
+      "orderBy": [
+        {"asc": false, "field": "gmtModify"}
+      ],
+      "pageNum": waitPageNum,
+      "pageSize": 20
+    };
+    return SCHttpManager.instance.post(
+        url: SCUrl.kMaterialEntryListUrl,
+        params: params,
+        success: (value) {
+          print("订单===value");
+          SCLoadingUtils.hide();
+          if (value is Map) {
+            List list = value['records'];
+            if (isLoadMore == true) {
+              waitController.materialEntryList.addAll(List<SCMaterialEntryModel>.from(
+                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+            } else {
+              waitController.materialEntryList = List<SCMaterialEntryModel>.from(
+                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+            }
+          } else {
+            if (isLoadMore == false) {
+              waitController.materialEntryList = [];
+            }
+          }
+          update();
+          waitController.update();
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+          if (currentPlateIndex >= 2 && isLoadMore == true) {
+            waitPageNum--;
+          }
+        });
+  }
+
+  /// 物资出库-待处理数据
+  Future getMaterialOutWaitList({bool? isMore}) {
+    bool isLoadMore = isMore ?? false;
+    if (isLoadMore == true) {
+      waitPageNum++;
+    } else {
+      SCLoadingUtils.show();
+    }
+    List fields = [];
+    var dic = {
+      "map": {},
+      "method": 1,
+      "name": "status",
+      "value": 1
+    };
+    fields.add(dic);
+    var params = {
+      "conditions": {"fields": fields, "specialMap": {}},
+      "count": false,
+      "last": false,
+      "orderBy": [
+        {"asc": false, "field": "gmtModify"}
+      ],
+      "pageNum": waitPageNum,
+      "pageSize": 20
+    };
+    return SCHttpManager.instance.post(
+        url: SCUrl.kMaterialOutboundListUrl,
+        params: params,
+        success: (value) {
+          print("订单===value");
+          SCLoadingUtils.hide();
+          if (value is Map) {
+            List list = value['records'];
+            if (isLoadMore == true) {
+              waitController.materialOutList.addAll(List<SCMaterialEntryModel>.from(
+                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+            } else {
+              waitController.materialOutList = List<SCMaterialEntryModel>.from(
+                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+            }
+          } else {
+            if (isLoadMore == false) {
+              waitController.materialOutList = [];
+            }
+          }
+          update();
+          waitController.update();
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+          if (currentPlateIndex >= 2 && isLoadMore == true) {
+            waitPageNum--;
+          }
+        });
+  }
+
+  /// 物资报损-待处理数据
+  Future getMaterialFrmLossWaitList({bool? isMore}) {
+    bool isLoadMore = isMore ?? false;
+    if (isLoadMore == true) {
+      waitPageNum++;
+    } else {
+      SCLoadingUtils.show();
+    }
+    List fields = [];
+    var dic = {
+      "map": {},
+      "method": 1,
+      "name": "status",
+      "value": 1
+    };
+    fields.add(dic);
+    var params = {
+      "conditions": {"fields": fields, "specialMap": {}},
+      "count": false,
+      "last": false,
+      "orderBy": [
+        {"asc": false, "field": "gmtModify"}
+      ],
+      "pageNum": waitPageNum,
+      "pageSize": 20
+    };
+    return SCHttpManager.instance.post(
+        url: SCUrl.kMaterialFrmLossListUrl,
+        params: params,
+        success: (value) {
+          print("订单===value");
+          SCLoadingUtils.hide();
+          if (value is Map) {
+            List list = value['records'];
+            if (isLoadMore == true) {
+              waitController.materialReportList.addAll(List<SCMaterialEntryModel>.from(
+                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+            } else {
+              waitController.materialReportList = List<SCMaterialEntryModel>.from(
+                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+            }
+          } else {
+            if (isLoadMore == false) {
+              waitController.materialReportList = [];
+            }
+          }
+          update();
+          waitController.update();
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+          if (currentPlateIndex >= 2 && isLoadMore == true) {
+            waitPageNum--;
+          }
+        });
+  }
+
+  /// 物资调拨-待处理数据
+  Future getMaterialTransferWaitList({bool? isMore}) {
+    bool isLoadMore = isMore ?? false;
+    if (isLoadMore == true) {
+      waitPageNum++;
+    } else {
+      SCLoadingUtils.show();
+    }
+    List fields = [];
+    var dic = {
+      "map": {},
+      "method": 1,
+      "name": "status",
+      "value": 1
+    };
+    fields.add(dic);
+    var params = {
+      "conditions": {"fields": fields, "specialMap": {}},
+      "count": false,
+      "last": false,
+      "orderBy": [
+        {"asc": false, "field": "gmtModify"}
+      ],
+      "pageNum": waitPageNum,
+      "pageSize": 20
+    };
+    return SCHttpManager.instance.post(
+        url: SCUrl.kMaterialTransferListUrl,
+        params: params,
+        success: (value) {
+          print("订单===value");
+          SCLoadingUtils.hide();
+          if (value is Map) {
+            List list = value['records'];
+            if (isLoadMore == true) {
+              waitController.materialTransferList.addAll(List<SCMaterialEntryModel>.from(
+                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+            } else {
+              waitController.materialTransferList = List<SCMaterialEntryModel>.from(
+                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+            }
+          } else {
+            if (isLoadMore == false) {
+              waitController.materialTransferList = [];
+            }
+          }
+          update();
+          waitController.update();
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+          if (currentPlateIndex >= 2 && isLoadMore == true) {
+            waitPageNum--;
+          }
+        });
+  }
+
+  /// 提交入库
+  materialEntrySubmit({required String id, Function(bool success)? completeHandler}) async {
+    var params = {
+      "wareHouseInId": id,
+    };
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        isQuery: true,
+        url: SCUrl.kSubmitMaterialUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          completeHandler?.call(true);
+        },
+        failure: (value) {
+          completeHandler?.call(false);
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 提交出库
+  materialOutSubmit({required String id, Function(bool success)? completeHandler}) async{
+    var params = {
+      "wareHouseOutId": id,
+    };
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kSubmitOutboundUrl,
+        isQuery: true,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          completeHandler?.call(true);
+        },
+        failure: (value) {
+          completeHandler?.call(false);
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 提交报损
+  materialFrmLossSubmit({required String id, Function(bool success)? completeHandler}) async{
+    var params = {
+      "wareHouseReportId": id,
+    };
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kSubmitFrmLossUrl,
+        isQuery: true,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          completeHandler?.call(true);
+        },
+        failure: (value) {
+          completeHandler?.call(false);
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 提交调拨
+  materialTransferSubmit({required String id, Function(bool success)? completeHandler}) async{
+    var params = {
+      "wareHouseChangeId": id,
+    };
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kSubmitTransferUrl,
+        isQuery: true,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          completeHandler?.call(true);
+        },
+        failure: (value) {
+          completeHandler?.call(false);
+          SCToast.showTip(value['message']);
         });
   }
 

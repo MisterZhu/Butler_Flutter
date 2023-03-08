@@ -8,7 +8,6 @@ import '../../MaterialEntry/Model/sc_entry_type_model.dart';
 /// 物资报损controller
 
 class SCMaterialFrmLossController extends GetxController {
-
   int pageNum = 1;
 
   /// 选中的状态，默认显示全部
@@ -34,6 +33,7 @@ class SCMaterialFrmLossController extends GetxController {
   updateStatus(int value) {
     selectStatusId = value;
     pageNum = 1;
+
     /// 重新获取数据
     loadData(isMore: false);
   }
@@ -42,6 +42,7 @@ class SCMaterialFrmLossController extends GetxController {
   updateType(int value) {
     selectTypeId = value;
     pageNum = 1;
+
     /// 重新获取数据
     loadData(isMore: false);
   }
@@ -50,6 +51,7 @@ class SCMaterialFrmLossController extends GetxController {
   updateSort(bool value) {
     sort = value;
     pageNum = 1;
+
     /// 重新获取数据
     loadData(isMore: false);
   }
@@ -65,12 +67,7 @@ class SCMaterialFrmLossController extends GetxController {
     }
     List fields = [];
     if (selectTypeId >= 0) {
-      var dic = {
-        "map": {},
-        "method": 1,
-        "name": "type",
-        "value": selectTypeId
-      };
+      var dic = {"map": {}, "method": 1, "name": "type", "value": selectTypeId};
       fields.add(dic);
     }
     if (selectStatusId >= 0) {
@@ -83,13 +80,12 @@ class SCMaterialFrmLossController extends GetxController {
       fields.add(dic);
     }
     var params = {
-      "conditions": {
-        "fields": fields,
-        "specialMap": {}
-      },
+      "conditions": {"fields": fields, "specialMap": {}},
       "count": false,
       "last": false,
-      "orderBy": [{"asc": sort, "field": "gmtModify"}],
+      "orderBy": [
+        {"asc": sort, "field": "gmtModify"}
+      ],
       "pageNum": pageNum,
       "pageSize": 20
     };
@@ -132,19 +128,18 @@ class SCMaterialFrmLossController extends GetxController {
   loadFrmLossType(Function? resultHandler) {
     SCHttpManager.instance.post(
         url: SCUrl.kWareHouseTypeUrl,
-        params: {'dictionaryCode' : 'REPORTLOSS_TYPE'},
+        params: {'dictionaryCode': 'REPORTLOSS_TYPE'},
         success: (value) {
-          typeList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
+          typeList = List<SCEntryTypeModel>.from(
+              value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
           update();
           resultHandler?.call();
         },
-        failure: (value) {
-        });
+        failure: (value) {});
   }
 
-
   /// 提交报损
-  submit({required String id, Function(bool success)? completeHandler}) async{
+  submit({required String id, Function(bool success)? completeHandler}) async {
     var params = {
       "wareHouseReportId": id,
     };
@@ -162,5 +157,4 @@ class SCMaterialFrmLossController extends GetxController {
           SCToast.showTip(value['message']);
         });
   }
-
 }
