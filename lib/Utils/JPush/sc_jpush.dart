@@ -13,6 +13,8 @@ class SCJPush {
     JPush jPush = JPush();
     jPushEventHandler(jPush);
     setupJPush(jPush);
+    clearNotification(jPush);
+    clearBadge(jPush);
   }
 
   /// 设置极光配置
@@ -72,5 +74,27 @@ class SCJPush {
     } on PlatformException {
       // platformVersion = 'Failed to get platform version.';
     }
+  }
+
+  /// 绑定别名
+  static bindAlias(String alias) {
+    JPush jPush = JPush();
+    jPush.setAlias(alias);
+  }
+
+  /// 删除别名
+  static deleteAlias() {
+    JPush jPush = JPush();
+    jPush.deleteAlias();
+  }
+
+  /// 清除通知
+  static clearNotification(JPush jPush) {
+    jPush.clearAllNotifications();
+  }
+
+  /// 清空Badge
+  static clearBadge(JPush jPush) {
+    jPush.setBadge(0);
   }
 }

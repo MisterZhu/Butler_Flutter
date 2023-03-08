@@ -247,6 +247,7 @@ class SCScaffoldManager {
       'Content-Type': 'application/json; charset=utf-8',
       'client': SCDefaultValue.client
     });
+    SCJPush.deleteAlias();
 
     bool isAfterTipStatus = isAfterTip ?? false;
 

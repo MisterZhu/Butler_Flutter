@@ -23,6 +23,8 @@ void startApp() async {
 
   SCLoadingUtils.initLoading();
 
+  WidgetsFlutterBinding.ensureInitialized();
+
   /// 路由的basePath
   String basePath = await SCScaffoldManager.instance.getRouterBasePath();
 
