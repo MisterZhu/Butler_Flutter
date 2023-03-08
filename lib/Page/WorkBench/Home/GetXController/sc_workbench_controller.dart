@@ -138,15 +138,15 @@ class SCWorkBenchController extends GetxController {
         return getWorkOrderList(isMore: true);
       } else if (currentPlateIndex == 1) {// 实地核验
         return getRealVerificationWaitList(isMore: true);
-      } else if (currentPlateIndex == 2){// 订单处理
+      } else if (currentPlateIndex == 2) {// 订单处理
         return getOrderFormWaitList(isMore: true);
-      } else if (currentPlateIndex == 3){// 物资入库
+      } else if (currentPlateIndex == 3) {// 物资入库
         return getMaterialEntryWaitList(isMore: true);
-      } else if (currentPlateIndex == 4){// 物资出库
+      } else if (currentPlateIndex == 4) {// 物资出库
         return getMaterialOutWaitList(isMore: true);
-      } else if (currentPlateIndex == 5){// 物资报损
+      } else if (currentPlateIndex == 5) {// 物资报损
         return getMaterialFrmLossWaitList(isMore: true);
-      }  else if (currentPlateIndex == 6){// 物资调拨
+      } else if (currentPlateIndex == 6) {// 物资调拨
         return getMaterialTransferWaitList(isMore: true);
       }
     } else {
@@ -155,7 +155,7 @@ class SCWorkBenchController extends GetxController {
         return getProcessingWorkOrderList(isMore: true);
       } else if (currentPlateIndex == 1) {// 实地核验
         return getRealVerificationProcessingList(isMore: true);
-      } else if (currentPlateIndex == 2){// 订单处理
+      } else if (currentPlateIndex == 2) {// 订单处理
         return getOrderFormProcessingList(isMore: true);
       }
     }
@@ -574,7 +574,6 @@ class SCWorkBenchController extends GetxController {
         url: SCUrl.kOrderFormUrl,
         params: params,
         success: (value) {
-          print("订单===value");
           SCLoadingUtils.hide();
           if (value is Map) {
             List list = value['records'];
@@ -680,7 +679,6 @@ class SCWorkBenchController extends GetxController {
         url: SCUrl.kMaterialEntryListUrl,
         params: params,
         success: (value) {
-          print("订单===value");
           SCLoadingUtils.hide();
           if (value is Map) {
             List list = value['records'];
@@ -695,6 +693,9 @@ class SCWorkBenchController extends GetxController {
             if (isLoadMore == false) {
               waitController.materialEntryList = [];
             }
+          }
+          if (isLoadMore == true) {
+            waitController.isEntryListLast = value['last'] ?? false;
           }
           update();
           waitController.update();
@@ -737,7 +738,6 @@ class SCWorkBenchController extends GetxController {
         url: SCUrl.kMaterialOutboundListUrl,
         params: params,
         success: (value) {
-          print("订单===value");
           SCLoadingUtils.hide();
           if (value is Map) {
             List list = value['records'];
@@ -794,7 +794,6 @@ class SCWorkBenchController extends GetxController {
         url: SCUrl.kMaterialFrmLossListUrl,
         params: params,
         success: (value) {
-          print("订单===value");
           SCLoadingUtils.hide();
           if (value is Map) {
             List list = value['records'];
@@ -851,7 +850,6 @@ class SCWorkBenchController extends GetxController {
         url: SCUrl.kMaterialTransferListUrl,
         params: params,
         success: (value) {
-          print("订单===value");
           SCLoadingUtils.hide();
           if (value is Map) {
             List list = value['records'];

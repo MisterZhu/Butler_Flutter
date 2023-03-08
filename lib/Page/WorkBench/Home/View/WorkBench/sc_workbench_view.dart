@@ -222,10 +222,12 @@ class SCWorkBenchView extends StatelessWidget {
                 // 物资入库、物资出库、物资报损、物资调拨
                 List<SCMaterialEntryModel> list = [];
                 SCWarehouseManageType type = SCWarehouseManageType.entry;
+                bool isLast = false;
                 if (state.currentPlateIndex == 3) {
                   // 物资入库
                   list = waitController.materialEntryList;
                   type = SCWarehouseManageType.entry;
+                  isLast = waitController.isEntryListLast;
                 } else if (state.currentPlateIndex == 4) {
                   // 物资出库
                   list = waitController.materialOutList;
@@ -246,6 +248,7 @@ class SCWorkBenchView extends StatelessWidget {
                 return SCWorkBenchMaterialListView(
                   dataList: list,
                   state: state,
+                  isLast: isLast,
                   type: type,
                   callAction: (phone) {
                     callAction(phone);

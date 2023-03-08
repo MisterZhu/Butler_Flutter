@@ -13,6 +13,9 @@ class SCWorkBenchListViewController extends GetxController {
   /// 物资入库
   List<SCMaterialEntryModel> materialEntryList = [];
 
+  /// 物资入库是否是最后一页
+  bool isEntryListLast = false;
+
   /// 物资出库
   List<SCMaterialEntryModel> materialOutList = [];
 

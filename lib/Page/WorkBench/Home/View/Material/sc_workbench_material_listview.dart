@@ -14,6 +14,7 @@ class SCWorkBenchMaterialListView extends StatelessWidget {
       required this.dataList,
       required this.state,
       required this.type,
+      required this.isLast,
       this.detailAction,
       this.submitAction,
       this.callAction})
@@ -23,6 +24,9 @@ class SCWorkBenchMaterialListView extends StatelessWidget {
 
   /// 工作台controller
   final SCWorkBenchController state;
+
+  /// 是否是最后一页
+  final bool isLast;
 
   /// type
   final SCWarehouseManageType type;
@@ -108,7 +112,11 @@ class SCWorkBenchMaterialListView extends StatelessWidget {
   /// 加载更多
   Future onLoading() async {
     state.loadMore().then((value) {
-      refreshController.loadComplete();
+      if (isLast) {
+        refreshController.loadNoData();
+      } else {
+        refreshController.loadComplete();
+      }
     });
   }
 
