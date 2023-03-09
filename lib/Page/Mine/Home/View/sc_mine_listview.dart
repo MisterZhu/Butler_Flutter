@@ -68,7 +68,7 @@ class SCMineListView extends StatelessWidget {
   }
 
   Widget listview() {
-    int count = 7;
+    int count = 8;
     if (SCConfig.env == SCEnvironment.production && !SCConfig.isSupportProxyForProduction) {
       count = 1;
     }
@@ -142,7 +142,15 @@ class SCMineListView extends StatelessWidget {
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.materialRequisitionPage, null);
         },);
-    }else {
+    } else if (index == 7) {
+      return SCSettingCell(
+        title: '资产报损',
+        showLeftIcon: true,
+        leftIcon: SCAsset.iconMineService,
+        onTap: () {
+          SCRouterHelper.pathPage(SCRouterPath.propertyFrmLossPage, null);
+        },);
+    } else {
       return const SizedBox(height: 100.0,);
     }
   }

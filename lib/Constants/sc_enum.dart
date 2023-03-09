@@ -70,4 +70,6 @@ enum SCWarehouseManageType {
   check,
   // 领料
   requisition,
+  // 固定资产报损
+  propertyFrmLoss,
 }

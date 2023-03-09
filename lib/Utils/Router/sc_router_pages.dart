@@ -41,6 +41,9 @@ import '../../Page/ApplicationModule/MaterialRequisition/Page/sc_material_requis
 import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_add_transfer_page.dart';
 import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_material_transfer_detail_page.dart';
 import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_material_transfer_page.dart';
+import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_add_property_frmLoss_page.dart';
+import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_property_frmLoss_detail_page.dart';
+import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_property_frmLoss_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
 import '../../Page/Mine/Home/Page/sc_proxy_page.dart';
 import 'sc_router_path.dart';
@@ -137,7 +140,12 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.materialRequisitionPage, page: () => SCMaterialRequisitionPage()),
     /*抓包设置*/
     GetPage(name: SCRouterPath.proxyPage, page: () => SCProxyPage()),
-
+    /*新增固定资产报损*/
+    GetPage(name: SCRouterPath.addPropertyFrmLossPage, page: () => SCAddPropertyFrmLossPage()),
+    /*固定资产报损*/
+    GetPage(name: SCRouterPath.propertyFrmLossPage, page: () => SCPropertyFrmLossPage()),
+    /*固定资产报损详情*/
+    GetPage(name: SCRouterPath.propertyFrmLossDetailPage, page: () => SCPropertyFrmLossDetailPage()),
   ];
 
   /*根据code使用路由*/

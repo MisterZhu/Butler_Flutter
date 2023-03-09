@@ -149,4 +149,18 @@ class SCRouterPath {
   /// 领料出入库
   static String materialRequisitionPage = "/lib/Page/MaterialCheck/Page/sc_material_requisition_page";
 
+  /// *************************** 固定资产报损 ******************************/
+
+  /// 固定资产报损
+  static String propertyFrmLossPage = "/lib/Page/PropertyFrmLoss/Page/sc_property_frmLoss_page";
+
+  /// 新增固定资产报损
+  static String addPropertyFrmLossPage = "/lib/Page/PropertyFrmLoss/Page/sc_add_property_frmLoss_page";
+
+  /// 固定资产报损详情
+  static String propertyFrmLossDetailPage = "/lib/Page/PropertyFrmLoss/Page/sc_property_frmLoss_detail_page";
+
+/// *************************** 物资调拨 ******************************/
+
+
 }

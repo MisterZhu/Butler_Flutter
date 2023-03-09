@@ -14,35 +14,36 @@ import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
-import '../../../../WorkBench/Home/Model/sc_home_task_model.dart';
-import '../../../../WorkBench/Home/View/Alert/sc_task_module_alert.dart';
-import '../../../HouseInspect/View/sc_bottom_button_item.dart';
-import '../../../MaterialEntry/Model/sc_entry_type_model.dart';
-import '../../../MaterialEntry/Model/sc_selectcategory_model.dart';
-import '../../../MaterialEntry/Model/sc_selectcategory_tree_model.dart';
-import '../../../MaterialEntry/Model/sc_wareHouse_model.dart';
-import '../../../MaterialEntry/View/SelectCategoryAlert/sc_add_material_selectcategory_alert.dart';
-import '../../../MaterialOutbound/Controller/sc_select_department_controller.dart';
-import '../../../MaterialOutbound/Model/sc_receiver_model.dart';
-import '../../Controller/sc_add_frmLoss_controller.dart';
+import '../../../WorkBench/Home/Model/sc_home_task_model.dart';
+import '../../../WorkBench/Home/View/Alert/sc_task_module_alert.dart';
+import '../../HouseInspect/View/sc_bottom_button_item.dart';
+import '../../MaterialEntry/Model/sc_entry_type_model.dart';
+import '../../MaterialEntry/Model/sc_selectcategory_model.dart';
+import '../../MaterialEntry/Model/sc_selectcategory_tree_model.dart';
+import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
+import '../../MaterialEntry/View/SelectCategoryAlert/sc_add_material_selectcategory_alert.dart';
+import '../../MaterialOutbound/Controller/sc_select_department_controller.dart';
+import '../../MaterialOutbound/Model/sc_receiver_model.dart';
+import '../Controller/sc_add_property_frmLoss_controller.dart';
 
-/// 新增报损view
 
-class SCAddFrmLossView extends StatefulWidget {
-  /// SCAddFrmLossController
-  final SCAddFrmLossController state;
+/// 新增固定资产报损view
+
+class SCAddPropertyFrmLossView extends StatefulWidget {
+  /// SCAddPropertyFrmLossController
+  final SCAddPropertyFrmLossController state;
 
   /// SCSelectDepartmentController
   final SCSelectDepartmentController selectDepartmentController;
 
-  SCAddFrmLossView(
+  SCAddPropertyFrmLossView(
       {Key? key, required this.state, required this.selectDepartmentController})
       : super(key: key);
   @override
-  SCAddFrmLossViewState createState() => SCAddFrmLossViewState();
+  SCAddPropertyFrmLossViewState createState() => SCAddPropertyFrmLossViewState();
 }
 
-class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
+class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
   /// 报损人
   SCReceiverModel receiverModel = SCReceiverModel();
 
@@ -58,10 +59,10 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
     isShowKeyboard = keyboardVisibilityController.isVisible;
     keyboardSubscription =
         keyboardVisibilityController.onChange.listen((bool visible) {
-      setState(() {
-        isShowKeyboard = visible;
-      });
-    });
+          setState(() {
+            isShowKeyboard = visible;
+          });
+        });
   }
 
   @override
@@ -130,16 +131,15 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
         files: widget.state.files,
         selectAction: (index) async {
           if (index == 0) {
-            // 仓库名称
-            List list = widget.state.wareHouseList.map((e) => e.name).toList();
-            showAlert(0, '仓库名称', list);
-          } else if (index == 1) {
             // 类型
             List list = widget.state.typeList.map((e) => e.name).toList();
-            showAlert(1, '类型', list);
+            showAlert(0, '类型', list);
+          } else if (index == 1) {
+            // 使用部门
+            showSelectDepartmentAlert(false);
           } else if (index == 2) {
             // 报损部门
-            showSelectDepartmentAlert();
+            showSelectDepartmentAlert(true);
           } else if (index == 3) {
             // 报损人
             selectFrmLossUser();
@@ -188,9 +188,6 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
     }
     int currentIndex = -1;
     if (index == 0) {
-      // 仓库
-      currentIndex = widget.state.nameIndex;
-    } else if (index == 1) {
       // 类型
       currentIndex = widget.state.typeIndex;
     }
@@ -211,22 +208,9 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
             closeTap: (SCHomeTaskModel model, int selectIndex) {
               setState(() {
                 if (index == 0) {
-                  // 仓库名称
-                  if (widget.state.nameIndex == selectIndex) {
-                    /// 选择同一个仓库，不刷新页面
-                  } else {
-                    /// 选择不同的仓库，清空选中的物资，刷新页面
-                    SCWareHouseModel subModel = widget.state.wareHouseList[selectIndex];
-                    widget.state.nameIndex = selectIndex;
-                    widget.state.wareHouseName = model.name ?? '';
-                    widget.state.wareHouseId = subModel.id ?? '';
-                    /// 清空选中的物资
-                    widget.state.updateSelectedMaterial([]);
-                  }
-                } else if (index == 1) {
                   // 类型
                   SCEntryTypeModel subModel =
-                      widget.state.typeList[selectIndex];
+                  widget.state.typeList[selectIndex];
                   widget.state.typeIndex = selectIndex;
                   widget.state.type = model.name ?? '';
                   widget.state.typeID = subModel.code ?? 0;
@@ -264,13 +248,12 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
   List getBaseInfoList() {
     /// 基础信息数组
     List baseInfoList = [
+      {'isRequired': true, 'title': '类型', 'content': widget.state.type},
       {
         'isRequired': true,
-        'title': '仓库名称',
-        'content': widget.state.wareHouseName,
-        'disable': widget.state.isEdit
+        'title': '使用部门',
+        'content': widget.state.userOrgName
       },
-      {'isRequired': true, 'title': '类型', 'content': widget.state.type},
       {
         'isRequired': true,
         'title': '报损部门',
@@ -292,8 +275,8 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
 
   /// 添加物资
   addAction() async {
-    if (widget.state.wareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectWarehouseTip);
+    if (widget.state.userOrgId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectUserDepartment);
       return;
     }
     if (widget.state.isEdit) {
@@ -307,8 +290,8 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
   addMaterialAction() async {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
-      'wareHouseId': widget.state.wareHouseId,
-      "materialType" : SCWarehouseManageType.frmLoss
+      'wareHouseId': widget.state.userOrgId,
+      "materialType" : SCWarehouseManageType.propertyFrmLoss
     });
     if (list != null) {
       onlyAddMaterial(list);
@@ -319,9 +302,9 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
   addExitsMaterialAction() async {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
-      'wareHouseId': widget.state.wareHouseId,
+      'wareHouseId': widget.state.userOrgId,
       'isEdit': true,
-      "materialType" : SCWarehouseManageType.frmLoss
+      "materialType" : SCWarehouseManageType.propertyFrmLoss
     });
     if (list != null) {
       editAddMaterial(list);
@@ -357,13 +340,13 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
 
   /// 检查物资数据
   checkMaterialData(int status) {
-    if (widget.state.wareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
+    if (widget.state.typeID <= 0) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
       return;
     }
 
-    if (widget.state.typeID <= 0) {
-      SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
+    if (widget.state.userOrgId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectUserDepartment);
       return;
     }
 
@@ -395,8 +378,8 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
     }
 
     var params = {
-      "wareHouseName": widget.state.wareHouseName,
-      "wareHouseId": widget.state.wareHouseId,
+      "userOrgId": widget.state.userOrgId,
+      "userOrgName": widget.state.userOrgName,
       "reportOrgId": widget.state.reportOrgId,
       "reportOrgName": widget.state.reportOrgName,
       "reportUserId": widget.state.reportUserId,
@@ -411,37 +394,41 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
     widget.state.addTransfer(status: status, data: params);
   }
 
-  /// 选择报损部门
-  showSelectDepartmentAlert() {
+  /// 选择部门
+  showSelectDepartmentAlert(bool isReport) {
     widget.selectDepartmentController.loadDataList(
         completeHandler: (success, list) {
-      widget.selectDepartmentController.initHeaderData();
-      widget.selectDepartmentController.footerList = list;
-      if (success) {
-        SCDialogUtils().showCustomBottomDialog(
-            context: context,
-            isDismissible: true,
-            widget: GetBuilder<SCSelectDepartmentController>(
-                tag: widget.selectDepartmentController.tag,
-                init: widget.selectDepartmentController,
-                builder: (value) {
-                  return SCSelectCategoryAlert(
-                    title: '选择部门',
-                    headerList: widget.selectDepartmentController.headerList,
-                    footerList: widget.selectDepartmentController.footerList,
-                    headerTap: (int index, SCSelectCategoryModel model) {
-                      headerAction(index, model);
-                    },
-                    footerTap: (int index, SCSelectCategoryModel model) {
-                      footerAction(index, model);
-                    },
-                    onSure: () {
-                      sureSelectDepartment();
-                    },
-                  );
-                }));
-      }
-    });
+          widget.selectDepartmentController.initHeaderData();
+          widget.selectDepartmentController.footerList = list;
+          if (success) {
+            SCDialogUtils().showCustomBottomDialog(
+                context: context,
+                isDismissible: true,
+                widget: GetBuilder<SCSelectDepartmentController>(
+                    tag: widget.selectDepartmentController.tag,
+                    init: widget.selectDepartmentController,
+                    builder: (value) {
+                      return SCSelectCategoryAlert(
+                        title: '选择部门',
+                        headerList: widget.selectDepartmentController.headerList,
+                        footerList: widget.selectDepartmentController.footerList,
+                        headerTap: (int index, SCSelectCategoryModel model) {
+                          headerAction(index, model);
+                        },
+                        footerTap: (int index, SCSelectCategoryModel model) {
+                          footerAction(index, model);
+                        },
+                        onSure: () {
+                          if (isReport == true) {
+                            sureSelectDepartment();
+                          } else {
+                            sureSelectUserDepartment();
+                          }
+                        },
+                      );
+                    }));
+          }
+        });
   }
 
   /// 点击header
@@ -452,7 +439,7 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
           widget.selectDepartmentController.treeList;
       List<SCSelectCategoryModel> list = [];
       for (SCSelectCategoryTreeModel subModel
-          in widget.selectDepartmentController.treeList) {
+      in widget.selectDepartmentController.treeList) {
         String orgName = subModel.orgName ?? '';
         String subId = subModel.id ?? '';
         var subParams = {
@@ -463,14 +450,14 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
           "childList": subModel.children
         };
         SCSelectCategoryModel selectCategoryModel =
-            SCSelectCategoryModel.fromJson(subParams);
+        SCSelectCategoryModel.fromJson(subParams);
         list.add(selectCategoryModel);
       }
       widget.selectDepartmentController.footerList = list;
       widget.selectDepartmentController.update();
     } else {
       SCSelectCategoryModel subModel =
-          widget.selectDepartmentController.headerList[index - 1];
+      widget.selectDepartmentController.headerList[index - 1];
       List list = subModel.childList ?? [];
       List<SCSelectCategoryModel> newList = [];
       for (SCSelectCategoryTreeModel childModel in list) {
@@ -484,7 +471,7 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
           "childList": childModel.children
         };
         SCSelectCategoryModel selectCategoryModel =
-            SCSelectCategoryModel.fromJson(subParams);
+        SCSelectCategoryModel.fromJson(subParams);
         newList.add(selectCategoryModel);
       }
 
@@ -508,7 +495,7 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
   /// 点击footer
   footerAction(int index, SCSelectCategoryModel model) {
     SCSelectCategoryTreeModel treeModel =
-        widget.selectDepartmentController.childrenList[index];
+    widget.selectDepartmentController.childrenList[index];
     List<SCSelectCategoryTreeModel> childrenList = treeModel.children ?? [];
     List<SCSelectCategoryModel> subList = [];
 
@@ -524,7 +511,7 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
       };
 
       SCSelectCategoryModel selectCategoryModel =
-          SCSelectCategoryModel.fromJson(subParams);
+      SCSelectCategoryModel.fromJson(subParams);
       subList.add(selectCategoryModel);
     }
 
@@ -532,6 +519,22 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
     widget.selectDepartmentController.childrenList = childrenList;
     widget.selectDepartmentController.updateHeaderData(model);
     widget.selectDepartmentController.updateFooterData(subList);
+  }
+
+  /// 确定选择使用部门
+  sureSelectUserDepartment() {
+    bool enable =
+        widget.selectDepartmentController.currentDepartmentModel.enable ??
+            false;
+    if (enable) {
+      if (widget.state.userOrgId != (widget.selectDepartmentController.currentDepartmentModel.id ?? '')) {
+        widget.state.userOrgId = widget.selectDepartmentController.currentDepartmentModel.id ?? '';
+        widget.state.userOrgName = widget.selectDepartmentController.currentDepartmentModel.title ?? '';
+        widget.state.update();
+      }
+    } else {
+      // 未选择数据
+    }
   }
 
   /// 确定选择报损部门
@@ -590,13 +593,13 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
   /// 编辑
   editAction() {
     print("编辑");
-    if (widget.state.wareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
+    if (widget.state.typeID <= 0) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
       return;
     }
 
-    if (widget.state.typeID <= 0) {
-      SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
+    if (widget.state.userOrgId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectUserDepartment);
       return;
     }
 
@@ -621,10 +624,10 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
     }
 
     var params = {
-      "wareHouseName": widget.state.wareHouseName,
-      "wareHouseId": widget.state.wareHouseId,
       "typeName": widget.state.type,
       "typeId": widget.state.typeID,
+      "userOrgName": widget.state.userOrgName,
+      "userOrgId": widget.state.userOrgId,
       "reportOrgName": widget.state.reportOrgName,
       "reportOrgId": widget.state.reportOrgId,
       "reportUserName": widget.state.reportUserName,

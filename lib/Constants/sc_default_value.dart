@@ -194,6 +194,9 @@ class SCDefaultValue {
   /// 盘点-提交成功tip
   static const String checkSubmitSuccessTip = "提交成功";
 
+  /// 选择使用部门tip
+  static const String selectUserDepartment = "请选择使用部门";
+
   /// 图片路径
   static const files = "/files/";
 }
