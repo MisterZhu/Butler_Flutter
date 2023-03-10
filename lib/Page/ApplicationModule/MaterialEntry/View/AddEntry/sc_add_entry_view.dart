@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:flutter_picker/Picker.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
@@ -17,6 +19,7 @@ import '../../../HouseInspect/View/sc_bottom_button_item.dart';
 import '../../Controller/sc_add_entry_controller.dart';
 import '../../Model/sc_entry_type_model.dart';
 import '../../Model/sc_wareHouse_model.dart';
+import '../Detail/sc_material_bottom_view.dart';
 
 /// 新增入库view
 
@@ -62,6 +65,32 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
 
   /// body
   Widget body(BuildContext context) {
+    List list = [
+      {
+        "type": scMaterialBottomViewType1,
+        "title": "暂存",
+      },
+      {
+        "type": scMaterialBottomViewType2,
+        "title": "提交",
+      },
+    ];
+    if (widget.state.isEdit == true) {
+      list = [
+        {
+          "type": scMaterialBottomViewType2,
+          "title": "确定",
+        },
+      ];
+    }
+    if (widget.state.isReturnEntry == true) {
+      list = [
+        {
+          "type": scMaterialBottomViewType2,
+          "title": "提交",
+        },
+      ];
+    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,23 +98,17 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         Expanded(child: listview(context)),
         Offstage(
           offstage: isShowKeyboard,
-          child: SCBottomButtonItem(
-            list: bottomButtonList(),
-            buttonType: widget.state.isEdit ? 0 : 1,
-            leftTapAction: () {
-              /// 保存
-              save();
-            },
-            rightTapAction: () {
-              /// 提交
-              submit();
-            },
-            tapAction: () {
-              /// 编辑
-              editAction();
-            },
-          ),
-        ),
+          child: SCMaterialDetailBottomView(
+            list: list,
+            onTap: (value) {
+              if (value == '编辑') {
+                editAction();
+              } else if(value == '提交') {
+                submit();
+              } else if(value == '保存') {
+                save();
+              }}
+          )),
       ],
     );
   }
@@ -102,7 +125,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox();
         },
-        itemCount: 4);
+        itemCount: 3);
   }
 
   /// cell
@@ -138,8 +161,9 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       // 物资信息
       return SCMaterialInfoCell(
         title: '物资信息',
-        showAdd: true,
+        showAdd: widget.state.isReturnEntry == true ? false : true,
         list: widget.state.selectedList,
+        isReturnEntry: widget.state.isReturnEntry,
         addAction: () {
           addAction();
         },
@@ -157,7 +181,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       );
     } else {
       return const SizedBox(
-        height: 10,
+        height: 12,
       );
     }
   }
@@ -214,6 +238,27 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
     });
   }
 
+
+  /// 入库时间弹窗
+  showTimeAlert(BuildContext context) {
+    DateTime now = DateTime.now();
+    SCPickerUtils pickerUtils = SCPickerUtils();
+    pickerUtils.title = '入库时间';
+    pickerUtils.cancelText = '取消';
+    pickerUtils.pickerType = SCPickerType.date;
+    pickerUtils.completionHandler = (selectedValues, selecteds) {
+      DateTime value = selectedValues.first;
+      setState(() {
+        widget.state.entryTime = formatDate(value, [yyyy, '-', mm, '-', dd]);
+      });
+    };
+    pickerUtils.showDatePicker(
+        context: context,
+        dateType: PickerDateTimeType.kYMD,
+        minValue: DateTime(now.year - 1, 1, 1, 00, 00),
+        maxValue: DateTime(now.year + 1, 12, 31, 23, 59));
+  }
+
   /// 获取基础信息
   List getBaseInfoList() {
     /// 基础信息数组
@@ -224,8 +269,29 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         'content': widget.state.wareHouseName,
         'disable' : widget.state.isEdit
       },
-      {'isRequired': true, 'title': '类型', 'content': widget.state.type}
+      {
+        'isRequired': true,
+        'title': '类型',
+        'content': widget.state.type,
+        'disable' : widget.state.isEdit
+      }
     ];
+    if (widget.state.isReturnEntry == true) {
+      baseInfoList = [
+        {
+          'isRequired': true,
+          'title': '仓库名称',
+          'content': widget.state.wareHouseName,
+          'disable' : true
+        },
+        {
+          'isRequired': true,
+          'title': '类型',
+          'content': widget.state.type,
+          'disable' : true
+        },
+      ];
+    }
     return baseInfoList;
   }
 
@@ -305,14 +371,20 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
     }
 
     List materialList = [];
-    for (SCMaterialListModel model in widget.state.selectedList) {
-      var params = model.toJson();
-      params['num'] = model.localNum;
-      params['materialId'] = model.id;
-      params['materialName'] = model.name;
-      materialList.add(params);
+    if (widget.state.isReturnEntry == true) {
+      for (SCMaterialListModel model in widget.state.selectedList) {
+        var params = model.toJson();
+        materialList.add(params);
+      }
+    } else {
+      for (SCMaterialListModel model in widget.state.selectedList) {
+        var params = model.toJson();
+        params['num'] = model.localNum;
+        params['materialId'] = model.id;
+        params['materialName'] = model.name;
+        materialList.add(params);
+      }
     }
-
     var params = {
       "wareHouseName": widget.state.wareHouseName,
       "wareHouseId": widget.state.wareHouseId,
@@ -323,15 +395,6 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       "files": widget.state.files,
     };
     widget.state.addEntry(status: status, data: params);
-  }
-
-  /// 底部按钮
-  List<String> bottomButtonList() {
-    if (widget.state.isEdit) {
-      return ["确定"];
-    } else {
-      return ['暂存', '提交'];
-    }
   }
 
   /// 编辑

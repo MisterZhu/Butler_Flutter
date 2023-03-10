@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:date_format/date_format.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
@@ -60,9 +61,19 @@ class SCAddEntryController extends GetxController {
   /// 工单id
   String orderId = '';
 
+  /// 是否是归还入库，默认false，只有物资出入库里点击归还才=true
+  bool isReturnEntry = false;
+
+  /// 入库日期
+  String entryTime = '';
+
+  /// 出库单ID
+  String outId = '';
+
   @override
   onInit() {
     super.onInit();
+    entryTime = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
     loadWareHouseList();
     loadWareHouseType();
   }
@@ -222,7 +233,7 @@ class SCAddEntryController extends GetxController {
           SCLoadingUtils.hide();
           wareHouseList = List<SCWareHouseModel>.from(
               value.map((e) => SCWareHouseModel.fromJson(e)).toList());
-          if (wareHouseList.length == 1) {
+          if (isReturnEntry == false && wareHouseList.length == 1) {
             SCWareHouseModel model = wareHouseList.first;
             wareHouseId = model.id!;
             wareHouseName = model.name!;
@@ -246,6 +257,14 @@ class SCAddEntryController extends GetxController {
           typeList = List<SCEntryTypeModel>.from(
               value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
           initEditParams();
+          if (isReturnEntry == true) {
+            for (int i = 0; i < typeList.length; i++) {
+              SCEntryTypeModel typeModel = typeList[i];
+              if (typeModel.code == 4) {
+                type = typeModel.name ?? '';
+              }
+            }
+          }
           update();
         },
         failure: (value) {
@@ -288,5 +307,28 @@ class SCAddEntryController extends GetxController {
       selectedList.removeAt(index);
       update();
     }
+  }
+
+  /// 不分页查询物资出库列表
+  loadMaterialOutList() {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kMaterialOutListUrl,
+        params: {'outId': outId},
+        isQuery: true,
+        success: (value) {
+          SCLoadingUtils.hide();
+          List<SCMaterialListModel> materials = List<SCMaterialListModel>.from(
+              value.map((e) => SCMaterialListModel.fromJson(e)).toList());
+          for (SCMaterialListModel subModel in materials) {
+            subModel.localNum = subModel.number ?? 1;
+            subModel.isSelect = true;
+            subModel.name = subModel.materialName ?? '';
+          }
+          updateSelectedMaterial(materials);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
   }
 }

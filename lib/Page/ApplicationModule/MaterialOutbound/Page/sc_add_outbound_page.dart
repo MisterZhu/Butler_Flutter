@@ -62,6 +62,14 @@ class SCAddOutboundPageState extends State<SCAddOutboundPage> {
           if (params.containsKey('isLL')) {
             controller.isLL = true;
             controller.llMap = params['llData'];
+            controller.type = '领料出库';
+            controller.typeID = 1;
+            controller.fetchOrgId =
+                SCScaffoldManager.instance.user.orgIds?.first.toString() ?? '';
+            controller.fetchOrgName =
+                SCScaffoldManager.instance.user.orgNames?.first.toString() ?? '';
+            controller.fetchUserId = SCScaffoldManager.instance.user.id ?? '';
+            controller.fetchUserName = SCScaffoldManager.instance.user.userName ?? '';
           }
         }
       }

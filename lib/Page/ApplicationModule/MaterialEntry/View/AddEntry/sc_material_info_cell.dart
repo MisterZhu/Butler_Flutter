@@ -42,10 +42,12 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 隐藏物资数量输入框
   final bool? hideMaterialNumTextField;
 
-  SCMaterialInfoCell(
-      {Key? key,
-        required this.title,
-        this.materialType = 0,
+  /// 是否是物资出入库-归还入库
+  final bool? isReturnEntry;
+
+  SCMaterialInfoCell({Key? key,
+      required this.title,
+      this.materialType = 0,
       this.selectNameAction,
       this.selectTypeAction,
       this.addAction,
@@ -54,9 +56,8 @@ class SCMaterialInfoCell extends StatelessWidget {
       this.deleteAction,
       this.updateNumAction,
       required this.showAdd,
-      this.hideMaterialNumTextField
-      })
-      : super(key: key);
+      this.hideMaterialNumTextField,
+      this.isReturnEntry}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -167,6 +168,7 @@ class SCMaterialInfoCell extends StatelessWidget {
     return SCAddEntryAllMaterialView(
       hideMaterialNumTextField: hideMaterialNumTextField,
       list: list,
+      isReturnEntry: isReturnEntry,
       deleteAction: (int index) {
         deleteAction?.call(index);
       },

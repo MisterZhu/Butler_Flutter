@@ -136,6 +136,8 @@ class SCUrl {
   /// 物资分类
   static const String kMaterialSortUrl = "/api/warehouse/manage/materialClass/tree";
 
+  /// 不分页查询物资出库列表
+  static const String kMaterialOutListUrl = "/api/warehouse/manage/materialOutRelation/selectMaterialOutRelationList";
 
   /************************* 物资出库 *************************/
 

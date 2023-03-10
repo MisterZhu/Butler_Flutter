@@ -32,8 +32,8 @@ class SCMaterialCell extends StatefulWidget {
       this.deleteAction,
       this.hideMaterialNumTextField,
       this.check,
-      this.status
-      }) : super(key: key);
+      this.status})
+      : super(key: key);
 
   final SCMaterialListModel? model;
 
@@ -99,23 +99,27 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// 详情cell
   Widget normalCell() {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          imageView(),
-          const SizedBox(
-            width: 8.0,
+    return DecoratedBox(
+        decoration: BoxDecoration(
+            color: SCColors.color_FFFFFF,
+            borderRadius: BorderRadius.circular(4.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              imageView(),
+              const SizedBox(
+                width: 8.0,
+              ),
+              detailInfoView(),
+              const SizedBox(
+                width: 10.0,
+              ),
+              numView()
+            ],
           ),
-          detailInfoView(),
-          const SizedBox(
-            width: 10.0,
-          ),
-          numView()
-        ],
-      ),
-    );
+        ));
   }
 
   /// 选择cell
@@ -213,7 +217,10 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     String url = SCConfig.getImageUrl(widget.model?.pic ?? '');
     bool isShow = false;
     if (widget.type == scMaterialCellTypeInventory) {
-      if ((widget.status ?? 0) == 1 || (widget.status ?? 0) == 2 || (widget.status ?? 0) == 3 || (widget.status ?? 0) == 4) {
+      if ((widget.status ?? 0) == 1 ||
+          (widget.status ?? 0) == 2 ||
+          (widget.status ?? 0) == 3 ||
+          (widget.status ?? 0) == 4) {
         isShow = true;
       }
     }
@@ -235,7 +242,11 @@ class SCMaterialCellState extends State<SCMaterialCell> {
               left: 0,
               right: 0,
               bottom: 0,
-              child: isShow ? inventoryNumberView() : const SizedBox(height: 1,),
+              child: isShow
+                  ? inventoryNumberView()
+                  : const SizedBox(
+                      height: 1,
+                    ),
             )
           ],
         ));
@@ -246,18 +257,21 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     int number = widget.model?.number ?? 0; // 账存
     int checkNum = widget.model?.checkNum ?? 0; // 盘点数量
     int? resultNum = widget.model?.resultNum ?? 0; // 盘盈或盘平数量
-    Color bgColor = SCColors.color_F7F8FA;// 背景颜色
-    Color textColor = SCColors.color_5E5F66;// 文字颜色
+    Color bgColor = SCColors.color_F7F8FA; // 背景颜色
+    Color textColor = SCColors.color_5E5F66; // 文字颜色
     String text = '';
-    if (number < checkNum) {// 盘盈
+    if (number < checkNum) {
+      // 盘盈
       bgColor = SCColors.color_E3FFF1.withOpacity(0.9);
       textColor = SCColors.color_00B42A;
       text = "盘盈${checkNum - number}";
-    } else if (number > checkNum) {// 盘亏
+    } else if (number > checkNum) {
+      // 盘亏
       bgColor = SCColors.color_FFF1F0;
       textColor = SCColors.color_FF4040;
       text = "盘亏${number - checkNum}";
-    } else {// 盘平
+    } else {
+      // 盘平
       bgColor = SCColors.color_F7F8FA;
       textColor = SCColors.color_5E5F66;
       text = "盘平";
@@ -310,39 +324,33 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     if (widget.check ?? false) {
       return Expanded(
           child: SizedBox(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                nameLabel(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(child: infoLabel(30)),
-                    stepper
-                  ],
-                )
-              ],
-            ),
-          ));
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            nameLabel(),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [Expanded(child: infoLabel(30)), stepper],
+            )
+          ],
+        ),
+      ));
     } else {
       return Expanded(
           child: SizedBox(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                nameLabel(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(child: infoLabel(30)),
-                    stepper
-                  ],
-                )
-              ],
-            ),
-          ));
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            nameLabel(),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [Expanded(child: infoLabel(30)), stepper],
+            )
+          ],
+        ),
+      ));
     }
   }
 
@@ -412,7 +420,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     }
     if (widget.check == true) {
       text =
-      '单位:${widget.model?.unitName} 条形码:${widget.model?.barCode}\n规格:${widget.model?.norms}\n账面库存:${widget.model?.number}';
+          '单位:${widget.model?.unitName} 条形码:${widget.model?.barCode}\n规格:${widget.model?.norms}\n账面库存:${widget.model?.number}';
     }
     return Text(
       SCStrings.autoLineString(text),
@@ -428,10 +436,12 @@ class SCMaterialCellState extends State<SCMaterialCell> {
   /// 物资数量
   Widget numView() {
     String text = '';
-    if (widget.type == scMaterialCellTypeInventory) {// 盘点
+    if (widget.type == scMaterialCellTypeInventory) {
+      // 盘点
       int checkNum = widget.model?.checkNum ?? 0;
       text = 'x$checkNum';
-    } else {// 其他
+    } else {
+      // 其他
       int num = widget.model?.number ?? 0;
       text = 'x$num';
     }

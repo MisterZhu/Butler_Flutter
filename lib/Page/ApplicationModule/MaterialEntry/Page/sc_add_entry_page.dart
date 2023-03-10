@@ -7,6 +7,8 @@ import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../Controller/sc_add_entry_controller.dart';
+import '../Model/sc_entry_type_model.dart';
+import '../Model/sc_material_entry_model.dart';
 import '../View/AddEntry/sc_add_entry_view.dart';
 
 /// 新增入库page
@@ -50,6 +52,17 @@ class SCAddEntryPageState extends State<SCAddEntryPage> {
         }
         if (params.containsKey('orderId')) {
           controller.orderId = params['orderId'];
+        }
+        if (params.containsKey('isReturnEntry')) {
+          controller.isReturnEntry = params['isReturnEntry'];
+        }
+        if (params.containsKey('entryModel')) {
+          SCMaterialEntryModel model = params['entryModel'];
+          controller.outId = model.id ?? '';
+          controller.loadMaterialOutList();
+          controller.wareHouseId = model.wareHouseId ?? '';
+          controller.wareHouseName = model.wareHouseName ?? '';
+          controller.typeID = 4;
         }
       }
     }

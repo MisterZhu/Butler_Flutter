@@ -224,7 +224,7 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
                 call(phone);
               },
               btnTapAction: () {
-                SCRouterHelper.pathPage(SCRouterPath.addEntryPage, {'orderId': widget.state.orderId});
+                SCRouterHelper.pathPage(SCRouterPath.addEntryPage, {'orderId': widget.state.orderId, 'entryModel': model, 'isReturnEntry': true});
               },
             );
           },

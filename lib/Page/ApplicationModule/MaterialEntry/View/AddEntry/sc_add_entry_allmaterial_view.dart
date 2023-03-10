@@ -6,7 +6,12 @@ import '../Detail/sc_material_cell.dart';
 
 class SCAddEntryAllMaterialView extends StatelessWidget {
 
-  const SCAddEntryAllMaterialView({Key? key, required this.list, this.deleteAction, this.updateNumAction, this.hideMaterialNumTextField}) : super(key: key);
+  const SCAddEntryAllMaterialView({Key? key,
+    required this.list, this.deleteAction,
+    this.updateNumAction,
+    this.hideMaterialNumTextField,
+    this.isReturnEntry
+  }) : super(key: key);
 
   /// 数据源
   final List<SCMaterialListModel> list;
@@ -19,6 +24,9 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
 
   /// 隐藏物资数量输入框
   final bool? hideMaterialNumTextField;
+
+  /// 是否是物资出入库-归还入库
+  final bool? isReturnEntry;
 
   @override
   Widget build(BuildContext context) {
@@ -40,24 +48,32 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
     return itemList;
   }
 
+
   /// cell
   Widget cell(int index) {
     SCMaterialListModel model = list[index];
-    return SCMaterialCell(
-      hideMaterialNumTextField: hideMaterialNumTextField,
-      type: scMaterialCellTypeDelete,
-      model: model,
-      onTap: () {
+    if (isReturnEntry == true) {
+      return SCMaterialCell(
+        model: model,
+        type: scMaterialCellTypeNormal,
+      );
+    } else {
+      return SCMaterialCell(
+        hideMaterialNumTextField: hideMaterialNumTextField,
+        type: scMaterialCellTypeDelete,
+        model: model,
+        onTap: () {
 
-      },
-      deleteAction: () {
-        deleteAction?.call(index);
-      },
-      numChangeAction: (int value) {
-        model.localNum = value;
-        updateNumAction?.call(index, value);
-      },
-    );
+        },
+        deleteAction: () {
+          deleteAction?.call(index);
+        },
+        numChangeAction: (int value) {
+          model.localNum = value;
+          updateNumAction?.call(index, value);
+        },
+      );
+    }
   }
 
   /// line
