@@ -87,6 +87,9 @@ class SCDefaultValue {
   /// 定位权限弹窗提示内容
   static const String locationAlertMessage = "允许“$appName”访问您的位置权限，用于您快速定位获取周边服务";
 
+  /// 设置通知弹窗提示内容
+  static const String setNotificationAlertMessage = "允许“$appName”访问您的通知权限，用于“$appName”向您提供消息推送服务";
+
   /// 输入姓名提示
   static const String inputNameTip = "请输入姓名";
 

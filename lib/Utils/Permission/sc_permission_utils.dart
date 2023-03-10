@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -95,7 +96,7 @@ class SCPermissionUtils {
           onTap: (index, context) {
             if (index == 0) {
               // 相机
-              takePhoto((String path){
+              takePhoto((String path) {
                 completionHandler?.call([path]);
               });
             } else {
@@ -139,6 +140,7 @@ class SCPermissionUtils {
                 fontWeight: FontWeight.w400, onTap: () async {
               SCSpUtil.setBool(SCKey.kIsShowPhotoAlert, true);
               PermissionStatus permissionStatus;
+
               /// android权限为Permission.storage对应iOS的Permission.photos
               if (Platform.isAndroid) {
                 permissionStatus = await Permission.storage.request();
@@ -173,7 +175,7 @@ class SCPermissionUtils {
         );
       } else {
         PermissionStatus permissionStatus;
-        if(Platform.isAndroid) {
+        if (Platform.isAndroid) {
           permissionStatus = await Permission.storage.request();
         } else {
           permissionStatus = await Permission.photos.request();
@@ -267,7 +269,9 @@ class SCPermissionUtils {
               defaultCustomButton(context,
                   text: '取消',
                   textColor: SCColors.color_1B1C33,
-                  fontWeight: FontWeight.w400),
+                  fontWeight: FontWeight.w400, onTap: () {
+                SCSpUtil.setBool(SCKey.kIsShowLocationAlert, true);
+              }),
               defaultCustomButton(context,
                   text: '确定',
                   textColor: SCColors.color_1B1C33,
@@ -345,10 +349,46 @@ class SCPermissionUtils {
   }
 
   /// 系统通知
-  static Future<PermissionStatus> notification() async{
-    PermissionStatus permissionStatus =
-        await Permission.notification.request();
+  static Future<PermissionStatus> notification() async {
+    PermissionStatus permissionStatus = await Permission.notification.request();
     return permissionStatus;
+  }
+
+  /// 打开通知
+  static notificationAlert({Function(bool success)? completionHandler}) async {
+    Future.delayed(const Duration(seconds: 0), () async {
+      SCUtils.getCurrentContext(completionHandler: (context) async {
+        bool isShowAlert = SCSpUtil.getBool(SCKey.kIsShowSetNotificationAlert);
+        if (!isShowAlert) {
+          SCDialogUtils.instance.showMiddleDialog(
+            context: context,
+            title: "温馨提示",
+            content: SCDefaultValue.setNotificationAlertMessage,
+            customWidgetButtons: [
+              defaultCustomButton(context,
+                  text: '取消',
+                  textColor: SCColors.color_1B1C33,
+                  fontWeight: FontWeight.w400, onTap: () {
+                completionHandler?.call(false);
+              }),
+              defaultCustomButton(context,
+                  text: '确定',
+                  textColor: SCColors.color_1B1C33,
+                  fontWeight: FontWeight.w400, onTap: () async {
+                SCSpUtil.setBool(SCKey.kIsShowSetNotificationAlert, true)
+                    .then((value) {
+                  AppSettings.openNotificationSettings(callback: () {
+                    completionHandler?.call(true);
+                  });
+                });
+              }),
+            ],
+          );
+        } else {
+          completionHandler?.call(true);
+        }
+      });
+    });
   }
 
   /// 无权限弹窗

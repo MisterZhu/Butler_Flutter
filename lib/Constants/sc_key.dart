@@ -18,6 +18,8 @@ class SCKey {
   static const String kIsShowLocationAlert = "kIsShowLocationAlert";
   /// 是否显示通知权限提示弹窗
   static const String kIsShowNotificationAlert = "kIsShowNotificationAlert";
+  /// 是否显示设置通知提示弹窗
+  static const String kIsShowSetNotificationAlert = "kIsShowSetNotificationAlert";
   /// 建信租房应用token
   static const String kJianXinRentingToken = "kJianXinRentingToken";
   /// 切换企业key
