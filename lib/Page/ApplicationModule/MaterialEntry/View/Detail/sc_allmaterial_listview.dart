@@ -2,16 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_enum.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_cell.dart';
+import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../../Model/sc_material_list_model.dart';
 
 /// 入库详情-所有物资listview
 
 class SCAllMaterialListView extends StatelessWidget {
-  const SCAllMaterialListView({Key? key, this.list, this.onTap, this.type, this.status}) : super(key: key);
+  const SCAllMaterialListView({Key? key,
+    this.list,
+    this.onTap,
+    this.type,
+    this.status,
+    this.propertyList,
+    this.isProperty,
+  }) : super(key: key);
 
   /// 所有物资
   final List<SCMaterialListModel>? list;
 
+  /// 所有物资
+  final List<SCPropertyListModel>? propertyList;
+
+  final bool? isProperty;
   /// cell点击
   final Function(SCMaterialListModel model)? onTap;
 
@@ -23,18 +35,34 @@ class SCAllMaterialListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if ((list ?? []).isEmpty) {
-      if (type == SCWarehouseManageType.check) {
-        return checkEmptyView();
+    if (isProperty == true) {
+      if ((propertyList ?? []).isEmpty) {
+        if (type == SCWarehouseManageType.check) {
+          return checkEmptyView();
+        } else {
+          return const SizedBox();
+        }
       } else {
-        return const SizedBox();
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: allPropertyList(),
+        );
       }
     } else {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: allMaterialList(),
-      );
+      if ((list ?? []).isEmpty) {
+        if (type == SCWarehouseManageType.check) {
+          return checkEmptyView();
+        } else {
+          return const SizedBox();
+        }
+      } else {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: allMaterialList(),
+        );
+      }
     }
+
     // double height = 104.5 * list.length;
     // return SizedBox(
     //   height: height,
@@ -83,6 +111,20 @@ class SCAllMaterialListView extends StatelessWidget {
     return itemList;
   }
 
+  /// 所有资产列表
+  List<Widget> allPropertyList() {
+    List<Widget> itemList = [];
+    if (propertyList != null) {
+      for (int i = 0; i < propertyList!.length; i++) {
+        itemList.add(propertyCell(i));
+        if (i != propertyList!.length - 1) {
+          itemList.add(line());
+        }
+      }
+    }
+    return itemList;
+  }
+
   /// cell
   Widget cell(int index) {
     if (list != null) {
@@ -98,6 +140,28 @@ class SCAllMaterialListView extends StatelessWidget {
         status: status,
         onTap: () {
           onTap?.call(subModel);
+        },
+      );
+    } else {
+      return const SizedBox();
+    }
+  }
+
+  /// propertyCell
+  Widget propertyCell(int index) {
+    if (propertyList != null) {
+      SCWarehouseManageType manageType = type ?? SCWarehouseManageType.entry;
+      int cellType = scPropertyCellTypeNormal;
+      if (manageType == SCWarehouseManageType.check) {
+        cellType = scMaterialCellTypeInventory;
+      }
+      SCPropertyListModel subModel = propertyList![index];
+      return SCMaterialCell(
+        propertyModel: subModel,
+        type: cellType,
+        status: status,
+        onTap: () {
+
         },
       );
     } else {

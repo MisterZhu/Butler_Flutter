@@ -1,4 +1,6 @@
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
+
+import '../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 /// 详情页面model
 class SCMaterialTaskDetailModel {
   SCMaterialTaskDetailModel({
@@ -11,7 +13,8 @@ class SCMaterialTaskDetailModel {
       this.labelList, 
       this.materialNames, 
       this.materialNums, 
-      this.materials, 
+      this.materials,
+      this.assets,
       this.mobileNum, 
       this.number, 
       this.operator, 
@@ -81,6 +84,12 @@ class SCMaterialTaskDetailModel {
         materials?.add(SCMaterialListModel.fromJson(v));
       });
     }
+    if (json['assets'] != null) {
+      assets = [];
+      json['assets'].forEach((v) {
+        assets?.add(SCPropertyListModel.fromJson(v));
+      });
+    }
     mobileNum = json['mobileNum'];
     number = json['number'];
     operator = json['operator'];
@@ -133,6 +142,7 @@ class SCMaterialTaskDetailModel {
   String? materialNames;
   int? materialNums;
   List<SCMaterialListModel>? materials;
+  List<SCPropertyListModel>? assets;
   String? mobileNum;
   String? number;
   String? operator;
@@ -192,6 +202,9 @@ class SCMaterialTaskDetailModel {
     map['materialNums'] = materialNums;
     if (materials != null) {
       map['materials'] = materials?.map((v) => v.toJson()).toList();
+    }
+    if (assets != null) {
+      map['assets'] = assets?.map((v) => v.toJson()).toList();
     }
     map['mobileNum'] = mobileNum;
     map['number'] = number;

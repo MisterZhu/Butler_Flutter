@@ -14,7 +14,10 @@ class SCMaterialDetailListView extends StatelessWidget {
   /// 类型，type=entry入库详情，type=outbound出库详情
   final SCWarehouseManageType type;
 
-  SCMaterialDetailListView({Key? key, required this.state, required this.type}) : super(key: key);
+  /// 是否至资产
+  final bool? isProperty;
+
+  SCMaterialDetailListView({Key? key, required this.state, required this.type, this.isProperty}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,7 @@ class SCMaterialDetailListView extends StatelessWidget {
   /// cell
   Widget cell(int index) {
     if (index == 0) {// 所有物资
-      return SCAllMaterialCell(state: state, type: type, model: state.model, remainingTime: state.remainingTime,);
+      return SCAllMaterialCell(state: state, type: type, model: state.model, remainingTime: state.remainingTime, isProperty: isProperty,);
     // } else if(index == 1) {// 审批流程
     //   return SCMaterialApproveFlowCell(title: '审批流程', onTap: () {
     //

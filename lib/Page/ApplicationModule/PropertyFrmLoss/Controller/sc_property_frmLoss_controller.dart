@@ -94,12 +94,19 @@ class SCPropertyFrmLossController extends GetxController {
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
-          if (isLoadMore == true) {
-            dataList.addAll(List<SCMaterialEntryModel>.from(
-                value.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+          if (value is Map) {
+            List list = value['records'];
+            if (isLoadMore == true) {
+              dataList.addAll(List<SCMaterialEntryModel>.from(
+                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+            } else {
+              dataList = List<SCMaterialEntryModel>.from(
+                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+            }
           } else {
-            dataList = List<SCMaterialEntryModel>.from(
-                value.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+            if (isLoadMore == false) {
+              dataList = [];
+            }
           }
           update();
           bool last = false;
@@ -134,7 +141,7 @@ class SCPropertyFrmLossController extends GetxController {
   /// 提交报损
   submit({required String id, Function(bool success)? completeHandler}) async {
     var params = {
-      "wareHouseReportId": id,
+      "fixedMaterialReportId": id,
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(

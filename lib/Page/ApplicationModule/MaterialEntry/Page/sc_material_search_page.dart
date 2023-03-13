@@ -49,6 +49,12 @@ class SCMaterialSearchPageState extends State<SCMaterialSearchPage> {
       if (params.containsKey('hideNumTextField')) {
         controller.hideNumTextField = params['hideNumTextField'];
       }
+      if (params.containsKey('isProperty')) {
+        controller.isProperty = params['isProperty'];
+      }
+      if (params.containsKey('orgId')) {
+        controller.orgId = params['orgId'];
+      }
     }
   }
 
@@ -79,7 +85,7 @@ class SCMaterialSearchPageState extends State<SCMaterialSearchPage> {
           tag: controllerTag,
           init: controller,
           builder: (state) {
-            return SCMaterialSearchView(state: state);
+            return SCMaterialSearchView(state: state, isProperty: controller.isProperty,);
           }),
     );
   }

@@ -154,13 +154,16 @@ class SCAddMaterialController extends GetxController {
 
   /// 新增资产-资产列表数据
   loadPropertyListData({Function(bool success, bool last)? completeHandler}) {
+    var params = {"fetchOrgId": orgId};
+    if (classifyId != '') {
+      params.addAll({"classifyId": classifyId});
+    }
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kAddFrmLossPropertyListUrl,
-        params: {"fetchOrgId": orgId},
+        params: params,
         isQuery: true,
         success: (value) {
-          print('资产列表==============$value');
           SCLoadingUtils.hide();
           propertyList = List<SCPropertyListModel>.from(
               value.map((e) => SCPropertyListModel.fromJson(e)).toList());
@@ -186,6 +189,18 @@ class SCAddMaterialController extends GetxController {
       for (SCMaterialListModel subModel in materialList) {
         if (model.id == subModel.id) {
           subModel.localNum = model.localNum;
+          subModel.isSelect = true;
+        }
+      }
+    }
+    update();
+  }
+
+  /// 处理搜索的数据
+  dealSearchPropertyData(List<SCPropertyListModel> list) {
+    for (SCPropertyListModel model in list) {
+      for (SCPropertyListModel subModel in propertyList) {
+        if (model.id == subModel.id) {
           subModel.isSelect = true;
         }
       }

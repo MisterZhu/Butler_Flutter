@@ -15,6 +15,7 @@ import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart'
 import '../../MaterialEntry/Model/sc_material_task_detail_model.dart';
 import '../../MaterialEntry/View/Detail/sc_material_detail_listview.dart';
 import '../Controller/sc_property_frmLoss_controller.dart';
+import '../Model/sc_property_list_model.dart';
 
 /// 固定资产报损详情
 
@@ -89,7 +90,8 @@ class SCPropertyFrmLossDetailPageState
             offstage: !controller.success,
             child: SCMaterialDetailListView(
               state: controller,
-              type: SCWarehouseManageType.frmLoss,
+              type: SCWarehouseManageType.propertyFrmLoss,
+              isProperty: true,
             ),
           );
         });
@@ -146,18 +148,13 @@ class SCPropertyFrmLossDetailPageState
 
   /// 编辑
   editAction() async {
-    String wareHouseName = controller.model.wareHouseName ?? '';
-    String wareHouseId = controller.model.wareHouseId ?? '';
     String typeName = controller.model.typeName ?? '';
     int type = controller.model.type ?? 0;
     String remark = controller.model.remark ?? '';
     String id = controller.model.id ?? '';
-    List<SCMaterialListModel> materials = controller.model.materials ?? [];
-    for (SCMaterialListModel model in materials) {
-      model.localNum = model.number ?? 1;
+    List<SCPropertyListModel> assets = controller.model.assets ?? [];
+    for (SCPropertyListModel model in assets) {
       model.isSelect = true;
-      model.name = model.materialName ?? '';
-      //model.id = model.materialId;
     }
 
     List<Files> filesList = controller.model.files ?? [];
@@ -165,21 +162,22 @@ class SCPropertyFrmLossDetailPageState
     for (Files file in filesList) {
       files.add(file.toJson());
     }
-    SCRouterHelper.pathPage(SCRouterPath.addFrmLossPage, {
+    SCRouterHelper.pathPage(SCRouterPath.addPropertyFrmLossPage, {
       'isEdit': true,
-      'data': materials,
-      "wareHouseName": wareHouseName,
-      "wareHouseId": wareHouseId,
+      'data': assets,
       "typeName": typeName,
       "type": type,
       "remark": remark,
+      "fetchOrgName": controller.model.fetchOrgName ?? '',
+      "fetchOrgId": controller.model.fetchOrgId ?? '',
       "reportUserName": controller.model.reportUserName ?? '',
       "reportUserId": controller.model.reportUserId ?? '',
       "reportOrgName": controller.model.reportOrgName ?? '',
       "reportOrgId": controller.model.reportOrgId ?? '',
       "reportTime": controller.model.reportTime ?? '',
       "files": files,
-      "id": id
+      "id": id,
+      'number': controller.model.number ?? ''
     })?.then((value) {
       controller.loadPropertyFrmLossDetail();
     });

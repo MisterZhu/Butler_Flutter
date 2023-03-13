@@ -9,8 +9,8 @@ import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../Model/sc_entry_type_model.dart';
-import '../Model/sc_material_entry_detail_model.dart';
 import '../Model/sc_material_list_model.dart';
+import '../Model/sc_material_task_detail_model.dart';
 import '../Model/sc_wareHouse_model.dart';
 
 /// 新增入库controller
@@ -297,8 +297,8 @@ class SCAddEntryController extends GetxController {
         params: {'wareHouseInId': editId},
         success: (value) {
           SCLoadingUtils.hide();
-          SCMaterialEntryDetailModel model =
-              SCMaterialEntryDetailModel.fromJson(value);
+          SCMaterialTaskDetailModel model =
+          SCMaterialTaskDetailModel.fromJson(value);
           List<SCMaterialListModel> materials = model.materials ?? [];
           for (SCMaterialListModel subModel in materials) {
             subModel.localNum = subModel.number ?? 1;

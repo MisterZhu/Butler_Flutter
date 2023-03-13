@@ -82,7 +82,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
         Offstage(
           offstage: widget.check == true ? true : false,
           child: SCMaterialSearchItem(
-            name: widget.isProperty == true ? '搜索物资名称、资产编号' : '搜索物资名称',
+            name: widget.isProperty == true ? '搜索资产名称' : '搜索物资名称',
             searchAction: () {
               searchAction();
             },
@@ -307,11 +307,22 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
   searchAction() async {
     var backParams = await SCRouterHelper.pathPage(
         SCRouterPath.materialSearchPage,
-        {'wareHouseId': widget.state.wareHouseId, 'type': widget.type, 'hideNumTextField' : widget.state.hideNumTextField});
+        {'wareHouseId': widget.state.wareHouseId,
+          'type': widget.type,
+          'hideNumTextField' : widget.state.hideNumTextField,
+          'isProperty' : widget.state.isProperty,
+          'orgId': widget.state.orgId
+        });
     if (backParams != null) {
       if (backParams['list'] != null) {
-        List<SCMaterialListModel> list = backParams['list'] ?? [];
-        widget.state.dealSearchData(list);
+        if (widget.state.isProperty == true) {
+          List<SCPropertyListModel> list = backParams['list'] ?? [];
+          widget.state.dealSearchPropertyData(list);
+        } else {
+          List<SCMaterialListModel> list = backParams['list'] ?? [];
+          widget.state.dealSearchData(list);
+        }
+
       }
     }
   }
@@ -406,7 +417,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
     widget.categoryAlertController.updateFooterData(subList);
   }
 
-  /// 确定选择领用部门
+  /// 确定选择分类
   sureSelectDepartment() {
     bool enable =
         widget.categoryAlertController.currentDepartmentModel.enable ?? false;
@@ -417,17 +428,29 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
             widget.categoryAlertController.currentDepartmentModel.id ?? '';
         widget.state.classifyName =
             widget.categoryAlertController.currentDepartmentModel.title ?? '';
-        widget.state.loadMaterialListData(isMore: false);
+        if (widget.isProperty == true) {
+          widget.state.loadPropertyListData();
+        } else {
+          widget.state.loadMaterialListData(isMore: false);
+        }
       } else {
         widget.state.classifyId = '';
         widget.state.classifyName = '';
-        widget.state.loadMaterialListData(isMore: false);
+        if (widget.isProperty == true) {
+          widget.state.loadPropertyListData();
+        } else {
+          widget.state.loadMaterialListData(isMore: false);
+        }
       }
     } else {
       // 未选择数据
       widget.state.classifyId = '';
       widget.state.classifyName = '';
-      widget.state.loadMaterialListData(isMore: false);
+      if (widget.isProperty == true) {
+        widget.state.loadPropertyListData();
+      } else {
+        widget.state.loadMaterialListData(isMore: false);
+      }
     }
   }
 
