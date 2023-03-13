@@ -24,7 +24,11 @@ class SCAllMaterialCell extends StatefulWidget {
   final int? remainingTime;
   /// SCMaterialEntryDetailController
   final SCMaterialEntryDetailController state;
-  SCAllMaterialCell({Key? key, required this.state,required this.type, this.model, this.remainingTime}) : super(key: key);
+
+  /// 是否至资产
+  final bool? isProperty;
+
+  SCAllMaterialCell({Key? key, required this.state,required this.type, this.model, this.remainingTime, this.isProperty}) : super(key: key);
 
   @override
   SCAllMaterialCellState createState() => SCAllMaterialCellState();
@@ -40,8 +44,14 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
   @override
   Widget build(BuildContext context) {
     bool hiddenUnfold = true;
-    if (widget.model?.materials != null && widget.model!.materials!.length > maxLength) {
-      hiddenUnfold = false;
+    if (widget.isProperty == true) {
+      if (widget.model?.assets != null && widget.model!.assets!.length > maxLength) {
+        hiddenUnfold = false;
+      }
+    } else {
+      if (widget.model?.materials != null && widget.model!.materials!.length > maxLength) {
+        hiddenUnfold = false;
+      }
     }
     if (widget.type == SCWarehouseManageType.check) {
       hiddenUnfold = true;
@@ -54,9 +64,11 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
         mainAxisSize: MainAxisSize.min,
         children: [
           timerView(),
-          SCAllMaterialTitleView(type: widget.type, model: widget.model,),
+          SCAllMaterialTitleView(type: widget.type, model: widget.model, isProperty: widget.isProperty),
           SCAllMaterialListView(
             list: getRealList(),
+            propertyList: getPropertyList(),
+            isProperty: widget.isProperty,
             type: widget.type,
             status: widget.model?.status,
             onTap: (SCMaterialListModel model) async {
@@ -135,6 +147,18 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
         return widget.model?.materials;
       }
     }
+  }
+
+  getPropertyList() {
+      if (widget.model?.assets != null && widget.model!.assets!.length > maxLength) {
+        if (!isShowAll) {
+          return widget.model!.assets!.sublist(0, maxLength);
+        } else {
+          return widget.model!.assets!;
+        }
+      } else {
+        return widget.model?.assets;
+      }
   }
 
   /// 展开/折叠

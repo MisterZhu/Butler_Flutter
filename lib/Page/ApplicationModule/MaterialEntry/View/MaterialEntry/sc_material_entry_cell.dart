@@ -67,11 +67,11 @@ class SCMaterialEntryCell extends StatelessWidget {
             const SizedBox(
               height: 12.0,
             ),
-            nameItem(model?.materialNames ?? ''),
+            nameItem(type == SCWarehouseManageType.propertyFrmLoss ? model?.assetNames ?? '' : model?.materialNames ?? ''),
             const SizedBox(
               height: 4.0,
             ),
-            nameItem('$text：${model?.materialNums ?? 0}'),
+            nameItem(type == SCWarehouseManageType.propertyFrmLoss ? '$text：${model?.assetNums ?? 0}' : '$text：${model?.materialNums ?? 0}'),
             const SizedBox(
               height: 6.0,
             ),
@@ -97,7 +97,7 @@ class SCMaterialEntryCell extends StatelessWidget {
       icon = SCAsset.iconMaterialEntry;
     } else if (type == SCWarehouseManageType.outbound) {
       icon = SCAsset.iconMaterialOutbound;
-    } else if (type == SCWarehouseManageType.frmLoss) {
+    } else if (type == SCWarehouseManageType.frmLoss || type == SCWarehouseManageType.propertyFrmLoss) {
       icon = SCAsset.iconMaterialFrmLoss;
     } else if (type == SCWarehouseManageType.transfer) {
       icon = SCAsset.iconMaterialTransfer;

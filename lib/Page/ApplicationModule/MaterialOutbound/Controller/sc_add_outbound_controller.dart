@@ -8,8 +8,8 @@ import '../../../../Network/sc_url.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Utils/Router/sc_router_helper.dart';
 import '../../MaterialEntry/Model/sc_entry_type_model.dart';
-import '../../MaterialEntry/Model/sc_material_entry_detail_model.dart';
 import '../../MaterialEntry/Model/sc_material_list_model.dart';
+import '../../MaterialEntry/Model/sc_material_task_detail_model.dart';
 import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
 
 
@@ -312,7 +312,7 @@ class SCAddOutboundController extends GetxController {
         params: {'wareHouseOutId': editId},
         success: (value) {
           SCLoadingUtils.hide();
-          SCMaterialEntryDetailModel model = SCMaterialEntryDetailModel.fromJson(value);
+          SCMaterialTaskDetailModel model = SCMaterialTaskDetailModel.fromJson(value);
           List<SCMaterialListModel> materials = model.materials ?? [];
           for (SCMaterialListModel subModel in materials) {
             subModel.localNum = subModel.number ?? 1;

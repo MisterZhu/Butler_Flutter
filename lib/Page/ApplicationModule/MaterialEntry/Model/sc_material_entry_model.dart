@@ -72,6 +72,8 @@ class SCMaterialEntryModel {
     String? taskStartTime,
     String? taskEndTime,
     int? rangeValue,
+    String? assetNames,
+    int? assetNums,
   }) {
     _creator = creator;
     _creatorName = creatorName;
@@ -109,6 +111,8 @@ class SCMaterialEntryModel {
     _taskStartTime = taskStartTime;
     _taskEndTime = taskEndTime;
     _rangeValue = rangeValue;
+    _assetNames = assetNames;
+    _assetNums = assetNums;
   }
 
   SCMaterialEntryModel.fromJson(dynamic json) {
@@ -153,6 +157,8 @@ class SCMaterialEntryModel {
     _taskStartTime= json['taskStartTime'];
     _taskEndTime = json['taskEndTime'];
     _rangeValue = json['rangeValue'];
+    _assetNames = json['assetNames'];
+    _assetNums = json['assetNums'];
   }
   String? _creator;
   String? _creatorName;
@@ -190,6 +196,8 @@ class SCMaterialEntryModel {
   String? _taskStartTime;
       String? _taskEndTime;
   int? _rangeValue;
+  String? _assetNames;
+  int? _assetNums;
   SCMaterialEntryModel copyWith({
     String? creator,
     String? creatorName,
@@ -226,6 +234,8 @@ class SCMaterialEntryModel {
     String? taskStartTime,
     String? taskEndTime,
     int? rangeValue,
+    String? assetNames,
+    int? assetNums,
   }) =>
       SCMaterialEntryModel(
         creator: creator ?? _creator,
@@ -264,6 +274,8 @@ class SCMaterialEntryModel {
           taskStartTime: taskStartTime ?? _taskStartTime,
           taskEndTime: taskEndTime ?? _taskEndTime,
           rangeValue: rangeValue ?? _rangeValue,
+        assetNames: assetNames ?? _assetNames,
+        assetNums: assetNums ?? _assetNums,
       );
   String? get creator => _creator;
   String? get creatorName => _creatorName;
@@ -301,7 +313,8 @@ class SCMaterialEntryModel {
   String? get taskStartTime => _taskStartTime;
   String? get taskEndTime => _taskEndTime;
   int? get rangeValue => _rangeValue;
-
+  String? get assetNames => _assetNames;
+  int? get assetNums => _assetNums;
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['creator'] = _creator;
@@ -342,6 +355,8 @@ class SCMaterialEntryModel {
     map['taskStartTime'] = _taskStartTime;
     map['taskEndTime'] = _taskEndTime;
     map['rangeValue'] = _rangeValue;
+    map['assetNames'] = _assetNames;
+    map['assetNums'] = _assetNums;
     return map;
   }
 }

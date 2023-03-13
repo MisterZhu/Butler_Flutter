@@ -273,7 +273,7 @@ class SCUrl {
   /************************* 固定资产报损 *************************/
 
   /// 报损列表
-  static const String kPropertyFrmLossListUrl = "/api/warehouse-zyj/app/asset/report/list";
+  static const String kPropertyFrmLossListUrl = "/api/warehouse-zyj/app/asset/report/pageFront";
 
   /// 新增报损
   static const String kAddPropertyFrmLossUrl = "/api/warehouse-zyj/app/asset/report/save";
@@ -289,4 +289,12 @@ class SCUrl {
 
   /// 资产列表
   static const String kAddFrmLossPropertyListUrl = "/api/warehouse-zyj/fixedMaterialAccount/listAssets";
+
+  /// 资产报损-编辑-删除资产
+  static const String kEditDeleteFrmLossPropertyUrl = "/api/warehouse-zyj/assetReportRelation/remove";
+
+  /// 资产报损-编辑-新增资产
+  static const String kEditAddFrmLossPropertyUrl = "/api/warehouse-zyj/assetReportRelation/addAssetReportList";
+
+
 }

@@ -15,7 +15,6 @@ import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../../WorkBench/Home/Model/sc_home_task_model.dart';
 import '../../../../WorkBench/Home/View/Alert/sc_task_module_alert.dart';
-import '../../../HouseInspect/View/sc_bottom_button_item.dart';
 import '../../Controller/sc_add_entry_controller.dart';
 import '../../Model/sc_entry_type_model.dart';
 import '../../Model/sc_wareHouse_model.dart';
@@ -105,7 +104,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
                 editAction();
               } else if(value == '提交') {
                 submit();
-              } else if(value == '保存') {
+              } else if(value == '暂存') {
                 save();
               }}
           )),
@@ -247,9 +246,13 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
                     getBaseInfoList();
                   }
                 } else if (index == 2) {
-                  // 资产类型
+                  // 物资类型
+                  print('物资类型==========$selectIndex');
                   widget.state.materialTypeIndex = selectIndex;
                   widget.state.materialType = widget.state.materialTypeList[selectIndex] ?? '';
+                }
+                if (widget.state.type == '归还入库' && widget.state.materialTypeIndex == 1) {
+
                 }
               });
             },
@@ -295,21 +298,21 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         'disable' : widget.state.isEdit
       },
     ];
-    if (widget.state.type == '归还入库') {
-      baseInfoList.add({
-        'isRequired': true,
-        'title': '物资类型',
-        'content': widget.state.materialType,
-        'disable' : widget.state.isEdit
-      });
-    } else if (widget.state.type == '采购入库') {
-      baseInfoList.add({
-        'isRequired': true,
-        'title': '采购需求单',
-        'content': widget.state.purchaseId,
-        'disable' : widget.state.isEdit
-      });
-    }
+    // if (widget.state.type == '归还入库') {
+    //   baseInfoList.add({
+    //     'isRequired': true,
+    //     'title': '物资类型',
+    //     'content': widget.state.materialType,
+    //     'disable' : widget.state.isEdit
+    //   });
+    // } else if (widget.state.type == '采购入库') {
+    //   baseInfoList.add({
+    //     'isRequired': true,
+    //     'title': '采购需求单',
+    //     'content': widget.state.purchaseId,
+    //     'disable' : widget.state.isEdit
+    //   });
+    // }
     baseInfoList.add({
       'isRequired': true,
       'title': '入库日期',
@@ -354,6 +357,19 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
       "materialType" : SCWarehouseManageType.entry
+    });
+    if (list != null) {
+      onlyAddMaterial(list);
+    }
+  }
+
+  /// 新增资产-添加资产
+  addPropertyAction() async {
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
+      'data': widget.state.selectedPropertyList,
+      'wareHouseId': widget.state.wareHouseId,
+      "materialType" : SCWarehouseManageType.entry,
+      'isProperty': true
     });
     if (list != null) {
       onlyAddMaterial(list);

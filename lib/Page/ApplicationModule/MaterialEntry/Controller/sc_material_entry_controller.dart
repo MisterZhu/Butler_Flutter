@@ -108,7 +108,6 @@ class SCMaterialEntryController extends GetxController {
               dataList = [];
             }
           }
-          SCLoadingUtils.hide();
           update();
           bool last = false;
           if (isLoadMore) {

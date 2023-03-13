@@ -7,6 +7,7 @@ import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_botto
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Constants/sc_default_value.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
+import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../../Controller/sc_material_search_controller.dart';
 import '../../Model/sc_material_list_model.dart';
 import '../Detail/sc_material_cell.dart';
@@ -17,7 +18,9 @@ class SCMaterialSearchView extends StatefulWidget {
   /// SCMaterialSearchController
   final SCMaterialSearchController state;
 
-  SCMaterialSearchView({Key? key, required this.state}) : super(key: key);
+  final bool? isProperty;
+
+  SCMaterialSearchView({Key? key, required this.state, this.isProperty}) : super(key: key);
 
   @override
   SCMaterialSearchViewState createState() => SCMaterialSearchViewState();
@@ -82,17 +85,32 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
 
   /// 确定
   sureAction() {
-    List<SCMaterialListModel> list = [];
-    for (SCMaterialListModel model in widget.state.materialList) {
-      bool isSelect = model.isSelect ?? false;
-      if (isSelect) {
-        list.add(model);
+    if (widget.isProperty == true) {
+      List<SCPropertyListModel> list = [];
+      for (SCPropertyListModel model in widget.state.propertyList) {
+        bool isSelect = model.isSelect ?? false;
+        if (isSelect) {
+          list.add(model);
+        }
       }
-    }
-    if (list.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectMaterialTip);
+      if (list.isEmpty) {
+        SCToast.showTip(SCDefaultValue.selectMaterialTip);
+      } else {
+        SCRouterHelper.back({'list': list});
+      }
     } else {
-      SCRouterHelper.back({'list': list});
+      List<SCMaterialListModel> list = [];
+      for (SCMaterialListModel model in widget.state.materialList) {
+        bool isSelect = model.isSelect ?? false;
+        if (isSelect) {
+          list.add(model);
+        }
+      }
+      if (list.isEmpty) {
+        SCToast.showTip(SCDefaultValue.selectMaterialTip);
+      } else {
+        SCRouterHelper.back({'list': list});
+      }
     }
   }
 
@@ -156,27 +174,31 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
       keyboardType: TextInputType.text,
       keyboardAppearance: Brightness.light,
       textInputAction: TextInputAction.search,
-      decoration: const InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 4),
-        hintText: "搜索物资名称",
-        hintStyle: TextStyle(
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(vertical: 4),
+        hintText: widget.isProperty == true? '搜索资产名称' : "搜索物资名称",
+        hintStyle: const TextStyle(
             fontSize: SCFonts.f14,
             fontWeight: FontWeight.w400,
             color: SCColors.color_B0B1B8),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(width: 0, color: Colors.transparent)),
-        disabledBorder: OutlineInputBorder(
+        disabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(width: 0, color: Colors.transparent)),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(width: 0, color: Colors.transparent)),
-        border: OutlineInputBorder(
+        border: const OutlineInputBorder(
             borderSide: BorderSide(width: 0, color: Colors.transparent)),
         isCollapsed: true,
       ),
       onChanged: (value) {},
       onSubmitted: (value) {
         widget.state.updateSearchString(value);
-        widget.state.searchData();
+        if (widget.state.isProperty == true) {
+          widget.state.searchPropertyData();
+        } else {
+          widget.state.searchData();
+        }
         node.unfocus();
       },
       onTap: () {
@@ -214,10 +236,18 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
 
   /// contentView
   Widget contentView() {
-    if (widget.state.materialList.isNotEmpty) {
-      return listview();
+    if (widget.isProperty == true) {
+      if (widget.state.propertyList.isNotEmpty) {
+        return listview();
+      } else {
+        return emptyItem();
+      }
     } else {
-      return emptyItem();
+      if (widget.state.materialList.isNotEmpty) {
+        return listview();
+      } else {
+        return emptyItem();
+      }
     }
   }
 
@@ -237,15 +267,20 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
             padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 11.0),
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              SCMaterialListModel model = widget.state.materialList[index];
-              return cell(model);
+              if (widget.isProperty == true) {
+                SCPropertyListModel model = widget.state.propertyList[index];
+                return propertyCell(model);
+              } else {
+                SCMaterialListModel model = widget.state.materialList[index];
+                return cell(model);
+              }
             },
             separatorBuilder: (BuildContext context, int index) {
               return const SizedBox(
                 height: 10.0,
               );
             },
-            itemCount: widget.state.materialList.length));
+            itemCount: widget.isProperty == true ? widget.state.propertyList.length : widget.state.materialList.length));
   }
 
   Widget cell(SCMaterialListModel model) {
@@ -256,6 +291,19 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
       numChangeAction: (int value) {
         model.localNum = value;
       },
+      radioTap: (bool value) {
+        setState(() {
+          model.isSelect = value;
+        });
+      },
+    );
+  }
+
+  Widget propertyCell(SCPropertyListModel model) {
+    return SCMaterialCell(
+      hideMaterialNumTextField: widget.state.hideNumTextField,
+      propertyModel: model,
+      type: scPropertyCellTypeRadio,
       radioTap: (bool value) {
         setState(() {
           model.isSelect = value;
@@ -282,24 +330,37 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
 
   /// 下拉刷新
   Future onRefresh() async {
-    widget.state.searchData(
-        isMore: false,
-        completeHandler: (bool success, bool last) {
-          refreshController.refreshCompleted();
-          refreshController.loadComplete();
-        });
+    if (widget.isProperty == true) {
+      widget.state.searchPropertyData(isMore: false,
+          completeHandler: (bool success, bool last) {
+            refreshController.refreshCompleted();
+            refreshController.loadComplete();
+          });
+    } else {
+      widget.state.searchData(
+          isMore: false,
+          completeHandler: (bool success, bool last) {
+            refreshController.refreshCompleted();
+            refreshController.loadComplete();
+          });
+    }
   }
 
   /// 上拉加载
   void loadMore() async {
-    widget.state.searchData(
-        isMore: true,
-        completeHandler: (bool success, bool last) {
-          if (last) {
-            refreshController.loadNoData();
-          } else {
-            refreshController.loadComplete();
-          }
-        });
-  }
+    if (widget.isProperty == true) {
+
+    } else {
+      widget.state.searchData(
+          isMore: true,
+          completeHandler: (bool success, bool last) {
+            if (last) {
+              refreshController.loadNoData();
+            } else {
+              refreshController.loadComplete();
+            }
+          });
+      }
+    }
+
 }

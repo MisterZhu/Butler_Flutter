@@ -322,7 +322,7 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
       SCPropertyListModel model = widget.state.selectedList[index];
       print("物资id===${model.id}");
       widget.state.deleteMaterial(index);
-      widget.state.editDeleteMaterial(materialInRelationId: model.id ?? '');
+      widget.state.editDeleteMaterial(reportId: model.id ?? '');
     } else {
       widget.state.deleteMaterial(index);
     }
@@ -639,37 +639,21 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
     widget.state.editMaterialBaseInfo(data: params);
   }
 
-  /// 编辑单条物资
-  editOneMaterial(int index) {
-    if (widget.state.isEdit) {
-      List<SCPropertyListModel> list = [widget.state.selectedList[index]];
-      widget.state.editMaterial(list: list);
-    } else {
-      widget.state.update();
-    }
-  }
-
   /// 新增物资-编辑
   editAddMaterial(List<SCPropertyListModel> list) {
     print("原始数据===${widget.state.selectedList}");
 
     print("添加===$list");
 
-    // 编辑的物资
-    List<SCPropertyListModel> editList = [];
     // 新增的物资
     List<SCPropertyListModel> addList = [];
     for (SCPropertyListModel model in list) {
       // 是否存在
       bool contains = false;
-      // 是否需要更新
-      bool needUpdate = false;
-      SCPropertyListModel tempModel = SCPropertyListModel();
 
       for (SCPropertyListModel subModel in widget.state.selectedList) {
-        if (model.materialId == subModel.materialId) {
+        if (model.assetId == subModel.assetId) {
           contains = true;
-          tempModel = SCPropertyListModel.fromJson(subModel.toJson());
           break;
         } else {
           contains = false;
@@ -677,16 +661,10 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
       }
 
       if (contains) {
-        if (needUpdate) {
-          editList.add(tempModel);
-        }
+
       } else {
         addList.add(model);
       }
-    }
-
-    for (SCPropertyListModel model in editList) {
-      print("编辑的物资===${model.toJson()}");
     }
 
     List<SCPropertyListModel> newList = widget.state.selectedList;
@@ -698,10 +676,6 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
       subParams['reportId'] = widget.state.editId;
       addJsonList.add(subParams);
       print("新增的物资===${subParams}");
-    }
-
-    if (editList.isNotEmpty) {
-      widget.state.editMaterial(list: editList);
     }
 
     if (addList.isNotEmpty) {

@@ -8,7 +8,6 @@ import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../../../Login/Home/Model/sc_user_model.dart';
 import '../../MaterialEntry/Model/sc_entry_type_model.dart';
-import '../../MaterialEntry/Model/sc_material_list_model.dart';
 import '../../MaterialEntry/Model/sc_material_task_detail_model.dart';
 import '../Model/sc_property_list_model.dart';
 import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
@@ -69,6 +68,9 @@ class SCAddPropertyFrmLossController extends GetxController {
 
   /// 主键id
   String editId = '';
+
+  /// 报损单号
+  String number = '';
 
   /// 上传的图片文件数组
   List files = [];
@@ -133,6 +135,9 @@ class SCAddPropertyFrmLossController extends GetxController {
       /// 主键id
       editId = params['id'];
 
+      /// 报损单号
+      number = params['number'];
+
       for (int i = 0; i < typeList.length; i++) {
         SCEntryTypeModel model = typeList[i];
         if (model.code == typeID) {
@@ -181,6 +186,7 @@ class SCAddPropertyFrmLossController extends GetxController {
     //List materialList = data['materialList'];
     var params = {
       "id": editId,
+      'number': number,
       "remark": data['remark'],
       "type": data['typeId'],
       "typeName": data['typeName'],
@@ -195,7 +201,7 @@ class SCAddPropertyFrmLossController extends GetxController {
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kEditAddFrmLossBaseInfoUrl,
+        url: SCUrl.kEditAddPropertyFrmLossBaseInfoUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
@@ -211,11 +217,11 @@ class SCAddPropertyFrmLossController extends GetxController {
   /// 编辑-新增物资
   editAddMaterial(
       {required List list, Function(bool success)? completeHandler}) {
-    var params = {"reportId": editId, "materialReportRelations": list};
+    print('编辑-新增物资=========$list');
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kEditAddFrmLossMaterialUrl,
-        params: params,
+        url: SCUrl.kEditAddFrmLossPropertyUrl,
+        params: list,
         success: (value) {
           loadMaterialEntryDetail();
         },
@@ -227,14 +233,14 @@ class SCAddPropertyFrmLossController extends GetxController {
 
   /// 编辑-删除物资
   editDeleteMaterial(
-      {required String materialInRelationId,
+      {required String reportId,
         Function(bool success)? completeHandler}) {
-    var params = {"materialReportRelationId": materialInRelationId};
+    var params = {"reportId": reportId};
     print("删除报损参数：$params");
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         isQuery: true,
-        url: SCUrl.kEditDeleteFrmLossMaterialUrl,
+        url: SCUrl.kEditDeleteFrmLossPropertyUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
@@ -244,29 +250,6 @@ class SCAddPropertyFrmLossController extends GetxController {
           SCLoadingUtils.hide();
           completeHandler?.call(false);
         });
-  }
-
-  /// 编辑-编辑物资
-  editMaterial({required List list, Function(bool success)? completeHandler}) {
-    for (SCMaterialListModel model in list) {
-      print("报损物资数据===${model.toJson()}");
-      var params = model.toJson();
-      params['num'] = model.localNum;
-      params['materialName'] = model.materialName;
-      params['reportId'] = editId;
-      SCLoadingUtils.show();
-      SCHttpManager.instance.post(
-          url: SCUrl.kEditFrmLossMaterialUrl,
-          params: params,
-          success: (value) {
-            SCLoadingUtils.hide();
-            print("编辑成功");
-          },
-          failure: (value) {
-            SCLoadingUtils.hide();
-            print("编辑失败");
-          });
-    }
   }
 
   /// 报损类型

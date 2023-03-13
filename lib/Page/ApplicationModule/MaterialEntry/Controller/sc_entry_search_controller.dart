@@ -61,6 +61,24 @@ class SCEntrySearchController extends GetxController {
     } else if (type == SCWarehouseManageType.frmLoss) {
       url = SCUrl.kMaterialFrmLossListUrl;
     } else if (type == SCWarehouseManageType.propertyFrmLoss) {
+      params = {
+        "conditions": {
+          "fields": [{
+            "map": {
+              "operatorName": searchString
+            },
+            "method": 7,
+            "name": "searchs",
+            "value": ""
+          }],
+          "specialMap": {}
+        },
+        "count": false,
+        "last": false,
+        "orderBy": [{"asc": false, "field": "gmtModify"}],
+        "pageNum": pageNum,
+        "pageSize": 20
+      };
       url = SCUrl.kPropertyFrmLossListUrl;
     } else if (type == SCWarehouseManageType.transfer) {
       url = SCUrl.kMaterialTransferListUrl;

@@ -8,9 +8,10 @@ import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
+import '../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../Model/sc_entry_type_model.dart';
-import '../Model/sc_material_entry_detail_model.dart';
 import '../Model/sc_material_list_model.dart';
+import '../Model/sc_material_task_detail_model.dart';
 import '../Model/sc_wareHouse_model.dart';
 
 /// 新增入库controller
@@ -27,6 +28,9 @@ class SCAddEntryController extends GetxController {
 
   /// 已选择的物资数据
   List<SCMaterialListModel> selectedList = [];
+
+  /// 已选择的物资数据
+  List<SCPropertyListModel> selectedPropertyList = [];
 
   /// 是否是编辑
   bool isEdit = false;
@@ -73,7 +77,7 @@ class SCAddEntryController extends GetxController {
   /// 出库单ID
   String outId = '';
 
-  /// 物资类型：固定资产、低值易耗品
+  /// 物资类型 1：固定资产；2：损耗品
   String materialType = '';
   /// 物资类型index
   int materialTypeIndex = -1;
@@ -108,6 +112,12 @@ class SCAddEntryController extends GetxController {
 
       /// 备注
       remark = params['remark'];
+
+      /// 物资类型
+      materialType = params['materialType'];
+
+      /// 采购需求单
+      purchaseId = params['purchaseId'];
 
       /// 主键id
       editId = params['id'];
@@ -297,8 +307,8 @@ class SCAddEntryController extends GetxController {
         params: {'wareHouseInId': editId},
         success: (value) {
           SCLoadingUtils.hide();
-          SCMaterialEntryDetailModel model =
-              SCMaterialEntryDetailModel.fromJson(value);
+          SCMaterialTaskDetailModel model =
+          SCMaterialTaskDetailModel.fromJson(value);
           List<SCMaterialListModel> materials = model.materials ?? [];
           for (SCMaterialListModel subModel in materials) {
             subModel.localNum = subModel.number ?? 1;
