@@ -152,7 +152,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
             List list = widget.state.materialTypeList.map((e) => e).toList();
             showAlert(2, '物资类型', list);
           } else if (title == '采购需求单') {
-
+            purchaseSearch();
           } else if (title == '入库日期') {
             // 入库日期
             showTimeAlert(context);
@@ -551,5 +551,10 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
   editOneMaterial(int index) {
     List<SCMaterialListModel> list = [widget.state.selectedList[index]];
     widget.state.editMaterial(list: list);
+  }
+
+  /// 采购需求单
+  purchaseSearch() {
+    SCRouterHelper.pathPage(SCRouterPath.purchaseSearchPage, null);
   }
 }
