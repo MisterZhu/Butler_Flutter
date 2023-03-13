@@ -16,8 +16,6 @@ import '../../MaterialEntry/View/Alert/sc_sift_alert.dart';
 import '../../MaterialEntry/View/Alert/sc_sort_alert.dart';
 import '../Controller/sc_property_frmLoss_controller.dart';
 
-
-
 /// 资产报损view
 
 class SCPropertyFrmLossView extends StatefulWidget {
@@ -94,7 +92,7 @@ class SCPropertyFrmLossViewState extends State<SCPropertyFrmLossView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SCMaterialSearchItem(name: '搜索仓库名称/操作人', searchAction: () {
-          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.frmLoss});
+          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.propertyFrmLoss});
         },),
         SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
           if (index == 0) {
@@ -186,7 +184,7 @@ class SCPropertyFrmLossViewState extends State<SCPropertyFrmLossView> {
           SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
             model: model,
-            type: SCWarehouseManageType.frmLoss,
+            type: SCWarehouseManageType.propertyFrmLoss,
             detailTapAction: () {
               detailAction(model);
             },

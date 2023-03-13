@@ -9,6 +9,7 @@ import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
+import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../../Controller/sc_add_material_controller.dart';
 import '../../Controller/sc_categoryalert_controlller.dart';
 import '../../Model/sc_selectcategory_model.dart';
@@ -28,16 +29,20 @@ class SCAddMaterialView extends StatefulWidget {
       required this.refreshController,
       required this.type,
       this.sureAction,
+      this.propertySureAction,
       this.hideNumTextField,
       this.check,
-      })
-      : super(key: key);
+      this.isProperty,
+      }) : super(key: key);
 
   /// SCAddMaterialController
   final SCAddMaterialController state;
 
   /// 确定
   final Function(List<SCMaterialListModel> list)? sureAction;
+
+  /// 确定
+  final Function(List<SCPropertyListModel> list)? propertySureAction;
 
   /// SCCategoryAlertController
   final SCCategoryAlertController categoryAlertController;
@@ -52,6 +57,10 @@ class SCAddMaterialView extends StatefulWidget {
   final bool? hideNumTextField;
 
   final bool? check;
+
+  /// 是否是资产
+  final bool? isProperty;
+
   @override
   SCAddMaterialViewState createState() => SCAddMaterialViewState();
 }
@@ -73,7 +82,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
         Offstage(
           offstage: widget.check == true ? true : false,
           child: SCMaterialSearchItem(
-            name: '搜索物资名称',
+            name: widget.isProperty == true ? '搜索物资名称、资产编号' : '搜索物资名称',
             searchAction: () {
               searchAction();
             },
@@ -101,7 +110,9 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
       state: widget.state,
       refreshController: widget.refreshController,
       list: widget.state.materialList,
+      propertyList: widget.state.propertyList,
       check: widget.check,
+      isProperty: widget.isProperty,
       radioTap: () {
         setState(() {});
       },
@@ -242,10 +253,19 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
   /// 获取已选数量
   int getSelectedNumber() {
     int num = 0;
-    for (SCMaterialListModel model in widget.state.materialList) {
-      bool isSelect = model.isSelect ?? false;
-      if (isSelect) {
-        num += 1;
+    if (widget.isProperty == true) {
+      for (SCPropertyListModel model in widget.state.propertyList) {
+        bool isSelect = model.isSelect ?? false;
+        if (isSelect) {
+          num += 1;
+        }
+      }
+    } else {
+      for (SCMaterialListModel model in widget.state.materialList) {
+        bool isSelect = model.isSelect ?? false;
+        if (isSelect) {
+          num += 1;
+        }
       }
     }
     return num;
@@ -253,18 +273,33 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
 
   /// 确定
   sureAction() {
-    List<SCMaterialListModel> list = [];
-    for (SCMaterialListModel model in widget.state.materialList) {
-      model.checkNum = model.localNum;
-      bool isSelect = model.isSelect ?? false;
-      if (isSelect) {
-        list.add(model);
+    if (widget.isProperty == true) {
+      List<SCPropertyListModel> list = [];
+      for (SCPropertyListModel model in widget.state.propertyList) {
+        bool isSelect = model.isSelect ?? false;
+        if (isSelect) {
+          list.add(model);
+        }
       }
-    }
-    if (list.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectMaterialTip);
+      if (list.isEmpty) {
+        SCToast.showTip(SCDefaultValue.selectPropertyTip);
+      } else {
+        widget.propertySureAction?.call(list);
+      }
     } else {
-      widget.sureAction?.call(list);
+      List<SCMaterialListModel> list = [];
+      for (SCMaterialListModel model in widget.state.materialList) {
+        model.checkNum = model.localNum;
+        bool isSelect = model.isSelect ?? false;
+        if (isSelect) {
+          list.add(model);
+        }
+      }
+      if (list.isEmpty) {
+        SCToast.showTip(SCDefaultValue.selectMaterialTip);
+      } else {
+        widget.sureAction?.call(list);
+      }
     }
   }
 
@@ -398,14 +433,18 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
 
   /// 加载更多
   loadMore() {
-    widget.state.loadMaterialListData(
-        isMore: true,
-        completeHandler: (bool success, bool last) {
-          if (last) {
-            widget.refreshController.loadNoData();
-          } else {
-            widget.refreshController.loadComplete();
-          }
-        });
+    if (widget.isProperty == true) {
+
+    } else {
+      widget.state.loadMaterialListData(
+          isMore: true,
+          completeHandler: (bool success, bool last) {
+            if (last) {
+              widget.refreshController.loadNoData();
+            } else {
+              widget.refreshController.loadComplete();
+            }
+          });
+    }
   }
 }

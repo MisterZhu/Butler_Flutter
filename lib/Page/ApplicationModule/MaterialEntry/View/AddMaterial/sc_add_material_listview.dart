@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:sc_uikit/sc_uikit.dart';
-
+import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../../Controller/sc_add_material_controller.dart';
 import '../../Model/sc_material_list_model.dart';
 import '../Detail/sc_material_cell.dart';
@@ -13,11 +12,14 @@ class SCAddMaterialListView extends StatelessWidget {
       {Key? key,
       required this.state,
       required this.list,
+      required this.propertyList,
       required this.refreshController,
       this.radioTap,
       this.loadMoreAction,
       this.hideNumTextField,
-      this.check})
+      this.check,
+      this.isProperty
+      })
       : super(key: key);
 
   /// SCAddMaterialController
@@ -25,6 +27,9 @@ class SCAddMaterialListView extends StatelessWidget {
 
   /// list
   final List<SCMaterialListModel> list;
+
+  /// list
+  final List<SCPropertyListModel> propertyList;
 
   /// radio点击
   final Function? radioTap;
@@ -41,6 +46,9 @@ class SCAddMaterialListView extends StatelessWidget {
   /// 是否是盘点物资
   final bool? check;
 
+  /// 是否是资产
+  final bool? isProperty;
+
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
@@ -53,13 +61,31 @@ class SCAddMaterialListView extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 11.0, bottom: 12.0),
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              SCMaterialListModel model = list[index];
-              return cell(model);
+              if (isProperty == true) {
+                SCPropertyListModel model = propertyList[index];
+                return propertyCell(model);
+              } else {
+                SCMaterialListModel model = list[index];
+                return cell(model);
+              }
             },
             separatorBuilder: (BuildContext context, int index) {
               return line(index);
             },
-            itemCount: list.length));
+            itemCount: isProperty == true ? propertyList.length : list.length));
+  }
+
+  Widget propertyCell(SCPropertyListModel model) {
+    return SCMaterialCell(
+      hideMaterialNumTextField: hideNumTextField,
+      propertyModel: model,
+      type: scPropertyCellTypeRadio,
+      check: check,
+      radioTap: (bool value) {
+        model.isSelect = value;
+        radioTap?.call();
+      },
+    );
   }
 
   Widget cell(SCMaterialListModel model) {

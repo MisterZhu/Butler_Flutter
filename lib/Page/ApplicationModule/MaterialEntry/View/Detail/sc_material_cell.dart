@@ -6,6 +6,7 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Utils/Strings/sc_string.dart';
 import '../../../../../Network/sc_config.dart';
 import '../../Model/sc_material_list_model.dart';
+import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../AddMaterial/sc_material_stepper.dart';
 
 /// 详情cell
@@ -20,12 +21,23 @@ const int scMaterialCellTypeDelete = 2;
 /// 盘点cell
 const int scMaterialCellTypeInventory = 3;
 
+/// 资产-默认cell
+const int scPropertyCellTypeNormal = 4;
+
+/// 资产-勾选cell
+const int scPropertyCellTypeRadio = 5;
+
+/// 资产-删除cell
+const int scPropertyCellTypeDelete = 6;
+
+
 /// 物资cell
 class SCMaterialCell extends StatefulWidget {
   const SCMaterialCell(
       {Key? key,
       required this.type,
       this.model,
+      this.propertyModel,
       this.onTap,
       this.numChangeAction,
       this.radioTap,
@@ -37,6 +49,7 @@ class SCMaterialCell extends StatefulWidget {
 
   final SCMaterialListModel? model;
 
+  final SCPropertyListModel? propertyModel;
   /// cell点击
   final Function? onTap;
 
@@ -92,6 +105,12 @@ class SCMaterialCellState extends State<SCMaterialCell> {
       return deleteCell();
     } else if (widget.type == scMaterialCellTypeInventory) {
       return inventoryCell();
+    } else if (widget.type == scPropertyCellTypeNormal) {
+      return propertyNormalCell();
+    } else if (widget.type == scPropertyCellTypeRadio) {
+      return propertyRadioCell();
+    } else if (widget.type == scPropertyCellTypeDelete) {
+      return propertyDeleteCell();
     } else {
       return normalCell();
     }
@@ -117,6 +136,77 @@ class SCMaterialCellState extends State<SCMaterialCell> {
                 width: 10.0,
               ),
               numView()
+            ],
+          ),
+        ));
+  }
+
+  /// 资产-normal cell
+  Widget propertyNormalCell() {
+    return DecoratedBox(
+        decoration: BoxDecoration(
+            color: SCColors.color_FFFFFF,
+            borderRadius: BorderRadius.circular(4.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              imageView(),
+              const SizedBox(
+                width: 8.0,
+              ),
+              detailInfoView(),
+            ],
+          ),
+        ));
+  }
+
+  /// 资产-勾选cell
+  Widget propertyRadioCell() {
+    return DecoratedBox(
+        decoration: BoxDecoration(
+            color: SCColors.color_FFFFFF,
+            borderRadius: BorderRadius.circular(4.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              radioView(),
+              const SizedBox(
+                width: 8.0,
+              ),
+              imageView(),
+              const SizedBox(
+                width: 8.0,
+              ),
+              detailInfoView(),
+            ],
+          ),
+        ));
+  }
+
+  /// 资产-删除cell
+  Widget propertyDeleteCell() {
+    return DecoratedBox(
+        decoration: BoxDecoration(
+            color: SCColors.color_FFFFFF,
+            borderRadius: BorderRadius.circular(4.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              deleteView(),
+              const SizedBox(
+                width: 8.0,
+              ),
+              imageView(),
+              const SizedBox(
+                width: 8.0,
+              ),
+              detailInfoView(),
             ],
           ),
         ));
@@ -297,10 +387,10 @@ class SCMaterialCellState extends State<SCMaterialCell> {
   /// 物资信息-详情
   Widget detailInfoView() {
     return Expanded(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [nameLabel(), infoLabel(10)],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [nameLabel(), infoLabel(10)],
     ));
   }
 
@@ -391,11 +481,15 @@ class SCMaterialCellState extends State<SCMaterialCell> {
   /// 物资名称label
   Widget nameLabel() {
     String name = '';
-    if (widget.model?.materialName != null) {
-      name = widget.model?.materialName ?? '';
-    }
-    if (widget.model?.name != null) {
-      name = widget.model?.name ?? '';
+    if (widget.type == scPropertyCellTypeNormal || widget.type == scPropertyCellTypeRadio || widget.type == scPropertyCellTypeDelete) {
+      name = widget.propertyModel?.assetName ?? '';
+    } else {
+      if (widget.model?.materialName != null) {
+        name = widget.model?.materialName ?? '';
+      }
+      if (widget.model?.name != null) {
+        name = widget.model?.name ?? '';
+      }
     }
     return Text(
       name,
@@ -414,6 +508,8 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     if (widget.type == scMaterialCellTypeInventory) {
       text =
           '单位:${widget.model?.unitName} 条形码:${widget.model?.barCode}\n规格:${widget.model?.norms}\n账面库存:${widget.model?.number}';
+    } else if (widget.type == scPropertyCellTypeNormal || widget.type == scPropertyCellTypeRadio || widget.type == scPropertyCellTypeDelete) {
+      text = '单位:${widget.propertyModel?.unitName ?? ''}\n规格:${widget.propertyModel?.norms ?? ''}\n资产编号:${widget.propertyModel?.assetCode ?? ''}';
     } else {
       text =
           '单位:${widget.model?.unitName} 条形码:${widget.model?.barCode}\n规格:${widget.model?.norms}';
@@ -459,7 +555,11 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// radio
   Widget radioView() {
-    isSelect = widget.model?.isSelect ?? false;
+    if (widget.type == scPropertyCellTypeNormal || widget.type == scPropertyCellTypeRadio || widget.type == scPropertyCellTypeDelete) {
+      isSelect = widget.propertyModel?.isSelect ?? false;
+    } else {
+      isSelect = widget.model?.isSelect ?? false;
+    }
     String path =
         isSelect ? SCAsset.iconMaterialSelected : SCAsset.iconMaterialUnselect;
     return GestureDetector(

@@ -10,6 +10,7 @@ import '../../../Login/Home/Model/sc_user_model.dart';
 import '../../MaterialEntry/Model/sc_entry_type_model.dart';
 import '../../MaterialEntry/Model/sc_material_list_model.dart';
 import '../../MaterialEntry/Model/sc_material_task_detail_model.dart';
+import '../Model/sc_property_list_model.dart';
 import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
 
 /// 新增资产报损controller
@@ -21,8 +22,8 @@ class SCAddPropertyFrmLossController extends GetxController {
   /// 入库类型数组
   List<SCEntryTypeModel> typeList = [];
 
-  /// 已选择的物资数据
-  List<SCMaterialListModel> selectedList = [];
+  /// 已选择的资产数据
+  List<SCPropertyListModel> selectedList = [];
 
   /// 是否是编辑
   bool isEdit = false;
@@ -40,10 +41,10 @@ class SCAddPropertyFrmLossController extends GetxController {
   int typeIndex = -1;
 
   /// 使用组织(或部门)
-  String userOrgName = '';
+  String fetchOrgName = '';
 
   /// 使用组织(或部门)ID
-  String userOrgId = '';
+  String fetchOrgId = '';
 
   /// 报损人
   String reportUserName = '';
@@ -100,10 +101,10 @@ class SCAddPropertyFrmLossController extends GetxController {
       typeID = params['type'];
 
       /// 使用组织(或部门)
-      userOrgName = params['userOrgName'];
+      fetchOrgName = params['fetchOrgName'];
 
       /// 使用组织(或部门)ID
-      userOrgId = params['userOrgId'];
+      fetchOrgId = params['fetchOrgId'];
 
       /// 报损人
       reportUserName = params['reportUserName'];
@@ -142,8 +143,8 @@ class SCAddPropertyFrmLossController extends GetxController {
     }
   }
 
-  /// 新增调拨, status=0暂存，1提交
-  addTransfer({required int status, required dynamic data}) {
+  /// 新增报损, status=0暂存，1提交
+  addFrmLoss({required int status, required dynamic data}) {
     var params = {
       "files": data['files'],
       "materials": data['materialList'],
@@ -151,8 +152,8 @@ class SCAddPropertyFrmLossController extends GetxController {
       "status": status,
       "type": data['typeId'],
       "typeName": data['typeName'],
-      "userOrgName": data['userOrgName'],
-      "userOrgId": data['userOrgId'],
+      "fetchOrgName": data['fetchOrgName'],
+      "fetchOrgId": data['fetchOrgId'],
       "reportUserName": data['reportUserName'],
       "reportUserId": data['reportUserId'],
       "reportOrgName": data['reportOrgName'],
@@ -161,12 +162,12 @@ class SCAddPropertyFrmLossController extends GetxController {
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kAddFrmLossUrl,
+        url: SCUrl.kAddPropertyFrmLossUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialFrmLossPage});
+              .fire({'key': SCKey.kRefreshPropertyFrmLossPage});
           SCRouterHelper.back(null);
         },
         failure: (value) {
@@ -174,7 +175,7 @@ class SCAddPropertyFrmLossController extends GetxController {
         });
   }
 
-  /// 编辑入库基础信息
+  /// 编辑报损基础信息
   editMaterialBaseInfo({required dynamic data}) {
     print('编辑基础信息=========$data');
     //List materialList = data['materialList'];
@@ -183,8 +184,8 @@ class SCAddPropertyFrmLossController extends GetxController {
       "remark": data['remark'],
       "type": data['typeId'],
       "typeName": data['typeName'],
-      "userOrgName": data['userOrgName'],
-      "userOrgId": data['userOrgId'],
+      "fetchOrgName": data['fetchOrgName'],
+      "fetchOrgId": data['fetchOrgId'],
       "reportUserName": data['reportUserName'],
       "reportUserId": data['reportUserId'],
       "reportOrgName": data['reportOrgName'],
@@ -199,7 +200,7 @@ class SCAddPropertyFrmLossController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialFrmLossPage});
+              .fire({'key': SCKey.kRefreshPropertyFrmLossPage});
           SCRouterHelper.back(null);
         },
         failure: (value) {
@@ -289,19 +290,19 @@ class SCAddPropertyFrmLossController extends GetxController {
   /// 报损详情
   loadMaterialEntryDetail() {
     SCHttpManager.instance.get(
-        url: SCUrl.kMaterialFrmLossDetailUrl,
+        url: SCUrl.kPropertyFrmLossDetailUrl,
         params: {'id': editId},
         success: (value) {
           SCLoadingUtils.hide();
           SCMaterialTaskDetailModel model =
           SCMaterialTaskDetailModel.fromJson(value);
-          List<SCMaterialListModel> materials = model.materials ?? [];
-          for (SCMaterialListModel subModel in materials) {
-            subModel.localNum = subModel.number ?? 1;
-            subModel.isSelect = true;
-            subModel.name = subModel.materialName ?? '';
-          }
-          updateSelectedMaterial(materials);
+          // List<SCPropertyListModel> materials = model.materials ?? [];
+          // for (SCMaterialListModel subModel in materials) {
+          //   subModel.localNum = subModel.number ?? 1;
+          //   subModel.isSelect = true;
+          //   subModel.name = subModel.materialName ?? '';
+          // }
+          //updateSelectedMaterial(materials);
         },
         failure: (value) {
           SCToast.showTip(value['message']);
@@ -309,7 +310,7 @@ class SCAddPropertyFrmLossController extends GetxController {
   }
 
   /// 更新已选的物资数据
-  updateSelectedMaterial(List<SCMaterialListModel> list) {
+  updateSelectedMaterial(List<SCPropertyListModel> list) {
     selectedList = list;
     update();
   }

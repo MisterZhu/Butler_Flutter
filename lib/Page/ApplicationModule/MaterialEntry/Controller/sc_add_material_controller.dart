@@ -3,6 +3,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Constants/sc_enum.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
+import '../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../Model/sc_material_list_model.dart';
 
 /// 新增物资controller
@@ -32,6 +33,12 @@ class SCAddMaterialController extends GetxController {
   /// 是否是盘点物资
   bool check = false;
 
+  /// 是否是资产
+  bool isProperty = false;
+
+  /// 部门id
+  String orgId = '';
+
   /// 物资类型，1-入库，2-出库，3-报损，4-调拨，5-盘点
   SCWarehouseManageType materialType = SCWarehouseManageType.entry;
 
@@ -40,6 +47,12 @@ class SCAddMaterialController extends GetxController {
 
   /// 默认已选的数据
   List<SCMaterialListModel> originalList = [];
+
+  /// 数据源
+  List<SCPropertyListModel> propertyList = [];
+
+  /// 默认已选的数据
+  List<SCPropertyListModel> originalPropertyList = [];
 
   @override
   onInit() {
@@ -134,6 +147,34 @@ class SCAddMaterialController extends GetxController {
           if (isLoadMore) {
             pageNum--;
           }
+          SCToast.showTip(value['message']);
+          completeHandler?.call(false, false);
+        });
+  }
+
+  /// 新增资产-资产列表数据
+  loadPropertyListData({Function(bool success, bool last)? completeHandler}) {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kAddFrmLossPropertyListUrl,
+        params: {"fetchOrgId": orgId},
+        isQuery: true,
+        success: (value) {
+          print('资产列表==============$value');
+          SCLoadingUtils.hide();
+          propertyList = List<SCPropertyListModel>.from(
+              value.map((e) => SCPropertyListModel.fromJson(e)).toList());
+          for (SCPropertyListModel model in propertyList) {
+            for (SCPropertyListModel subModel in originalPropertyList) {
+              if (model.assetId == subModel.assetId) {
+                model.isSelect = true;
+              }
+            }
+          }
+          update();
+          completeHandler?.call(false, true);
+        },
+        failure: (value) {
           SCToast.showTip(value['message']);
           completeHandler?.call(false, false);
         });

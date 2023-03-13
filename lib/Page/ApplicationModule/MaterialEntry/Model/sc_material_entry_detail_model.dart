@@ -1,6 +1,8 @@
 import 'dart:core';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
 
+import '../../PropertyFrmLoss/Model/sc_property_list_model.dart';
+
 /// creator : ""
 /// creatorName : ""
 /// gmtCreate : ""
@@ -39,7 +41,8 @@ class SCMaterialEntryDetailModel {
       String? materialNames, 
       int? materialNums, 
       List<SCMaterialListModel>? materials,
-      String? number,
+    List<SCPropertyListModel>? assets,
+    String? number,
       String? mobileNum,
       String? operator, 
       String? operatorName, 

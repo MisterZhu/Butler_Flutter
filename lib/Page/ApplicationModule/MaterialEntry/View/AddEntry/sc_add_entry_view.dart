@@ -138,15 +138,24 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         requiredPhotos: widget.state.isEdit ? false : true,
         remark: widget.state.remark,
         files: widget.state.files,
-        selectAction: (index) {
-          if (index == 0) {
+        selectAction: (index, title) {
+          if (title == '仓库名称') {
             // 仓库名称
             List list = widget.state.wareHouseList.map((e) => e.name).toList();
             showAlert(0, '仓库名称', list);
-          } else if (index == 1) {
-            // 类型
+          } else if (title == '入库类型') {
+            // 入库类型
             List list = widget.state.typeList.map((e) => e.name).toList();
-            showAlert(1, '类型', list);
+            showAlert(1, '入库类型', list);
+          } else if (title == '物资类型') {
+            // 物资类型
+            List list = widget.state.materialTypeList.map((e) => e).toList();
+            showAlert(2, '物资类型', list);
+          } else if (title == '采购需求单') {
+
+          } else if (title == '入库日期') {
+            // 入库日期
+            showTimeAlert(context);
           }
         },
         inputAction: (content) {
@@ -198,8 +207,11 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       // 仓库名称
       currentIndex = widget.state.nameIndex;
     } else if (index == 1) {
-      // 类型
+      // 入库类型
       currentIndex = widget.state.typeIndex;
+    } else if (index == 2) {
+      // 物资类型
+      currentIndex = widget.state.materialTypeIndex;
     }
     SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
       SCDialogUtils().showCustomBottomDialog(
@@ -231,6 +243,13 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
                   widget.state.typeIndex = selectIndex;
                   widget.state.type = model.name ?? '';
                   widget.state.typeID = subModel.code ?? 0;
+                  if (widget.state.type == '归还入库' || widget.state.type == '采购入库') {
+                    getBaseInfoList();
+                  }
+                } else if (index == 2) {
+                  // 资产类型
+                  widget.state.materialTypeIndex = selectIndex;
+                  widget.state.materialType = widget.state.materialTypeList[selectIndex] ?? '';
                 }
               });
             },
@@ -271,11 +290,32 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       },
       {
         'isRequired': true,
-        'title': '类型',
+        'title': '入库类型',
         'content': widget.state.type,
         'disable' : widget.state.isEdit
-      }
+      },
     ];
+    if (widget.state.type == '归还入库') {
+      baseInfoList.add({
+        'isRequired': true,
+        'title': '物资类型',
+        'content': widget.state.materialType,
+        'disable' : widget.state.isEdit
+      });
+    } else if (widget.state.type == '采购入库') {
+      baseInfoList.add({
+        'isRequired': true,
+        'title': '采购需求单',
+        'content': widget.state.purchaseId,
+        'disable' : widget.state.isEdit
+      });
+    }
+    baseInfoList.add({
+      'isRequired': true,
+      'title': '入库日期',
+      'content': widget.state.entryTime,
+      'disable' : widget.state.isEdit
+    });
     if (widget.state.isReturnEntry == true) {
       baseInfoList = [
         {
@@ -286,7 +326,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         },
         {
           'isRequired': true,
-          'title': '类型',
+          'title': '入库类型',
           'content': widget.state.type,
           'disable' : true
         },

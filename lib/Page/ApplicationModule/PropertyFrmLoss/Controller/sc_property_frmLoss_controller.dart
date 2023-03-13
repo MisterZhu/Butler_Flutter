@@ -90,23 +90,16 @@ class SCPropertyFrmLossController extends GetxController {
       "pageSize": 20
     };
     SCHttpManager.instance.post(
-        url: SCUrl.kMaterialFrmLossListUrl,
+        url: SCUrl.kPropertyFrmLossListUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
-          if (value is Map) {
-            List list = value['records'];
-            if (isLoadMore == true) {
-              dataList.addAll(List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
-            } else {
-              dataList = List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
-            }
+          if (isLoadMore == true) {
+            dataList.addAll(List<SCMaterialEntryModel>.from(
+                value.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
           } else {
-            if (isLoadMore == false) {
-              dataList = [];
-            }
+            dataList = List<SCMaterialEntryModel>.from(
+                value.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
           }
           update();
           bool last = false;
@@ -145,7 +138,7 @@ class SCPropertyFrmLossController extends GetxController {
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kSubmitFrmLossUrl,
+        url: SCUrl.kSubmitPropertyFrmLossUrl,
         isQuery: true,
         params: params,
         success: (value) {

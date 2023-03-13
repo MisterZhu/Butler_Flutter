@@ -267,4 +267,23 @@ class SCUrl {
   /// 编辑盘点基础信息
   static const String kEditCheckBaseInfoUrl = "/api/warehouse/app/warehouse/check/update";
 
+  /************************* 固定资产报损 *************************/
+
+  /// 报损列表
+  static const String kPropertyFrmLossListUrl = "/api/warehouse-zyj/app/asset/report/list";
+
+  /// 新增报损
+  static const String kAddPropertyFrmLossUrl = "/api/warehouse-zyj/app/asset/report/save";
+
+  /// 报损详情
+  static const String kPropertyFrmLossDetailUrl = "/api/warehouse-zyj/app/asset/report/detail";
+
+  /// 提交报损
+  static const String kSubmitPropertyFrmLossUrl = "/api/warehouse-zyj/app/asset/report/submitWareHouseReport";
+
+  /// 编辑物资报损基础信息
+  static const String kEditAddPropertyFrmLossBaseInfoUrl = "/api/warehouse-zyj/app/asset/report/edit";
+
+  /// 资产列表
+  static const String kAddFrmLossPropertyListUrl = "/api/warehouse-zyj/fixedMaterialAccount/listAssets";
 }

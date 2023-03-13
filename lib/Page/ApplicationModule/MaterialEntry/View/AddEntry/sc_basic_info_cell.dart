@@ -30,7 +30,7 @@ class SCBasicInfoCell extends StatefulWidget {
   final List? rangeList;
 
   /// 点击选择
-  final Function(int index)? selectAction;
+  final Function(int index, String title)? selectAction;
 
   /// 输入任务名称
   final Function(String content)? inputNameAction;
@@ -157,7 +157,7 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
             hideArrow: hideArrow,
             selectAction: () {
               SCUtils().hideKeyboard(context: context);
-              widget.selectAction?.call(index);
+              widget.selectAction?.call(index, dic['title']);
             },
             inputNameAction: (value) {
               widget.inputNameAction?.call(value);

@@ -69,7 +69,7 @@ class SCPropertyFrmLossPageState extends State<SCPropertyFrmLossPage> with Autom
   addNotification() {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
-      if (key == SCKey.kRefreshMaterialFrmLossPage) {
+      if (key == SCKey.kRefreshPropertyFrmLossPage) {
         controller.loadData(isMore: false);
       }
     });

@@ -4,6 +4,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/sc_utils.dart';
+import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../../Controller/sc_add_material_controller.dart';
 import 'sc_add_material_listview.dart';
 
@@ -56,6 +57,7 @@ class SCAddExitsMaterialViewState extends State<SCAddExitsMaterialView> {
       state: widget.state,
       refreshController: widget.refreshController,
       list: widget.state.materialList,
+      propertyList: widget.state.propertyList,
       radioTap: () {
         setState(() {});
       },
@@ -89,8 +91,14 @@ class SCAddExitsMaterialViewState extends State<SCAddExitsMaterialView> {
             onTap: () {
               setState(() {
                 allSelected = !allSelected;
-                for (SCMaterialListModel model in widget.state.materialList) {
-                  model.isSelect = allSelected;
+                if (widget.state.isProperty == true) {
+                  for (SCPropertyListModel model in widget.state.propertyList) {
+                    model.isSelect = allSelected;
+                  }
+                } else {
+                  for (SCMaterialListModel model in widget.state.materialList) {
+                    model.isSelect = allSelected;
+                  }
                 }
                 widget.state.update();
               });

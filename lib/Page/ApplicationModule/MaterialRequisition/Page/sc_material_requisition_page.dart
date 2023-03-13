@@ -24,6 +24,9 @@ class SCMaterialRequisitionPageState extends State<SCMaterialRequisitionPage> wi
   /// SCMaterialEntryController - tag
   String controllerTag = '';
 
+  /// notify
+  late StreamSubscription subscription;
+
   @override
   initState() {
     super.initState();
@@ -32,6 +35,7 @@ class SCMaterialRequisitionPageState extends State<SCMaterialRequisitionPage> wi
     controller = Get.put(SCMaterialRequisitionController(), tag: controllerTag);
     controller.loadOutboundData(isMore: false);
     initPageParams();
+    addNotification();
   }
 
   initPageParams() {
@@ -43,8 +47,31 @@ class SCMaterialRequisitionPageState extends State<SCMaterialRequisitionPage> wi
     }
   }
 
+  /// 通知
+  addNotification() {
+    subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
+      String key = event['key'];
+      if (key == SCKey.kRefreshMaterialRequisitionPage) {
+        if (controller.categoryIndex == 0) {
+          controller.loadOutboundData(
+              isMore: false,
+              completeHandler: (bool success, bool last) {
+
+              });
+        } else {
+          controller.loadEntryData(
+              isMore: false,
+              completeHandler: (bool success, bool last) {
+
+              });
+        }
+      }
+    });
+  }
+
   @override
   dispose() {
+    subscription.cancel();
     SCScaffoldManager.instance
         .deleteGetXControllerTag(pageName(), controllerTag);
     controller.dispose();

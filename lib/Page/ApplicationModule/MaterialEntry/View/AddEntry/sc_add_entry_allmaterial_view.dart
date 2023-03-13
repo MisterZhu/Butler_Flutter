@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../../Model/sc_material_list_model.dart';
 import '../Detail/sc_material_cell.dart';
 
@@ -10,11 +11,16 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
     required this.list, this.deleteAction,
     this.updateNumAction,
     this.hideMaterialNumTextField,
-    this.isReturnEntry
+    this.isReturnEntry,
+    this.propertyList,
+    this.isProperty
   }) : super(key: key);
 
   /// 数据源
   final List<SCMaterialListModel> list;
+
+  /// 数据源
+  final List<SCPropertyListModel>? propertyList;
 
   /// 删除物资
   final Function(int index)? deleteAction;
@@ -27,12 +33,13 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
 
   /// 是否是物资出入库-归还入库
   final bool? isReturnEntry;
-
+  /// 是否是资产
+  final bool? isProperty;
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: allMaterialList(),
+      children: isProperty == true ? allPropertyList() : allMaterialList(),
     );
   }
 
@@ -48,31 +55,58 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
     return itemList;
   }
 
+  /// 所有物资列表
+  List<Widget> allPropertyList() {
+    List<Widget> itemList = [];
+    for (int i=0; i<propertyList!.length; i++) {
+      itemList.add(cell(i));
+      if (i != propertyList!.length - 1) {
+        itemList.add(line());
+      }
+    }
+    return itemList;
+  }
+
 
   /// cell
   Widget cell(int index) {
-    SCMaterialListModel model = list[index];
-    if (isReturnEntry == true) {
-      return SCMaterialCell(
-        model: model,
-        type: scMaterialCellTypeNormal,
-      );
-    } else {
+    if (isProperty == true) {
+      SCPropertyListModel propertyModel = propertyList![index];
       return SCMaterialCell(
         hideMaterialNumTextField: hideMaterialNumTextField,
-        type: scMaterialCellTypeDelete,
-        model: model,
+        type: scPropertyCellTypeDelete,
+        propertyModel: propertyModel,
         onTap: () {
 
         },
         deleteAction: () {
           deleteAction?.call(index);
         },
-        numChangeAction: (int value) {
-          model.localNum = value;
-          updateNumAction?.call(index, value);
-        },
       );
+    } else {
+    SCMaterialListModel model = list[index];
+    if (isReturnEntry == true) {
+        return SCMaterialCell(
+          model: model,
+          type: scMaterialCellTypeNormal,
+        );
+      } else {
+        return SCMaterialCell(
+          hideMaterialNumTextField: hideMaterialNumTextField,
+          type: scMaterialCellTypeDelete,
+          model: model,
+          onTap: () {
+
+          },
+          deleteAction: () {
+            deleteAction?.call(index);
+          },
+          numChangeAction: (int value) {
+            model.localNum = value;
+            updateNumAction?.call(index, value);
+          },
+        );
+      }
     }
   }
 

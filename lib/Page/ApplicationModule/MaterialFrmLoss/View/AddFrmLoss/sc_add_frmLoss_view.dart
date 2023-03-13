@@ -128,7 +128,7 @@ class SCAddFrmLossViewState extends State<SCAddFrmLossView> {
         requiredPhotos: widget.state.isEdit ? false : true,
         remark: widget.state.remark,
         files: widget.state.files,
-        selectAction: (index) async {
+        selectAction: (index, title) async {
           if (index == 0) {
             // 仓库名称
             List list = widget.state.wareHouseList.map((e) => e.name).toList();

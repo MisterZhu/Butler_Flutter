@@ -7,9 +7,7 @@ import 'package:flutter_picker/Picker.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
-import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_basic_info_cell.dart';
-import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_material_info_cell.dart';
 import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
@@ -18,9 +16,10 @@ import '../../../WorkBench/Home/Model/sc_home_task_model.dart';
 import '../../../WorkBench/Home/View/Alert/sc_task_module_alert.dart';
 import '../../HouseInspect/View/sc_bottom_button_item.dart';
 import '../../MaterialEntry/Model/sc_entry_type_model.dart';
+import '../../MaterialEntry/View/AddEntry/sc_material_info_cell.dart';
+import '../Model/sc_property_list_model.dart';
 import '../../MaterialEntry/Model/sc_selectcategory_model.dart';
 import '../../MaterialEntry/Model/sc_selectcategory_tree_model.dart';
-import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
 import '../../MaterialEntry/View/SelectCategoryAlert/sc_add_material_selectcategory_alert.dart';
 import '../../MaterialOutbound/Controller/sc_select_department_controller.dart';
 import '../../MaterialOutbound/Model/sc_receiver_model.dart';
@@ -129,7 +128,7 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
         requiredPhotos: widget.state.isEdit ? false : true,
         remark: widget.state.remark,
         files: widget.state.files,
-        selectAction: (index) async {
+        selectAction: (index, title) async {
           if (index == 0) {
             // 类型
             List list = widget.state.typeList.map((e) => e.name).toList();
@@ -158,18 +157,16 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
       );
     } else if (index == 1) {
       return SCMaterialInfoCell(
-        title: '物资信息',
+        title: '资产信息',
         showAdd: true,
-        list: widget.state.selectedList,
+        list: [],
+        propertyList: widget.state.selectedList,
+        isProperty: true,
         addAction: () {
           addAction();
         },
         deleteAction: (int subIndex) {
           deleteAction(subIndex);
-        },
-        updateNumAction: (int index, int value) {
-          widget.state.update();
-          editOneMaterial(index);
         },
       );
     } else {
@@ -252,7 +249,7 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
       {
         'isRequired': true,
         'title': '使用部门',
-        'content': widget.state.userOrgName
+        'content': widget.state.fetchOrgName
       },
       {
         'isRequired': true,
@@ -275,7 +272,7 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
 
   /// 添加物资
   addAction() async {
-    if (widget.state.userOrgId.isEmpty) {
+    if (widget.state.fetchOrgId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectUserDepartment);
       return;
     }
@@ -289,9 +286,10 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
   /// 新增物资-添加物资
   addMaterialAction() async {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
-      'data': widget.state.selectedList,
-      'wareHouseId': widget.state.userOrgId,
-      "materialType" : SCWarehouseManageType.propertyFrmLoss
+      'propertyData': widget.state.selectedList,
+      'materialType' : SCWarehouseManageType.propertyFrmLoss,
+      'orgId': widget.state.fetchOrgId,
+      'isProperty': true
     });
     if (list != null) {
       onlyAddMaterial(list);
@@ -301,10 +299,11 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
   /// 编辑物资-添加既存物资
   addExitsMaterialAction() async {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
-      'data': widget.state.selectedList,
-      'wareHouseId': widget.state.userOrgId,
+      'propertyData': widget.state.selectedList,
+      'orgId': widget.state.fetchOrgId,
       'isEdit': true,
-      "materialType" : SCWarehouseManageType.propertyFrmLoss
+      "materialType" : SCWarehouseManageType.propertyFrmLoss,
+      'isProperty': true
     });
     if (list != null) {
       editAddMaterial(list);
@@ -312,14 +311,15 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
   }
 
   /// 新增物资-添加
-  onlyAddMaterial(List<SCMaterialListModel> list) {
+  onlyAddMaterial(List<SCPropertyListModel> list) {
+    print('新增物资==================$list');
     widget.state.updateSelectedMaterial(list);
   }
 
   /// 删除物资
   deleteAction(int index) {
     if (widget.state.isEdit) {
-      SCMaterialListModel model = widget.state.selectedList[index];
+      SCPropertyListModel model = widget.state.selectedList[index];
       print("物资id===${model.id}");
       widget.state.deleteMaterial(index);
       widget.state.editDeleteMaterial(materialInRelationId: model.id ?? '');
@@ -345,7 +345,7 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
       return;
     }
 
-    if (widget.state.userOrgId.isEmpty) {
+    if (widget.state.fetchOrgId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectUserDepartment);
       return;
     }
@@ -371,15 +371,14 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
     }
 
     List materialList = [];
-    for (SCMaterialListModel model in widget.state.selectedList) {
+    for (SCPropertyListModel model in widget.state.selectedList) {
       var params = model.toJson();
-      params['num'] = model.localNum;
       materialList.add(params);
     }
 
     var params = {
-      "userOrgId": widget.state.userOrgId,
-      "userOrgName": widget.state.userOrgName,
+      "fetchOrgId": widget.state.fetchOrgId,
+      "fetchOrgName": widget.state.fetchOrgName,
       "reportOrgId": widget.state.reportOrgId,
       "reportOrgName": widget.state.reportOrgName,
       "reportUserId": widget.state.reportUserId,
@@ -391,7 +390,7 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
       "materialList": materialList,
       "files": widget.state.files,
     };
-    widget.state.addTransfer(status: status, data: params);
+    widget.state.addFrmLoss(status: status, data: params);
   }
 
   /// 选择部门
@@ -527,9 +526,9 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
         widget.selectDepartmentController.currentDepartmentModel.enable ??
             false;
     if (enable) {
-      if (widget.state.userOrgId != (widget.selectDepartmentController.currentDepartmentModel.id ?? '')) {
-        widget.state.userOrgId = widget.selectDepartmentController.currentDepartmentModel.id ?? '';
-        widget.state.userOrgName = widget.selectDepartmentController.currentDepartmentModel.title ?? '';
+      if (widget.state.fetchOrgId != (widget.selectDepartmentController.currentDepartmentModel.id ?? '')) {
+        widget.state.fetchOrgId = widget.selectDepartmentController.currentDepartmentModel.id ?? '';
+        widget.state.fetchOrgName = widget.selectDepartmentController.currentDepartmentModel.title ?? '';
         widget.state.update();
       }
     } else {
@@ -598,7 +597,7 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
       return;
     }
 
-    if (widget.state.userOrgId.isEmpty) {
+    if (widget.state.fetchOrgId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectUserDepartment);
       return;
     }
@@ -626,8 +625,8 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
     var params = {
       "typeName": widget.state.type,
       "typeId": widget.state.typeID,
-      "userOrgName": widget.state.userOrgName,
-      "userOrgId": widget.state.userOrgId,
+      "fetchOrgName": widget.state.fetchOrgName,
+      "fetchOrgId": widget.state.fetchOrgId,
       "reportOrgName": widget.state.reportOrgName,
       "reportOrgId": widget.state.reportOrgId,
       "reportUserName": widget.state.reportUserName,
@@ -643,7 +642,7 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
   /// 编辑单条物资
   editOneMaterial(int index) {
     if (widget.state.isEdit) {
-      List<SCMaterialListModel> list = [widget.state.selectedList[index]];
+      List<SCPropertyListModel> list = [widget.state.selectedList[index]];
       widget.state.editMaterial(list: list);
     } else {
       widget.state.update();
@@ -651,33 +650,26 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
   }
 
   /// 新增物资-编辑
-  editAddMaterial(List<SCMaterialListModel> list) {
+  editAddMaterial(List<SCPropertyListModel> list) {
     print("原始数据===${widget.state.selectedList}");
 
     print("添加===$list");
 
     // 编辑的物资
-    List<SCMaterialListModel> editList = [];
+    List<SCPropertyListModel> editList = [];
     // 新增的物资
-    List<SCMaterialListModel> addList = [];
-    for (SCMaterialListModel model in list) {
+    List<SCPropertyListModel> addList = [];
+    for (SCPropertyListModel model in list) {
       // 是否存在
       bool contains = false;
       // 是否需要更新
       bool needUpdate = false;
-      SCMaterialListModel tempModel = SCMaterialListModel();
+      SCPropertyListModel tempModel = SCPropertyListModel();
 
-      for (SCMaterialListModel subModel in widget.state.selectedList) {
+      for (SCPropertyListModel subModel in widget.state.selectedList) {
         if (model.materialId == subModel.materialId) {
           contains = true;
-          tempModel = SCMaterialListModel.fromJson(subModel.toJson());
-          if (model.localNum == subModel.localNum) {
-            needUpdate = false;
-          } else {
-            tempModel.localNum = model.localNum;
-            subModel.localNum = model.localNum;
-            needUpdate = true;
-          }
+          tempModel = SCPropertyListModel.fromJson(subModel.toJson());
           break;
         } else {
           contains = false;
@@ -693,19 +685,16 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
       }
     }
 
-    for (SCMaterialListModel model in editList) {
+    for (SCPropertyListModel model in editList) {
       print("编辑的物资===${model.toJson()}");
     }
 
-    List<SCMaterialListModel> newList = widget.state.selectedList;
+    List<SCPropertyListModel> newList = widget.state.selectedList;
     List addJsonList = [];
-    for (SCMaterialListModel model in addList) {
+    for (SCPropertyListModel model in addList) {
       model.inId = widget.state.editId;
       newList.add(model);
       var subParams = model.toJson();
-      subParams['materialId'] = model.materialId;
-      subParams['materialName'] = model.materialName;
-      subParams['num'] = model.localNum;
       subParams['reportId'] = widget.state.editId;
       addJsonList.add(subParams);
       print("新增的物资===${subParams}");

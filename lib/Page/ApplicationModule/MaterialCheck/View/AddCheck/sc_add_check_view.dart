@@ -141,7 +141,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
           // 任务名称
           widget.state.taskName = value;
         },
-        selectAction: (index) async {
+        selectAction: (index, title) async {
           if (index == 1) {
             // 类型
             List list = widget.state.typeList.map((e) => e.name).toList();

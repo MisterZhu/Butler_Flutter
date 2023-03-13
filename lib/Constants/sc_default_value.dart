@@ -122,6 +122,9 @@ class SCDefaultValue {
   /// 仓储-入库-选择物资
   static const String selectMaterialTip = "请选择物资";
 
+  /// 仓储-入库-选择资产
+  static const String selectPropertyTip = "请选择资产";
+
   /// 仓储-入库-选择仓库名称
   static const String selectWareHouseNameTip = "请选择仓库名称";
 

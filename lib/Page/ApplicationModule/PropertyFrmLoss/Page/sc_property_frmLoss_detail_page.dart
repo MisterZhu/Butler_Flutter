@@ -5,7 +5,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_bottom_view.dart';
-import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_detail_listview.dart';
 import 'package:smartcommunity/Skin/View/sc_custom_scaffold.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
@@ -14,6 +13,7 @@ import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart';
 import '../../MaterialEntry/Model/sc_material_task_detail_model.dart';
+import '../../MaterialEntry/View/Detail/sc_material_detail_listview.dart';
 import '../Controller/sc_property_frmLoss_controller.dart';
 
 /// 固定资产报损详情
@@ -50,7 +50,7 @@ class SCPropertyFrmLossDetailPageState
       if (params.containsKey("canEdit")) {
         canEdit = params['canEdit'];
       }
-      controller.loadMaterialFrmLossDetail();
+      controller.loadPropertyFrmLossDetail();
     }
   }
 
@@ -181,7 +181,7 @@ class SCPropertyFrmLossDetailPageState
       "files": files,
       "id": id
     })?.then((value) {
-      controller.loadMaterialFrmLossDetail();
+      controller.loadPropertyFrmLossDetail();
     });
   }
 
@@ -192,7 +192,7 @@ class SCPropertyFrmLossDetailPageState
         id: controller.id,
         completeHandler: (bool success) {
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialFrmLossPage});
+              .fire({'key': SCKey.kRefreshPropertyFrmLossPage});
           SCRouterHelper.back(null);
         });
   }

@@ -118,7 +118,7 @@ class SCAddTransferViewState extends State<SCAddTransferView> {
         requiredPhotos: widget.state.isEdit ? false : true,
         remark: widget.state.remark,
         files: widget.state.files,
-        selectAction: (index) async {
+        selectAction: (index, title) async {
           if (index == 0) {
             // 调入仓库
             List list = widget.state.inWareHouseList.map((e) => e.name).toList();

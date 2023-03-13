@@ -22,6 +22,9 @@ class SCAddEntryController extends GetxController {
   /// 入库类型数组
   List<SCEntryTypeModel> typeList = [];
 
+  /// 物资类型数组
+  List materialTypeList = [];
+
   /// 已选择的物资数据
   List<SCMaterialListModel> selectedList = [];
 
@@ -70,10 +73,18 @@ class SCAddEntryController extends GetxController {
   /// 出库单ID
   String outId = '';
 
+  /// 物资类型：固定资产、低值易耗品
+  String materialType = '';
+  /// 物资类型index
+  int materialTypeIndex = -1;
+  /// 采购需求单
+  String purchaseId = '';
+
   @override
   onInit() {
     super.onInit();
     entryTime = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
+    materialTypeList = ['固定资产', '易耗品'];
     loadWareHouseList();
     loadWareHouseType();
   }
@@ -129,6 +140,7 @@ class SCAddEntryController extends GetxController {
       "wareHouseId": data['wareHouseId'],
       "wareHouseName": data['wareHouseName'],
       "workOrderId": orderId,
+      "outId": outId,
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
@@ -136,8 +148,13 @@ class SCAddEntryController extends GetxController {
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
-          SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialEntryPage});
+          if (isReturnEntry == true) {
+            SCScaffoldManager.instance.eventBus
+                .fire({'key': SCKey.kRefreshMaterialRequisitionPage});
+          } else {
+            SCScaffoldManager.instance.eventBus
+                .fire({'key': SCKey.kRefreshMaterialEntryPage});
+          }
           SCRouterHelper.back(null);
         },
         failure: (value) {
@@ -163,7 +180,7 @@ class SCAddEntryController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialEntryPage});
+                .fire({'key': SCKey.kRefreshMaterialEntryPage});
           SCRouterHelper.back(null);
         },
         failure: (value) {

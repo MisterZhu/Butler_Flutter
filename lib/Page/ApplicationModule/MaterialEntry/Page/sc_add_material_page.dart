@@ -9,6 +9,7 @@ import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Constants/sc_enum.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
+import '../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../Controller/sc_add_material_controller.dart';
 import '../Model/sc_material_list_model.dart';
 import '../View/AddMaterial/sc_add_material_empty_view.dart';
@@ -49,10 +50,14 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
     categoryAlertController = Get.put(SCCategoryAlertController(), tag: categoryAlertControllerTag);
     categoryAlertController.tag = categoryAlertControllerTag;
     initPageData();
-    if (controller.check == true) {
-
+    if (controller.isProperty == true) {
+      controller.loadPropertyListData();
     } else {
-      controller.loadMaterialListData();
+      if (controller.check == true) {
+
+      } else {
+        controller.loadMaterialListData();
+      }
     }
   }
 
@@ -96,13 +101,31 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
           });
         }
       }
+      if (params.containsKey('isProperty')) {
+        controller.isProperty = params['isProperty'];
+      }
+      if (params.containsKey('propertyData')) {
+        if (params['propertyData'] != null) {
+          controller.originalPropertyList = params['propertyData'];
+        }
+      }
+      if (params.containsKey('orgId')) {
+        controller.orgId = params['orgId'];
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    String title = "新增物资";
+    if (controller.check == true) {
+      title = "选择物资";
+    }
+    if (controller.isProperty == true) {
+      title = "选择资产";
+    }
     return SCCustomScaffold(
-        title: controller.check == true ? '选择物资' : "新增物资",
+        title: title,
         centerTitle: true,
         elevation: 0,
         resizeToAvoidBottomInset: false,
@@ -128,9 +151,14 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
                 type: state.materialType,
                 hideNumTextField: state.hideNumTextField,
                 check: state.check,
+                isProperty: state.isProperty,
                 sureAction: (List<SCMaterialListModel> list){
                   SCRouterHelper.back(list);
-                },);
+                },
+                propertySureAction: (List<SCPropertyListModel> list) {
+                  SCRouterHelper.back(list);
+                },
+              );
             }
           }),
     );

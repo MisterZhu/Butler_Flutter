@@ -4,6 +4,7 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialCheck/View/AddChec
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_add_entry_allmaterial_view.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../MaterialCheck/Model/sc_check_type_model.dart';
+import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../../Model/sc_material_list_model.dart';
 
 /// 物资信息cell
@@ -23,6 +24,9 @@ class SCMaterialInfoCell extends StatelessWidget {
 
   /// 物资数据源
   final List<SCMaterialListModel> list;
+
+  /// 物资数据源
+  final List<SCPropertyListModel>? propertyList;
 
   /// 物资分类数据源
   final List<SCCheckTypeModel>? categoryList;
@@ -45,6 +49,9 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 是否是物资出入库-归还入库
   final bool? isReturnEntry;
 
+  /// 是否是资产
+  final bool? isProperty;
+
   SCMaterialInfoCell({Key? key,
       required this.title,
       this.materialType = 0,
@@ -53,11 +60,14 @@ class SCMaterialInfoCell extends StatelessWidget {
       this.addAction,
       required this.list,
       this.categoryList,
+      this.propertyList,
       this.deleteAction,
       this.updateNumAction,
       required this.showAdd,
       this.hideMaterialNumTextField,
-      this.isReturnEntry}) : super(key: key);
+      this.isReturnEntry,
+    this.isProperty
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -169,6 +179,8 @@ class SCMaterialInfoCell extends StatelessWidget {
       hideMaterialNumTextField: hideMaterialNumTextField,
       list: list,
       isReturnEntry: isReturnEntry,
+      isProperty: isProperty,
+      propertyList: propertyList,
       deleteAction: (int index) {
         deleteAction?.call(index);
       },
