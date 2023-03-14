@@ -345,10 +345,6 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
 
   /// 添加物资
   addAction() async {
-    if (widget.state.wareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectWarehouseTip);
-      return;
-    }
     if (widget.state.isProperty == true) {
       if (widget.state.isEdit) {
         addExitsPropertyAction();

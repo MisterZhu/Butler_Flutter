@@ -164,6 +164,15 @@ class SCMaterialEntryCell extends StatelessWidget {
 
   /// 地址等信息
   Widget addressInfoView() {
+    String name = '';
+    if (type == SCWarehouseManageType.transfer) {
+      name = '调入：${model?.inWareHouseName}  调出：${model?.outWareHouseName}';
+    } else if (type == SCWarehouseManageType.propertyFrmLoss) {
+      name = model?.fetchOrgName ?? '';
+    } else {
+      name = model?.wareHouseName ?? '';
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
@@ -178,7 +187,7 @@ class SCMaterialEntryCell extends StatelessWidget {
           ),
           Expanded(
               child: Text(
-                type == SCWarehouseManageType.transfer ? '调入：${model?.inWareHouseName}  调出：${model?.outWareHouseName}' : model?.wareHouseName ?? '',
+                name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(

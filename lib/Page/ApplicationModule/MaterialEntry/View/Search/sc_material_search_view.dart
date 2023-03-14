@@ -6,6 +6,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/View/sc_bottom_button_item.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Constants/sc_default_value.dart';
+import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../../Controller/sc_material_search_controller.dart';

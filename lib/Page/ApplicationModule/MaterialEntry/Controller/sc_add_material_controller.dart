@@ -174,7 +174,6 @@ class SCAddMaterialController extends GetxController {
         "deleted": false,
         "enabled": true,
         "fields": [],
-        "wareHouseId": wareHouseId,  /// 仓库ID
       },
       "count": false,
       "last": false,
@@ -207,7 +206,7 @@ class SCAddMaterialController extends GetxController {
 
   /// 新增资产报损-资产列表数据
   loadPropertyFrmLossListData({Function(bool success, bool last)? completeHandler}) {
-    var params = {"fetchOrgId": orgId};
+    var params = {"fetchOrgId": orgId, "state": 0};
     if (classifyId != '') {
       params.addAll({"classifyId": classifyId});
     }
