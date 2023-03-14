@@ -353,19 +353,29 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
 
   /// 添加物资
   addAction() async {
-    if (widget.state.wareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectWarehouseTip);
-      return;
-    }
-
     if (widget.state.type == '采购入库') {
-    addPurchaseMaterialAction();
-    }
-    else if (widget.state.isProperty == true) {
-      if (widget.state.isEdit) {
-        addExitsPropertyAction();
+      if (widget.state.purchaseId.isEmpty) {
+        SCToast.showTip(SCDefaultValue.selectPurchaseIdTip);
+        return;
+      }
+      addPurchaseMaterialAction();
+    } else if (widget.state.type == '归还入库') {
+      if (widget.state.materialTypeName.isEmpty) {
+        SCToast.showTip(SCDefaultValue.selectMaterialTypeTip);
+        return;
+      }
+      if (widget.state.isProperty == true) {
+        if (widget.state.isEdit) {
+          addExitsPropertyAction();
+        } else {
+          addPropertyAction();
+        }
       } else {
-        addPropertyAction();
+        if (widget.state.isEdit) {
+          addExitsMaterialAction();
+        } else {
+          addMaterialAction();
+        }
       }
     } else {
       if (widget.state.isEdit) {

@@ -130,8 +130,6 @@ class SCUrl {
   /// 物资入库-编辑-新增资产
   static const String kEditAddEntryPropertyUrl = "";
 
-  /// 物资入库-编辑-删除资产
-  static const String kEditDeleteEntryPropertyUrl = "";
 
 
   /// 物资入库-编辑-编辑物资

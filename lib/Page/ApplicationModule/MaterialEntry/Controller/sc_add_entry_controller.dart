@@ -267,7 +267,7 @@ class SCAddEntryController extends GetxController {
     var params = {"materialInRelationId": materialInRelationId};
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kEditDeleteEntryPropertyUrl,
+        url: SCUrl.kEditDeleteEntryMaterialUrl,
         isQuery: true,
         params: params,
         success: (value) {
