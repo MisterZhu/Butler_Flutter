@@ -1,8 +1,10 @@
-class SCPropertyListModel {
-  SCPropertyListModel({
+class PropertyListModel {
+  PropertyListModel({
       this.id, 
-      this.materialId, 
-      this.assetId, 
+      this.materialId,
+    this.materialName,
+    this.assetId,
+    this.materialType,
       this.assetName, 
       this.assetCode, 
       this.materialCode, 
@@ -38,10 +40,12 @@ class SCPropertyListModel {
     this.inId,
   });
 
-  SCPropertyListModel.fromJson(dynamic json) {
+  PropertyListModel.fromJson(dynamic json) {
     id = json['id'];
     materialId = json['materialId'];
-    assetId = json['assetId'];
+    materialType = 1;
+    materialName = json['assetName'];
+    assetId = json['id'];
     assetName = json['assetName'];
     assetCode = json['assetCode'];
     materialCode = json['materialCode'];
@@ -78,6 +82,8 @@ class SCPropertyListModel {
   }
   String? id;
   String? materialId;
+  int? materialType;
+  String? materialName;
   String? assetId;
   String? assetName;
   String? assetCode;
@@ -94,8 +100,8 @@ class SCPropertyListModel {
   String? fetchUserId;
   String? fetchUserName;
   String? gmtFetch;
-  int? amount;
-  int? lossAmount;
+  double? amount;
+  double? lossAmount;
   String? supplierId;
   String? supplier;
   String? timePlan;
@@ -116,6 +122,8 @@ class SCPropertyListModel {
     final map = <String, dynamic>{};
     map['id'] = id;
     map['materialId'] = materialId;
+    map['materialType'] = materialType;
+    map['materialName'] = materialName;
     map['assetId'] = assetId;
     map['assetName'] = assetName;
     map['assetCode'] = assetCode;

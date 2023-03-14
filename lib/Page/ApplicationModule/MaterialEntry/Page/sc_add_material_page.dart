@@ -51,7 +51,11 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
     categoryAlertController.tag = categoryAlertControllerTag;
     initPageData();
     if (controller.isProperty == true) {
-      controller.loadPropertyFrmLossListData();
+      if (controller.materialType == SCWarehouseManageType.entry) {///新增入库-添加资产
+        controller.loadEntryPropertyListData();
+      } else if (controller.materialType == SCWarehouseManageType.propertyFrmLoss) {///资产报损-添加资产
+        controller.loadPropertyFrmLossListData();
+      }
     } else {
       if (controller.check == true) {
 
@@ -155,7 +159,7 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
                 sureAction: (List<SCMaterialListModel> list){
                   SCRouterHelper.back(list);
                 },
-                propertySureAction: (List<SCPropertyListModel> list) {
+                propertySureAction: (List<SCMaterialListModel> list) {
                   SCRouterHelper.back(list);
                 },
               );

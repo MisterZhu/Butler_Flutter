@@ -92,7 +92,7 @@ class SCAddExitsMaterialViewState extends State<SCAddExitsMaterialView> {
               setState(() {
                 allSelected = !allSelected;
                 if (widget.state.isProperty == true) {
-                  for (SCPropertyListModel model in widget.state.propertyList) {
+                  for (SCMaterialListModel model in widget.state.propertyList) {
                     model.isSelect = allSelected;
                   }
                 } else {

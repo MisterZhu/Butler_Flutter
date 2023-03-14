@@ -17,10 +17,10 @@ class SCMaterialSearchController extends GetxController {
   /// 默认已选的数据
   List<SCMaterialListModel> originalList = [];
 
-  List<SCPropertyListModel> propertyList = [];
+  List<SCMaterialListModel> propertyList = [];
 
   /// 默认已选的数据
-  List<SCPropertyListModel> originalPropertyList = [];
+  List<SCMaterialListModel> originalPropertyList = [];
 
 
   String tips = '';
@@ -127,7 +127,7 @@ class SCMaterialSearchController extends GetxController {
         "deleted": false,
         "enabled": true,
         "fields": [],
-        "name": searchString  /// 物资名称
+        "assetName": searchString  /// 物资名称
       },
       "count": false,
       "last": false,
@@ -140,18 +140,27 @@ class SCMaterialSearchController extends GetxController {
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
+          if ((value['records'] is List) == false) {
+            bool last = false;
+            if (isLoadMore) {
+              last = value['last'];
+            }
+            completeHandler?.call(false, last);
+            update();
+            return;
+          }
           List list = value['records'];
           if (isLoadMore == true) {
-            materialList.addAll(List<SCMaterialListModel>.from(
+            propertyList.addAll(List<SCMaterialListModel>.from(
                 list.map((e) => SCMaterialListModel.fromJson(e)).toList()));
           } else {
-            materialList = List<SCMaterialListModel>.from(
+            propertyList = List<SCMaterialListModel>.from(
                 list.map((e) => SCMaterialListModel.fromJson(e)).toList());
           }
-          for (SCMaterialListModel model in materialList) {
-            for (SCMaterialListModel subModel in originalList) {
+          for (SCMaterialListModel model in propertyList) {
+            model.materialType = 1;
+            for (SCMaterialListModel subModel in originalPropertyList) {
               if (model.id == subModel.id) {
-                model.localNum = subModel.localNum;
                 model.isSelect = true;
               }
             }
@@ -187,21 +196,22 @@ class SCMaterialSearchController extends GetxController {
       pageNum = 1;
       SCLoadingUtils.show();
     }
-    var params = {"fetchOrgId": orgId, "assetName": searchString};
+    var params = {"fetchOrgId": orgId, "assetName": searchString, "state": 0};
     SCHttpManager.instance.post(
         url: SCUrl.kAddFrmLossPropertyListUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
           if (isLoadMore == true) {
-            propertyList.addAll(List<SCPropertyListModel>.from(
-                value.map((e) => SCPropertyListModel.fromJson(e)).toList()));
+            propertyList.addAll(List<SCMaterialListModel>.from(
+                value.map((e) => SCMaterialListModel.fromJson(e)).toList()));
           } else {
-            propertyList = List<SCPropertyListModel>.from(
-                value.map((e) => SCPropertyListModel.fromJson(e)).toList());
+            propertyList = List<SCMaterialListModel>.from(
+                value.map((e) => SCMaterialListModel.fromJson(e)).toList());
           }
-          for (SCPropertyListModel model in propertyList) {
-            for (SCPropertyListModel subModel in originalPropertyList) {
+          for (SCMaterialListModel model in propertyList) {
+            model.materialType = 1;
+            for (SCMaterialListModel subModel in originalPropertyList) {
               if (model.id == subModel.id) {
                 model.isSelect = true;
               }

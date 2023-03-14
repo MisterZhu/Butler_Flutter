@@ -152,8 +152,8 @@ class SCPropertyFrmLossDetailPageState
     int type = controller.model.type ?? 0;
     String remark = controller.model.remark ?? '';
     String id = controller.model.id ?? '';
-    List<SCPropertyListModel> assets = controller.model.assets ?? [];
-    for (SCPropertyListModel model in assets) {
+    List<SCMaterialListModel> assets = controller.model.assets ?? [];
+    for (SCMaterialListModel model in assets) {
       model.isSelect = true;
     }
 

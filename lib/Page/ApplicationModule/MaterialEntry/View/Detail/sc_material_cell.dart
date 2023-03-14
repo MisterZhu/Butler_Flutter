@@ -49,7 +49,7 @@ class SCMaterialCell extends StatefulWidget {
 
   final SCMaterialListModel? model;
 
-  final SCPropertyListModel? propertyModel;
+  final SCMaterialListModel? propertyModel;
   /// cell点击
   final Function? onTap;
 
@@ -507,16 +507,16 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     String text = '';
     if (widget.type == scMaterialCellTypeInventory) {
       text =
-          '单位:${widget.model?.unitName} 条形码:${widget.model?.barCode}\n规格:${widget.model?.norms}\n账面库存:${widget.model?.number}';
+          '单位:${widget.model?.unitName ?? ''} 条形码:${widget.model?.barCode ?? ''}\n规格:${widget.model?.norms ?? ''}\n账面库存:${widget.model?.number}';
     } else if (widget.type == scPropertyCellTypeNormal || widget.type == scPropertyCellTypeRadio || widget.type == scPropertyCellTypeDelete) {
       text = '单位:${widget.propertyModel?.unitName ?? ''}\n规格:${widget.propertyModel?.norms ?? ''}\n资产编号:${widget.propertyModel?.assetCode ?? ''}';
     } else {
       text =
-          '单位:${widget.model?.unitName} 条形码:${widget.model?.barCode}\n规格:${widget.model?.norms}';
+          '单位:${widget.model?.unitName ?? ''} 条形码:${widget.model?.barCode ?? ''}\n规格:${widget.model?.norms ?? ''}';
     }
     if (widget.check == true) {
       text =
-          '单位:${widget.model?.unitName} 条形码:${widget.model?.barCode}\n规格:${widget.model?.norms}\n账面库存:${widget.model?.number}';
+          '单位:${widget.model?.unitName ?? ''} 条形码:${widget.model?.barCode ?? ''}\n规格:${widget.model?.norms ?? ''}\n账面库存:${widget.model?.number}';
     }
     return Text(
       SCStrings.autoLineString(text),

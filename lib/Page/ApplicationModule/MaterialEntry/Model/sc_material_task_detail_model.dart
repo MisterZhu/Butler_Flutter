@@ -56,6 +56,7 @@ class SCMaterialTaskDetailModel {
     this.dealUserName,
     this.rangeName,
     this.rangeValue,
+    this.materialType,
   });
 
   SCMaterialTaskDetailModel.fromJson(dynamic json) {
@@ -87,7 +88,7 @@ class SCMaterialTaskDetailModel {
     if (json['assets'] != null) {
       assets = [];
       json['assets'].forEach((v) {
-        assets?.add(SCPropertyListModel.fromJson(v));
+        assets?.add(SCMaterialListModel.fromJson(v));
       });
     }
     mobileNum = json['mobileNum'];
@@ -131,6 +132,7 @@ class SCMaterialTaskDetailModel {
     dealEndTime = json['dealEndTime'];
     dealOrgId = json['dealOrgId'];
     dealOrgName = json['dealOrgName'];
+    materialType = json['materialType'];
   }
   String? creator;
   String? creatorName;
@@ -142,7 +144,7 @@ class SCMaterialTaskDetailModel {
   String? materialNames;
   int? materialNums;
   List<SCMaterialListModel>? materials;
-  List<SCPropertyListModel>? assets;
+  List<SCMaterialListModel>? assets;
   String? mobileNum;
   String? number;
   String? operator;
@@ -184,7 +186,7 @@ class SCMaterialTaskDetailModel {
   String? taskEndTime;
   String? taskStartTime;
   String? taskName;
-
+  int? materialType;
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['creator'] = creator;
@@ -247,6 +249,7 @@ class SCMaterialTaskDetailModel {
     map['dealEndTime'] = dealEndTime;
     map['dealOrgId'] = dealOrgId;
     map['dealOrgName'] = dealOrgName;
+    map['materialType'] = materialType;
     return map;
   }
 

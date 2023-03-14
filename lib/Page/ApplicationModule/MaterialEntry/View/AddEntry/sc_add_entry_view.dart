@@ -16,7 +16,6 @@ import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../../WorkBench/Home/Model/sc_home_task_model.dart';
 import '../../../../WorkBench/Home/View/Alert/sc_task_module_alert.dart';
-import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../../Controller/sc_add_entry_controller.dart';
 import '../../Model/sc_entry_type_model.dart';
 import '../../Model/sc_wareHouse_model.dart';
@@ -364,7 +363,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         SCToast.showTip(SCDefaultValue.selectMaterialTypeTip);
         return;
       }
-      if (widget.state.isProperty == true) {
+      if (widget.state.isProperty == true || widget.state.materialType == 1) {
         if (widget.state.isEdit) {
           addExitsPropertyAction();
         } else {
@@ -419,7 +418,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       'isProperty': true
     });
     if (list != null) {
-      onlyAddMaterial(list);
+      onlyAddProperty(list);
     }
   }
 
@@ -454,7 +453,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
   deleteAction(int index) {
     if (widget.state.isProperty == true) {
       if (widget.state.isEdit) {
-        SCPropertyListModel model = widget.state.selectedPropertyList[index];
+        SCMaterialListModel model = widget.state.selectedPropertyList[index];
         widget.state.editDeleteProperty(materialInRelationId: model.id ?? '');
       } else {
         widget.state.deleteProperty(index);
@@ -517,7 +516,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
     }
 
     List propertyList = [];
-    for (SCPropertyListModel model in widget.state.selectedPropertyList) {
+    for (SCMaterialListModel model in widget.state.selectedPropertyList) {
       var params = model.toJson();
       propertyList.add(params);
     }
@@ -547,7 +546,8 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       "files": widget.state.files,
       "inDate": widget.state.inDate,
       "assets": propertyList,
-      "purchaseId": widget.state.purchaseId
+      "purchaseId": widget.state.purchaseId,
+      "materialType": widget.state.materialType,
     };
     widget.state.addEntry(status: status, data: params);
   }
@@ -599,7 +599,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
     }
 
     List propertyList = [];
-    for (SCPropertyListModel model in widget.state.selectedPropertyList) {
+    for (SCMaterialListModel model in widget.state.selectedPropertyList) {
       var params = model.toJson();
       propertyList.add(params);
     }
@@ -614,7 +614,8 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       "materialList": materialList,
       "inDate": widget.state.inDate,
       "assets": propertyList,
-      "purchaseId": widget.state.purchaseId
+      "purchaseId": widget.state.purchaseId,
+      "materialType": widget.state.materialType,
     };
     widget.state.editMaterialBaseInfo(data: params);
   }
@@ -625,7 +626,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
   }
 
   /// 新增资产-添加
-  onlyAddProperty(List<SCPropertyListModel> list) {
+  onlyAddProperty(List<SCMaterialListModel> list) {
     widget.state.updateSelectedProperty(list);
   }
 
@@ -703,18 +704,18 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
   }
 
   /// 新增资产-编辑
-  editAddProperty(List<SCPropertyListModel> list) {
-    print("原始数据===${widget.state.selectedPropertyList}");
+  editAddProperty(List<SCMaterialListModel> list) {
+    print("新增资产-编辑-原始数据===${widget.state.selectedPropertyList}");
 
-    print("添加===$list");
+    print("新增资产添加===$list");
 
     // 新增的物资
-    List<SCPropertyListModel> addList = [];
-    for (SCPropertyListModel model in list) {
+    List<SCMaterialListModel> addList = [];
+    for (SCMaterialListModel model in list) {
       // 是否存在
       bool contains = false;
 
-      for (SCPropertyListModel subModel in widget.state.selectedPropertyList) {
+      for (SCMaterialListModel subModel in widget.state.selectedPropertyList) {
         if (model.assetId == subModel.assetId) {
           contains = true;
           break;
@@ -730,9 +731,9 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       }
     }
 
-    List<SCPropertyListModel> newList = widget.state.selectedPropertyList;
+    List<SCMaterialListModel> newList = widget.state.selectedPropertyList;
     List addJsonList = [];
-    for (SCPropertyListModel model in addList) {
+    for (SCMaterialListModel model in addList) {
       model.inId = widget.state.editId;
       newList.add(model);
       var subParams = model.toJson();

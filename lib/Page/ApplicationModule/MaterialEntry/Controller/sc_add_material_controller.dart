@@ -49,10 +49,10 @@ class SCAddMaterialController extends GetxController {
   List<SCMaterialListModel> originalList = [];
 
   /// 数据源
-  List<SCPropertyListModel> propertyList = [];
+  List<SCMaterialListModel> propertyList = [];
 
   /// 默认已选的数据
-  List<SCPropertyListModel> originalPropertyList = [];
+  List<SCMaterialListModel> originalPropertyList = [];
 
   @override
   onInit() {
@@ -160,7 +160,7 @@ class SCAddMaterialController extends GetxController {
   }
 
   /// 新增入库-资产列表数据
-  loadPropertyListData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
+  loadEntryPropertyListData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       pageNum++;
@@ -186,11 +186,27 @@ class SCAddMaterialController extends GetxController {
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
-          propertyList = List<SCPropertyListModel>.from(
-              value.map((e) => SCPropertyListModel.fromJson(e)).toList());
-          for (SCPropertyListModel model in propertyList) {
-            for (SCPropertyListModel subModel in originalPropertyList) {
-              if (model.assetId == subModel.assetId) {
+          if ((value['records'] is List) == false) {
+            bool last = false;
+            if (isLoadMore) {
+              last = value['last'];
+            }
+            completeHandler?.call(false, last);
+            update();
+            return;
+          }
+          List list = value['records'];
+          if (isLoadMore == true) {
+            propertyList.addAll(List<SCMaterialListModel>.from(
+                list.map((e) => SCMaterialListModel.fromJson(e)).toList()));
+          } else {
+            propertyList = List<SCMaterialListModel>.from(
+                list.map((e) => SCMaterialListModel.fromJson(e)).toList());
+          }
+          for (SCMaterialListModel model in propertyList) {
+            model.materialType = 1;
+            for (SCMaterialListModel subModel in originalPropertyList) {
+              if (model.id == subModel.id) {
                 model.isSelect = true;
               }
             }
@@ -217,10 +233,10 @@ class SCAddMaterialController extends GetxController {
         isQuery: true,
         success: (value) {
           SCLoadingUtils.hide();
-          propertyList = List<SCPropertyListModel>.from(
-              value.map((e) => SCPropertyListModel.fromJson(e)).toList());
-          for (SCPropertyListModel model in propertyList) {
-            for (SCPropertyListModel subModel in originalPropertyList) {
+          propertyList = List<SCMaterialListModel>.from(
+              value.map((e) => SCMaterialListModel.fromJson(e)).toList());
+          for (SCMaterialListModel model in propertyList) {
+            for (SCMaterialListModel subModel in originalPropertyList) {
               if (model.assetId == subModel.assetId) {
                 model.isSelect = true;
               }
@@ -249,9 +265,9 @@ class SCAddMaterialController extends GetxController {
   }
 
   /// 处理搜索的数据
-  dealSearchPropertyData(List<SCPropertyListModel> list) {
-    for (SCPropertyListModel model in list) {
-      for (SCPropertyListModel subModel in propertyList) {
+  dealSearchPropertyData(List<SCMaterialListModel> list) {
+    for (SCMaterialListModel model in list) {
+      for (SCMaterialListModel subModel in propertyList) {
         if (model.id == subModel.id) {
           subModel.isSelect = true;
         }

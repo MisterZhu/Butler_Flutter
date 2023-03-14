@@ -87,8 +87,8 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
   /// 确定
   sureAction() {
     if (widget.isProperty == true) {
-      List<SCPropertyListModel> list = [];
-      for (SCPropertyListModel model in widget.state.propertyList) {
+      List<SCMaterialListModel> list = [];
+      for (SCMaterialListModel model in widget.state.propertyList) {
         bool isSelect = model.isSelect ?? false;
         if (isSelect) {
           list.add(model);
@@ -196,7 +196,11 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
       onSubmitted: (value) {
         widget.state.updateSearchString(value);
         if (widget.state.isProperty == true) {
-          widget.state.searchPropertyData();
+          if (widget.state.type == SCWarehouseManageType.entry) {///新增入库-添加资产
+            widget.state.searchAddEntryPropertyData();
+          } else if (widget.state.type == SCWarehouseManageType.propertyFrmLoss) {///资产报损-添加资产
+            widget.state.searchPropertyData();
+          }
         } else {
           widget.state.searchData();
         }
@@ -269,7 +273,7 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
               if (widget.isProperty == true) {
-                SCPropertyListModel model = widget.state.propertyList[index];
+                SCMaterialListModel model = widget.state.propertyList[index];
                 return propertyCell(model);
               } else {
                 SCMaterialListModel model = widget.state.materialList[index];
@@ -300,7 +304,7 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
     );
   }
 
-  Widget propertyCell(SCPropertyListModel model) {
+  Widget propertyCell(SCMaterialListModel model) {
     return SCMaterialCell(
       hideMaterialNumTextField: widget.state.hideNumTextField,
       propertyModel: model,
@@ -332,11 +336,19 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
   /// 下拉刷新
   Future onRefresh() async {
     if (widget.isProperty == true) {
-      widget.state.searchPropertyData(isMore: false,
-          completeHandler: (bool success, bool last) {
-            refreshController.refreshCompleted();
-            refreshController.loadComplete();
-          });
+      if (widget.state.type == SCWarehouseManageType.entry) {///新增入库-添加资产
+        widget.state.searchAddEntryPropertyData(isMore: false,
+            completeHandler: (bool success, bool last) {
+              refreshController.refreshCompleted();
+              refreshController.loadComplete();
+            });
+      } else if (widget.state.type == SCWarehouseManageType.propertyFrmLoss) {///资产报损-添加资产
+        widget.state.searchPropertyData(isMore: false,
+            completeHandler: (bool success, bool last) {
+              refreshController.refreshCompleted();
+              refreshController.loadComplete();
+            });
+      }
     } else {
       widget.state.searchData(
           isMore: false,

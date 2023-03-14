@@ -20,7 +20,7 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
   final List<SCMaterialListModel> list;
 
   /// 数据源
-  final List<SCPropertyListModel>? propertyList;
+  final List<SCMaterialListModel>? propertyList;
 
   /// 删除物资
   final Function(int index)? deleteAction;
@@ -71,7 +71,7 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
   /// cell
   Widget cell(int index) {
     if (isProperty == true) {
-      SCPropertyListModel propertyModel = propertyList![index];
+      SCMaterialListModel propertyModel = propertyList![index];
       return SCMaterialCell(
         hideMaterialNumTextField: hideMaterialNumTextField,
         type: scPropertyCellTypeDelete,

@@ -26,7 +26,7 @@ class SCMaterialInfoCell extends StatelessWidget {
   final List<SCMaterialListModel> list;
 
   /// 物资数据源
-  final List<SCPropertyListModel>? propertyList;
+  final List<SCMaterialListModel>? propertyList;
 
   /// 物资分类数据源
   final List<SCCheckTypeModel>? categoryList;

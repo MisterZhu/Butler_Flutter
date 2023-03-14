@@ -31,7 +31,7 @@ class SCAddEntryController extends GetxController {
   List<SCMaterialListModel> selectedList = [];
 
   /// 已选择的物资数据
-  List<SCPropertyListModel> selectedPropertyList = [];
+  List<SCMaterialListModel> selectedPropertyList = [];
 
   /// 是否是编辑
   bool isEdit = false;
@@ -82,7 +82,7 @@ class SCAddEntryController extends GetxController {
   String materialTypeName = '';
 
   /// 物资类型 1：固定资产；2：损耗品
-  int materialType = -1;
+  int materialType = 0;
 
   /// 物资类型index
   int materialTypeIndex = -1;
@@ -129,6 +129,11 @@ class SCAddEntryController extends GetxController {
       if (params['materialType'] != null) {
         /// 物资类型
         materialType = params['materialType'];
+        if (materialType == 1) {
+          materialTypeName = '固定资产';
+        } else {
+          materialTypeName = '易耗品';
+        }
       }
 
       if (params['purchaseId'] != null) {
@@ -178,9 +183,12 @@ class SCAddEntryController extends GetxController {
       params.addAll({"purchaseId": data['purchaseId'],});
     }
     if (isProperty == true) {
-      params.addAll({"assets": data['assets'],});
+      params.addAll({"materials": data['assets'],});
     } else {
       params.addAll({"materials": data['materialList'],});
+    }
+    if (data['typeId'] == 4) {// 归还入库
+      params.addAll({"materialType": data['materialType'],});
     }
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
@@ -251,7 +259,7 @@ class SCAddEntryController extends GetxController {
     var params = {"inId": editId, "materialInRelations": list};
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kEditAddEntryPropertyUrl,
+        url: SCUrl.kEditAddEntryMaterialUrl,
         params: params,
         success: (value) {
           loadMaterialEntryDetail();
@@ -393,7 +401,7 @@ class SCAddEntryController extends GetxController {
   }
 
   /// 更新已选的资产数据
-  updateSelectedProperty(List<SCPropertyListModel> list) {
+  updateSelectedProperty(List<SCMaterialListModel> list) {
     selectedPropertyList = list;
     update();
   }

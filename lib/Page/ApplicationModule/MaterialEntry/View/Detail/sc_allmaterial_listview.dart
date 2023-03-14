@@ -21,7 +21,7 @@ class SCAllMaterialListView extends StatelessWidget {
   final List<SCMaterialListModel>? list;
 
   /// 所有物资
-  final List<SCPropertyListModel>? propertyList;
+  final List<SCMaterialListModel>? propertyList;
 
   final bool? isProperty;
   /// cell点击
@@ -155,7 +155,7 @@ class SCAllMaterialListView extends StatelessWidget {
       if (manageType == SCWarehouseManageType.check) {
         cellType = scMaterialCellTypeInventory;
       }
-      SCPropertyListModel subModel = propertyList![index];
+      SCMaterialListModel subModel = propertyList![index];
       return SCMaterialCell(
         propertyModel: subModel,
         type: cellType,

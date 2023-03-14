@@ -8,6 +8,7 @@ import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../../../Login/Home/Model/sc_user_model.dart';
 import '../../MaterialEntry/Model/sc_entry_type_model.dart';
+import '../../MaterialEntry/Model/sc_material_list_model.dart';
 import '../../MaterialEntry/Model/sc_material_task_detail_model.dart';
 import '../Model/sc_property_list_model.dart';
 import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
@@ -22,7 +23,7 @@ class SCAddPropertyFrmLossController extends GetxController {
   List<SCEntryTypeModel> typeList = [];
 
   /// 已选择的资产数据
-  List<SCPropertyListModel> selectedList = [];
+  List<SCMaterialListModel> selectedList = [];
 
   /// 是否是编辑
   bool isEdit = false;
@@ -293,7 +294,7 @@ class SCAddPropertyFrmLossController extends GetxController {
   }
 
   /// 更新已选的物资数据
-  updateSelectedMaterial(List<SCPropertyListModel> list) {
+  updateSelectedMaterial(List<SCMaterialListModel> list) {
     selectedList = list;
     update();
   }

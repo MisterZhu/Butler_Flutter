@@ -29,7 +29,7 @@ class SCAddMaterialListView extends StatelessWidget {
   final List<SCMaterialListModel> list;
 
   /// list
-  final List<SCPropertyListModel> propertyList;
+  final List<SCMaterialListModel> propertyList;
 
   /// radio点击
   final Function? radioTap;
@@ -62,7 +62,7 @@ class SCAddMaterialListView extends StatelessWidget {
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
               if (isProperty == true) {
-                SCPropertyListModel model = propertyList[index];
+                SCMaterialListModel model = propertyList[index];
                 return propertyCell(model);
               } else {
                 SCMaterialListModel model = list[index];
@@ -75,7 +75,7 @@ class SCAddMaterialListView extends StatelessWidget {
             itemCount: isProperty == true ? propertyList.length : list.length));
   }
 
-  Widget propertyCell(SCPropertyListModel model) {
+  Widget propertyCell(SCMaterialListModel model) {
     return SCMaterialCell(
       hideMaterialNumTextField: hideNumTextField,
       propertyModel: model,

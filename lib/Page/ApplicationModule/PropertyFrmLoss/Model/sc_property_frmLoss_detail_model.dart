@@ -1,3 +1,4 @@
+import '../../MaterialEntry/Model/sc_material_list_model.dart';
 import 'sc_property_list_model.dart';
 
 class SCPropertyFrmLossDetailModel {
@@ -62,7 +63,7 @@ class SCPropertyFrmLossDetailModel {
     if (json['assets'] != null) {
       assets = [];
       json['assets'].forEach((v) {
-        assets?.add(SCPropertyListModel.fromJson(v));
+        assets?.add(SCMaterialListModel.fromJson(v));
       });
     }
     labelList = json['labelList'] != null ? json['labelList'].cast<String>() : [];
@@ -99,7 +100,7 @@ class SCPropertyFrmLossDetailModel {
   String? creatorName;
   String? mobileNum;
   String? assetNames;
-  List<SCPropertyListModel>? assets;
+  List<SCMaterialListModel>? assets;
   List<String>? labelList;
   List<Files>? files;
 

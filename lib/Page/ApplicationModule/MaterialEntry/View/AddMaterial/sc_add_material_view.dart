@@ -42,7 +42,7 @@ class SCAddMaterialView extends StatefulWidget {
   final Function(List<SCMaterialListModel> list)? sureAction;
 
   /// 确定
-  final Function(List<SCPropertyListModel> list)? propertySureAction;
+  final Function(List<SCMaterialListModel> list)? propertySureAction;
 
   /// SCCategoryAlertController
   final SCCategoryAlertController categoryAlertController;
@@ -254,7 +254,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
   int getSelectedNumber() {
     int num = 0;
     if (widget.isProperty == true) {
-      for (SCPropertyListModel model in widget.state.propertyList) {
+      for (SCMaterialListModel model in widget.state.propertyList) {
         bool isSelect = model.isSelect ?? false;
         if (isSelect) {
           num += 1;
@@ -273,14 +273,16 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
 
   /// 确定
   sureAction() {
+    print('确定==================111111111111');
     if (widget.isProperty == true) {
-      List<SCPropertyListModel> list = [];
-      for (SCPropertyListModel model in widget.state.propertyList) {
+      List<SCMaterialListModel> list = [];
+      for (SCMaterialListModel model in widget.state.propertyList) {
         bool isSelect = model.isSelect ?? false;
         if (isSelect) {
           list.add(model);
         }
       }
+      print('确定222==================$list');
       if (list.isEmpty) {
         SCToast.showTip(SCDefaultValue.selectPropertyTip);
       } else {
@@ -295,6 +297,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
           list.add(model);
         }
       }
+      print('确定3333==================$list');
       if (list.isEmpty) {
         SCToast.showTip(SCDefaultValue.selectMaterialTip);
       } else {
@@ -316,7 +319,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
     if (backParams != null) {
       if (backParams['list'] != null) {
         if (widget.state.isProperty == true) {
-          List<SCPropertyListModel> list = backParams['list'] ?? [];
+          List<SCMaterialListModel> list = backParams['list'] ?? [];
           widget.state.dealSearchPropertyData(list);
         } else {
           List<SCMaterialListModel> list = backParams['list'] ?? [];
@@ -428,17 +431,25 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
             widget.categoryAlertController.currentDepartmentModel.id ?? '';
         widget.state.classifyName =
             widget.categoryAlertController.currentDepartmentModel.title ?? '';
-        if (widget.isProperty == true) {
-          widget.state.loadPropertyFrmLossListData();
-        } else {
+        if (widget.isProperty == true) {/// 是资产
+          if (widget.type == SCWarehouseManageType.entry) {///新增入库-添加资产
+            widget.state.loadEntryPropertyListData();
+          } else if (widget.type == SCWarehouseManageType.propertyFrmLoss) {///资产报损-添加资产
+            widget.state.loadPropertyFrmLossListData();
+          }
+        } else {/// 是物资
           widget.state.loadMaterialListData(isMore: false);
         }
       } else {
         widget.state.classifyId = '';
         widget.state.classifyName = '';
-        if (widget.isProperty == true) {
-          widget.state.loadPropertyFrmLossListData();
-        } else {
+        if (widget.isProperty == true) {/// 是资产
+          if (widget.type == SCWarehouseManageType.entry) {///新增入库-添加资产
+            widget.state.loadEntryPropertyListData();
+          } else if (widget.type == SCWarehouseManageType.propertyFrmLoss) {
+            widget.state.loadPropertyFrmLossListData();
+          }
+        } else {/// 是物资
           widget.state.loadMaterialListData(isMore: false);
         }
       }
@@ -446,9 +457,13 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
       // 未选择数据
       widget.state.classifyId = '';
       widget.state.classifyName = '';
-      if (widget.isProperty == true) {
-        widget.state.loadPropertyFrmLossListData();
-      } else {
+      if (widget.isProperty == true) {/// 是资产
+        if (widget.type == SCWarehouseManageType.entry) {///新增入库-添加资产
+          widget.state.loadEntryPropertyListData();
+        } else if (widget.type == SCWarehouseManageType.propertyFrmLoss) {///资产报损-添加资产
+          widget.state.loadPropertyFrmLossListData();
+        }
+      } else {/// 是物资
         widget.state.loadMaterialListData(isMore: false);
       }
     }
@@ -457,7 +472,17 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
   /// 加载更多
   loadMore() {
     if (widget.isProperty == true) {
-
+      if (widget.type == SCWarehouseManageType.entry) {
+        widget.state.loadEntryPropertyListData(
+            isMore: true,
+            completeHandler: (bool success, bool last) {
+              if (last) {
+                widget.refreshController.loadNoData();
+              } else {
+                widget.refreshController.loadComplete();
+              }
+            });
+      }
     } else {
       widget.state.loadMaterialListData(
           isMore: true,

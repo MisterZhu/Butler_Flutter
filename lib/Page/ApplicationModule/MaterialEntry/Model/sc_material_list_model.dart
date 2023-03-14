@@ -52,6 +52,18 @@ class SCMaterialListModel {
     String? purchaseId,// 采购单id
     String? purchaseCode,// 采购单号
     String? purchaseDetailId,
+    int? materialType, //物资类型：1固定资产，2易耗品
+    String? assetId,
+    String? assetName,
+    String? assetCode,
+    String? materialCode,
+    String? belongOrgId,
+    String? belongOrgName,
+    String? fetchOrgId,
+    String? fetchOrgName,
+    String? fetchUserId,
+    String? fetchUserName,
+    String? gmtFetch,
   }) {
     _barCode = barCode;
     _classifyId = classifyId;
@@ -84,6 +96,18 @@ class SCMaterialListModel {
     _purchaseId = purchaseId;
     _purchaseCode = purchaseCode;
     _purchaseDetailId = purchaseDetailId;
+    _materialType = materialType;
+    _assetId = assetId;
+    _assetName = assetName;
+    _assetCode = assetCode;
+    _materialCode = materialCode;
+    _belongOrgId = belongOrgId;
+    _belongOrgName = belongOrgName;
+    _fetchOrgId = fetchOrgId;
+    _fetchOrgName = fetchOrgName;
+    _fetchUserId = fetchUserId;
+    _fetchUserName = fetchUserName;
+    _gmtFetch = gmtFetch;
   }
 
   SCMaterialListModel.fromJson(dynamic json) {
@@ -120,6 +144,18 @@ class SCMaterialListModel {
     _purchaseId = json['purchaseId'];
     _purchaseCode = json['purchaseCode'];
     _purchaseDetailId = json['purchaseDetailId'];
+    _materialType = json['materialType'];
+    _assetId = json['id'];
+    _assetName = json['assetName'];
+    _assetCode = json['assetCode'];
+    _materialCode = json['materialCode'];
+    _belongOrgId = json['belongOrgId'];
+    _belongOrgName = json['belongOrgName'];
+    _fetchOrgId = json['fetchOrgId'];
+    _fetchOrgName = json['fetchOrgName'];
+    _fetchUserId = json['fetchUserId'];
+    _fetchUserName = json['fetchUserName'];
+    _gmtFetch = json['gmtFetch'];
   }
   String? _barCode;
   String? _classifyId;
@@ -152,6 +188,18 @@ class SCMaterialListModel {
   String? _purchaseId;
   String? _purchaseCode;
   String? _purchaseDetailId;
+  int? _materialType;
+  String? _assetId;
+  String? _assetName;
+  String? _assetCode;
+  String? _materialCode;
+  String? _belongOrgId;
+  String? _belongOrgName;
+  String? _fetchOrgId;
+  String? _fetchOrgName;
+  String? _fetchUserId;
+  String? _fetchUserName;
+  String? _gmtFetch;
   SCMaterialListModel copyWith({
     String? barCode,
     String? classifyId,
@@ -184,6 +232,18 @@ class SCMaterialListModel {
     String? purchaseId,
     String? purchaseCode,
     String? purchaseDetailId,
+    int? materialType,
+    String? assetId,
+    String? assetName,
+    String? assetCode,
+    String? materialCode,
+    String? belongOrgId,
+    String? belongOrgName,
+    String? fetchOrgId,
+    String? fetchOrgName,
+    String? fetchUserId,
+    String? fetchUserName,
+    String? gmtFetch,
   }) =>
       SCMaterialListModel(
         barCode: barCode ?? _barCode,
@@ -217,6 +277,18 @@ class SCMaterialListModel {
         purchaseId: purchaseId ?? _purchaseId,
         purchaseCode: purchaseCode ?? _purchaseCode,
           purchaseDetailId: purchaseDetailId ?? _purchaseDetailId,
+          materialType: materialType ?? _materialType,
+        assetId: assetId ?? _assetId,
+        assetName: assetName ?? _assetName,
+        assetCode: assetCode ?? _assetCode,
+        materialCode: materialCode ?? _materialCode,
+        belongOrgId: belongOrgId ?? _belongOrgId,
+        belongOrgName: belongOrgName ?? _belongOrgName,
+        fetchOrgId: fetchOrgId ?? _fetchOrgId,
+        fetchOrgName: fetchOrgName ?? _fetchOrgName,
+        fetchUserId: fetchUserId ?? _fetchUserId,
+        fetchUserName: fetchUserName ?? _fetchUserName,
+        gmtFetch: gmtFetch ?? _gmtFetch,
       );
   String? get barCode => _barCode;
   String? get classifyId => _classifyId;
@@ -249,6 +321,18 @@ class SCMaterialListModel {
   String? get purchaseId => _purchaseId;
   String? get purchaseCode => _purchaseCode;
   String? get purchaseDetailId => _purchaseDetailId;
+  int? get materialType => _materialType;
+  String? get assetId => _assetId;
+  String? get assetName => _assetName;
+  String? get assetCode => _assetCode;
+  String? get materialCode => _materialCode;
+  String? get belongOrgId => _belongOrgId;
+  String? get belongOrgName => _belongOrgName;
+  String? get fetchOrgId => _fetchOrgId;
+  String? get fetchOrgName => _fetchOrgName;
+  String? get fetchUserId => _fetchUserId;
+  String? get fetchUserName => _fetchUserName;
+  String? get gmtFetch => _gmtFetch;
 
   /// set checkNum
   set checkNum(int? value) {
@@ -265,6 +349,9 @@ class SCMaterialListModel {
     _isSelect = value;
   }
 
+  set materialType(int? value) {
+    _materialType = value;
+  }
   set name(String? value) {
     _name = value;
   }

@@ -189,11 +189,13 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
     int type = controller.model.type ?? 0;
     String remark = controller.model.remark ?? '';
     String id = controller.model.id ?? '';
+    int materialType = controller.model.materialType ?? 2;
     List<SCMaterialListModel> materials = controller.model.materials ?? [];
     for (SCMaterialListModel model in materials) {
       model.localNum = model.number ?? 1;
       model.isSelect = true;
       model.name = model.materialName ?? '';
+      materialType = model.materialType ?? 2;
       // model.id = model.materialId;
     }
     SCRouterHelper.pathPage(SCRouterPath.addEntryPage, {
@@ -204,7 +206,8 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
       "typeName" : typeName,
       "type" : type,
       "remark" : remark,
-      "id" : id
+      "id" : id,
+      "materialType": materialType
     })?.then((value) {
       controller.loadMaterialEntryDetail();
     });
