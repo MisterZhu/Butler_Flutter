@@ -160,8 +160,8 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
         title: '资产信息',
         showAdd: true,
         list: [],
-        propertyList: widget.state.selectedList,
         isProperty: true,
+        propertyList: widget.state.selectedList,
         addAction: () {
           addAction();
         },

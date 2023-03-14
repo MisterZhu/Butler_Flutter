@@ -72,22 +72,30 @@ class SCAddEntryController extends GetxController {
   bool isReturnEntry = false;
 
   /// 入库日期
-  String entryTime = '';
+  String inDate = '';
 
   /// 出库单ID
   String outId = '';
 
+  /// 物资类型名称 1：固定资产；2：损耗品
+  String materialTypeName = '';
+
   /// 物资类型 1：固定资产；2：损耗品
-  String materialType = '';
+  int materialType = -1;
+
   /// 物资类型index
   int materialTypeIndex = -1;
+
   /// 采购需求单
   String purchaseId = '';
+
+  /// 是否是资产
+  bool isProperty = false;
 
   @override
   onInit() {
     super.onInit();
-    entryTime = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
+    inDate = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
     materialTypeList = ['固定资产', '易耗品'];
     loadWareHouseList();
     loadWareHouseType();
@@ -113,11 +121,20 @@ class SCAddEntryController extends GetxController {
       /// 备注
       remark = params['remark'];
 
-      /// 物资类型
-      materialType = params['materialType'];
+      if (params['materialType'] != null) {
+        /// 物资类型
+        materialType = params['materialType'];
+      }
 
-      /// 采购需求单
-      purchaseId = params['purchaseId'];
+      if (params['purchaseId'] != null) {
+        /// 采购需求单
+        purchaseId = params['purchaseId'];
+      }
+
+      if (params['inDate'] != null) {
+        /// 入库日期
+        inDate = params['inDate'];
+      }
 
       /// 主键id
       editId = params['id'];
@@ -142,7 +159,6 @@ class SCAddEntryController extends GetxController {
   addEntry({required int status, required dynamic data}) {
     var params = {
       "files": data['files'],
-      "materials": data['materialList'],
       "remark": data['remark'],
       "status": status,
       "type": data['typeId'],
@@ -151,7 +167,16 @@ class SCAddEntryController extends GetxController {
       "wareHouseName": data['wareHouseName'],
       "workOrderId": orderId,
       "outId": outId,
+      "inDate": data['inDate'],
     };
+    if (data['typeId'] == 1) {
+      params.addAll({"purchaseId": data['purchaseId'],});
+    }
+    if (isProperty == true) {
+      params.addAll({"assets": data['assets'],});
+    } else {
+      params.addAll({"materials": data['materialList'],});
+    }
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kAddEntryUrl,
@@ -181,6 +206,7 @@ class SCAddEntryController extends GetxController {
       "typeName": data['typeName'],
       "wareHouseId": data['wareHouseId'],
       "wareHouseName": data['wareHouseName'],
+      "inDate": data['inDate'],
       "status": 0
     };
     SCLoadingUtils.show();
@@ -205,6 +231,39 @@ class SCAddEntryController extends GetxController {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kEditAddEntryMaterialUrl,
+        params: params,
+        success: (value) {
+          loadMaterialEntryDetail();
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+        });
+  }
+
+  /// 编辑-新增资产
+  editAddProperty(
+      {required List list, Function(bool success)? completeHandler}) {
+    var params = {"inId": editId, "materialInRelations": list};
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kEditAddEntryPropertyUrl,
+        params: params,
+        success: (value) {
+          loadMaterialEntryDetail();
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+        });
+  }
+
+  /// 编辑-删除资产
+  editDeleteProperty({required String materialInRelationId,
+    Function(bool success)? completeHandler}) {
+    var params = {"materialInRelationId": materialInRelationId};
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kEditDeleteEntryPropertyUrl,
+        isQuery: true,
         params: params,
         success: (value) {
           loadMaterialEntryDetail();
@@ -328,10 +387,24 @@ class SCAddEntryController extends GetxController {
     update();
   }
 
+  /// 更新已选的资产数据
+  updateSelectedProperty(List<SCPropertyListModel> list) {
+    selectedPropertyList = list;
+    update();
+  }
+
   /// 删除物资
   deleteMaterial(int index) {
     if (index < selectedList.length) {
       selectedList.removeAt(index);
+      update();
+    }
+  }
+
+  /// 删除资产
+  deleteProperty(int index) {
+    if (index < selectedPropertyList.length) {
+      selectedPropertyList.removeAt(index);
       update();
     }
   }

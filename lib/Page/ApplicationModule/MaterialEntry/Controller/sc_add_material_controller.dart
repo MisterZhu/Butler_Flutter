@@ -129,9 +129,16 @@ class SCAddMaterialController extends GetxController {
                   }
                 }
               } else {
-                if (model.materialId == subModel.materialId) {
-                  model.localNum = subModel.localNum;
-                  model.isSelect = true;
+                if (materialType == SCWarehouseManageType.entry) {
+                  if (model.id == subModel.id) {
+                    model.localNum = subModel.localNum;
+                    model.isSelect = true;
+                  }
+                } else {
+                  if (model.materialId == subModel.materialId) {
+                    model.localNum = subModel.localNum;
+                    model.isSelect = true;
+                  }
                 }
               }
             }
@@ -152,8 +159,54 @@ class SCAddMaterialController extends GetxController {
         });
   }
 
-  /// 新增资产-资产列表数据
-  loadPropertyListData({Function(bool success, bool last)? completeHandler}) {
+  /// 新增入库-资产列表数据
+  loadPropertyListData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
+    bool isLoadMore = isMore ?? false;
+    if (isLoadMore == true) {
+      pageNum++;
+    } else {
+      pageNum = 1;
+      SCLoadingUtils.show();
+    }
+    var params = {
+      "conditions": {
+        "classifyId": classifyId,  /// 分类id
+        "deleted": false,
+        "enabled": true,
+        "fields": [],
+        "wareHouseId": wareHouseId,  /// 仓库ID
+      },
+      "count": false,
+      "last": false,
+      "orderBy": [],
+      "pageNum": pageNum,
+      "pageSize": 20
+    };
+    SCHttpManager.instance.post(
+        url: SCUrl.kAddEntryPropertyListUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          propertyList = List<SCPropertyListModel>.from(
+              value.map((e) => SCPropertyListModel.fromJson(e)).toList());
+          for (SCPropertyListModel model in propertyList) {
+            for (SCPropertyListModel subModel in originalPropertyList) {
+              if (model.assetId == subModel.assetId) {
+                model.isSelect = true;
+              }
+            }
+          }
+          update();
+          completeHandler?.call(false, true);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+          completeHandler?.call(false, false);
+        });
+  }
+
+  /// 新增资产报损-资产列表数据
+  loadPropertyFrmLossListData({Function(bool success, bool last)? completeHandler}) {
     var params = {"fetchOrgId": orgId};
     if (classifyId != '') {
       params.addAll({"classifyId": classifyId});

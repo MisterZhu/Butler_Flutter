@@ -134,6 +134,18 @@ class SCDefaultValue {
   /// 仓储-入库-添加物资信息
   static const String addMaterialInfoTip = "请添加物资信息";
 
+  /// 仓储-入库-添加资产信息
+  static const String addPropertyInfoTip = "请添加资产信息";
+
+  /// 仓储-入库-请选择物资类型
+  static const String selectMaterialTypeTip = "请选择物资类型";
+
+  /// 仓储-入库-请选择采购需求单
+  static const String selectPurchaseIdTip = "请选择采购需求单";
+
+  /// 仓储-入库-请选择入库日期
+  static const String addInDateTip = "请选择入库日期";
+
   /// 仓储-入库-复制粘贴板
   static const String pasteBoardSuccessTip = "复制成功";
 

@@ -15,6 +15,7 @@ import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../../WorkBench/Home/Model/sc_home_task_model.dart';
 import '../../../../WorkBench/Home/View/Alert/sc_task_module_alert.dart';
+import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../../Controller/sc_add_entry_controller.dart';
 import '../../Model/sc_entry_type_model.dart';
 import '../../Model/sc_wareHouse_model.dart';
@@ -168,10 +169,12 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
     } else if (index == 1) {
       // 物资信息
       return SCMaterialInfoCell(
-        title: '物资信息',
+        title: widget.state.isProperty == true ? '资产信息' : '物资信息',
         showAdd: widget.state.isReturnEntry == true ? false : true,
         list: widget.state.selectedList,
         isReturnEntry: widget.state.isReturnEntry,
+        isProperty: widget.state.isProperty,
+        propertyList: widget.state.selectedPropertyList,
         addAction: () {
           addAction();
         },
@@ -247,12 +250,14 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
                   }
                 } else if (index == 2) {
                   // 物资类型
-                  print('物资类型==========$selectIndex');
                   widget.state.materialTypeIndex = selectIndex;
-                  widget.state.materialType = widget.state.materialTypeList[selectIndex] ?? '';
+                  widget.state.materialTypeName = widget.state.materialTypeList[selectIndex] ?? '';
+                  widget.state.materialType = selectIndex + 1;
                 }
-                if (widget.state.type == '归还入库' && widget.state.materialTypeIndex == 1) {
-
+                if (widget.state.type == '归还入库' && widget.state.materialType == 1) {
+                  widget.state.isProperty = true;
+                } else {
+                  widget.state.isProperty = false;
                 }
               });
             },
@@ -271,7 +276,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
     pickerUtils.completionHandler = (selectedValues, selecteds) {
       DateTime value = selectedValues.first;
       setState(() {
-        widget.state.entryTime = formatDate(value, [yyyy, '-', mm, '-', dd]);
+        widget.state.inDate = formatDate(value, [yyyy, '-', mm, '-', dd]);
       });
     };
     pickerUtils.showDatePicker(
@@ -298,25 +303,25 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         'disable' : widget.state.isEdit
       },
     ];
-    // if (widget.state.type == '归还入库') {
-    //   baseInfoList.add({
-    //     'isRequired': true,
-    //     'title': '物资类型',
-    //     'content': widget.state.materialType,
-    //     'disable' : widget.state.isEdit
-    //   });
-    // } else if (widget.state.type == '采购入库') {
-    //   baseInfoList.add({
-    //     'isRequired': true,
-    //     'title': '采购需求单',
-    //     'content': widget.state.purchaseId,
-    //     'disable' : widget.state.isEdit
-    //   });
-    // }
+    if (widget.state.type == '归还入库') {
+      baseInfoList.add({
+        'isRequired': true,
+        'title': '物资类型',
+        'content': widget.state.materialTypeName,
+        'disable' : widget.state.isEdit
+      });
+    } else if (widget.state.type == '采购入库') {
+      baseInfoList.add({
+        'isRequired': true,
+        'title': '采购需求单',
+        'content': widget.state.purchaseId,
+        'disable' : widget.state.isEdit
+      });
+    }
     baseInfoList.add({
       'isRequired': true,
       'title': '入库日期',
-      'content': widget.state.entryTime,
+      'content': widget.state.inDate,
       'disable' : widget.state.isEdit
     });
     if (widget.state.isReturnEntry == true) {
@@ -344,10 +349,18 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       SCToast.showTip(SCDefaultValue.selectWarehouseTip);
       return;
     }
-    if (widget.state.isEdit) {
-      addExitsMaterialAction();
+    if (widget.state.isProperty == true) {
+      if (widget.state.isEdit) {
+        addExitsPropertyAction();
+      } else {
+        addPropertyAction();
+      }
     } else {
-      addMaterialAction();
+      if (widget.state.isEdit) {
+        addExitsMaterialAction();
+      } else {
+        addMaterialAction();
+      }
     }
   }
 
@@ -366,7 +379,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
   /// 新增资产-添加资产
   addPropertyAction() async {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
-      'data': widget.state.selectedPropertyList,
+      'propertyData': widget.state.selectedPropertyList,
       'wareHouseId': widget.state.wareHouseId,
       "materialType" : SCWarehouseManageType.entry,
       'isProperty': true
@@ -389,13 +402,36 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
     }
   }
 
+  /// 编辑资产-添加既存资产
+  addExitsPropertyAction() async {
+    var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
+      'propertyData': widget.state.selectedPropertyList,
+      'wareHouseId': widget.state.wareHouseId,
+      'isEdit': true,
+      "materialType" : SCWarehouseManageType.entry,
+      'isProperty': true
+    });
+    if (list != null) {
+      editAddProperty(list);
+    }
+  }
+
   /// 删除物资
   deleteAction(int index) {
-    if (widget.state.isEdit) {
-      SCMaterialListModel model = widget.state.selectedList[index];
-      widget.state.editDeleteMaterial(materialInRelationId: model.id ?? '');
+    if (widget.state.isProperty == true) {
+      if (widget.state.isEdit) {
+        SCPropertyListModel model = widget.state.selectedPropertyList[index];
+        widget.state.editDeleteProperty(materialInRelationId: model.id ?? '');
+      } else {
+        widget.state.deleteProperty(index);
+      }
     } else {
-      widget.state.deleteMaterial(index);
+      if (widget.state.isEdit) {
+        SCMaterialListModel model = widget.state.selectedList[index];
+        widget.state.editDeleteMaterial(materialInRelationId: model.id ?? '');
+      } else {
+        widget.state.deleteMaterial(index);
+      }
     }
   }
 
@@ -421,9 +457,35 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       return;
     }
 
-    if (widget.state.selectedList.isEmpty) {
+    if (widget.state.typeID == 1 && widget.state.purchaseId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectPurchaseIdTip);
+      return;
+    }
+
+    if (widget.state.typeID == 4 && widget.state.materialType < 0) {
+      SCToast.showTip(SCDefaultValue.selectMaterialTypeTip);
+      return;
+    }
+
+    if (widget.state.inDate.isEmpty) {
+      SCToast.showTip(SCDefaultValue.addInDateTip);
+      return;
+    }
+
+    if (widget.state.isProperty == true && widget.state.selectedPropertyList.isEmpty) {
+      SCToast.showTip(SCDefaultValue.addPropertyInfoTip);
+      return;
+    }
+
+    if (widget.state.isProperty == false && widget.state.selectedList.isEmpty) {
       SCToast.showTip(SCDefaultValue.addMaterialInfoTip);
       return;
+    }
+
+    List propertyList = [];
+    for (SCPropertyListModel model in widget.state.selectedPropertyList) {
+      var params = model.toJson();
+      propertyList.add(params);
     }
 
     List materialList = [];
@@ -449,6 +511,9 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       "remark": widget.state.remark,
       "materialList": materialList,
       "files": widget.state.files,
+      "inDate": widget.state.inDate,
+      "assets": propertyList,
+      "purchaseId": widget.state.purchaseId
     };
     widget.state.addEntry(status: status, data: params);
   }
@@ -465,7 +530,27 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       return;
     }
 
-    if (widget.state.selectedList.isEmpty) {
+    if (widget.state.typeID == 1 && widget.state.purchaseId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectPurchaseIdTip);
+      return;
+    }
+
+    if (widget.state.typeID == 4 && widget.state.materialType < 0) {
+      SCToast.showTip(SCDefaultValue.selectMaterialTypeTip);
+      return;
+    }
+
+    if (widget.state.inDate.isEmpty) {
+      SCToast.showTip(SCDefaultValue.addInDateTip);
+      return;
+    }
+
+    if (widget.state.isProperty == true && widget.state.selectedPropertyList.isEmpty) {
+      SCToast.showTip(SCDefaultValue.addPropertyInfoTip);
+      return;
+    }
+
+    if (widget.state.isProperty == false && widget.state.selectedList.isEmpty) {
       SCToast.showTip(SCDefaultValue.addMaterialInfoTip);
       return;
     }
@@ -479,6 +564,12 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       materialList.add(params);
     }
 
+    List propertyList = [];
+    for (SCPropertyListModel model in widget.state.selectedPropertyList) {
+      var params = model.toJson();
+      propertyList.add(params);
+    }
+
     var params = {
       "id": widget.state.editId,
       "wareHouseName": widget.state.wareHouseName,
@@ -486,7 +577,10 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       "typeName": widget.state.type,
       "typeId": widget.state.typeID,
       "remark": widget.state.remark,
-      "materialList": materialList
+      "materialList": materialList,
+      "inDate": widget.state.inDate,
+      "assets": propertyList,
+      "purchaseId": widget.state.purchaseId
     };
     widget.state.editMaterialBaseInfo(data: params);
   }
@@ -494,6 +588,11 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
   /// 新增物资-添加
   onlyAddMaterial(List<SCMaterialListModel> list) {
     widget.state.updateSelectedMaterial(list);
+  }
+
+  /// 新增资产-添加
+  onlyAddProperty(List<SCPropertyListModel> list) {
+    widget.state.updateSelectedProperty(list);
   }
 
   /// 新增物资-编辑
@@ -568,4 +667,51 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
     List<SCMaterialListModel> list = [widget.state.selectedList[index]];
     widget.state.editMaterial(list: list);
   }
+
+  /// 新增资产-编辑
+  editAddProperty(List<SCPropertyListModel> list) {
+    print("原始数据===${widget.state.selectedPropertyList}");
+
+    print("添加===$list");
+
+    // 新增的物资
+    List<SCPropertyListModel> addList = [];
+    for (SCPropertyListModel model in list) {
+      // 是否存在
+      bool contains = false;
+
+      for (SCPropertyListModel subModel in widget.state.selectedPropertyList) {
+        if (model.assetId == subModel.assetId) {
+          contains = true;
+          break;
+        } else {
+          contains = false;
+        }
+      }
+
+      if (contains) {
+
+      } else {
+        addList.add(model);
+      }
+    }
+
+    List<SCPropertyListModel> newList = widget.state.selectedPropertyList;
+    List addJsonList = [];
+    for (SCPropertyListModel model in addList) {
+      model.inId = widget.state.editId;
+      newList.add(model);
+      var subParams = model.toJson();
+      subParams['reportId'] = widget.state.editId;
+      addJsonList.add(subParams);
+      print("新增的物资===${subParams}");
+    }
+
+    if (addList.isNotEmpty) {
+      widget.state.editAddProperty(list: addJsonList);
+    }
+
+    widget.state.updateSelectedProperty(newList);
+  }
+
 }
