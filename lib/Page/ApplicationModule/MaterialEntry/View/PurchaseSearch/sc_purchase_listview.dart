@@ -2,9 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 
+import '../../Model/sc_purchase_model.dart';
+
 /// 采购单listView
 
 class SCPurchaseListView extends StatefulWidget {
+
+  const SCPurchaseListView({Key? key, required this.list}) : super(key: key);
+
+  /// 数据源
+  final List<SCPurchaseModel> list;
+
   @override
   SCPurchaseListViewState createState() => SCPurchaseListViewState();
 }
@@ -26,11 +34,12 @@ class SCPurchaseListViewState extends State<SCPurchaseListView> {
         separatorBuilder: (BuildContext context, int index) {
           return line(index);
         },
-        itemCount: 10);
+        itemCount: widget.list.length);
   }
 
   /// cell
   Widget cell(int index) {
+    SCPurchaseModel model = widget.list[index];
     return Container(
       height: 44.0,
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -48,9 +57,11 @@ class SCPurchaseListViewState extends State<SCPurchaseListView> {
 
   /// line
   Widget line(int index) {
-    return Divider(
-      height: 0.5,
-      color: SCColors.color_EDEDF0,
-    );
+    return const Padding(
+        padding: EdgeInsets.only(left: 16.0),
+        child: Divider(
+          height: 0.5,
+          color: SCColors.color_EDEDF0,
+        ));
   }
 }

@@ -55,7 +55,9 @@ class SCPurchaseSearchPageState extends State<SCPurchaseSearchPage> {
   /// 搜索框
   Widget searchView() {
     return SCSearchView(
-      searchAction: (value) {},
+      searchAction: (value) {
+        controller.searchData(text: value);
+      },
     );
   }
 
@@ -66,7 +68,9 @@ class SCPurchaseSearchPageState extends State<SCPurchaseSearchPage> {
             tag: controllerTag,
             init: controller,
             builder: (state) {
-              return SCPurchaseListView();
+              return SCPurchaseListView(
+                list: controller.list,
+              );
             }));
   }
 }

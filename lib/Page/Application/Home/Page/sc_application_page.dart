@@ -129,6 +129,9 @@ class SCApplicationPageState extends State<SCApplicationPage>
     } else if (title == "领料出入库") {
       SCRouterHelper.pathPage(SCRouterPath.materialRequisitionPage, null);
       return;
+    } else if (title == "资产报损") {
+      SCRouterHelper.pathPage(SCRouterPath.propertyFrmLossPage, null);
+      return;
     }
 
     if (Platform.isAndroid) {
