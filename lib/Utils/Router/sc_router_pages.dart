@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:smartcommunity/Page/AddressBook/Home/Page/sc_addressbook_page.dart';
 import 'package:smartcommunity/Page/Application/Home/Page/sc_application_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/FixedCheck/Page/sc_add_fixedcheck_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/FixedCheck/Page/sc_fixedcheck_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_signature_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_material_entry_detail_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_purchase_search_page.dart';
@@ -152,6 +154,10 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.purchaseSearchPage, page: () => SCPurchaseSearchPage()),
     /*采购单-选择物资*/
     GetPage(name: SCRouterPath.purchaseSelectMaterialPage, page: () => SCPurchaseSelectMaterialPage()),
+    /*固定资产盘点-盘点列表*/
+    GetPage(name: SCRouterPath.fixedCheckPage, page: () => SCFixedCheckPage()),
+    /*固定资产盘点-新增*/
+    GetPage(name: SCRouterPath.addFixedCheckPage, page: () => SCAddFixedCheckPage()),
   ];
 
   /*根据code使用路由*/

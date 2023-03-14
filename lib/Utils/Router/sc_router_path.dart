@@ -171,5 +171,10 @@ class SCRouterPath {
 
   /// *************************** 资产 ******************************/
 
+ /*************************** 固定资产盘点 ******************************/
+  /// 固定资产盘点
+  static String fixedCheckPage = "/lib/Page/PropertyFrmLoss/Page/sc_fixedcheck_page";
 
+  /// 新增固定资产盘点任务
+  static String addFixedCheckPage = "/lib/Page/PropertyFrmLoss/Page/sc_add_fixedcheck_page";
 }
