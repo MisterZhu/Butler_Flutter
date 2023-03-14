@@ -429,7 +429,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
         widget.state.classifyName =
             widget.categoryAlertController.currentDepartmentModel.title ?? '';
         if (widget.isProperty == true) {
-          widget.state.loadPropertyListData();
+          widget.state.loadPropertyFrmLossListData();
         } else {
           widget.state.loadMaterialListData(isMore: false);
         }
@@ -437,7 +437,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
         widget.state.classifyId = '';
         widget.state.classifyName = '';
         if (widget.isProperty == true) {
-          widget.state.loadPropertyListData();
+          widget.state.loadPropertyFrmLossListData();
         } else {
           widget.state.loadMaterialListData(isMore: false);
         }
@@ -447,7 +447,7 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
       widget.state.classifyId = '';
       widget.state.classifyName = '';
       if (widget.isProperty == true) {
-        widget.state.loadPropertyListData();
+        widget.state.loadPropertyFrmLossListData();
       } else {
         widget.state.loadMaterialListData(isMore: false);
       }

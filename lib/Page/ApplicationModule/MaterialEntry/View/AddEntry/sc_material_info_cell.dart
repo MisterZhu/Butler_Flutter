@@ -151,15 +151,19 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 数量
   Widget numItem() {
     String subTitle = '';
-    if ((materialType ?? 0) == 2) {
-      // 物资分类
-      subTitle = '共 ${getCategoryNumber()} 类';
-    } else if ((materialType ?? 0) == 3) {
-      // 采购单
+    if (isProperty == true) {
       subTitle = '共 ${getTypeNumber()} 种';
     } else {
-      // 物资
-      subTitle = '共 ${getTypeNumber()} 种  总数量 ${getNumber()}';
+      if ((materialType ?? 0) == 2) {
+        // 物资分类
+        subTitle = '共 ${getCategoryNumber()} 类';
+      } else if ((materialType ?? 0) == 3) {
+        // 采购单
+        subTitle = '共 ${getTypeNumber()} 种';
+      } else {
+        // 物资
+        subTitle = '共 ${getTypeNumber()} 种  总数量 ${getNumber()}';
+      }
     }
     return Text(subTitle,
         maxLines: 1,
@@ -234,7 +238,7 @@ class SCMaterialInfoCell extends StatelessWidget {
 
   /// 获取种类
   int getTypeNumber() {
-    int count = list.length;
+    int count = isProperty == true ? propertyList?.length ?? 0 : list.length;
     return count;
   }
 

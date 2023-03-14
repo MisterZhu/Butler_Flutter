@@ -51,6 +51,7 @@ class SCMaterialListModel {
     bool? isSelect,// 是否选中
     String? purchaseId,// 采购单id
     String? purchaseCode,// 采购单号
+    String? purchaseDetailId,
   }) {
     _barCode = barCode;
     _classifyId = classifyId;
@@ -82,6 +83,7 @@ class SCMaterialListModel {
     _isSelect = isSelect;
     _purchaseId = purchaseId;
     _purchaseCode = purchaseCode;
+    _purchaseDetailId = purchaseDetailId;
   }
 
   SCMaterialListModel.fromJson(dynamic json) {
@@ -117,6 +119,7 @@ class SCMaterialListModel {
     _isSelect = json['isSelect'];
     _purchaseId = json['purchaseId'];
     _purchaseCode = json['purchaseCode'];
+    _purchaseDetailId = json['purchaseDetailId'];
   }
   String? _barCode;
   String? _classifyId;
@@ -148,6 +151,7 @@ class SCMaterialListModel {
   bool? _isSelect;
   String? _purchaseId;
   String? _purchaseCode;
+  String? _purchaseDetailId;
   SCMaterialListModel copyWith({
     String? barCode,
     String? classifyId,
@@ -179,6 +183,7 @@ class SCMaterialListModel {
     bool? isSelect,
     String? purchaseId,
     String? purchaseCode,
+    String? purchaseDetailId,
   }) =>
       SCMaterialListModel(
         barCode: barCode ?? _barCode,
@@ -211,6 +216,7 @@ class SCMaterialListModel {
         isSelect: isSelect ?? _isSelect,
         purchaseId: purchaseId ?? _purchaseId,
         purchaseCode: purchaseCode ?? _purchaseCode,
+          purchaseDetailId: purchaseDetailId ?? _purchaseDetailId,
       );
   String? get barCode => _barCode;
   String? get classifyId => _classifyId;
@@ -242,6 +248,7 @@ class SCMaterialListModel {
   bool? get isSelect => _isSelect;
   String? get purchaseId => _purchaseId;
   String? get purchaseCode => _purchaseCode;
+  String? get purchaseDetailId => _purchaseDetailId;
 
   /// set checkNum
   set checkNum(int? value) {
@@ -282,6 +289,10 @@ class SCMaterialListModel {
     _reportId = value;
   }
 
+  set purchaseDetailId(String? value) {
+    _purchaseDetailId = value;
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['barCode'] = _barCode;
@@ -314,6 +325,7 @@ class SCMaterialListModel {
     map['isSelect'] = _isSelect;
     map['purchaseId'] = _purchaseId;
     map['purchaseCode'] = _purchaseCode;
+    map['purchaseDetailId'] = _purchaseDetailId;
     return map;
   }
 }

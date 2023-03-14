@@ -51,7 +51,11 @@ class SCPurchaseSearchController extends GetxController {
           SCLoadingUtils.hide();
           if (value is List) {
             List<SCMaterialListModel> materialList = List.from(value.map((e) {
-              return SCMaterialListModel.fromJson(e);
+              SCMaterialListModel materialListModel = SCMaterialListModel.fromJson(e);
+              materialListModel.name = materialListModel.materialName;
+              materialListModel.purchaseDetailId = materialListModel.id;
+              materialListModel.id= materialListModel.materialId;
+              return materialListModel;
             }));
             if (materialList.isEmpty) {
               SCToast.showTip(SCDefaultValue.purchaseNoMaterialTip);

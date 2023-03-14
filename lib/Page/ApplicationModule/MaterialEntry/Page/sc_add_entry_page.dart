@@ -57,6 +57,7 @@ class SCAddEntryPageState extends State<SCAddEntryPage> {
           controller.isReturnEntry = params['isReturnEntry'];
         }
         if (params.containsKey('entryModel')) {
+          print('1111================');
           SCMaterialEntryModel model = params['entryModel'];
           controller.outId = model.id ?? '';
           controller.loadMaterialOutList();

@@ -109,6 +109,9 @@ class SCUrl {
   /// 物资列表-不分页
   static const String kAllMaterialListUrl = "/api/warehouse/manage/material/chooseMaterialList";
 
+  /// 新增入库-资产列表
+  static const String kAddEntryPropertyListUrl = "/api/warehouse/fixedMaterialAccount/page";
+
   /// 编辑的物资列表
   static const String kMaterialEditListUrl = "/api/warehouse/manage/materialInRelation/selectMaterialInRelationListByPage";
 
@@ -123,6 +126,13 @@ class SCUrl {
 
   /// 物资入库-编辑-删除物资
   static const String kEditDeleteEntryMaterialUrl = "/api/warehouse/manage/materialInRelation/deleteMaterialInRelation";
+
+  /// 物资入库-编辑-新增资产
+  static const String kEditAddEntryPropertyUrl = "";
+
+  /// 物资入库-编辑-删除资产
+  static const String kEditDeleteEntryPropertyUrl = "";
+
 
   /// 物资入库-编辑-编辑物资
   static const String kEditEntryMaterialUrl = "/api/warehouse/manage/materialInRelation/editMaterialInRelation";
@@ -276,28 +286,28 @@ class SCUrl {
   /************************* 固定资产报损 *************************/
 
   /// 报损列表
-  static const String kPropertyFrmLossListUrl = "/api/warehouse-zyj/app/asset/report/pageFront";
+  static const String kPropertyFrmLossListUrl = "/api/warehouse/app/asset/report/pageFront";
 
   /// 新增报损
-  static const String kAddPropertyFrmLossUrl = "/api/warehouse-zyj/app/asset/report/save";
+  static const String kAddPropertyFrmLossUrl = "/api/warehouse/app/asset/report/save";
 
   /// 报损详情
-  static const String kPropertyFrmLossDetailUrl = "/api/warehouse-zyj/app/asset/report/detail";
+  static const String kPropertyFrmLossDetailUrl = "/api/warehouse/app/asset/report/detail";
 
   /// 提交报损
-  static const String kSubmitPropertyFrmLossUrl = "/api/warehouse-zyj/app/asset/report/submitWareHouseReport";
+  static const String kSubmitPropertyFrmLossUrl = "/api/warehouse/app/asset/report/submitWareHouseReport";
 
   /// 编辑物资报损基础信息
-  static const String kEditAddPropertyFrmLossBaseInfoUrl = "/api/warehouse-zyj/app/asset/report/edit";
+  static const String kEditAddPropertyFrmLossBaseInfoUrl = "/api/warehouse/app/asset/report/edit";
 
   /// 资产列表
-  static const String kAddFrmLossPropertyListUrl = "/api/warehouse-zyj/fixedMaterialAccount/listAssets";
+  static const String kAddFrmLossPropertyListUrl = "/api/warehouse/fixedMaterialAccount/listAssets";
 
   /// 资产报损-编辑-删除资产
-  static const String kEditDeleteFrmLossPropertyUrl = "/api/warehouse-zyj/assetReportRelation/remove";
+  static const String kEditDeleteFrmLossPropertyUrl = "/api/warehouse/assetReportRelation/remove";
 
   /// 资产报损-编辑-新增资产
-  static const String kEditAddFrmLossPropertyUrl = "/api/warehouse-zyj/assetReportRelation/addAssetReportList";
+  static const String kEditAddFrmLossPropertyUrl = "/api/warehouse/assetReportRelation/addAssetReportList";
 
 
 }

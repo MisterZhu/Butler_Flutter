@@ -51,7 +51,7 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
     categoryAlertController.tag = categoryAlertControllerTag;
     initPageData();
     if (controller.isProperty == true) {
-      controller.loadPropertyListData();
+      controller.loadPropertyFrmLossListData();
     } else {
       if (controller.check == true) {
 
