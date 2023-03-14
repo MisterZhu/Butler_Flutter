@@ -37,7 +37,7 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 是否显示添加
   final bool showAdd;
 
-  /// 2显示物资分类,其它显示物资信息，
+  /// 2显示物资分类,3显示采购单,其它显示物资信息，
   final int? materialType;
 
   /// title
@@ -52,20 +52,21 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 是否是资产
   final bool? isProperty;
 
-  SCMaterialInfoCell({Key? key,
-      required this.title,
-      this.materialType = 0,
-      this.selectNameAction,
-      this.selectTypeAction,
-      this.addAction,
-      required this.list,
-      this.categoryList,
-      this.propertyList,
-      this.deleteAction,
-      this.updateNumAction,
-      required this.showAdd,
-      this.hideMaterialNumTextField,
-      this.isReturnEntry,
+  SCMaterialInfoCell({
+    Key? key,
+    required this.title,
+    this.materialType = 0,
+    this.selectNameAction,
+    this.selectTypeAction,
+    this.addAction,
+    required this.list,
+    this.categoryList,
+    this.propertyList,
+    this.deleteAction,
+    this.updateNumAction,
+    required this.showAdd,
+    this.hideMaterialNumTextField,
+    this.isReturnEntry,
     this.isProperty
   }) : super(key: key);
 
@@ -153,9 +154,14 @@ class SCMaterialInfoCell extends StatelessWidget {
     if (isProperty == true) {
       subTitle = '共 ${getTypeNumber()} 种';
     } else {
-      if ((materialType ?? 0) == 2) {// 物资分类
+      if ((materialType ?? 0) == 2) {
+        // 物资分类
         subTitle = '共 ${getCategoryNumber()} 类';
-      } else {// 物资
+      } else if ((materialType ?? 0) == 3) {
+        // 采购单
+        subTitle = '共 ${getTypeNumber()} 种';
+      } else {
+        // 物资
         subTitle = '共 ${getTypeNumber()} 种  总数量 ${getNumber()}';
       }
     }
@@ -170,9 +176,14 @@ class SCMaterialInfoCell extends StatelessWidget {
 
   /// listview
   Widget listview() {
-    if (materialType == 2) {// 分类列表
+    if (materialType == 2) {
+      // 分类列表
       return classifyView();
-    } else {// 物资列表
+    } if (materialType == 3) {
+      // 采购单物资
+      return purchaseView();
+    } else {
+      // 物资列表
       return materialListView();
     }
   }
@@ -197,10 +208,24 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 物资分类列表
   Widget classifyView() {
     return SCAllCategoryListView(
-        list: categoryList ?? [],
-        deleteAction: (int index) {
-          deleteAction?.call(index);
-        },
+      list: categoryList ?? [],
+      deleteAction: (int index) {
+        deleteAction?.call(index);
+      },
+    );
+  }
+
+  /// 采购单物资列表
+  Widget purchaseView() {
+    return SCAddEntryAllMaterialView(
+      hideMaterialNumTextField: true,
+      list: list,
+      isReturnEntry: false,
+      isProperty: false,
+      propertyList: [],
+      deleteAction: (int index) {
+        deleteAction?.call(index);
+      },
     );
   }
 
@@ -228,6 +253,6 @@ class SCMaterialInfoCell extends StatelessWidget {
 
   /// 分类
   int getCategoryNumber() {
-   return categoryList?.length ?? 0;
+    return categoryList?.length ?? 0;
   }
 }

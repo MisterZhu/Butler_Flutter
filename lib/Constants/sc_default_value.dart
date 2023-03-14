@@ -212,6 +212,15 @@ class SCDefaultValue {
   /// 选择使用部门tip
   static const String selectUserDepartment = "请选择使用部门";
 
+  /// 搜索框默认placeholder
+  static const String searchViewDefaultPlaceholder = "请输入搜索内容";
+
+  /// 采购需求单搜索框placeholder
+  static const String purchaseSearchViewPlaceholder = "搜索采购需求单号";
+
+  /// 采购单暂无物资tip
+  static const String purchaseNoMaterialTip = "暂无物资";
+
   /// 图片路径
   static const files = "/files/";
 }

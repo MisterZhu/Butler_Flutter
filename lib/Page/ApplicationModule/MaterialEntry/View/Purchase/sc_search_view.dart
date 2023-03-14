@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 
 import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Constants/sc_default_value.dart';
 
 /// 搜索框
 
 class SCSearchView extends StatefulWidget {
 
-  const SCSearchView({Key? key, this.searchAction}) : super(key: key);
+  const SCSearchView({Key? key, this.searchAction, this.placeholder}) : super(key: key);
 
   /// 搜索
   final Function(String text)? searchAction;
+
+  /// placeholder
+  final String? placeholder;
 
   @override
   SCSearchViewState createState() => SCSearchViewState();
@@ -28,9 +32,7 @@ class SCSearchViewState extends State<SCSearchView> {
   @override
   initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 100), () {
-      node.requestFocus();
-    });
+    showKeyboard();
   }
 
   @override
@@ -94,10 +96,7 @@ class SCSearchViewState extends State<SCSearchView> {
           ),
         ),
         onTap: () {
-          setState(() {
-            node.unfocus();
-            showCancel = false;
-          });
+          hideKeyboard();
         },
       ),
     );
@@ -105,6 +104,7 @@ class SCSearchViewState extends State<SCSearchView> {
 
   /// 输入框
   Widget textField() {
+    String text = widget.placeholder ?? SCDefaultValue.searchViewDefaultPlaceholder;
     return Expanded(
         child: TextField(
           controller: controller,
@@ -119,26 +119,26 @@ class SCSearchViewState extends State<SCSearchView> {
           keyboardType: TextInputType.text,
           keyboardAppearance: Brightness.light,
           textInputAction: TextInputAction.search,
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 4),
-            hintText: "搜索采购需求单号",
-            hintStyle: TextStyle(
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(vertical: 4),
+            hintText: text,
+            hintStyle: const TextStyle(
                 fontSize: SCFonts.f14,
                 fontWeight: FontWeight.w400,
                 color: SCColors.color_B0B1B8),
-            focusedBorder: OutlineInputBorder(
+            focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(width: 0, color: Colors.transparent)),
-            disabledBorder: OutlineInputBorder(
+            disabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(width: 0, color: Colors.transparent)),
-            enabledBorder: OutlineInputBorder(
+            enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(width: 0, color: Colors.transparent)),
-            border: OutlineInputBorder(
+            border: const OutlineInputBorder(
                 borderSide: BorderSide(width: 0, color: Colors.transparent)),
             isCollapsed: true,
           ),
           onChanged: (value) {},
           onSubmitted: (value) {
-            node.unfocus();
+            hideKeyboard();
             widget.searchAction?.call(value);
           },
           onTap: () {
@@ -149,5 +149,20 @@ class SCSearchViewState extends State<SCSearchView> {
             }
           },
         ));
+  }
+
+  /// 关闭键盘
+  hideKeyboard() {
+    setState(() {
+      node.unfocus();
+      showCancel = false;
+    });
+  }
+
+  /// 弹起键盘
+  showKeyboard() {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      node.requestFocus();
+    });
   }
 }

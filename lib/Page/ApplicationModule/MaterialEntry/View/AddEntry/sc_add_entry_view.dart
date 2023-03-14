@@ -7,6 +7,7 @@ import 'package:flutter_picker/Picker.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_purchase_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_basic_info_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_material_info_cell.dart';
 import '../../../../../Constants/sc_enum.dart';
@@ -83,7 +84,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         },
       ];
     }
-    if (widget.state.isReturnEntry == true) {
+    if (widget.state.isReturnEntry == true || widget.state.type == '采购入库') {
       list = [
         {
           "type": scMaterialBottomViewType2,
@@ -173,6 +174,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         showAdd: widget.state.isReturnEntry == true ? false : true,
         list: widget.state.selectedList,
         isReturnEntry: widget.state.isReturnEntry,
+        materialType: widget.state.type == '采购入库' ? 3 : 0,
         isProperty: widget.state.isProperty,
         propertyList: widget.state.selectedPropertyList,
         addAction: () {
@@ -240,6 +242,12 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
                   widget.state.wareHouseId = subModel.id ?? '';
                 } else if (index == 1) {
                   // 类型
+                  if ((model.name ?? '') != widget.state.type) {
+                    widget.state.updateSelectedMaterial([]);
+                    if (widget.state.type == '采购入库') {
+                      widget.state.purchaseModel = SCPurchaseModel();
+                    }
+                  }
                   SCEntryTypeModel subModel =
                       widget.state.typeList[selectIndex];
                   widget.state.typeIndex = selectIndex;
@@ -314,7 +322,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       baseInfoList.add({
         'isRequired': true,
         'title': '采购需求单',
-        'content': widget.state.purchaseId,
+        'content': widget.state.purchaseModel.purchaseCode ?? '',
         'disable' : widget.state.isEdit
       });
     }
@@ -345,11 +353,29 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
 
   /// 添加物资
   addAction() async {
-    if (widget.state.isProperty == true) {
-      if (widget.state.isEdit) {
-        addExitsPropertyAction();
+    if (widget.state.type == '采购入库') {
+      if (widget.state.purchaseId.isEmpty) {
+        SCToast.showTip(SCDefaultValue.selectPurchaseIdTip);
+        return;
+      }
+      addPurchaseMaterialAction();
+    } else if (widget.state.type == '归还入库') {
+      if (widget.state.materialTypeName.isEmpty) {
+        SCToast.showTip(SCDefaultValue.selectMaterialTypeTip);
+        return;
+      }
+      if (widget.state.isProperty == true) {
+        if (widget.state.isEdit) {
+          addExitsPropertyAction();
+        } else {
+          addPropertyAction();
+        }
       } else {
-        addPropertyAction();
+        if (widget.state.isEdit) {
+          addExitsMaterialAction();
+        } else {
+          addMaterialAction();
+        }
       }
     } else {
       if (widget.state.isEdit) {
@@ -357,6 +383,18 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       } else {
         addMaterialAction();
       }
+    }
+  }
+
+  /// 新增物资-采购单物资
+  addPurchaseMaterialAction() async{
+    var params = await SCRouterHelper.pathPage(SCRouterPath.purchaseSelectMaterialPage, {
+      "allMaterialList" : List.from(widget.state.purchaseMaterialList),
+      "selectMaterialList" : List.from(widget.state.selectedList)
+    });
+    if (params is Map) {
+      List<SCMaterialListModel> list = params['materialList'];
+      widget.state.updateSelectedMaterial(list);
     }
   }
 
@@ -711,7 +749,13 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
   }
 
   /// 采购需求单
-  purchaseSearch() {
-    SCRouterHelper.pathPage(SCRouterPath.purchaseSearchPage, null);
+  purchaseSearch() async{
+    var params = await SCRouterHelper.pathPage(SCRouterPath.purchaseSearchPage, null);
+    if (params is Map) {
+      widget.state.purchaseModel = params['model'];
+      widget.state.purchaseId = widget.state.purchaseModel.id ?? '';
+      widget.state.purchaseMaterialList = List.from(params['materialList']);
+      widget.state.updateSelectedMaterial(List.from(params['materialList']));
+    }
   }
 }

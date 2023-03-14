@@ -49,6 +49,9 @@ class SCMaterialListModel {
     String? locations,
     int? localNum,// 本地物资数量，默认1
     bool? isSelect,// 是否选中
+    String? purchaseId,// 采购单id
+    String? purchaseCode,// 采购单号
+    String? purchaseDetailId,
   }) {
     _barCode = barCode;
     _classifyId = classifyId;
@@ -78,6 +81,9 @@ class SCMaterialListModel {
     _locations = locations;
     _localNum = localNum;
     _isSelect = isSelect;
+    _purchaseId = purchaseId;
+    _purchaseCode = purchaseCode;
+    _purchaseDetailId = purchaseDetailId;
   }
 
   SCMaterialListModel.fromJson(dynamic json) {
@@ -111,6 +117,9 @@ class SCMaterialListModel {
     _locations = json['locations'];
     _localNum = 1;
     _isSelect = json['isSelect'];
+    _purchaseId = json['purchaseId'];
+    _purchaseCode = json['purchaseCode'];
+    _purchaseDetailId = json['purchaseDetailId'];
   }
   String? _barCode;
   String? _classifyId;
@@ -140,6 +149,9 @@ class SCMaterialListModel {
   String? _locations;
   int? _localNum;
   bool? _isSelect;
+  String? _purchaseId;
+  String? _purchaseCode;
+  String? _purchaseDetailId;
   SCMaterialListModel copyWith({
     String? barCode,
     String? classifyId,
@@ -169,6 +181,9 @@ class SCMaterialListModel {
     String? locations,
     int? localNum,
     bool? isSelect,
+    String? purchaseId,
+    String? purchaseCode,
+    String? purchaseDetailId,
   }) =>
       SCMaterialListModel(
         barCode: barCode ?? _barCode,
@@ -199,6 +214,9 @@ class SCMaterialListModel {
         locations: locations ?? _locations,
         localNum: localNum ?? _localNum,
         isSelect: isSelect ?? _isSelect,
+        purchaseId: purchaseId ?? _purchaseId,
+        purchaseCode: purchaseCode ?? _purchaseCode,
+          purchaseDetailId: purchaseDetailId ?? _purchaseDetailId,
       );
   String? get barCode => _barCode;
   String? get classifyId => _classifyId;
@@ -228,6 +246,9 @@ class SCMaterialListModel {
   String? get locations => _locations;
   int? get localNum => _localNum;
   bool? get isSelect => _isSelect;
+  String? get purchaseId => _purchaseId;
+  String? get purchaseCode => _purchaseCode;
+  String? get purchaseDetailId => _purchaseDetailId;
 
   /// set checkNum
   set checkNum(int? value) {
@@ -268,6 +289,10 @@ class SCMaterialListModel {
     _reportId = value;
   }
 
+  set purchaseDetailId(String? value) {
+    _purchaseDetailId = value;
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['barCode'] = _barCode;
@@ -298,6 +323,9 @@ class SCMaterialListModel {
     map['locations'] = _locations;
     map['localNum'] = _localNum;
     map['isSelect'] = _isSelect;
+    map['purchaseId'] = _purchaseId;
+    map['purchaseCode'] = _purchaseCode;
+    map['purchaseDetailId'] = _purchaseDetailId;
     return map;
   }
 }

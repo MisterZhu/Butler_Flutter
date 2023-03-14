@@ -2,16 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 
+import '../../Controller/sc_purchase_search_controller.dart';
 import '../../Model/sc_purchase_model.dart';
 
 /// 采购单listView
 
 class SCPurchaseListView extends StatefulWidget {
 
-  const SCPurchaseListView({Key? key, required this.list}) : super(key: key);
+  const SCPurchaseListView({Key? key, required this.list, required this.controller}) : super(key: key);
 
   /// 数据源
   final List<SCPurchaseModel> list;
+
+  /// controller
+  final SCPurchaseSearchController controller;
 
   @override
   SCPurchaseListViewState createState() => SCPurchaseListViewState();
@@ -40,17 +44,24 @@ class SCPurchaseListViewState extends State<SCPurchaseListView> {
   /// cell
   Widget cell(int index) {
     SCPurchaseModel model = widget.list[index];
-    return Container(
-      height: 44.0,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      color: SCColors.color_FFFFFF,
-      alignment: Alignment.centerLeft,
-      child: Text(
-        '搜索点位1',
-        style: TextStyle(
-            fontSize: SCFonts.f16,
-            fontWeight: FontWeight.w400,
-            color: SCColors.color_1B1D33),
+    String text = model.purchaseCode ?? '';
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        detail(index);
+      },
+      child: Container(
+        height: 44.0,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        color: SCColors.color_FFFFFF,
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: const TextStyle(
+              fontSize: SCFonts.f16,
+              fontWeight: FontWeight.w400,
+              color: SCColors.color_1B1D33),
+        ),
       ),
     );
   }
@@ -63,5 +74,11 @@ class SCPurchaseListViewState extends State<SCPurchaseListView> {
           height: 0.5,
           color: SCColors.color_EDEDF0,
         ));
+  }
+
+  /// 详情
+  detail(int index) {
+    SCPurchaseModel model = widget.list[index];
+    widget.controller.detail(model: model);
   }
 }
