@@ -93,6 +93,9 @@ class SCRouterPath {
   /// 采购需求单搜索
   static String purchaseSearchPage = "/lib/Page/materialEntry/Page/sc_purchase_search_page";
 
+  /// 采购单选择物资
+  static String purchaseSelectMaterialPage = "/lib/Page/materialEntry/Page/sc_purchase_selectmaterial_page";
+
   /// *************************** 物资出库 ******************************/
 
   /// 物资出库

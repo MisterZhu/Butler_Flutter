@@ -4,6 +4,7 @@ import 'package:smartcommunity/Page/Application/Home/Page/sc_application_page.da
 import 'package:smartcommunity/Page/ApplicationModule/HouseInspect/Page/sc_house_inspect_signature_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_material_entry_detail_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_purchase_search_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_purchase_selectmaterial_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialOutbound/Page/sc_add_outbound_page.dart';
 import 'package:smartcommunity/Page/Base/Scan/Page/sc_scan_page.dart';
 import 'package:smartcommunity/Page/Login/Home/Page/sc_login_page.dart';
@@ -149,6 +150,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.propertyFrmLossDetailPage, page: () => SCPropertyFrmLossDetailPage()),
     /*搜索采购需求单*/
     GetPage(name: SCRouterPath.purchaseSearchPage, page: () => SCPurchaseSearchPage()),
+    /*采购单-选择物资*/
+    GetPage(name: SCRouterPath.purchaseSelectMaterialPage, page: () => SCPurchaseSelectMaterialPage()),
   ];
 
   /*根据code使用路由*/

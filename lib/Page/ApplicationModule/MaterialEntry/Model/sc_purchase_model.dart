@@ -1,24 +1,24 @@
 /// 采购单model
 class SCPurchaseModel {
   SCPurchaseModel({
-      this.applyDate, 
-      this.applyManId, 
-      this.applyManName, 
-      this.applyPartId, 
-      this.applyPartName, 
-      this.creator, 
-      this.creatorName, 
-      this.deleted, 
-      this.gmtCreate, 
-      this.gmtModify, 
-      this.id, 
-      this.operator, 
-      this.operatorName, 
-      this.purchaseCode, 
-      this.remark, 
-      this.status, 
-      this.tenantId, 
-      this.totalPrice,});
+    this.applyDate,
+    this.applyManId,
+    this.applyManName,
+    this.applyPartId,
+    this.applyPartName,
+    this.creator,
+    this.creatorName,
+    this.deleted,
+    this.gmtCreate,
+    this.gmtModify,
+    this.id,
+    this.operator,
+    this.operatorName,
+    this.purchaseCode,
+    this.remark,
+    this.status,
+    this.tenantId,
+    this.totalPrice,});
 
   SCPurchaseModel.fromJson(dynamic json) {
     applyDate = json['applyDate'];

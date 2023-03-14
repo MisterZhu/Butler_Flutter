@@ -4,6 +4,7 @@ import 'package:date_format/date_format.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_purchase_model.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Network/sc_http_manager.dart';
@@ -83,6 +84,10 @@ class SCAddEntryController extends GetxController {
   int materialTypeIndex = -1;
   /// 采购需求单
   String purchaseId = '';
+  /// 采购单model
+  SCPurchaseModel purchaseModel = SCPurchaseModel();
+  /// 采购单-物资列表
+  List<SCMaterialListModel> purchaseMaterialList = [];
 
   @override
   onInit() {

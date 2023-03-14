@@ -7,6 +7,7 @@ import 'package:flutter_picker/Picker.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_purchase_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_basic_info_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_material_info_cell.dart';
 import '../../../../../Constants/sc_enum.dart';
@@ -172,6 +173,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         showAdd: widget.state.isReturnEntry == true ? false : true,
         list: widget.state.selectedList,
         isReturnEntry: widget.state.isReturnEntry,
+        materialType: widget.state.type == '采购入库' ? 3 : 0,
         addAction: () {
           addAction();
         },
@@ -237,6 +239,12 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
                   widget.state.wareHouseId = subModel.id ?? '';
                 } else if (index == 1) {
                   // 类型
+                  if ((model.name ?? '') != widget.state.type) {
+                    widget.state.updateSelectedMaterial([]);
+                    if (widget.state.type == '采购入库') {
+                      widget.state.purchaseModel = SCPurchaseModel();
+                    }
+                  }
                   SCEntryTypeModel subModel =
                       widget.state.typeList[selectIndex];
                   widget.state.typeIndex = selectIndex;
@@ -298,21 +306,21 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         'disable' : widget.state.isEdit
       },
     ];
-    // if (widget.state.type == '归还入库') {
-    //   baseInfoList.add({
-    //     'isRequired': true,
-    //     'title': '物资类型',
-    //     'content': widget.state.materialType,
-    //     'disable' : widget.state.isEdit
-    //   });
-    // } else if (widget.state.type == '采购入库') {
-    //   baseInfoList.add({
-    //     'isRequired': true,
-    //     'title': '采购需求单',
-    //     'content': widget.state.purchaseId,
-    //     'disable' : widget.state.isEdit
-    //   });
-    // }
+    if (widget.state.type == '归还入库') {
+      baseInfoList.add({
+        'isRequired': true,
+        'title': '物资类型',
+        'content': widget.state.materialType,
+        'disable' : widget.state.isEdit
+      });
+    } else if (widget.state.type == '采购入库') {
+      baseInfoList.add({
+        'isRequired': true,
+        'title': '采购需求单',
+        'content': widget.state.purchaseModel.purchaseCode ?? '',
+        'disable' : widget.state.isEdit
+      });
+    }
     baseInfoList.add({
       'isRequired': true,
       'title': '入库日期',
@@ -344,10 +352,27 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       SCToast.showTip(SCDefaultValue.selectWarehouseTip);
       return;
     }
-    if (widget.state.isEdit) {
-      addExitsMaterialAction();
+
+    if (widget.state.type == '采购入库') {
+      addPurchaseMaterialAction();
     } else {
-      addMaterialAction();
+      if (widget.state.isEdit) {
+        addExitsMaterialAction();
+      } else {
+        addMaterialAction();
+      }
+    }
+  }
+
+  /// 新增物资-采购单物资
+  addPurchaseMaterialAction() async{
+    var params = await SCRouterHelper.pathPage(SCRouterPath.purchaseSelectMaterialPage, {
+      "allMaterialList" : List.from(widget.state.purchaseMaterialList),
+      "selectMaterialList" : List.from(widget.state.selectedList)
+    });
+    if (params is Map) {
+      List<SCMaterialListModel> list = params['materialList'];
+      widget.state.updateSelectedMaterial(list);
     }
   }
 
@@ -570,7 +595,12 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
   }
 
   /// 采购需求单
-  purchaseSearch() {
-    SCRouterHelper.pathPage(SCRouterPath.purchaseSearchPage, null);
+  purchaseSearch() async{
+    var params = await SCRouterHelper.pathPage(SCRouterPath.purchaseSearchPage, null);
+    if (params is Map) {
+      widget.state.purchaseModel = params['model'];
+      widget.state.purchaseMaterialList = params['materialList'];
+      widget.state.updateSelectedMaterial(List.from(params['materialList']));
+    }
   }
 }
