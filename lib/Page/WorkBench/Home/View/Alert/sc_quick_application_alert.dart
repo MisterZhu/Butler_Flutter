@@ -75,7 +75,7 @@ class SCQuickApplicationAlert extends StatelessWidget {
         //    return cell(id: 0,icon: SCAsset.iconHomeMoreApplication, name: '更多应用');
         // } else {
           SCMenuItemModel model = list[index];
-           return cell(id: model.id!, icon: model.icon?.name ?? '', name: model.name ?? '', model: model);
+           return cell(id: model.id!, icon: model.icon?.name ?? '', name: model.name ?? '', model: model, context: context);
         // }
       },
       staggeredTileBuilder: (int index) {
@@ -84,9 +84,10 @@ class SCQuickApplicationAlert extends StatelessWidget {
   }
 
   /// cell
-  Widget cell({required int id, required String icon, required String name, required SCMenuItemModel model}) {
+  Widget cell({required int id, required String icon, required String name, required SCMenuItemModel model, required BuildContext context}) {
     return GestureDetector(
       onTap: () {
+        Navigator.of(context).pop();
         tapAction?.call(id, name, model.url ?? '');
       },
       child: Column(

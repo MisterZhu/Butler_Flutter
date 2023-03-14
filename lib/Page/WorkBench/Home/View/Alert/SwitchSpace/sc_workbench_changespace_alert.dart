@@ -134,7 +134,11 @@ class SCWorkBenchChangeSpaceAlert extends StatelessWidget {
       onTap: (int index, SCSpaceModel subModel){
         changeSpaceController.updateCurrentSpace(subModel.id ?? '', subModel.flag ?? 0, true);
         changeSpaceController.updateSelectData(subModel);
-        changeSpaceController.loadManageTreeData();
+        changeSpaceController.localSelectSpace(list: subModel.children ?? [], completeHandler: (bool getDataFromServer) {
+          if (getDataFromServer) {
+            changeSpaceController.loadManageTreeData();
+          }
+        });
       },
     ));
   }
