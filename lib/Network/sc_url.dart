@@ -146,6 +146,9 @@ class SCUrl {
   /// 物资分类
   static const String kMaterialSortUrl = "/api/warehouse/manage/materialClass/tree";
 
+  /// 搜索采购需求单
+  static const String kPurchaseSearchUrl = "/api/warehouse/mange/wareHousePurchase/getAllPurchaseId";
+
   /// 不分页查询物资出库列表
   static const String kMaterialOutListUrl = "/api/warehouse/manage/materialOutRelation/selectMaterialOutRelationList";
 
