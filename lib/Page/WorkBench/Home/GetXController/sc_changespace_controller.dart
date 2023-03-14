@@ -172,6 +172,18 @@ class SCChangeSpaceController extends GetxController {
         });
   }
 
+  /// 本地选择空间
+  localSelectSpace({required List<SCSpaceModel> list, Function(bool getDataFromServer)? completeHandler}) {
+    if (list.isNotEmpty) {
+      dataList = list;
+      hasNextSpace = list.isNotEmpty ? true : false;
+      completeHandler?.call(false);
+      update();
+    } else {
+      completeHandler?.call(true);
+    }
+  }
+
   /// 选择空间
   selectSpace(int index, {Function(List<SCSpaceModel> list)? success}) {
     int subIndex = index == 0 ? 0 : index - 1;

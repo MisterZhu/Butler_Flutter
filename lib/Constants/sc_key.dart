@@ -40,4 +40,6 @@ class SCKey {
   static const String kRefreshMaterialRequisitionPage = "kRefreshMaterialRequisitionPage";
   /// 仓储-刷新资产报损页面
   static const String kRefreshPropertyFrmLossPage = "kRefreshPropertyFrmLossPage";
+  /// 固定资产盘点-刷新盘点任务页面
+  static const String kRefreshFixedCheckPage = "kRefreshFixedCheckPage";
 }

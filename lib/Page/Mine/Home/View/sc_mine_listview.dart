@@ -68,7 +68,7 @@ class SCMineListView extends StatelessWidget {
   }
 
   Widget listview() {
-    int count = 8;
+    int count = 9;
     if (SCConfig.env == SCEnvironment.production && !SCConfig.isSupportProxyForProduction) {
       count = 1;
     }
@@ -149,6 +149,14 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineService,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.propertyFrmLossPage, null);
+        },);
+    } else if (index == 8) {
+      return SCSettingCell(
+        title: '固定资产盘点',
+        showLeftIcon: true,
+        leftIcon: SCAsset.iconMineService,
+        onTap: () {
+          SCRouterHelper.pathPage(SCRouterPath.fixedCheckPage, null);
         },);
     } else {
       return const SizedBox(height: 100.0,);
