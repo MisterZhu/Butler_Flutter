@@ -84,7 +84,7 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
         },
       ];
     }
-    if (widget.state.isReturnEntry == true) {
+    if (widget.state.isReturnEntry == true || widget.state.type == '采购入库') {
       list = [
         {
           "type": scMaterialBottomViewType2,
