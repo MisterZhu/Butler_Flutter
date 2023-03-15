@@ -157,7 +157,7 @@ class SCAllMaterialListView extends StatelessWidget {
       }
       SCMaterialListModel subModel = propertyList![index];
       return SCMaterialCell(
-        propertyModel: subModel,
+        model: subModel,
         type: cellType,
         status: status,
         onTap: () {

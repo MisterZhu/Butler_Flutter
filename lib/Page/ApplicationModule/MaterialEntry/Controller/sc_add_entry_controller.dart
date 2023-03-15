@@ -30,9 +30,6 @@ class SCAddEntryController extends GetxController {
   /// 已选择的物资数据
   List<SCMaterialListModel> selectedList = [];
 
-  /// 已选择的物资数据
-  List<SCMaterialListModel> selectedPropertyList = [];
-
   /// 是否是编辑
   bool isEdit = false;
 
@@ -402,7 +399,7 @@ class SCAddEntryController extends GetxController {
 
   /// 更新已选的资产数据
   updateSelectedProperty(List<SCMaterialListModel> list) {
-    selectedPropertyList = list;
+    selectedList = list;
     update();
   }
 
@@ -416,8 +413,8 @@ class SCAddEntryController extends GetxController {
 
   /// 删除资产
   deleteProperty(int index) {
-    if (index < selectedPropertyList.length) {
-      selectedPropertyList.removeAt(index);
+    if (index < selectedList.length) {
+      selectedList.removeAt(index);
       update();
     }
   }

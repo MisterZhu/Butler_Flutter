@@ -78,7 +78,7 @@ class SCAddMaterialListView extends StatelessWidget {
   Widget propertyCell(SCMaterialListModel model) {
     return SCMaterialCell(
       hideMaterialNumTextField: hideNumTextField,
-      propertyModel: model,
+      model: model,
       type: scPropertyCellTypeRadio,
       check: check,
       radioTap: (bool value) {
