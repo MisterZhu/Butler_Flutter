@@ -41,6 +41,9 @@ class SCMaterialEntryDetailController extends GetxController {
   /// 未增盘点的物资
   List<SCMaterialListModel> uncheckedList = [];
 
+  /// 是否是固定资产盘点
+  bool isFixedCheck = false;
+
   @override
   onInit() {
     super.onInit();

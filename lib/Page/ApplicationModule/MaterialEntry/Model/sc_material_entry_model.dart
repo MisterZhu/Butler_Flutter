@@ -74,6 +74,7 @@ class SCMaterialEntryModel {
     int? rangeValue,
     String? assetNames,
     int? assetNums,
+    bool? returned,
   }) {
     _creator = creator;
     _creatorName = creatorName;
@@ -113,6 +114,7 @@ class SCMaterialEntryModel {
     _rangeValue = rangeValue;
     _assetNames = assetNames;
     _assetNums = assetNums;
+    _returned = returned;
   }
 
   SCMaterialEntryModel.fromJson(dynamic json) {
@@ -159,6 +161,7 @@ class SCMaterialEntryModel {
     _rangeValue = json['rangeValue'];
     _assetNames = json['assetNames'];
     _assetNums = json['assetNums'];
+    _returned = json['returned'];
   }
   String? _creator;
   String? _creatorName;
@@ -198,6 +201,7 @@ class SCMaterialEntryModel {
   int? _rangeValue;
   String? _assetNames;
   int? _assetNums;
+  bool? _returned;
   SCMaterialEntryModel copyWith({
     String? creator,
     String? creatorName,
@@ -236,6 +240,7 @@ class SCMaterialEntryModel {
     int? rangeValue,
     String? assetNames,
     int? assetNums,
+    bool? returned,
   }) =>
       SCMaterialEntryModel(
         creator: creator ?? _creator,
@@ -276,6 +281,7 @@ class SCMaterialEntryModel {
           rangeValue: rangeValue ?? _rangeValue,
         assetNames: assetNames ?? _assetNames,
         assetNums: assetNums ?? _assetNums,
+          returned: returned ?? _returned,
       );
   String? get creator => _creator;
   String? get creatorName => _creatorName;
@@ -315,6 +321,7 @@ class SCMaterialEntryModel {
   int? get rangeValue => _rangeValue;
   String? get assetNames => _assetNames;
   int? get assetNums => _assetNums;
+  bool? get returned => _returned;
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['creator'] = _creator;
@@ -357,6 +364,7 @@ class SCMaterialEntryModel {
     map['rangeValue'] = _rangeValue;
     map['assetNames'] = _assetNames;
     map['assetNums'] = _assetNums;
+    map['returned'] = _returned;
     return map;
   }
 }

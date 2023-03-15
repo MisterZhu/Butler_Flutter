@@ -255,4 +255,7 @@ class SCAsset {
   /// 物资调拨icon
   static const String iconMaterialCheck = "images/materialCheck/icon_material_check.png";
 
+  /// 报损原因-已选择icon
+  static const String iconFrmLossReasonSelected = "images/materialCheck/icon_frmLoss_reason_selected.png";
+
 }

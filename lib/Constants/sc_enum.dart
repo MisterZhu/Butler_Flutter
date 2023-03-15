@@ -72,4 +72,6 @@ enum SCWarehouseManageType {
   requisition,
   // 固定资产报损
   propertyFrmLoss,
+  // 固定资盘点
+  fixedCheck,
 }

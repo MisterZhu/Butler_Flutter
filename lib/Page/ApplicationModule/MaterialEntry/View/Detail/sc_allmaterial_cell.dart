@@ -53,7 +53,7 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
         hiddenUnfold = false;
       }
     }
-    if (widget.type == SCWarehouseManageType.check) {
+    if (widget.type == SCWarehouseManageType.check || widget.type == SCWarehouseManageType.fixedCheck) {
       hiddenUnfold = true;
     }
     return DecoratedBox(
@@ -77,6 +77,17 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
                 int subStatus = widget.model?.status ?? -1;
                 if (subStatus == 1 || subStatus == 2 || subStatus == 3 || subStatus == 4) {
                   var backParams = await SCRouterHelper.pathPage(SCRouterPath.checkMaterialDetailPage, {'model': model});
+                  if (backParams != null) {
+                    setState(() {
+                      model = backParams['model'];
+                    });
+                  }
+                }
+              } else if (widget.type == SCWarehouseManageType.fixedCheck) {
+                /// 待盘点或盘点中时
+                int subStatus = widget.model?.status ?? -1;
+                if (subStatus == 1 || subStatus == 2 || subStatus == 3 || subStatus == 4) {
+                  var backParams = await SCRouterHelper.pathPage(SCRouterPath.fixedCheckMaterialDetailPage, {'model': model});
                   if (backParams != null) {
                     setState(() {
                       model = backParams['model'];
@@ -116,7 +127,7 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
 
   /// 定时器
   Widget timerView() {
-    if (widget.type == SCWarehouseManageType.check) {
+    if (widget.type == SCWarehouseManageType.check || widget.type == SCWarehouseManageType.fixedCheck) {
       int status = widget.model?.status ?? -1;
       if (status == 2 || status == 4) {
         if ((widget.remainingTime ?? 0) <= 0) {
@@ -134,7 +145,7 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
 
   /// 数据
   getRealList() {
-    if (widget.type == SCWarehouseManageType.check) {
+    if (widget.type == SCWarehouseManageType.check || widget.type == SCWarehouseManageType.fixedCheck) {
       return widget.state.checkedList;
     } else {
       if (widget.model?.materials != null && widget.model!.materials!.length > maxLength) {

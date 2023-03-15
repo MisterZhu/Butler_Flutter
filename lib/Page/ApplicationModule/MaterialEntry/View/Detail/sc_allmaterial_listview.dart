@@ -37,7 +37,7 @@ class SCAllMaterialListView extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isProperty == true) {
       if ((propertyList ?? []).isEmpty) {
-        if (type == SCWarehouseManageType.check) {
+        if (type == SCWarehouseManageType.check || type == SCWarehouseManageType.fixedCheck) {
           return checkEmptyView();
         } else {
           return const SizedBox();
@@ -50,7 +50,7 @@ class SCAllMaterialListView extends StatelessWidget {
       }
     } else {
       if ((list ?? []).isEmpty) {
-        if (type == SCWarehouseManageType.check) {
+        if (type == SCWarehouseManageType.check || type == SCWarehouseManageType.fixedCheck) {
           return checkEmptyView();
         } else {
           return const SizedBox();
