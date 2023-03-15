@@ -288,7 +288,7 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
   addMaterialAction() async {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'propertyData': widget.state.selectedList,
-      'manageType' : SCWarehouseManageType.propertyFrmLoss,
+      'materialType' : SCWarehouseManageType.propertyFrmLoss,
       'orgId': widget.state.fetchOrgId,
       'isProperty': true
     });

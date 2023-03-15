@@ -145,7 +145,7 @@ class SCMaterialListModel {
     _purchaseCode = json['purchaseCode'];
     _purchaseDetailId = json['purchaseDetailId'];
     _materialType = json['materialType'];
-    _assetId = json['id'];
+    _assetId = json['assetId'];
     _assetName = json['assetName'];
     _assetCode = json['assetCode'];
     _materialCode = json['materialCode'];
@@ -380,6 +380,10 @@ class SCMaterialListModel {
     _purchaseDetailId = value;
   }
 
+  set assetId(String? value) {
+    _assetId = value;
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['barCode'] = _barCode;
@@ -413,6 +417,18 @@ class SCMaterialListModel {
     map['purchaseId'] = _purchaseId;
     map['purchaseCode'] = _purchaseCode;
     map['purchaseDetailId'] = _purchaseDetailId;
+    map['assetId'] = _assetId;
+    map['assetName'] = _assetName;
+    map['assetCode'] = _assetCode;
+    map['materialCode'] = _materialCode;
+    map['belongOrgId'] = _belongOrgId;
+    map['belongOrgName'] = _belongOrgName;
+    map['fetchOrgId'] = _fetchOrgId;
+    map['fetchOrgName'] = _fetchOrgName;
+    map['fetchUserId'] = _fetchUserId;
+    map['fetchUserName'] = _fetchUserName;
+    map['gmtFetch'] = _gmtFetch;
+    map['materialType'] = _materialType;
     return map;
   }
 }

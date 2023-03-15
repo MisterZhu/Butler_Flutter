@@ -1,3 +1,6 @@
+
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Constants/sc_enum.dart';
@@ -9,7 +12,6 @@ import '../Model/sc_material_list_model.dart';
 /// 新增物资controller
 
 class SCAddMaterialController extends GetxController {
-
   int pageNum = 1;
 
   /// 仓库名称
@@ -60,7 +62,8 @@ class SCAddMaterialController extends GetxController {
   }
 
   /// 新增物资-物资列表数据
-  loadMaterialListData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
+  loadMaterialListData(
+      {bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       pageNum++;
@@ -70,11 +73,15 @@ class SCAddMaterialController extends GetxController {
     }
     var params = {
       "conditions": {
-        "classifyId": classifyId,  /// 分类id
+        "classifyId": classifyId,
+
+        /// 分类id
         "deleted": false,
         "enabled": true,
         "fields": [],
-        "wareHouseId": wareHouseId,  /// 仓库ID
+        "wareHouseId": wareHouseId,
+
+        /// 仓库ID
       },
       "count": false,
       "last": false,
@@ -160,7 +167,8 @@ class SCAddMaterialController extends GetxController {
   }
 
   /// 新增入库-资产列表数据
-  loadEntryPropertyListData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
+  loadEntryPropertyListData(
+      {bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       pageNum++;
@@ -170,7 +178,9 @@ class SCAddMaterialController extends GetxController {
     }
     var params = {
       "conditions": {
-        "classifyId": classifyId,  /// 分类id
+        "classifyId": classifyId,
+
+        /// 分类id
         "deleted": false,
         "enabled": true,
         "fields": [],
@@ -205,9 +215,17 @@ class SCAddMaterialController extends GetxController {
           }
           for (SCMaterialListModel model in propertyList) {
             model.materialType = 1;
+            model.materialName = model.assetName;
+            model.assetId = model.id;
             for (SCMaterialListModel subModel in originalPropertyList) {
-              if (model.id == subModel.id) {
-                model.isSelect = true;
+              if (isEdit) {
+                if (model.id == subModel.assetId) {
+                  model.isSelect = true;
+                }
+              } else {
+                if (model.id == subModel.id) {
+                  model.isSelect = true;
+                }
               }
             }
           }
@@ -221,7 +239,8 @@ class SCAddMaterialController extends GetxController {
   }
 
   /// 新增资产报损-资产列表数据
-  loadPropertyFrmLossListData({Function(bool success, bool last)? completeHandler}) {
+  loadPropertyFrmLossListData(
+      {Function(bool success, bool last)? completeHandler}) {
     var params = {"fetchOrgId": orgId, "state": 0};
     if (classifyId != '') {
       params.addAll({"classifyId": classifyId});
@@ -236,8 +255,11 @@ class SCAddMaterialController extends GetxController {
           propertyList = List<SCMaterialListModel>.from(
               value.map((e) => SCMaterialListModel.fromJson(e)).toList());
           for (SCMaterialListModel model in propertyList) {
+            model.materialType = 1;
+            model.materialName = model.assetName;
             for (SCMaterialListModel subModel in originalPropertyList) {
-              if (model.assetId == subModel.assetId) {
+              log('bbb===${subModel.toJson()}');
+              if (model.id == subModel.assetId) {
                 model.isSelect = true;
               }
             }

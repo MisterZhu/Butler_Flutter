@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
+import 'dart:developer';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -107,6 +107,8 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
                 submit();
               } else if(value == '暂存') {
                 save();
+              } else if (value == '确定') {
+                submit();
               }}
           )),
       ],
@@ -437,8 +439,9 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
 
   /// 编辑资产-添加既存资产
   addExitsPropertyAction() async {
+    log("ccc===${widget.state.selectedList}");
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
-      'propertyData': widget.state.selectedPropertyList,
+      'propertyData': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
       'isEdit': true,
       "materialType" : SCWarehouseManageType.entry,

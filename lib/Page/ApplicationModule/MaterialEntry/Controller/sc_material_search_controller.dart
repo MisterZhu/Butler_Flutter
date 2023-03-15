@@ -159,6 +159,8 @@ class SCMaterialSearchController extends GetxController {
           }
           for (SCMaterialListModel model in propertyList) {
             model.materialType = 1;
+            model.materialName = model.assetName;
+            model.assetId = model.id;
             for (SCMaterialListModel subModel in originalPropertyList) {
               if (model.id == subModel.id) {
                 model.isSelect = true;
@@ -211,8 +213,9 @@ class SCMaterialSearchController extends GetxController {
           }
           for (SCMaterialListModel model in propertyList) {
             model.materialType = 1;
+            model.materialName = model.assetName;
             for (SCMaterialListModel subModel in originalPropertyList) {
-              if (model.id == subModel.id) {
+              if (model.id == subModel.assetId) {
                 model.isSelect = true;
               }
             }
