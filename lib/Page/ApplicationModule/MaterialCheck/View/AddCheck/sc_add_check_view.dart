@@ -434,7 +434,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
     }
 
     if (widget.state.dealUserName.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectOperatorName);
+      SCToast.showTip(SCDefaultValue.selectCheckUserTip);
       return;
     }
 
@@ -621,7 +621,7 @@ class SCAddCheckViewState extends State<SCAddCheckView> {
   /// 选择处理人
   selectUser() async {
     if (widget.state.dealOrgId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectFrmLossDepartment);
+      SCToast.showTip(SCDefaultValue.selectCheckDepartmentTip);
     } else {
       var params = {
         'receiverModel': receiverModel,

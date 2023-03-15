@@ -139,6 +139,9 @@ class SCUrl {
   /// 物资分类
   static const String kMaterialSortUrl = "/api/warehouse/manage/materialClass/tree";
 
+  /// 物资分类-需要带仓库ID
+  static const String kMaterialSortWithWareHouseUrl = "/api/warehouse/manage/materialClass/treeByWareHouseId";
+
   /// 搜索采购需求单
   static const String kPurchaseSearchUrl = "/api/warehouse/mange/wareHousePurchase/getAllPurchaseIdSearch";
 
@@ -257,7 +260,6 @@ class SCUrl {
   /// 盘点详情
   static const String kMaterialCheckDetailUrl = "/api/warehouse/app/warehouse/check/detail/";
 
-
   /// 查询物资分类树
   static const String kMaterialClassTreeUrl = "/api/warehouse/manage/materialClass/tree";
 
@@ -302,5 +304,10 @@ class SCUrl {
   /// 资产报损-编辑-新增资产
   static const String kEditAddFrmLossPropertyUrl = "/api/warehouse/assetReportRelation/addAssetReportList";
 
+  /************************* 固定资产盘点 *************************/
+  /// 新增盘点
+  static const String kAddFixedCheckUrl = "/api/warehouse/app/assetsCheck/save";
 
+  /// 固定资产盘点列表
+  static const String kFixedCheckListUrl = "/api/warehouse/app/assetsCheck/pageFront";
 }

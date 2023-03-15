@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -20,7 +19,6 @@ import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
 /// 固定资产盘点view
 
 class SCFixedCheckView extends StatefulWidget {
-
   /// SCFixedCheckController
   final SCFixedCheckController state;
 
@@ -31,8 +29,7 @@ class SCFixedCheckView extends StatefulWidget {
 }
 
 class SCFixedCheckViewState extends State<SCFixedCheckView> {
-
-  List siftList =  ['状态', '类型', '排序'];
+  List siftList = ['状态', '类型', '排序'];
 
   List statusList = [
     {'name': '全部', 'code': -1},
@@ -60,7 +57,8 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
   bool showSortAlert = false;
 
   /// RefreshController
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -91,30 +89,37 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SCMaterialSearchItem(name: '搜索仓库名称/操作人', searchAction: () {
-          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.check});
-        },),
-        SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
-          if (index == 0) {
-            setState(() {
-              showStatusAlert = !showStatusAlert;
-              showTypeAlert = false;
-              showSortAlert = false;
-            });
-          } else if (index == 1) {
-            setState(() {
-              showStatusAlert = false;
-              showTypeAlert = !showTypeAlert;
-              showSortAlert = false;
-            });
-          } else if (index == 2) {
-            setState(() {
-              showStatusAlert = false;
-              showTypeAlert = false;
-              showSortAlert = !showSortAlert;
-            });
-          }
-        },),
+        SCMaterialSearchItem(
+          name: '搜索仓库名称/操作人',
+          searchAction: () {
+            SCRouterHelper.pathPage(SCRouterPath.entrySearchPage,
+                {'type': SCWarehouseManageType.check});
+          },
+        ),
+        SCMaterialSiftItem(
+          tagList: siftList,
+          tapAction: (index) {
+            if (index == 0) {
+              setState(() {
+                showStatusAlert = !showStatusAlert;
+                showTypeAlert = false;
+                showSortAlert = false;
+              });
+            } else if (index == 1) {
+              setState(() {
+                showStatusAlert = false;
+                showTypeAlert = !showTypeAlert;
+                showSortAlert = false;
+              });
+            } else if (index == 2) {
+              setState(() {
+                showStatusAlert = false;
+                showTypeAlert = false;
+                showSortAlert = !showSortAlert;
+              });
+            }
+          },
+        ),
         Expanded(child: contentItem())
       ],
     );
@@ -124,18 +129,14 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
   Widget contentItem() {
     return Stack(
       children: [
-        Positioned(
-            left: 0,
-            top: 0,
-            right: 0,
-            bottom: 0,
-            child: listview()),
+        Positioned(left: 0, top: 0, right: 0, bottom: 0, child: listview()),
         Positioned(
           right: 16,
           bottom: SCUtils().getBottomSafeArea() + 40,
           width: 71.0,
           height: 71.0,
-          child: addItem(),),
+          child: addItem(),
+        ),
         Positioned(
           left: 0.0,
           right: 0.0,
@@ -163,9 +164,12 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
 
   /// 新增任务按钮
   Widget addItem() {
-    return SCAddEntryButton(name: '新增任务', tapAction: () {
-      SCRouterHelper.pathPage(SCRouterPath.addCheckPage, null);
-    },);
+    return SCAddEntryButton(
+      name: '新增任务',
+      tapAction: () {
+        SCRouterHelper.pathPage(SCRouterPath.addFixedCheckPage, null);
+      },
+    );
   }
 
   /// listview
@@ -177,29 +181,34 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
       header: const SCCustomHeader(
         style: SCCustomHeaderStyle.noNavigation,
       ),
-      onRefresh: onRefresh, onLoading: loadMore, child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          SCMaterialEntryModel model = widget.state.dataList[index];
-          return SCMaterialEntryCell(
-            model: model,
-            type: SCWarehouseManageType.check,
-            detailTapAction: () {
-              detailAction(model);
-            },
-            btnTapAction: () {
-              btnTapAction(model);
-            },
-            callAction: (String phone) {
-              call(phone);
-            },
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(height: 10.0,);
-        },
-        itemCount: widget.state.dataList.length),);
+      onRefresh: onRefresh,
+      onLoading: loadMore,
+      child: ListView.separated(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            SCMaterialEntryModel model = widget.state.dataList[index];
+            return SCMaterialEntryCell(
+              model: model,
+              type: SCWarehouseManageType.check,
+              detailTapAction: () {
+                detailAction(model);
+              },
+              btnTapAction: () {
+                btnTapAction(model);
+              },
+              callAction: (String phone) {
+                call(phone);
+              },
+            );
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox(
+              height: 10.0,
+            );
+          },
+          itemCount: widget.state.dataList.length),
+    );
   }
 
   /// 按钮点击
@@ -209,7 +218,8 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
     if (status == 0) {
       editAction(model);
     } else {
-      SCRouterHelper.pathPage(SCRouterPath.checkDetailPage, {'id': model.id, 'canEdit' : canEdit});
+      SCRouterHelper.pathPage(
+          SCRouterPath.checkDetailPage, {'id': model.id, 'canEdit': canEdit});
     }
   }
 
@@ -217,7 +227,8 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
   detailAction(SCMaterialEntryModel model) {
     int status = model.status ?? -1;
     bool canEdit = (status == 0);
-    SCRouterHelper.pathPage(SCRouterPath.checkDetailPage, {'id': model.id, 'canEdit' : canEdit});
+    SCRouterHelper.pathPage(
+        SCRouterPath.checkDetailPage, {'id': model.id, 'canEdit': canEdit});
   }
 
   /// 编辑
@@ -292,7 +303,8 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
               widget.state.updateStatus(statusList[value]['code']);
             });
           }
-        },),
+        },
+      ),
     );
   }
 
@@ -315,10 +327,13 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
               showTypeAlert = false;
               selectType = value;
               siftList[1] = value == 0 ? '类型' : typeList[value];
-              widget.state.updateType(value == 0 ? -1 : widget.state.typeList[value - 1].code ?? -1);
+              widget.state.updateType(value == 0
+                  ? -1
+                  : widget.state.typeList[value - 1].code ?? -1);
             });
           }
-        },),
+        },
+      ),
     );
   }
 
@@ -341,7 +356,8 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
               widget.state.updateSort(index == 0 ? true : false);
             });
           }
-        },),
+        },
+      ),
     );
   }
 
@@ -353,28 +369,33 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
   /// 提交
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
-    widget.state.submit(id: model.id ?? '', completeHandler: (bool success){
-      widget.state.loadData(isMore: false);
-    });
+    widget.state.submit(
+        id: model.id ?? '',
+        completeHandler: (bool success) {
+          widget.state.loadData(isMore: false);
+        });
   }
 
   /// 下拉刷新
   Future onRefresh() async {
-    widget.state.loadData(isMore: false, completeHandler: (bool success, bool last){
-      refreshController.refreshCompleted();
-      refreshController.loadComplete();
-    });
+    widget.state.loadData(
+        isMore: false,
+        completeHandler: (bool success, bool last) {
+          refreshController.refreshCompleted();
+          refreshController.loadComplete();
+        });
   }
 
   /// 上拉加载
-  void loadMore() async{
-    widget.state.loadData(isMore: true, completeHandler: (bool success, bool last){
-      if (last) {
-        refreshController.loadNoData();
-      } else {
-        refreshController.loadComplete();
-      }
-    });
+  void loadMore() async {
+    widget.state.loadData(
+        isMore: true,
+        completeHandler: (bool success, bool last) {
+          if (last) {
+            refreshController.loadNoData();
+          } else {
+            refreshController.loadComplete();
+          }
+        });
   }
-
 }

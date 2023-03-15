@@ -55,6 +55,8 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
         controller.loadEntryPropertyListData();
       } else if (controller.materialType == SCWarehouseManageType.propertyFrmLoss) {///资产报损-添加资产
         controller.loadPropertyFrmLossListData();
+      } else if (controller.materialType == SCWarehouseManageType.fixedCheck) {///固定资产盘点-添加资产
+        controller.loadEntryPropertyListData();
       }
     } else {
       if (controller.check == true) {
@@ -97,6 +99,9 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
       }
       if (params.containsKey('check')) {
         controller.check = params['check'];
+      }
+      if (params.containsKey('isLL')) {
+        controller.isLL = params['isLL'];
       }
       if (params.containsKey('unCheckList')) {
         if (controller.check == true) {

@@ -170,12 +170,12 @@ class SCAddFixedCheckController extends GetxController {
     print("新增盘点参数:$params");
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kAddMaterialCheckUrl,
+        url: SCUrl.kAddFixedCheckUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialCheckPage});
+              .fire({'key': SCKey.kRefreshFixedCheckPage});
           SCRouterHelper.back(null);
         },
         failure: (value) {
@@ -314,7 +314,7 @@ class SCAddFixedCheckController extends GetxController {
   loadRangeData() {
     SCHttpManager.instance.post(
         url: SCUrl.kWareHouseTypeUrl,
-        params: {'dictionaryCode' : 'CHECK_TASK_RANGE'},
+        params: {'dictionaryCode' : 'ASSETS_CHECK_RANGE'},
         success: (value) {
           print('盘点范围===============$value');
           //typeList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());

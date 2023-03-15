@@ -25,6 +25,9 @@ class SCMaterialCheckSelectCategoryPageState
   /// SCMaterialCheckSelectCategoryController - tag
   String controllerTag = '';
 
+  /// type,0-物资，1-资产
+  int type = 0;
+
   @override
   initState() {
     super.initState();
@@ -33,6 +36,7 @@ class SCMaterialCheckSelectCategoryPageState
     controller =
         Get.put(SCMaterialCheckSelectCategoryController(), tag: controllerTag);
     controller.loadMaterialClassTree();
+    initData();
   }
 
   @override
@@ -46,7 +50,7 @@ class SCMaterialCheckSelectCategoryPageState
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: "物资分类",
+        title: getTitle(),
         centerTitle: true,
         elevation: 0,
         resizeToAvoidBottomInset: true,
@@ -74,5 +78,29 @@ class SCMaterialCheckSelectCategoryPageState
             }),
       ),
     );
+  }
+
+  /// 初始化
+  initData() {
+    var params = Get.arguments;
+    if (params != null) {
+      if (params.containsKey('type')) {
+        type = params['type'];
+      }
+    }
+  }
+
+  /// 获取title
+  String getTitle() {
+    String title = '物资分类';
+    switch(type) {
+      case 0:
+        title = '物资分类';
+        break;
+      case 1:
+        title = '资产分类';
+        break;
+    }
+    return title;
   }
 }

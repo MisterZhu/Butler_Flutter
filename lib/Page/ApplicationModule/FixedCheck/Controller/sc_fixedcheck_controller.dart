@@ -94,7 +94,7 @@ class SCFixedCheckController extends GetxController {
       "pageSize": 20
     };
     SCHttpManager.instance.post(
-        url: SCUrl.kMaterialCheckListUrl,
+        url: SCUrl.kFixedCheckListUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();

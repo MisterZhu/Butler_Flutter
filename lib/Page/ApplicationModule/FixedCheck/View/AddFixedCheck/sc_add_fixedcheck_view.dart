@@ -52,7 +52,7 @@ class SCAddFixedCheckViewState extends State<SCAddFixedCheckView> {
   /// 是否弹起键盘
   bool isShowKeyboard = false;
 
-  List rangeList = ['全部', '物资分类', '物资名称'];
+  List rangeList = ['全部', '资产分类', '资产名称'];
 
   @override
   void initState() {
@@ -153,13 +153,9 @@ class SCAddFixedCheckViewState extends State<SCAddFixedCheckView> {
             // 结束时间
             showTimeAlert(context, 1);
           } else if (index == 4) {
-            // 仓库名称
-            List list = widget.state.wareHouseList.map((e) => e.name).toList();
-            showAlert(2, '仓库名称', list);
-          } else if (index == 5) {
             // 部门
             showSelectDepartmentAlert();
-          } else if (index == 6) {
+          } else if (index == 5) {
             // 处理人
             selectUser();
           }
@@ -175,7 +171,7 @@ class SCAddFixedCheckViewState extends State<SCAddFixedCheckView> {
         int materialType = widget.state.rangeValue == 2 ? 2 : 1;
         return SCMaterialInfoCell(
           hideMaterialNumTextField: true,
-          title: widget.state.rangeValue == 2 ? '物资分类' : '物资名称',
+          title: widget.state.rangeValue == 2 ? '资产分类' : '资产名称',
           materialType: materialType,
           showAdd: true,
           list: widget.state.selectedList,
@@ -308,12 +304,6 @@ class SCAddFixedCheckViewState extends State<SCAddFixedCheckView> {
         'content': widget.state.startTimeStr
       },
       {'isRequired': true, 'title': '结束时间', 'content': widget.state.endTimeStr},
-      {
-        'isRequired': true,
-        'title': '仓库名称',
-        'content': widget.state.wareHouseName,
-        'disable': widget.state.isEdit
-      },
       {'isRequired': true, 'title': '盘点部门', 'content': widget.state.dealOrgName},
       {
         'isRequired': true,
@@ -326,14 +316,11 @@ class SCAddFixedCheckViewState extends State<SCAddFixedCheckView> {
 
   /// 添加物资
   addAction() async {
-    if (widget.state.wareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
-      return;
-    }
     if (widget.state.rangeValue == 2) {
       var json =
       await SCRouterHelper.pathPage(SCRouterPath.checkSelectCategoryPage, {
         'wareHouseId': widget.state.wareHouseId,
+        'type': 1
       });
       if (json != null) {
         print("已选的分类===$json");
@@ -350,13 +337,14 @@ class SCAddFixedCheckViewState extends State<SCAddFixedCheckView> {
     }
   }
 
-  /// 新增物资-添加物资
+  /// 新增资产-添加资产
   addMaterialAction() async {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
-      "materialType": SCWarehouseManageType.check,
-      'hideNumTextField': true
+      "materialType": SCWarehouseManageType.fixedCheck,
+      'hideNumTextField': true,
+      'isProperty': true
     });
     if (list != null) {
       onlyAddMaterial(list);
@@ -428,22 +416,17 @@ class SCAddFixedCheckViewState extends State<SCAddFixedCheckView> {
       return;
     }
 
-    if (widget.state.wareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
-      return;
-    }
-
     if (widget.state.dealUserName.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectOperatorName);
+      SCToast.showTip(SCDefaultValue.selectCheckUserTip);
       return;
     }
 
     if (rangeValue != 1) {
       if (rangeValue == 2 && widget.state.selectedCategoryList.isEmpty) {
-        SCToast.showTip(SCDefaultValue.addMaterialCategoryTip);
+        SCToast.showTip(SCDefaultValue.addPropertyCategoryTip);
         return;
       } else if (rangeValue == 3 && widget.state.selectedList.isEmpty) {
-        SCToast.showTip(SCDefaultValue.addMaterialInfoTip);
+        SCToast.showTip(SCDefaultValue.addPropertyInfoTip);
         return;
       }
     }
@@ -595,15 +578,12 @@ class SCAddFixedCheckViewState extends State<SCAddFixedCheckView> {
 
   /// 确定选择部门
   sureSelectDepartment() {
-    print("部门===${widget.selectDepartmentController.currentDepartmentModel.toJson()}");
     bool enable =
         widget.selectDepartmentController.currentDepartmentModel.enable ??
             false;
     if (enable) {
-      print("111");
       if (widget.state.dealOrgId !=
           (widget.selectDepartmentController.currentDepartmentModel.id ?? '')) {
-        print("222");
         widget.state.dealUserId = '';
         widget.state.dealUserName = '';
         widget.state.dealOrgId =

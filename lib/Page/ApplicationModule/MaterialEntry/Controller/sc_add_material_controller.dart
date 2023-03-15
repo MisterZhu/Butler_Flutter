@@ -38,6 +38,9 @@ class SCAddMaterialController extends GetxController {
   /// 是否是资产
   bool isProperty = false;
 
+  /// 是否是领料
+  bool isLL = false;
+
   /// 部门id
   String orgId = '';
 
@@ -301,8 +304,9 @@ class SCAddMaterialController extends GetxController {
   /// 物资分类数据
   loadMaterialSortData() {
     SCHttpManager.instance.post(
-        url: SCUrl.kMaterialSortUrl,
-        params: null,
+        url: isLL ? SCUrl.kMaterialSortWithWareHouseUrl : SCUrl.kMaterialSortUrl,
+        params: isLL ? {'wareHouseId' : wareHouseId} : null,
+        isQuery: isLL ? true : false,
         success: (value) {
           update();
         },

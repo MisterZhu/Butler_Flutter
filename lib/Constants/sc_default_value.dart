@@ -197,6 +197,9 @@ class SCDefaultValue {
   /// 添加物资分类tip
   static const String addMaterialCategoryTip = "请添加物资分类";
 
+  /// 添加资产分类tip
+  static const String addPropertyCategoryTip = "请添加资产分类";
+
   /// 盘点-作废tip
   static const String checkCancelTip = "请确认是否作废？";
 
@@ -211,6 +214,12 @@ class SCDefaultValue {
 
   /// 选择使用部门tip
   static const String selectUserDepartment = "请选择使用部门";
+
+  /// 新增盘点-请选择盘点部门
+  static const String selectCheckDepartmentTip = "请选择盘点部门";
+
+  /// 新增盘点-请选择盘点人
+  static const String selectCheckUserTip = "请选择盘点人";
 
   /// 搜索框默认placeholder
   static const String searchViewDefaultPlaceholder = "请输入搜索内容";
