@@ -4,6 +4,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Utils/Strings/sc_string.dart';
+import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Network/sc_config.dart';
 import '../../Model/sc_material_list_model.dart';
 import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
@@ -46,6 +47,7 @@ class SCMaterialCell extends StatefulWidget {
       this.hideMaterialNumTextField,
       this.check,
       this.status,
+      this.materialType,
       this.noNeedReturnAction})
       : super(key: key);
 
@@ -77,6 +79,9 @@ class SCMaterialCell extends StatefulWidget {
 
   /// 盘点状态
   final int? status;
+
+  /// materialType
+  final SCWarehouseManageType? materialType;
 
   @override
   SCMaterialCellState createState() => SCMaterialCellState();
@@ -570,10 +575,19 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     if (widget.type == scPropertyCellTypeNormal ||
         widget.type == scPropertyCellTypeRadio ||
         widget.type == scPropertyCellTypeDelete) {
-      if (widget.model?.assetName != null) {
-        name = widget.model?.assetName ?? '';
+      SCWarehouseManageType manageType =
+          widget.materialType ?? SCWarehouseManageType.entry;
+
+      if (manageType == SCWarehouseManageType.fixedCheck) {
+        if (widget.model?.name != null) {
+          name = widget.model?.name ?? '';
+        }
       } else {
-        name = widget.model?.materialName ?? '';
+        if (widget.model?.assetName != null) {
+          name = widget.model?.assetName ?? '';
+        } else {
+          name = widget.model?.materialName ?? '';
+        }
       }
     } else {
       if (widget.model?.materialName != null) {
@@ -604,8 +618,17 @@ class SCMaterialCellState extends State<SCMaterialCell> {
         widget.type == scPropertyCellTypeRadio ||
         widget.type == scPropertyCellTypeDelete ||
         widget.model?.materialType == 1) {
-      text =
-          '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.assetCode ?? ''}';
+
+      SCWarehouseManageType manageType =
+          widget.materialType ?? SCWarehouseManageType.entry;
+
+      if (manageType == SCWarehouseManageType.fixedCheck) {
+        text =
+        '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.code ?? ''}';
+      } else {
+        text =
+        '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.assetCode ?? ''}';
+      }
     } else {
       text =
           '单位:${widget.model?.unitName ?? ''} 条形码:${widget.model?.barCode ?? ''}\n规格:${widget.model?.norms ?? ''}';

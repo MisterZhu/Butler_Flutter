@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_enum.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_cell.dart';
 import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../../Model/sc_material_list_model.dart';
@@ -132,11 +133,14 @@ class SCAllMaterialListView extends StatelessWidget {
       int cellType = scMaterialCellTypeNormal;
       if (manageType == SCWarehouseManageType.check) {
         cellType = scMaterialCellTypeInventory;
+      } else if (manageType == SCWarehouseManageType.fixedCheck) {
+        cellType = scPropertyCellTypeNormal;
       }
       SCMaterialListModel subModel = list![index];
       return SCMaterialCell(
         model: subModel,
         type: cellType,
+        materialType: manageType,
         status: status,
         onTap: () {
           onTap?.call(subModel);

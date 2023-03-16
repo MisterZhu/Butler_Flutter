@@ -114,6 +114,7 @@ class SCEntrySearchViewState extends State<SCEntrySearchView> {
 
   /// 输入框
   Widget textField() {
+    String hintText = widget.state.type == SCWarehouseManageType.fixedCheck ? "搜索资产名称/操作人" : "搜索仓库名称/操作人";
     return Expanded(
         child: TextField(
           controller: controller,
@@ -128,20 +129,20 @@ class SCEntrySearchViewState extends State<SCEntrySearchView> {
           keyboardType: TextInputType.text,
           keyboardAppearance: Brightness.light,
           textInputAction: TextInputAction.search,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 4),
-            hintText: "搜索仓库名称/操作人",
-            hintStyle: TextStyle(
+            hintText: hintText,
+            hintStyle: const TextStyle(
                 fontSize: SCFonts.f14,
                 fontWeight: FontWeight.w400,
                 color: SCColors.color_B0B1B8),
-            focusedBorder: OutlineInputBorder(
+            focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(width: 0, color: Colors.transparent)),
-            disabledBorder: OutlineInputBorder(
+            disabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(width: 0, color: Colors.transparent)),
-            enabledBorder: OutlineInputBorder(
+            enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(width: 0, color: Colors.transparent)),
-            border: OutlineInputBorder(
+            border: const OutlineInputBorder(
                 borderSide: BorderSide(width: 0, color: Colors.transparent)),
             isCollapsed: true,
           ),
