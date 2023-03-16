@@ -322,4 +322,11 @@ class SCUrl {
 
   /// 编辑盘点基础信息
   static const String kEditFixedCheckBaseInfoUrl = "/api/warehouse/app/assetsCheck/update";
+
+  /// 开始固定资产盘点盘点任务
+  static const String kStartFixedCheckTaskUrl = "/api/warehouse/app/assetsCheck/start";
+
+  /// 暂存或提交固定资产盘点任务
+  static const String kFixedCheckSubmitUrl = "/api/warehouse/app/assetsCheck/submit";
+
 }

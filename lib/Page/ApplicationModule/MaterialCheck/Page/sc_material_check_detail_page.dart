@@ -127,16 +127,23 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
               ];
             }
           } else if (state.model.status == 3 || state.model.status ==  4) {// 盘点中（超时）、盘点中
-            if (controller.checkedList.length == state.model.materials?.length) {
+            if (controller.isFixedCheck == true) {
               list = [
                 {"type": scMaterialBottomViewType1, "title": "暂存",},
                 {"type": scMaterialBottomViewType2, "title": "提交",},
               ];
             } else {
-              list = [
-                {"type": scMaterialBottomViewType1, "title": "暂存",},
-                {"type": scMaterialBottomViewType2, "title": "盘点",},
-              ];
+              if (controller.checkedList.length == state.model.materials?.length) {
+                list = [
+                  {"type": scMaterialBottomViewType1, "title": "暂存",},
+                  {"type": scMaterialBottomViewType2, "title": "提交",},
+                ];
+              } else {
+                list = [
+                  {"type": scMaterialBottomViewType1, "title": "暂存",},
+                  {"type": scMaterialBottomViewType2, "title": "盘点",},
+                ];
+              }
             }
           } else if (state.model.status == 7) {// 已作废
             list = [
@@ -153,9 +160,17 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
                 if (value == '编辑') {
                   editAction();
                 } else if (value == '暂存') {
-                  saveAction();
+                  if (controller.isFixedCheck == true) {
+                    submitFixedCheckAction(0);
+                  } else {
+                    saveAction();
+                  }
                 } else if (value == '提交') {
-                  submitAlert();
+                  if (controller.isFixedCheck == true) {
+                    submitFixedCheckAction(1);
+                  } else {
+                    submitAlert();
+                  }
                 } else if (value == '作废') {
                   cancelAction();
                 } else if (value == '盘点') {
@@ -330,7 +345,18 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
 
   /// 盘点
   checkAction() {
-    selectMaterialAction();
+    if (controller.isFixedCheck) {
+      startCheck();
+    } else {
+      selectMaterialAction();
+    }
+  }
+
+  /// 开始盘点
+  startCheck() {
+    controller.startFixedCheckTask(id: controller.model.id ?? '', successHandler: () {
+      controller.loadMaterialCheckDetail();
+    });
   }
 
   /// 盘点-选择物资
@@ -362,5 +388,35 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
           .fire({'key': SCKey.kRefreshMaterialCheckPage});
       SCRouterHelper.back(null);
     });
+  }
+
+
+  /// 固定资产盘点-提交
+  submitFixedCheckAction(int action) {
+    List list = [];
+    for (int i = 0; i < controller.checkedList.length; i++) {
+      SCMaterialListModel model = controller.checkedList[i];
+      var dict = {
+        "id": model.id,
+        "reportReason": 0,
+        "status": 0,
+      };
+      list.add(dict);
+    }
+    print('提交===========$list');
+    controller.fixedCheckSubmit(
+        action: action,
+        checkId: controller.model.id ?? '',
+        materials: list,
+        successHandler: () {
+          if (controller.isFixedCheck == true) {
+            SCScaffoldManager.instance.eventBus
+                .fire({'key': SCKey.kRefreshFixedCheckPage});
+          } else {
+            SCScaffoldManager.instance.eventBus
+                .fire({'key': SCKey.kRefreshMaterialCheckPage});
+          }
+          SCRouterHelper.back(null);
+        });
   }
 }
