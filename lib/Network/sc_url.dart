@@ -315,10 +315,10 @@ class SCUrl {
   static const String kFixedCheckDetailUrl = "/api/warehouse/app/assetsCheck/detail";
 
   /// 作废盘点任务
-  static const String kCancelFixedCheckTaskUrl = "/api/warehouse/app/warehouse/check/cancel";
+  static const String kCancelFixedCheckTaskUrl = "/api/warehouse/manage/assetsCheck/cancel";
 
   /// 删除盘点任务
-  static const String kDeleteFixedCheckTaskUrl = "/api/warehouse/app/warehouse/check/delete";
+  static const String kDeleteFixedCheckTaskUrl = "/api/warehouse/app/assetsCheck/delete";
 
   /// 编辑盘点基础信息
   static const String kEditFixedCheckBaseInfoUrl = "/api/warehouse/app/assetsCheck/update";
