@@ -1,39 +1,66 @@
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/FixedCheck/View/Detail/sc_fixedcheck_material_detail_header.dart';
 import 'package:smartcommunity/Page/ApplicationModule/FixedCheck/View/Detail/sc_frmLoss_reason_alert.dart';
+import '../../../../../Delegate/sc_sticky_tabbar_delegate.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import '../../Controller/sc_fixedcheck_material_detail_controller.dart';
+import 'sc_fixed_property_listview.dart';
+import 'sc_fixed_tabbar.dart';
+import 'sc_fixedcheck_material_detail_cell.dart';
 
 class SCFixedCheckMaterialDetailView extends StatefulWidget {
-
   /// SCFixedCheckMaterialDetailController
   final SCFixedCheckMaterialDetailController state;
 
-  SCFixedCheckMaterialDetailView({Key? key, required this.state}) : super(key: key);
+  SCFixedCheckMaterialDetailView({Key? key, required this.state})
+      : super(key: key);
 
   @override
-  SCFixedCheckMaterialDetailViewState createState() => SCFixedCheckMaterialDetailViewState();
+  SCFixedCheckMaterialDetailViewState createState() =>
+      SCFixedCheckMaterialDetailViewState();
 }
 
-class SCFixedCheckMaterialDetailViewState extends State<SCFixedCheckMaterialDetailView> {
-
+class SCFixedCheckMaterialDetailViewState
+    extends State<SCFixedCheckMaterialDetailView>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   /// 报损原因index
   int reasonIndex = 0;
 
-  List list = [];
+  List headerList = [];
+
+  /// tabTitle
+  List<String> tabTitleList = ['使用中', '已报废'];
+
+  /// tabView-list
+  late List<Widget> tabViewList;
+
+  /// tabController
+  late final TabController tabController;
 
   @override
   void initState() {
     super.initState();
-    list = [
-      {'name':'物资名称', 'content': widget.state.materialModel.materialName ?? ''},
-      {'name':'单位', 'content': widget.state.materialModel.unitName ?? ''},
-      {'name':'条形码', 'content': widget.state.materialModel.barCode ?? ''},
-      {'name':'规格', 'content': widget.state.materialModel.norms},
-      {'name':'账面库存', 'content': '${widget.state.materialModel.number ?? 0}'}
+    headerList = [
+      {'name': '物资名称', 'content': widget.state.materialModel.materialName ?? ''},
+      {'name': '单位', 'content': widget.state.materialModel.unitName ?? ''},
+      {'name': '规格', 'content': widget.state.materialModel.norms},
     ];
+    tabViewList = [
+      SCFixedPropertyListView(
+        cellType: SCFixedCheckMaterialDetailCellType.using,
+        tapAction: (int index) {},
+      ),
+      SCFixedPropertyListView(
+        cellType: SCFixedCheckMaterialDetailCellType.reportedLoss,
+        tapAction: (int index) {},
+      )
+    ];
+    tabController = TabController(length: tabTitleList.length, vsync: this);
   }
 
   @override
@@ -48,48 +75,38 @@ class SCFixedCheckMaterialDetailViewState extends State<SCFixedCheckMaterialDeta
 
   /// body
   Widget body() {
-    return GestureDetector(
-      onTap: () {
-        SCUtils().hideKeyboard(context: context);
-      },
-      behavior: HitTestBehavior.opaque,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          listView(),
-          Expanded(child: Container()),
-          bottomView(),
-        ],
-      ),
-    );
+    return ExtendedNestedScrollView(
+        pinnedHeaderSliverHeightBuilder: () {
+          return 44.0;
+        },
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            headerItem(),
+            stickyTabBar(),
+          ];
+        },
+        body: TabBarView(
+          controller: tabController,
+          children: tabViewList,
+        ));
   }
 
-  Widget listView() {
-    return Padding(
-        padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: SCColors.color_FFFFFF,
-            borderRadius: BorderRadius.circular(4.0),
-          ),
-          child: ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                return cell(list[index]['name'] ?? '', list[index]['content'] ?? '', list[index]['isInput'] ?? false);
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return const SizedBox(height: 10.0,);
-              },
-              itemCount: list.length),
-        ));
+  /// header
+  Widget headerItem() {
+    return const SliverToBoxAdapter(
+      child: SCFixedCheckMaterialDetailHeaderView(
+          materialName: '橘子', unitName: '斤', norms: '1001'),
+    );
   }
 
   /// bottomView
   Widget bottomView() {
-    List list = [{"type": scMaterialBottomViewType2, "title": "确定",}];
+    List list = [
+      {
+        "type": scMaterialBottomViewType2,
+        "title": "确定",
+      }
+    ];
     return SCMaterialDetailBottomView(
         list: list,
         onTap: (value) {
@@ -98,58 +115,21 @@ class SCFixedCheckMaterialDetailViewState extends State<SCFixedCheckMaterialDeta
         });
   }
 
-  Widget cell(String leftText, String rightText, bool isInput) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        leftLabel(leftText),
-        rightLabel(rightText, isInput)
-      ],
-    );
+  /// 吸顶tabBar
+  Widget stickyTabBar() {
+    return SliverPersistentHeader(
+        pinned: true,
+        floating: false,
+        delegate: SCStickyTabBarDelegate(child: tabBarItem(), height: 44.0));
   }
 
-  /// leftLabel
-  Widget leftLabel(String text) {
-    return SizedBox(
-      width: 100.0,
-      child: Text(
-        text,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        strutStyle: const StrutStyle(
-          fontSize: SCFonts.f14,
-          height: 1.25,
-          forceStrutHeight: true,
-        ),
-        style: const TextStyle(
-          fontSize: SCFonts.f14,
-          fontWeight: FontWeight.w400,
-          color: SCColors.color_5E5F66,
-        ),
-      ),
+  /// tabBarItem
+  Widget tabBarItem() {
+    return SCFixedTabBar(
+      tabController: tabController,
+      titleList: tabTitleList,
+      height: 44.0,
     );
-  }
-
-  /// rightLabel
-  Widget rightLabel(String text, bool isInput) {
-    return Expanded(
-        child: Text(
-          text,
-          textAlign: TextAlign.right,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          strutStyle: const StrutStyle(
-            fontSize: SCFonts.f14,
-            height: 1.25,
-            forceStrutHeight: true,
-          ),
-          style: const TextStyle(
-              fontSize: SCFonts.f14,
-              fontWeight: FontWeight.w400,
-              color: SCColors.color_1B1D33),
-        ));
   }
 
   /// 报损原因弹窗
@@ -170,4 +150,7 @@ class SCFixedCheckMaterialDetailViewState extends State<SCFixedCheckMaterialDeta
     });
   }
 
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
