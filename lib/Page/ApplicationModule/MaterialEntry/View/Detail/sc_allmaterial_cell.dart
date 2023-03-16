@@ -7,6 +7,7 @@ import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../../../Constants/sc_enum.dart';
 import '../../../MaterialCheck/View/CheckDetail/sc_check_timer_view.dart';
 import '../../Controller/sc_material_entry_detail_controller.dart';
+import '../../Model/sc_material_assets_details_model.dart';
 import '../../Model/sc_material_list_model.dart';
 import '../../Model/sc_material_task_detail_model.dart';
 import 'sc_allmaterial_listview.dart';
@@ -145,6 +146,15 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
 
   /// 数据
   getRealList() {
+    if (widget.type == SCWarehouseManageType.fixedCheck) {
+      List<SCMaterialAssetsDetailsModel> list = widget.state.model.materialAssetsDetails ?? [];
+      List<SCMaterialListModel> newList = [];
+      for (SCMaterialAssetsDetailsModel model in list) {
+        SCMaterialListModel? subModel = model.materialInfo;
+        newList.add(subModel ?? SCMaterialListModel());
+      }
+      return newList;
+    }
     if (widget.type == SCWarehouseManageType.check || widget.type == SCWarehouseManageType.fixedCheck) {
       return widget.state.checkedList;
     } else {
@@ -161,6 +171,15 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
   }
 
   getPropertyList() {
+    if (widget.type == SCWarehouseManageType.fixedCheck) {
+      List<SCMaterialAssetsDetailsModel> list = widget.state.model.materialAssetsDetails ?? [];
+      List<SCMaterialListModel> newList = [];
+      for (SCMaterialAssetsDetailsModel model in list) {
+        SCMaterialListModel? subModel = model.materialInfo;
+        newList.add(subModel ?? SCMaterialListModel());
+      }
+      return newList;
+    }
       if (widget.model?.assets != null && widget.model!.assets!.length > maxLength) {
         if (!isShowAll) {
           return widget.model!.assets!.sublist(0, maxLength);
