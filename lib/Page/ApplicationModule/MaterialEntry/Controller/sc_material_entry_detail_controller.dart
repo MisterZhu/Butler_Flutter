@@ -146,9 +146,10 @@ class SCMaterialEntryDetailController extends GetxController {
     checkedList.clear();
     uncheckedList.clear();
     SCLoadingUtils.show();
+    String url = isFixedCheck ? (SCUrl.kFixedCheckDetailUrl) : (SCUrl.kMaterialCheckDetailUrl + id);
     SCHttpManager.instance.get(
-        url: SCUrl.kMaterialCheckDetailUrl + id,
-        params: null,
+        url: url,
+        params: isFixedCheck ? {'id' : id} : null,
         success: (value) {
           log('盘点详情===$value');
           SCLoadingUtils.hide();
@@ -242,8 +243,9 @@ class SCMaterialEntryDetailController extends GetxController {
   /// 作废盘点任务
   cancelCheckTask({required String id, Function? successHandler}) {
     SCLoadingUtils.show();
+    String url = isFixedCheck ? SCUrl.kCancelFixedCheckTaskUrl : SCUrl.kCancelCheckTaskUrl;
     SCHttpManager.instance.post(
-        url: SCUrl.kCancelCheckTaskUrl,
+        url: url,
         isQuery: true,
         params: {"id": id},
         success: (value) {
@@ -258,8 +260,9 @@ class SCMaterialEntryDetailController extends GetxController {
   /// 删除盘点任务
   deleteCheckTask({required String id, Function? successHandler}) {
     SCLoadingUtils.show();
+    String url = isFixedCheck ? SCUrl.kDeleteFixedCheckTaskUrl : SCUrl.kDeleteCheckTaskUrl;
     SCHttpManager.instance.post(
-        url: SCUrl.kDeleteCheckTaskUrl,
+        url: url,
         isQuery: true,
         params: {"id": id},
         success: (value) {

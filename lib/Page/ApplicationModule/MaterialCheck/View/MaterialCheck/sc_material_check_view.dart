@@ -233,10 +233,10 @@ class SCMaterialCheckViewState extends State<SCMaterialCheckView> {
     String taskName = model.taskName ?? '';
     String taskStartTime = model.taskStartTime ?? '';
     String taskEndTime = model.taskEndTime ?? '';
-    String orgName = model.orgName ?? '';
-    String orgId = model.orgId ?? '';
-    String operatorName = model.operatorName ?? '';
-    String operator = model.operator ?? '';
+    String dealOrgName = model.dealOrgName ?? '';
+    String dealOrgId = model.dealOrgId ?? '';
+    String dealUserName = model.dealUserName ?? '';
+    String dealUserId = model.dealUserId ?? '';
     int rangeValue = model.rangeValue ?? 1;
 
     for (SCMaterialListModel model in materials) {
@@ -256,10 +256,10 @@ class SCMaterialCheckViewState extends State<SCMaterialCheckView> {
       "taskName": taskName,
       "startTime": taskStartTime,
       "endTime": taskEndTime,
-      "dealOrgName": orgName,
-      "dealOrgId": orgId,
-      "dealUserName": operatorName,
-      "dealUserId": operator,
+      "dealOrgName": dealOrgName,
+      "dealOrgId": dealOrgId,
+      "dealUserName": dealUserName,
+      "dealUserId": dealUserId,
       "rangeValue": rangeValue
     };
     SCRouterHelper.pathPage(SCRouterPath.addCheckPage, params)?.then((value) {

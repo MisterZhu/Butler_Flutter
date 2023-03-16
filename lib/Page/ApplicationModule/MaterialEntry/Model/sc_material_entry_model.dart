@@ -75,6 +75,10 @@ class SCMaterialEntryModel {
     String? assetNames,
     int? assetNums,
     bool? returned,
+    String? dealOrgId,// 处理部门id
+    String? dealOrgName,// 处理部门名称
+    String? dealUserId,// 处理人id
+    String? dealUserName,// 处理人
   }) {
     _creator = creator;
     _creatorName = creatorName;
@@ -115,6 +119,10 @@ class SCMaterialEntryModel {
     _assetNames = assetNames;
     _assetNums = assetNums;
     _returned = returned;
+    _dealOrgId = dealOrgId;
+    _dealOrgName = dealOrgName;
+    _dealUserId = dealUserId;
+    _dealUserName = dealUserName;
   }
 
   SCMaterialEntryModel.fromJson(dynamic json) {
@@ -162,6 +170,10 @@ class SCMaterialEntryModel {
     _assetNames = json['assetNames'];
     _assetNums = json['assetNums'];
     _returned = json['returned'];
+    _dealOrgId = json['dealOrgId'];
+    _dealOrgName = json['dealOrgName'];
+    _dealUserId = json['dealUserId'];
+    _dealUserName = json['dealUserName'];
   }
   String? _creator;
   String? _creatorName;
@@ -202,6 +214,10 @@ class SCMaterialEntryModel {
   String? _assetNames;
   int? _assetNums;
   bool? _returned;
+  String? _dealOrgId;
+  String? _dealOrgName;
+  String? _dealUserId;
+  String? _dealUserName;
   SCMaterialEntryModel copyWith({
     String? creator,
     String? creatorName,
@@ -241,6 +257,10 @@ class SCMaterialEntryModel {
     String? assetNames,
     int? assetNums,
     bool? returned,
+    String? dealOrgId,
+    String? dealOrgName,
+    String? dealUserId,
+    String? dealUserName,
   }) =>
       SCMaterialEntryModel(
         creator: creator ?? _creator,
@@ -282,6 +302,10 @@ class SCMaterialEntryModel {
         assetNames: assetNames ?? _assetNames,
         assetNums: assetNums ?? _assetNums,
           returned: returned ?? _returned,
+          dealOrgId: dealOrgId ?? _dealOrgId,
+          dealOrgName: dealOrgName ?? _dealOrgName,
+        dealUserId: dealUserId ?? _dealUserId,
+        dealUserName: dealUserName ?? _dealUserName,
       );
   String? get creator => _creator;
   String? get creatorName => _creatorName;
@@ -322,6 +346,10 @@ class SCMaterialEntryModel {
   String? get assetNames => _assetNames;
   int? get assetNums => _assetNums;
   bool? get returned => _returned;
+  String? get dealOrgId => _dealOrgId;
+  String? get dealOrgName => _dealOrgName;
+  String? get dealUserId => _dealUserId;
+  String? get dealUserName => _dealUserName;
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['creator'] = _creator;
@@ -365,6 +393,10 @@ class SCMaterialEntryModel {
     map['assetNames'] = _assetNames;
     map['assetNums'] = _assetNums;
     map['returned'] = _returned;
+    map['dealOrgId'] = _dealOrgId;
+    map['dealOrgName'] = _dealOrgName;
+    map['dealUserId'] = _dealUserId;
+    map['dealUserName'] = _dealUserName;
     return map;
   }
 }

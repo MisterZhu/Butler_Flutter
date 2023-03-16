@@ -646,20 +646,11 @@ class SCAddFixedCheckViewState extends State<SCAddFixedCheckView> {
       return;
     }
 
-    if (widget.state.wareHouseId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectWareHouseNameTip);
-      return;
-    }
-
     if (widget.state.dealUserName.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectOperatorName);
       return;
     }
 
-    if (widget.state.rangeValue != 1 && widget.state.selectedList.isEmpty) {
-      SCToast.showTip(SCDefaultValue.addMaterialInfoTip);
-      return;
-    }
     var params = {
       "wareHouseName": widget.state.wareHouseName,
       "wareHouseId": widget.state.wareHouseId,

@@ -88,6 +88,9 @@ class SCAddMaterialPageState extends State<SCAddMaterialPage> with AutomaticKeep
       if (wareHouseId != null) {
         controller.wareHouseId = wareHouseId;
       }
+      if (params.containsKey('outType')) {
+        controller.outType = params['outType'];
+      }
       if (params.containsKey('isEdit')) {
         controller.isEdit = params['isEdit'];
       }

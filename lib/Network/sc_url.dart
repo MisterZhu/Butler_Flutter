@@ -310,4 +310,16 @@ class SCUrl {
 
   /// 固定资产盘点列表
   static const String kFixedCheckListUrl = "/api/warehouse/app/assetsCheck/pageFront";
+
+  /// 固定盘点详情
+  static const String kFixedCheckDetailUrl = "/api/warehouse/app/assetsCheck/detail";
+
+  /// 作废盘点任务
+  static const String kCancelFixedCheckTaskUrl = "/api/warehouse/app/warehouse/check/cancel";
+
+  /// 删除盘点任务
+  static const String kDeleteFixedCheckTaskUrl = "/api/warehouse/app/warehouse/check/delete";
+
+  /// 编辑盘点基础信息
+  static const String kEditFixedCheckBaseInfoUrl = "/api/warehouse/app/assetsCheck/update";
 }

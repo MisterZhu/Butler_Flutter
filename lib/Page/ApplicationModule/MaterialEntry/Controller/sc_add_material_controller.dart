@@ -20,6 +20,9 @@ class SCAddMaterialController extends GetxController {
   /// 仓库ID
   String wareHouseId = '';
 
+  /// 出库类型
+  int outType = 0;
+
   /// 分类ID
   String classifyId = '';
 
@@ -83,7 +86,7 @@ class SCAddMaterialController extends GetxController {
         "enabled": true,
         "fields": [],
         "wareHouseId": wareHouseId,
-
+        "outType": outType,
         /// 仓库ID
       },
       "count": false,

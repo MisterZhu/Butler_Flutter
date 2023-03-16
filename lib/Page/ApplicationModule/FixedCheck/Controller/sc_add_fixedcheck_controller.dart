@@ -203,12 +203,12 @@ class SCAddFixedCheckController extends GetxController {
     };
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kEditCheckBaseInfoUrl,
+        url: SCUrl.kEditFixedCheckBaseInfoUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialCheckPage});
+              .fire({'key': SCKey.kRefreshFixedCheckPage});
           SCRouterHelper.back(null);
         },
         failure: (value) {

@@ -203,10 +203,10 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
     String taskName = controller.model.taskName ?? '';
     String taskStartTime = controller.model.taskStartTime ?? '';
     String taskEndTime = controller.model.taskEndTime ?? '';
-    String orgName = controller.model.orgName ?? '';
-    String orgId = controller.model.orgId ?? '';
-    String operatorName = controller.model.operatorName ?? '';
-    String operator = controller.model.operator ?? '';
+    String dealOrgName = controller.model.dealOrgName ?? '';
+    String dealOrgId = controller.model.dealOrgId ?? '';
+    String dealUserName = controller.model.dealUserName ?? '';
+    String dealUserId = controller.model.dealUserId ?? '';
     int rangeValue = controller.model.rangeValue ?? 1;
 
     for (SCMaterialListModel model in materials) {
@@ -227,10 +227,10 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
       "taskName": taskName,
       "startTime": taskStartTime,
       "endTime": taskEndTime,
-      "dealOrgName": orgName,
-      "dealOrgId": orgId,
-      "dealUserName": operatorName,
-      "dealUserId": operator,
+      "dealOrgName": dealOrgName,
+      "dealOrgId": dealOrgId,
+      "dealUserName": dealUserName,
+      "dealUserId": dealUserId,
       "rangeValue": rangeValue
     };
     if (controller.isFixedCheck == true) {//去编辑固定资产盘点页面

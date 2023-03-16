@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -241,10 +243,10 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
     String taskName = model.taskName ?? '';
     String taskStartTime = model.taskStartTime ?? '';
     String taskEndTime = model.taskEndTime ?? '';
-    String orgName = model.orgName ?? '';
-    String orgId = model.orgId ?? '';
-    String operatorName = model.operatorName ?? '';
-    String operator = model.operator ?? '';
+    String orgName = model.dealOrgName ?? '';
+    String orgId = model.dealOrgId ?? '';
+    String dealUserName = model.dealUserName ?? '';
+    String dealUserId = model.dealUserId ?? '';
     int rangeValue = model.rangeValue ?? 1;
 
     for (SCMaterialListModel model in materials) {
@@ -266,11 +268,11 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
       "endTime": taskEndTime,
       "dealOrgName": orgName,
       "dealOrgId": orgId,
-      "dealUserName": operatorName,
-      "dealUserId": operator,
+      "dealUserName": dealUserName,
+      "dealUserId": dealUserId,
       "rangeValue": rangeValue
     };
-    SCRouterHelper.pathPage(SCRouterPath.addCheckPage, params)?.then((value) {
+    SCRouterHelper.pathPage(SCRouterPath.addFixedCheckPage, params)?.then((value) {
       widget.state.loadData(isMore: false);
     });
   }

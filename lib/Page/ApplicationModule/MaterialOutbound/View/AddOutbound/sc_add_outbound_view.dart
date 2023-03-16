@@ -254,6 +254,10 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       SCToast.showTip(SCDefaultValue.selectWarehouseTip);
       return;
     }
+    if (widget.state.typeID <= 0) {
+      SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
+      return;
+    }
 
     if (widget.state.isEdit) {
       print("编辑-添加物资");
@@ -269,6 +273,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
+      'outType': widget.state.typeID,
       "materialType" : SCWarehouseManageType.outbound,
       "isLL" : widget.state.isLL
     });
@@ -282,6 +287,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
+      'outType': widget.state.typeID,
       'isEdit': true,
       "materialType" : SCWarehouseManageType.outbound
     });
