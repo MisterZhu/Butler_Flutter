@@ -2,14 +2,14 @@
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
+import '../../../../Utils/Router/sc_router_helper.dart';
 import '../../MaterialEntry/Model/sc_entry_type_model.dart';
+import '../../MaterialEntry/Model/sc_material_assets_details_model.dart';
 import '../../MaterialEntry/Model/sc_material_list_model.dart';
 
 /// 固定资产盘点-物资详情controller
 
 class SCFixedCheckMaterialDetailController extends GetxController {
-
-  SCMaterialListModel materialModel = SCMaterialListModel();
 
   /// 报损类型数组
   List<SCEntryTypeModel> typeList = [];
@@ -17,10 +17,51 @@ class SCFixedCheckMaterialDetailController extends GetxController {
   /// 报损原因数组
   List reasonList = [];
 
+  /// 详情model
+  SCMaterialAssetsDetailsModel detailModel = SCMaterialAssetsDetailsModel();
+
+  /// normalList
+  List<SCMaterialListModel> normalList = [];
+
+  /// doneList
+  List<SCMaterialListModel> doneList = [];
+
   @override
   onInit() {
     super.onInit();
     loadFrmLossType();
+  }
+
+  /// initData
+  initData() {
+    normalList = getNormalData();
+    doneList = getDoneData();
+  }
+
+  /// 获取未处理的数据
+  List<SCMaterialListModel> getNormalData() {
+    List list = detailModel.assetsDetails ?? [];
+    List<SCMaterialListModel> newList = [];
+    for (SCMaterialListModel model in list) {
+      bool normal = model.isFixedCheckFormLssDone ?? false;
+      if (!normal) {
+        newList.add(model);
+      }
+    }
+    return newList;
+  }
+
+  /// 获取已处理的数据
+  List<SCMaterialListModel> getDoneData() {
+    List list = detailModel.assetsDetails ?? [];
+    List<SCMaterialListModel> newList = [];
+    for (SCMaterialListModel model in list) {
+      bool normal = model.isFixedCheckFormLssDone ?? false;
+      if (normal) {
+        newList.add(model);
+      }
+    }
+    return newList;
   }
 
   /// 报损类型
@@ -37,6 +78,32 @@ class SCFixedCheckMaterialDetailController extends GetxController {
         failure: (value) {
 
         });
+  }
+
+  /// 确定
+  submit() {
+    List list = [];
+    for (SCMaterialListModel model in normalList) {
+      print("aaa===${model.toJson()}");
+      var params = {
+        "id" : model.id,
+        "status" : 2,
+      };
+      print("ccc===${params}");
+      list.add(params);
+    }
+
+    for (SCMaterialListModel model in doneList) {
+      print("bbb===${model.toJson()}");
+      var params = {
+        "id" : model.id,
+        "status" : 1,
+        "reportReason": model.reportReason
+      };
+      print("ddd===${params}");
+      list.add(params);
+    }
+    SCRouterHelper.back({"data" : list});
   }
 
 }

@@ -69,6 +69,7 @@ class SCMaterialListModel {
     int? unBackNum, //待归还数量
     int? reportReason,// 报损类型
     String? reportReasonDesc,// 报损类型描述
+    bool? isFixedCheckFormLssDone,// 物资详情-标记是否已报损，false-报损，true-取消报损
   }) {
     _barCode = barCode;
     _classifyId = classifyId;
@@ -118,6 +119,7 @@ class SCMaterialListModel {
     _backNum = backNum;
     _reportReason = reportReason;
     _reportReasonDesc = reportReasonDesc;
+    _isFixedCheckFormLssDone = isFixedCheckFormLssDone;
   }
 
   SCMaterialListModel.fromJson(dynamic json) {
@@ -171,6 +173,7 @@ class SCMaterialListModel {
     _backNum = json['backNum'];
     _reportReason = json['reportReason'];
     _reportReasonDesc = json['reportReasonDesc'];
+    _isFixedCheckFormLssDone = json['isFixedCheckFormLssDone'];
   }
   String? _barCode;
   String? _classifyId;
@@ -220,6 +223,7 @@ class SCMaterialListModel {
   int? _backNum;
   int? _reportReason;
   String? _reportReasonDesc;
+  bool? _isFixedCheckFormLssDone;
   SCMaterialListModel copyWith({
     String? barCode,
     String? classifyId,
@@ -269,6 +273,7 @@ class SCMaterialListModel {
     int? backNum,
     int? reportReason,
     String? reportReasonDesc,
+    bool? isFixedCheckFormLssDone,
   }) =>
       SCMaterialListModel(
         barCode: barCode ?? _barCode,
@@ -319,6 +324,7 @@ class SCMaterialListModel {
         backNum: backNum ?? _backNum,
         reportReason: reportReason ?? _reportReason,
         reportReasonDesc: reportReasonDesc ?? _reportReasonDesc,
+          isFixedCheckFormLssDone: isFixedCheckFormLssDone ?? _isFixedCheckFormLssDone,
       );
   String? get barCode => _barCode;
   String? get classifyId => _classifyId;
@@ -368,6 +374,7 @@ class SCMaterialListModel {
   int? get backNum => _backNum;
   String? get reportReasonDesc => _reportReasonDesc;
   int? get reportReason => _reportReason;
+  bool? get isFixedCheckFormLssDone => _isFixedCheckFormLssDone;
 
   /// set checkNum
   set checkNum(int? value) {
@@ -424,6 +431,18 @@ class SCMaterialListModel {
     _returnCheck = value;
   }
 
+  set isFixedCheckFormLssDone(bool? value) {
+    _isFixedCheckFormLssDone = value;
+  }
+
+  set reportReason(int? value) {
+    _reportReason = value;
+  }
+
+  set reportReasonDesc(String? value) {
+    _reportReasonDesc = value;
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['barCode'] = _barCode;
@@ -474,6 +493,7 @@ class SCMaterialListModel {
     map['backNum'] = _backNum;
     map['reportReason'] = _reportReason;
     map['reportReasonDesc'] = _reportReasonDesc;
+    map['isFixedCheckFormLssDone'] = _isFixedCheckFormLssDone;
     return map;
   }
 }

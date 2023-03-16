@@ -26,7 +26,7 @@ class SCAllMaterialListView extends StatelessWidget {
 
   final bool? isProperty;
   /// cell点击
-  final Function(SCMaterialListModel model)? onTap;
+  final Function(SCMaterialListModel model, int index)? onTap;
 
   /// 类型，type=entry入库详情，type=outbound出库详情
   final SCWarehouseManageType? type;
@@ -143,7 +143,7 @@ class SCAllMaterialListView extends StatelessWidget {
         materialType: manageType,
         status: status,
         onTap: () {
-          onTap?.call(subModel);
+          onTap?.call(subModel, index);
         },
       );
     } else {

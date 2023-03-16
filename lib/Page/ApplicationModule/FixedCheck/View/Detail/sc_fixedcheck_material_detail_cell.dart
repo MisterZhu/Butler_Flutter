@@ -5,6 +5,7 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_mat
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/sc_utils.dart';
+import '../../../MaterialEntry/Model/sc_material_list_model.dart';
 
 /// 物资详情cell
 
@@ -22,7 +23,7 @@ class SCFixedCheckMaterialDetailCell extends StatelessWidget {
   final SCFixedCheckMaterialDetailCellType cellType;
 
   /// model
-  final SCMaterialEntryModel? model;
+  final SCMaterialListModel? model;
 
   /// 打电话
   final Function(String phone)? callAction;
@@ -73,14 +74,14 @@ class SCFixedCheckMaterialDetailCell extends StatelessWidget {
             const SizedBox(
               height: 12.0,
             ),
-            nameItem('物资1'),
+            nameItem(model?.assetName ?? ''),
             const SizedBox(
               height: 4.0,
             ),
             const SizedBox(
               height: 6.0,
             ),
-            infoView('使用部门：开发部', '使用人：周小善'),
+            infoView('使用部门：${model?.fetchOrgName ?? ''}', '使用人：${model?.fetchUserName ?? ''}'),
             Offstage(
               offstage: cellType == SCFixedCheckMaterialDetailCellType.using ? true : false,
               child: Column(
@@ -89,7 +90,7 @@ class SCFixedCheckMaterialDetailCell extends StatelessWidget {
                   const SizedBox(
                     height: 6.0,
                   ),
-                  infoView('报损原因：丢失报损', '')
+                  infoView('报损原因：${model?.reportReasonDesc ?? ''}', '')
                 ],
               ),
             ),
@@ -121,7 +122,7 @@ class SCFixedCheckMaterialDetailCell extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-            child: Text('资产编号：ZCC789899',
+            child: Text('资产编号：${model?.assetCode ?? ''}',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(

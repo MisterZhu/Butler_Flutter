@@ -44,6 +44,9 @@ class SCMaterialEntryDetailController extends GetxController {
   /// 是否是固定资产盘点
   bool isFixedCheck = false;
 
+  /// 新提交的数据
+  List fixedList = [];
+
   @override
   onInit() {
     super.onInit();
@@ -53,6 +56,25 @@ class SCMaterialEntryDetailController extends GetxController {
   onClose() {
     super.onClose();
     closeTimer();
+  }
+
+  /// 更新fixedList
+  updateFixedList(int index, dynamic data) {
+    bool contains = false;
+    for (var params in fixedList) {
+      int subIndex = params['index'];
+      if (index == subIndex) {
+        contains = true;
+        break;
+      }
+    }
+
+    if (contains) {
+      fixedList[index] = {"index": index, "data" : data};
+    } else {
+      fixedList.add({"index": index, "data" : data});
+    }
+    print("fff===$fixedList");
   }
 
   /// 定时器
@@ -387,13 +409,7 @@ class SCMaterialEntryDetailController extends GetxController {
         Function? successHandler}) {
     var params = {
       "action": action,
-      "assetsCheckRelationEditFS": [
-        {
-          "id": "",
-          "reportReason": 0,
-          "status": 0
-        }
-      ],
+      "assetsCheckRelationEditFS": materials,
       "id": checkId
     };
     SCLoadingUtils.show();

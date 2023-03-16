@@ -28,7 +28,18 @@ class SCFixedCheckMaterialDetailPageState extends State<SCFixedCheckMaterialDeta
     controllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCFixedCheckMaterialDetailPage).toString());
     controller = Get.put(SCFixedCheckMaterialDetailController(), tag: controllerTag);
+    initData();
+  }
 
+  /// 初始化数据
+  initData() {
+    var params = Get.arguments;
+    if (params != null) {
+      if (params.containsKey('model')) {
+        controller.detailModel = params['model'];
+        controller.initData();
+      }
+    }
   }
 
   @override

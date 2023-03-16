@@ -393,15 +393,14 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
 
   /// 固定资产盘点-提交
   submitFixedCheckAction(int action) {
+    if (controller.fixedList.isEmpty) {
+      SCToast.showTip('请盘点物资');
+      return;
+    }
     List list = [];
-    for (int i = 0; i < controller.checkedList.length; i++) {
-      SCMaterialListModel model = controller.checkedList[i];
-      var dict = {
-        "id": model.id,
-        "reportReason": 0,
-        "status": 0,
-      };
-      list.add(dict);
+    for (int i = 0; i < controller.fixedList.length; i++) {
+      var params = controller.fixedList[i];
+      list.addAll(params['data']);
     }
     print('提交===========$list');
     controller.fixedCheckSubmit(
