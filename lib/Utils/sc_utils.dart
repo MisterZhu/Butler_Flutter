@@ -178,6 +178,11 @@ class SCUtils {
     }
   }
 
+  /// 获取亚运村工单按钮text
+  static String getYYCWorkOrderButtonText(bool asvCheck) {
+    return asvCheck ? '' : '';
+  }
+
   /*打电话*/
   static call(String phone) async{
     if (phone.isEmpty) {

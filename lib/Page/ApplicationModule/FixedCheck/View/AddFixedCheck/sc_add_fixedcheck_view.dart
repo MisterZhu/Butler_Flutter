@@ -297,14 +297,16 @@ class SCAddFixedCheckViewState extends State<SCAddFixedCheckView> {
         'isRequired': true,
         'title': '类型',
         'content': widget.state.typeName,
+        'disable': widget.state.isEdit,
       },
       {
         'isRequired': true,
         'title': '开始时间',
-        'content': widget.state.startTimeStr
+        'content': widget.state.startTimeStr,
+        'disable': widget.state.isEdit,
       },
-      {'isRequired': true, 'title': '结束时间', 'content': widget.state.endTimeStr},
-      {'isRequired': true, 'title': '盘点部门', 'content': widget.state.dealOrgName},
+      {'isRequired': true, 'title': '结束时间', 'content': widget.state.endTimeStr, 'disable': widget.state.isEdit,},
+      {'isRequired': true, 'title': '盘点部门', 'content': widget.state.dealOrgName, 'disable': widget.state.isEdit,},
       {
         'isRequired': true,
         'title': '盘点人',
