@@ -240,8 +240,8 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     ];
 
     List orgList = [
-      {'isRequired': false, 'title': '领用部门', 'content': widget.state.fetchOrgName},
-      {'isRequired': false, 'title': '领用人', 'content': widget.state.fetchUserName},];
+      {'isRequired': false, 'title': '领用部门', 'content': widget.state.fetchOrgName, 'disable' : widget.state.isEdit},
+      {'isRequired': false, 'title': '领用人', 'content': widget.state.fetchUserName, 'disable' : widget.state.isEdit},];
     if (widget.state.type == '领料出库') {
       baseInfoList.addAll(orgList);
     }
