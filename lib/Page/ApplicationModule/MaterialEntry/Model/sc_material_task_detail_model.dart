@@ -1,50 +1,52 @@
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_assets_details_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_list_model.dart';
 
 import '../../PropertyFrmLoss/Model/sc_property_list_model.dart';
+
 /// 详情页面model
 class SCMaterialTaskDetailModel {
   SCMaterialTaskDetailModel({
-      this.creator, 
-      this.creatorName, 
-      this.files, 
-      this.gmtCreate, 
-      this.gmtModify, 
-      this.id, 
-      this.labelList, 
-      this.materialNames, 
-      this.materialNums, 
-      this.materials,
-      this.assets,
-      this.mobileNum, 
-      this.number, 
-      this.operator, 
-      this.operatorName, 
-      this.orgId, 
-      this.orgName, 
-      this.remark, 
-      this.reportManMobileNum, 
-      this.reportOrgId, 
-      this.reportOrgName, 
-      this.reportTime, 
-      this.reportUserId, 
-      this.reportUserName, 
-      this.status, 
-      this.statusDesc, 
-      this.type, 
-      this.typeName, 
-      this.wareHouseAddress, 
-      this.wareHouseId, 
-      this.wareHouseName,
+    this.creator,
+    this.creatorName,
+    this.files,
+    this.gmtCreate,
+    this.gmtModify,
+    this.id,
+    this.labelList,
+    this.materialNames,
+    this.materialNums,
+    this.materials,
+    this.assets,
+    this.mobileNum,
+    this.number,
+    this.operator,
+    this.operatorName,
+    this.orgId,
+    this.orgName,
+    this.remark,
+    this.reportManMobileNum,
+    this.reportOrgId,
+    this.reportOrgName,
+    this.reportTime,
+    this.reportUserId,
+    this.reportUserName,
+    this.status,
+    this.statusDesc,
+    this.type,
+    this.typeName,
+    this.wareHouseAddress,
+    this.wareHouseId,
+    this.wareHouseName,
     this.inWareHouseId,
     this.inWareHouseName,
     this.outWareHouseId,
     this.outWareHouseName,
-      this.tenantId,
-      this.fetchUserName,
-      this.fetchUserId,
-      this.fetchOrgName,
-      this.fetchOrgId,
-      this.fetchUserMobileNum,
+    this.tenantId,
+    this.fetchUserName,
+    this.fetchUserId,
+    this.fetchOrgName,
+    this.fetchOrgId,
+    this.fetchUserMobileNum,
     this.taskName,
     this.taskEndTime,
     this.taskStartTime,
@@ -57,6 +59,7 @@ class SCMaterialTaskDetailModel {
     this.rangeName,
     this.rangeValue,
     this.materialType,
+    this.materialAssetsDetails,
   });
 
   SCMaterialTaskDetailModel.fromJson(dynamic json) {
@@ -89,6 +92,12 @@ class SCMaterialTaskDetailModel {
       assets = [];
       json['assets'].forEach((v) {
         assets?.add(SCMaterialListModel.fromJson(v));
+      });
+    }
+    if (json['materialAssetsDetails'] != null) {
+      materialAssetsDetails = [];
+      json['materialAssetsDetails'].forEach((v) {
+        materialAssetsDetails?.add(SCMaterialAssetsDetailsModel.fromJson(v));
       });
     }
     mobileNum = json['mobileNum'];
@@ -187,6 +196,7 @@ class SCMaterialTaskDetailModel {
   String? taskStartTime;
   String? taskName;
   int? materialType;
+  List<SCMaterialAssetsDetailsModel>? materialAssetsDetails;
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['creator'] = creator;
@@ -207,6 +217,9 @@ class SCMaterialTaskDetailModel {
     }
     if (assets != null) {
       map['assets'] = assets?.map((v) => v.toJson()).toList();
+    }
+    if (materialAssetsDetails != null) {
+      map['materialAssetsDetails'] = materialAssetsDetails?.map((v) => v.toJson()).toList();
     }
     map['mobileNum'] = mobileNum;
     map['number'] = number;
@@ -252,16 +265,16 @@ class SCMaterialTaskDetailModel {
     map['materialType'] = materialType;
     return map;
   }
-
 }
 
 class Files {
   Files({
-      this.fileKey, 
-      this.name, 
-      this.size, 
-      this.suffix, 
-      this.type,});
+    this.fileKey,
+    this.name,
+    this.size,
+    this.suffix,
+    this.type,
+  });
 
   Files.fromJson(dynamic json) {
     fileKey = json['fileKey'];
@@ -285,5 +298,4 @@ class Files {
     map['type'] = type;
     return map;
   }
-
 }

@@ -67,6 +67,8 @@ class SCMaterialListModel {
     int? returnCheck, //0-无需归还，1-需要归还
     int? backNum, //归还数量
     int? unBackNum, //待归还数量
+    int? reportReason,// 报损类型
+    String? reportReasonDesc,// 报损类型描述
   }) {
     _barCode = barCode;
     _classifyId = classifyId;
@@ -114,6 +116,8 @@ class SCMaterialListModel {
     _returnCheck = returnCheck;
     _unBackNum = unBackNum;
     _backNum = backNum;
+    _reportReason = reportReason;
+    _reportReasonDesc = reportReasonDesc;
   }
 
   SCMaterialListModel.fromJson(dynamic json) {
@@ -165,6 +169,8 @@ class SCMaterialListModel {
     _returnCheck = json['returnCheck'] ?? 1;
     _unBackNum = json['unBackNum'];
     _backNum = json['backNum'];
+    _reportReason = json['reportReason'];
+    _reportReasonDesc = json['reportReasonDesc'];
   }
   String? _barCode;
   String? _classifyId;
@@ -212,6 +218,8 @@ class SCMaterialListModel {
   int? _returnCheck;
   int? _unBackNum;
   int? _backNum;
+  int? _reportReason;
+  String? _reportReasonDesc;
   SCMaterialListModel copyWith({
     String? barCode,
     String? classifyId,
@@ -259,6 +267,8 @@ class SCMaterialListModel {
     int? returnCheck,
     int? unBackNum,
     int? backNum,
+    int? reportReason,
+    String? reportReasonDesc,
   }) =>
       SCMaterialListModel(
         barCode: barCode ?? _barCode,
@@ -307,6 +317,8 @@ class SCMaterialListModel {
         returnCheck: returnCheck ?? _returnCheck,
         unBackNum: unBackNum ?? _unBackNum,
         backNum: backNum ?? _backNum,
+        reportReason: reportReason ?? _reportReason,
+        reportReasonDesc: reportReasonDesc ?? _reportReasonDesc,
       );
   String? get barCode => _barCode;
   String? get classifyId => _classifyId;
@@ -354,6 +366,8 @@ class SCMaterialListModel {
   int? get returnCheck => _returnCheck;
   int? get unBackNum => _unBackNum;
   int? get backNum => _backNum;
+  String? get reportReasonDesc => _reportReasonDesc;
+  int? get reportReason => _reportReason;
 
   /// set checkNum
   set checkNum(int? value) {
@@ -458,6 +472,8 @@ class SCMaterialListModel {
     map['returnCheck'] = _returnCheck;
     map['unBackNum'] = _unBackNum;
     map['backNum'] = _backNum;
+    map['reportReason'] = _reportReason;
+    map['reportReasonDesc'] = _reportReasonDesc;
     return map;
   }
 }
