@@ -362,4 +362,55 @@ class SCMaterialEntryDetailController extends GetxController {
 
     return list;
   }
+
+
+  /// 开始处理固定资产盘点任务
+  startFixedCheckTask({required String id, Function? successHandler}) {
+    SCHttpManager.instance.post(
+        url: SCUrl.kStartFixedCheckTaskUrl,
+        params: {'id': id},
+        isQuery: true,
+        success: (value) {
+          print('开始盘点==========================');
+          successHandler?.call();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 暂存或提交固定资产盘点任务
+  fixedCheckSubmit(
+      {required int action,
+        required String checkId,
+        required List materials,
+        Function? successHandler}) {
+    var params = {
+      "action": action,
+      "assetsCheckRelationEditFS": [
+        {
+          "id": "",
+          "reportReason": 0,
+          "status": 0
+        }
+      ],
+      "id": checkId
+    };
+    SCLoadingUtils.show();
+    SCHttpManager.instance.post(
+        url: SCUrl.kFixedCheckSubmitUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          if (action == 0) {
+            SCToast.showTip(SCDefaultValue.checkSaveSuccessTip);
+          } else {
+            SCToast.showTip(SCDefaultValue.checkSubmitSuccessTip);
+          }
+          successHandler?.call();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
 }
