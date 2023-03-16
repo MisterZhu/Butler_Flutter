@@ -64,6 +64,9 @@ class SCMaterialListModel {
     String? fetchUserId,
     String? fetchUserName,
     String? gmtFetch,
+    int? returnCheck, //0-无需归还，1-需要归还
+    int? backNum, //归还数量
+    int? unBackNum, //待归还数量
   }) {
     _barCode = barCode;
     _classifyId = classifyId;
@@ -108,6 +111,9 @@ class SCMaterialListModel {
     _fetchUserId = fetchUserId;
     _fetchUserName = fetchUserName;
     _gmtFetch = gmtFetch;
+    _returnCheck = returnCheck;
+    _unBackNum = unBackNum;
+    _backNum = backNum;
   }
 
   SCMaterialListModel.fromJson(dynamic json) {
@@ -156,6 +162,9 @@ class SCMaterialListModel {
     _fetchUserId = json['fetchUserId'];
     _fetchUserName = json['fetchUserName'];
     _gmtFetch = json['gmtFetch'];
+    _returnCheck = json['returnCheck'] ?? 1;
+    _unBackNum = json['unBackNum'];
+    _backNum = json['backNum'];
   }
   String? _barCode;
   String? _classifyId;
@@ -200,6 +209,9 @@ class SCMaterialListModel {
   String? _fetchUserId;
   String? _fetchUserName;
   String? _gmtFetch;
+  int? _returnCheck;
+  int? _unBackNum;
+  int? _backNum;
   SCMaterialListModel copyWith({
     String? barCode,
     String? classifyId,
@@ -244,6 +256,9 @@ class SCMaterialListModel {
     String? fetchUserId,
     String? fetchUserName,
     String? gmtFetch,
+    int? returnCheck,
+    int? unBackNum,
+    int? backNum,
   }) =>
       SCMaterialListModel(
         barCode: barCode ?? _barCode,
@@ -289,6 +304,9 @@ class SCMaterialListModel {
         fetchUserId: fetchUserId ?? _fetchUserId,
         fetchUserName: fetchUserName ?? _fetchUserName,
         gmtFetch: gmtFetch ?? _gmtFetch,
+        returnCheck: returnCheck ?? _returnCheck,
+        unBackNum: unBackNum ?? _unBackNum,
+        backNum: backNum ?? _backNum,
       );
   String? get barCode => _barCode;
   String? get classifyId => _classifyId;
@@ -333,6 +351,9 @@ class SCMaterialListModel {
   String? get fetchUserId => _fetchUserId;
   String? get fetchUserName => _fetchUserName;
   String? get gmtFetch => _gmtFetch;
+  int? get returnCheck => _returnCheck;
+  int? get unBackNum => _unBackNum;
+  int? get backNum => _backNum;
 
   /// set checkNum
   set checkNum(int? value) {
@@ -384,6 +405,11 @@ class SCMaterialListModel {
     _assetId = value;
   }
 
+
+  set returnCheck(int? value) {
+    _returnCheck = value;
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['barCode'] = _barCode;
@@ -429,6 +455,9 @@ class SCMaterialListModel {
     map['fetchUserName'] = _fetchUserName;
     map['gmtFetch'] = _gmtFetch;
     map['materialType'] = _materialType;
+    map['returnCheck'] = _returnCheck;
+    map['unBackNum'] = _unBackNum;
+    map['backNum'] = _backNum;
     return map;
   }
 }

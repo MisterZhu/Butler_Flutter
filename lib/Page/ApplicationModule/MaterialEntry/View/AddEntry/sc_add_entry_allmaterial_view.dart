@@ -12,7 +12,8 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
     this.updateNumAction,
     this.hideMaterialNumTextField,
     this.isReturnEntry,
-    this.isProperty
+    this.isProperty,
+    this.noNeedReturnAction
   }) : super(key: key);
 
   /// 数据源
@@ -29,8 +30,13 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
 
   /// 是否是物资出入库-归还入库
   final bool? isReturnEntry;
+
   /// 是否是资产
   final bool? isProperty;
+
+  /// 无需归还勾选
+  final Function(int index, bool status)? noNeedReturnAction;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -71,7 +77,14 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
     if (isReturnEntry == true) {
         return SCMaterialCell(
           model: model,
-          type: scMaterialCellTypeNormal,
+          type: scReturnMaterialCellTypeNormal,
+          numChangeAction: (int value) {
+            model.localNum = value;
+            updateNumAction?.call(index, value);
+          },
+          noNeedReturnAction: (bool status) {
+            noNeedReturnAction?.call(index, status);
+          }
         );
       } else {
         return SCMaterialCell(

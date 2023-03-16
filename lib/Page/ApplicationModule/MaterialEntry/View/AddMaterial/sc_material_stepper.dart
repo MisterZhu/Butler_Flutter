@@ -13,7 +13,7 @@ import 'package:smartcommunity/Utils/sc_utils.dart';
 /// 数量步进器
 
 class SCStepper extends StatefulWidget {
-  SCStepper({Key? key, this.numChangeAction, this.num = 1, this.showDone, this.isSupportZero}) : super(key: key);
+  SCStepper({Key? key, this.numChangeAction, this.num = 1, this.showDone, this.isSupportZero, this.disable}) : super(key: key);
 
   /// 数量改变回调
   final Function(int num)? numChangeAction;
@@ -26,6 +26,9 @@ class SCStepper extends StatefulWidget {
 
   /// 是否支持输入0
   final bool? isSupportZero;
+
+  /// 是否可用
+  final bool? disable;
 
   @override
   SCStepperState createState() => SCStepperState();
@@ -115,17 +118,21 @@ class SCStepperState extends State<SCStepper> {
           alignment: Alignment.center,
           padding: EdgeInsets.zero,
           minSize: 22.0,
-          child: const Text(
+          child: Text(
             '-',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 fontSize: SCFonts.f14,
                 fontWeight: FontWeight.w400,
-                color: SCColors.color_5E5F66),
+                color: widget.disable == true ? SCColors.color_B0B1B8 : SCColors.color_5E5F66),
           ),
           onPressed: () {
-            delete();
+            if (widget.disable == true) {
+              //不可用
+            } else {
+              delete();
+            }
           }),
     );
   }
@@ -140,17 +147,21 @@ class SCStepperState extends State<SCStepper> {
           alignment: Alignment.center,
           padding: EdgeInsets.zero,
           minSize: 22.0,
-          child: const Text(
+          child: Text(
             '+',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 fontSize: SCFonts.f14,
                 fontWeight: FontWeight.w400,
-                color: SCColors.color_5E5F66),
+                color: widget.disable == true ? SCColors.color_B0B1B8 : SCColors.color_5E5F66),
           ),
           onPressed: () {
-            add();
+            if (widget.disable == true) {
+              //不可用
+            } else {
+              add();
+            }
           }),
     );
   }
@@ -180,7 +191,8 @@ class SCStepperState extends State<SCStepper> {
       ];
     }
     return Expanded(
-        child: TextField(
+      child: TextField(
+      enabled: widget.disable == true ? false : true,
       textAlign: TextAlign.center,
       controller: textFiledController,
       maxLines: 1,
@@ -188,8 +200,7 @@ class SCStepperState extends State<SCStepper> {
       cursorWidth: 2,
       focusNode: node,
       inputFormatters: formatterList,
-      style:
-          const TextStyle(fontSize: SCFonts.f12, color: SCColors.color_5E5F66),
+      style: TextStyle(fontSize: SCFonts.f12, color: widget.disable == true ? SCColors.color_B0B1B8 : SCColors.color_5E5F66),
       decoration: const InputDecoration(
         contentPadding: EdgeInsets.zero,
         hintText: "",

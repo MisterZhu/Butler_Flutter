@@ -179,11 +179,7 @@ class SCAddEntryController extends GetxController {
     if (data['typeId'] == 1) {// 采购单
       params.addAll({"purchaseId": data['purchaseId'],});
     }
-    if (isProperty == true) {
-      params.addAll({"materials": data['assets'],});
-    } else {
-      params.addAll({"materials": data['materialList'],});
-    }
+    params.addAll({"materials": data['materialList'],});
     if (data['typeId'] == 4) {// 归还入库
       params.addAll({"materialType": data['materialType'],});
     }

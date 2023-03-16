@@ -49,6 +49,9 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 是否是资产
   final bool? isProperty;
 
+  /// 无需归还勾选
+  final Function(int index, bool status)? noNeedReturnAction;
+
   SCMaterialInfoCell({
     Key? key,
     required this.title,
@@ -63,7 +66,8 @@ class SCMaterialInfoCell extends StatelessWidget {
     required this.showAdd,
     this.hideMaterialNumTextField,
     this.isReturnEntry,
-    this.isProperty
+    this.isProperty,
+    this.noNeedReturnAction
   }) : super(key: key);
 
   @override
@@ -197,6 +201,9 @@ class SCMaterialInfoCell extends StatelessWidget {
       updateNumAction: (int index, int value) {
         updateNumAction?.call(index, value);
       },
+      noNeedReturnAction: (int index, bool status) {
+        noNeedReturnAction?.call(index, status);
+      }
     );
   }
 
