@@ -195,7 +195,6 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
       model.localNum = model.number ?? 1;
       model.isSelect = true;
       model.name = model.materialName ?? '';
-      materialType = model.materialType ?? 2;
       // model.id = model.materialId;
     }
     SCRouterHelper.pathPage(SCRouterPath.addEntryPage, {

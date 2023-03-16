@@ -18,6 +18,7 @@ import 'package:smartcommunity/Page/Tab/Page/sc_tab_page.dart';
 import 'package:smartcommunity/Page/Webview/Page/sc_webview_page.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_detail_page.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_page.dart';
+import '../../Page/ApplicationModule/FixedCheck/Page/sc_fixedcheck_material_detail_page.dart';
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_enter_house_inspect_page.dart';
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_formal_house_inspect_detail_page.dart';
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_formal_house_inspect_page.dart';
@@ -158,6 +159,9 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.fixedCheckPage, page: () => SCFixedCheckPage()),
     /*固定资产盘点-新增*/
     GetPage(name: SCRouterPath.addFixedCheckPage, page: () => SCAddFixedCheckPage()),
+    /*固定资产盘点-物资详情*/
+    GetPage(name: SCRouterPath.fixedCheckMaterialDetailPage, page: () => SCFixedCheckMaterialDetailPage()),
+
   ];
 
   /*根据code使用路由*/

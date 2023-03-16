@@ -9,7 +9,6 @@ import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
-import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../../Controller/sc_add_material_controller.dart';
 import '../../Controller/sc_categoryalert_controlller.dart';
 import '../../Model/sc_selectcategory_model.dart';
@@ -218,6 +217,9 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
 
   /// 分类弹窗
   showCategoryAlert() {
+    widget.categoryAlertController.isLL = widget.state.isLL;
+    widget.categoryAlertController.wareHouseId = widget.state.wareHouseId;
+    widget.categoryAlertController.materialType = widget.state.materialType;
     widget.categoryAlertController.loadMaterialSortData(
         completeHandler: (success, list) {
       print("数据源:$list");
@@ -273,7 +275,6 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
 
   /// 确定
   sureAction() {
-    print('确定==================111111111111');
     if (widget.isProperty == true) {
       List<SCMaterialListModel> list = [];
       for (SCMaterialListModel model in widget.state.propertyList) {
@@ -282,7 +283,6 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
           list.add(model);
         }
       }
-      print('确定222==================$list');
       if (list.isEmpty) {
         SCToast.showTip(SCDefaultValue.selectPropertyTip);
       } else {
@@ -297,7 +297,6 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
           list.add(model);
         }
       }
-      print('确定3333==================$list');
       if (list.isEmpty) {
         SCToast.showTip(SCDefaultValue.selectMaterialTip);
       } else {
@@ -314,7 +313,8 @@ class SCAddMaterialViewState extends State<SCAddMaterialView> {
           'type': widget.type,
           'hideNumTextField' : widget.state.hideNumTextField,
           'isProperty' : widget.state.isProperty,
-          'orgId': widget.state.orgId
+          'orgId': widget.state.orgId,
+          'isLL': widget.state.isLL,
         });
     if (backParams != null) {
       if (backParams['list'] != null) {

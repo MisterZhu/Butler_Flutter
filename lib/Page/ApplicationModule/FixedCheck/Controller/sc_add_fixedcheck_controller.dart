@@ -157,7 +157,7 @@ class SCAddFixedCheckController extends GetxController {
     var params = {
       "dealOrgId": data['dealOrgId'],
       "dealUserId": data['dealUserId'],
-      "materialIdList": data['materialIdList'],
+      "assetsIdList": data['materialIdList'],
       "classifyIdList": data['categoryIDList'],
       "rangeValue": data['rangeValue'],
       "taskEndTime": data['endTime'],
@@ -361,7 +361,7 @@ class SCAddFixedCheckController extends GetxController {
   List<String> getMaterialIDList() {
     List<String> list = [];
     for (SCMaterialListModel model in selectedList) {
-      list.add(model.materialId ?? '');
+      list.add(model.id ?? '');
     }
     return list;
   }

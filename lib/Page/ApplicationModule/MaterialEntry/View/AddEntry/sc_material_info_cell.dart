@@ -25,9 +25,6 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 物资数据源
   final List<SCMaterialListModel> list;
 
-  /// 物资数据源
-  final List<SCMaterialListModel>? propertyList;
-
   /// 物资分类数据源
   final List<SCCheckTypeModel>? categoryList;
 
@@ -61,7 +58,6 @@ class SCMaterialInfoCell extends StatelessWidget {
     this.addAction,
     required this.list,
     this.categoryList,
-    this.propertyList,
     this.deleteAction,
     this.updateNumAction,
     required this.showAdd,
@@ -195,7 +191,6 @@ class SCMaterialInfoCell extends StatelessWidget {
       list: list,
       isReturnEntry: isReturnEntry,
       isProperty: isProperty,
-      propertyList: propertyList,
       deleteAction: (int index) {
         deleteAction?.call(index);
       },
@@ -222,7 +217,6 @@ class SCMaterialInfoCell extends StatelessWidget {
       list: list,
       isReturnEntry: false,
       isProperty: false,
-      propertyList: [],
       deleteAction: (int index) {
         deleteAction?.call(index);
       },
@@ -238,8 +232,7 @@ class SCMaterialInfoCell extends StatelessWidget {
 
   /// 获取种类
   int getTypeNumber() {
-    int count = isProperty == true ? propertyList?.length ?? 0 : list.length;
-    return count;
+    return list.length;
   }
 
   /// 获取数量

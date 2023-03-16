@@ -12,15 +12,11 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
     this.updateNumAction,
     this.hideMaterialNumTextField,
     this.isReturnEntry,
-    this.propertyList,
     this.isProperty
   }) : super(key: key);
 
   /// 数据源
   final List<SCMaterialListModel> list;
-
-  /// 数据源
-  final List<SCMaterialListModel>? propertyList;
 
   /// 删除物资
   final Function(int index)? deleteAction;
@@ -39,7 +35,7 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: isProperty == true ? allPropertyList() : allMaterialList(),
+      children: allMaterialList(),
     );
   }
 
@@ -55,27 +51,14 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
     return itemList;
   }
 
-  /// 所有物资列表
-  List<Widget> allPropertyList() {
-    List<Widget> itemList = [];
-    for (int i=0; i<propertyList!.length; i++) {
-      itemList.add(cell(i));
-      if (i != propertyList!.length - 1) {
-        itemList.add(line());
-      }
-    }
-    return itemList;
-  }
-
-
   /// cell
   Widget cell(int index) {
     if (isProperty == true) {
-      SCMaterialListModel propertyModel = propertyList![index];
+      SCMaterialListModel propertyModel = list[index];
       return SCMaterialCell(
         hideMaterialNumTextField: hideMaterialNumTextField,
         type: scPropertyCellTypeDelete,
-        propertyModel: propertyModel,
+        model: propertyModel,
         onTap: () {
 
         },

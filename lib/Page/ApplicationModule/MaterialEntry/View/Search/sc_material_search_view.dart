@@ -307,7 +307,7 @@ class SCMaterialSearchViewState extends State<SCMaterialSearchView> {
   Widget propertyCell(SCMaterialListModel model) {
     return SCMaterialCell(
       hideMaterialNumTextField: widget.state.hideNumTextField,
-      propertyModel: model,
+      model: model,
       type: scPropertyCellTypeRadio,
       radioTap: (bool value) {
         setState(() {

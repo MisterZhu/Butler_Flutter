@@ -10,7 +10,6 @@ import '../../../Login/Home/Model/sc_user_model.dart';
 import '../../MaterialEntry/Model/sc_entry_type_model.dart';
 import '../../MaterialEntry/Model/sc_material_list_model.dart';
 import '../../MaterialEntry/Model/sc_material_task_detail_model.dart';
-import '../Model/sc_property_list_model.dart';
 import '../../MaterialEntry/Model/sc_wareHouse_model.dart';
 
 /// 新增资产报损controller

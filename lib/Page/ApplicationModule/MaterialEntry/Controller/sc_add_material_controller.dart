@@ -304,8 +304,8 @@ class SCAddMaterialController extends GetxController {
   /// 物资分类数据
   loadMaterialSortData() {
     SCHttpManager.instance.post(
-        url: isLL ? SCUrl.kMaterialSortWithWareHouseUrl : SCUrl.kMaterialSortUrl,
-        params: isLL ? {'wareHouseId' : wareHouseId} : null,
+        url: SCUrl.kMaterialSortUrl,
+        params: null,
         isQuery: isLL ? true : false,
         success: (value) {
           update();

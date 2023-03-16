@@ -218,8 +218,7 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
     if (status == 0) {
       editAction(model);
     } else {
-      SCRouterHelper.pathPage(
-          SCRouterPath.checkDetailPage, {'id': model.id, 'canEdit': canEdit});
+      SCRouterHelper.pathPage(SCRouterPath.checkDetailPage, {'id': model.id, 'canEdit' : canEdit, 'isFixedCheck': true});
     }
   }
 
@@ -227,8 +226,7 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
   detailAction(SCMaterialEntryModel model) {
     int status = model.status ?? -1;
     bool canEdit = (status == 0);
-    SCRouterHelper.pathPage(
-        SCRouterPath.checkDetailPage, {'id': model.id, 'canEdit': canEdit});
+    SCRouterHelper.pathPage(SCRouterPath.checkDetailPage, {'id': model.id, 'canEdit' : canEdit, 'isFixedCheck': true});
   }
 
   /// 编辑

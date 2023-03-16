@@ -37,7 +37,6 @@ class SCMaterialCell extends StatefulWidget {
       {Key? key,
       required this.type,
       this.model,
-      this.propertyModel,
       this.onTap,
       this.numChangeAction,
       this.radioTap,
@@ -49,7 +48,6 @@ class SCMaterialCell extends StatefulWidget {
 
   final SCMaterialListModel? model;
 
-  final SCMaterialListModel? propertyModel;
   /// cell点击
   final Function? onTap;
 
@@ -482,7 +480,11 @@ class SCMaterialCellState extends State<SCMaterialCell> {
   Widget nameLabel() {
     String name = '';
     if (widget.type == scPropertyCellTypeNormal || widget.type == scPropertyCellTypeRadio || widget.type == scPropertyCellTypeDelete) {
-      name = widget.propertyModel?.assetName ?? '';
+      if (widget.model?.assetName != null) {
+        name = widget.model?.assetName ?? '';
+      } else {
+        name = widget.model?.materialName ?? '';
+      }
     } else {
       if (widget.model?.materialName != null) {
         name = widget.model?.materialName ?? '';
@@ -508,8 +510,8 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     if (widget.type == scMaterialCellTypeInventory) {
       text =
           '单位:${widget.model?.unitName ?? ''} 条形码:${widget.model?.barCode ?? ''}\n规格:${widget.model?.norms ?? ''}\n账面库存:${widget.model?.number}';
-    } else if (widget.type == scPropertyCellTypeNormal || widget.type == scPropertyCellTypeRadio || widget.type == scPropertyCellTypeDelete) {
-      text = '单位:${widget.propertyModel?.unitName ?? ''}\n规格:${widget.propertyModel?.norms ?? ''}\n资产编号:${widget.propertyModel?.assetCode ?? ''}';
+    } else if (widget.type == scPropertyCellTypeNormal || widget.type == scPropertyCellTypeRadio || widget.type == scPropertyCellTypeDelete  || widget.model?.materialType == 1) {
+      text = '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.assetCode ?? ''}';
     } else {
       text =
           '单位:${widget.model?.unitName ?? ''} 条形码:${widget.model?.barCode ?? ''}\n规格:${widget.model?.norms ?? ''}';
@@ -556,7 +558,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
   /// radio
   Widget radioView() {
     if (widget.type == scPropertyCellTypeNormal || widget.type == scPropertyCellTypeRadio || widget.type == scPropertyCellTypeDelete) {
-      isSelect = widget.propertyModel?.isSelect ?? false;
+      isSelect = widget.model?.isSelect ?? false;
     } else {
       isSelect = widget.model?.isSelect ?? false;
     }

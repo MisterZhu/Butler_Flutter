@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Constants/sc_enum.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_selectcategory_model.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
@@ -34,6 +35,15 @@ class SCCategoryAlertController extends GetxController {
   /// 当前parent数据源
   List<SCSelectCategoryModel> currentParentList = [];
 
+  /// 物资类型
+  SCWarehouseManageType materialType = SCWarehouseManageType.entry;
+
+  /// 是否是领料
+  bool isLL = false;
+
+  /// 仓库id
+  String wareHouseId = '';
+
   @override
   onInit() {
     super.onInit();
@@ -43,9 +53,22 @@ class SCCategoryAlertController extends GetxController {
   /// 物资分类数据
   loadMaterialSortData({Function(bool success, List<SCSelectCategoryModel> list)? completeHandler}) {
     SCLoadingUtils.show();
+    String url = '';
+    var params = {};
+    bool isQuery = false;
+    if (isLL && materialType == SCWarehouseManageType.outbound) {
+      url = SCUrl.kMaterialSortWithWareHouseUrl;
+      params = {'wareHouseId' : wareHouseId};
+      isQuery = true;
+    } else {
+      url = SCUrl.kMaterialSortUrl;
+      params = {};
+      isQuery = false;
+    }
     SCHttpManager.instance.post(
-        url: SCUrl.kMaterialSortUrl,
-        params: null,
+        url: url,
+        params: params,
+        isQuery: isQuery,
         success: (value) {
           SCLoadingUtils.hide();
           treeList = (List<SCSelectCategoryTreeModel>.from(

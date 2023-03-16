@@ -160,9 +160,8 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
       return SCMaterialInfoCell(
         title: '资产信息',
         showAdd: true,
-        list: [],
+        list: widget.state.selectedList,
         isProperty: true,
-        propertyList: widget.state.selectedList,
         addAction: () {
           addAction();
         },
@@ -250,7 +249,8 @@ class SCAddPropertyFrmLossViewState extends State<SCAddPropertyFrmLossView> {
       {
         'isRequired': true,
         'title': '使用部门',
-        'content': widget.state.fetchOrgName
+        'content': widget.state.fetchOrgName,
+        'disable': widget.state.isEdit
       },
       {
         'isRequired': true,

@@ -138,7 +138,7 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
 
   /// 分类
   Widget topCategoryView() {
-    List list = ['物资申领', '物资归还'];
+    List list = ['申领记录', '归还记录'];
     return Padding(padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 10.0, bottom: 10.0), child: Row(
       children: [
         categoryBtn(widget.state.categoryIndex == 0, list[0], () {
@@ -209,7 +209,7 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
           itemBuilder: (BuildContext context, int index) {
             SCMaterialEntryModel model = widget.state.dataList[index];
             bool hideBtn = true;
-            if (widget.state.categoryIndex == 0 && model.status == 7) {
+            if (widget.state.categoryIndex == 0 && model.status == 7 && model.returned == false) {
               hideBtn = false;
             }
             return SCMaterialEntryCell(

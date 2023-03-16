@@ -14,6 +14,7 @@ import '../../../../Constants/sc_default_value.dart';
 import '../../../../Constants/sc_enum.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
+import '../../../../Utils/sc_utils.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart';
 
 /// 盘点详情
@@ -42,6 +43,9 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
       var id = params['id'];
       if (id != null) {
         controller.id = id;
+      }
+      if (params['isFixedCheck'] != null) {
+        controller.isFixedCheck = params['isFixedCheck'];
       }
       controller.loadMaterialCheckDetail();
     }
@@ -82,7 +86,7 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
             offstage: !controller.success,
             child: SCMaterialDetailListView(
               state: controller,
-              type: SCWarehouseManageType.check,
+              type: controller.isFixedCheck ? SCWarehouseManageType.fixedCheck : SCWarehouseManageType.check,
             ),
           );
         });
@@ -229,9 +233,15 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
       "dealUserId": operator,
       "rangeValue": rangeValue
     };
-    SCRouterHelper.pathPage(SCRouterPath.addCheckPage, params)?.then((value) {
-      controller.loadMaterialCheckDetail();
-    });
+    if (controller.isFixedCheck == true) {//去编辑固定资产盘点页面
+      SCRouterHelper.pathPage(SCRouterPath.addFixedCheckPage, params)?.then((value) {
+        controller.loadMaterialCheckDetail();
+      });
+    } else {
+      SCRouterHelper.pathPage(SCRouterPath.addCheckPage, params)?.then((value) {
+        controller.loadMaterialCheckDetail();
+      });
+    }
   }
 
   /// 提交确认弹窗
@@ -274,8 +284,13 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
         checkId: controller.model.id ?? '',
         materials: list,
         successHandler: () {
-          SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshMaterialCheckPage});
+          if (controller.isFixedCheck == true) {
+            SCScaffoldManager.instance.eventBus
+                .fire({'key': SCKey.kRefreshFixedCheckPage});
+          } else {
+            SCScaffoldManager.instance.eventBus
+                .fire({'key': SCKey.kRefreshMaterialCheckPage});
+          }
           SCRouterHelper.back(null);
         });
   }
@@ -298,8 +313,13 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
             fontWeight: FontWeight.w400,
             onTap: () {
               controller.cancelCheckTask(id: controller.model.id ?? '', successHandler: () {
-                SCScaffoldManager.instance.eventBus
-                    .fire({'key': SCKey.kRefreshMaterialCheckPage});
+                if (controller.isFixedCheck == true) {
+                  SCScaffoldManager.instance.eventBus
+                      .fire({'key': SCKey.kRefreshFixedCheckPage});
+                } else {
+                  SCScaffoldManager.instance.eventBus
+                      .fire({'key': SCKey.kRefreshMaterialCheckPage});
+                }
                 SCRouterHelper.back(null);
               });
             }
@@ -319,7 +339,8 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
       'unCheckList': controller.uncheckedList,
       "materialType": SCWarehouseManageType.check,
       'hideNumTextField': false,
-      'check': true
+      'check': true,
+      'isProperty': controller.isFixedCheck
     });
     if (list != null) {
       print('已盘点的物资==============$list');
@@ -332,9 +353,7 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
         controller.uncheckedList.remove(model);
       }
     }
-
   }
-
 
   /// 删除
   deleteAction() {

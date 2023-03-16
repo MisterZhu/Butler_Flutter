@@ -269,7 +269,8 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'data': widget.state.selectedList,
       'wareHouseId': widget.state.wareHouseId,
-      "materialType" : SCWarehouseManageType.outbound
+      "materialType" : SCWarehouseManageType.outbound,
+      "isLL" : widget.state.isLL
     });
     if (list != null) {
       onlyAddMaterial(list);
