@@ -68,7 +68,7 @@ class SCMineListView extends StatelessWidget {
   }
 
   Widget listview() {
-    int count = 10;
+    int count = 9;
     if (SCConfig.env == SCEnvironment.production && !SCConfig.isSupportProxyForProduction) {
       count = 1;
     }
@@ -157,14 +157,6 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineService,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.fixedCheckPage, null);
-        },);
-    } else if (index == 9) {
-      return SCSettingCell(
-        title: '物资详情',
-        showLeftIcon: true,
-        leftIcon: SCAsset.iconMineService,
-        onTap: () {
-          SCRouterHelper.pathPage(SCRouterPath.fixedCheckMaterialDetailPage, null);
         },);
     } else {
       return const SizedBox(height: 100.0,);
