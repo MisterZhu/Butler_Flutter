@@ -191,6 +191,14 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
             widget.state.update();
           }
         },
+        noNeedReturnAction: (int index, bool status) {
+          SCMaterialListModel model = widget.state.selectedList[index];
+          if (status == true) {
+            model.returnCheck = 0;
+          } else {
+            model.returnCheck = 1;
+          }
+        }
       );
     } else {
       return const SizedBox(
@@ -517,16 +525,14 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       return;
     }
 
-    List propertyList = [];
-    for (SCMaterialListModel model in widget.state.selectedList) {
-      var params = model.toJson();
-      propertyList.add(params);
-    }
-
     List materialList = [];
-    if (widget.state.isReturnEntry == true) {
+    if (widget.state.isReturnEntry == true) {//归还入库
       for (SCMaterialListModel model in widget.state.selectedList) {
         var params = model.toJson();
+        params['backNum'] = model.localNum;
+        if (model.returnCheck == 0) {//无需归还
+          params['backNum'] = 0;//归还数量设置为0
+        }
         materialList.add(params);
       }
     } else {
@@ -547,7 +553,6 @@ class SCAddEntryViewState extends State<SCAddEntryView> {
       "materialList": materialList,
       "files": widget.state.files,
       "inDate": widget.state.inDate,
-      "assets": propertyList,
       "purchaseId": widget.state.purchaseId,
       "materialType": widget.state.materialType,
     };

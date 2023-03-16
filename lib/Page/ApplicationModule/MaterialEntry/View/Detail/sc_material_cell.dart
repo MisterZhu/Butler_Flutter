@@ -30,6 +30,8 @@ const int scPropertyCellTypeRadio = 5;
 /// 资产-删除cell
 const int scPropertyCellTypeDelete = 6;
 
+/// 领料归还入库-物资cell
+const int scReturnMaterialCellTypeNormal = 7;
 
 /// 物资cell
 class SCMaterialCell extends StatefulWidget {
@@ -43,7 +45,8 @@ class SCMaterialCell extends StatefulWidget {
       this.deleteAction,
       this.hideMaterialNumTextField,
       this.check,
-      this.status})
+      this.status,
+      this.noNeedReturnAction})
       : super(key: key);
 
   final SCMaterialListModel? model;
@@ -56,6 +59,9 @@ class SCMaterialCell extends StatefulWidget {
 
   /// 数量改变回调
   final Function(int num)? numChangeAction;
+
+  /// 无需归还勾选
+  final Function(bool status)? noNeedReturnAction;
 
   /// type
   final int type;
@@ -79,6 +85,9 @@ class SCMaterialCell extends StatefulWidget {
 class SCMaterialCellState extends State<SCMaterialCell> {
   /// 是否选中
   bool isSelect = false;
+
+  /// 是否无需归还，默认需要归还
+  bool noNeedReturn = false;
 
   @override
   initState() {
@@ -109,6 +118,8 @@ class SCMaterialCellState extends State<SCMaterialCell> {
       return propertyRadioCell();
     } else if (widget.type == scPropertyCellTypeDelete) {
       return propertyDeleteCell();
+    } else if (widget.type == scReturnMaterialCellTypeNormal) {
+      return returnMaterialCell();
     } else {
       return normalCell();
     }
@@ -283,6 +294,75 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     );
   }
 
+  /// 领料归还入库物资cell
+  Widget returnMaterialCell() {
+    return DecoratedBox(
+        decoration: BoxDecoration(
+            color: SCColors.color_FFFFFF,
+            borderRadius: BorderRadius.circular(4.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    inventoryImageView(),
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    selectInfoView(),
+                  ],
+                ),
+                const SizedBox(
+                  height: 12.0,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    needReturnSelectItem(),
+                    const SizedBox(
+                      width: 6.0,
+                    ),
+                    const Text(
+                      '无需归还',
+                      textAlign: TextAlign.left,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: SCFonts.f14,
+                          fontWeight: FontWeight.w400,
+                          color: SCColors.color_1B1D33),
+                    ),
+                  ],
+                )
+              ]),
+        ));
+  }
+
+  /// 无需归还item
+  Widget needReturnSelectItem() {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        setState(() {
+          noNeedReturn = !noNeedReturn;
+          widget.noNeedReturnAction?.call(noNeedReturn);
+        });
+      },
+      child: Image.asset(
+        noNeedReturn
+            ? SCAsset.iconMaterialSelected
+            : SCAsset.iconMaterialUnselect,
+        width: 22.0,
+        height: 22.0,
+      ),
+    );
+  }
+
   /// 物资图片
   Widget imageView() {
     String url = SCConfig.getImageUrl(widget.model?.pic ?? '');
@@ -385,16 +465,23 @@ class SCMaterialCellState extends State<SCMaterialCell> {
   /// 物资信息-详情
   Widget detailInfoView() {
     return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [nameLabel(), infoLabel(10)],
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [nameLabel(), infoLabel(10)],
     ));
   }
 
   /// 物资信息-选择
   Widget selectInfoView() {
     bool hideNumTextField = widget.hideMaterialNumTextField ?? false;
+    bool isSupportZero = false;
+    if (widget.type == scReturnMaterialCellTypeNormal) {
+      isSupportZero = true;
+    }
+    if (widget.check == true) {
+      isSupportZero = true;
+    }
     Widget stepper;
     if (hideNumTextField) {
       stepper = const SizedBox(
@@ -402,8 +489,9 @@ class SCMaterialCellState extends State<SCMaterialCell> {
       );
     } else {
       stepper = SCStepper(
-        isSupportZero: widget.check,
+        isSupportZero: isSupportZero,
         num: widget.model?.localNum,
+        disable: noNeedReturn,
         numChangeAction: (int value) {
           widget.numChangeAction?.call(value);
         },
@@ -479,7 +567,9 @@ class SCMaterialCellState extends State<SCMaterialCell> {
   /// 物资名称label
   Widget nameLabel() {
     String name = '';
-    if (widget.type == scPropertyCellTypeNormal || widget.type == scPropertyCellTypeRadio || widget.type == scPropertyCellTypeDelete) {
+    if (widget.type == scPropertyCellTypeNormal ||
+        widget.type == scPropertyCellTypeRadio ||
+        widget.type == scPropertyCellTypeDelete) {
       if (widget.model?.assetName != null) {
         name = widget.model?.assetName ?? '';
       } else {
@@ -510,8 +600,12 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     if (widget.type == scMaterialCellTypeInventory) {
       text =
           '单位:${widget.model?.unitName ?? ''} 条形码:${widget.model?.barCode ?? ''}\n规格:${widget.model?.norms ?? ''}\n账面库存:${widget.model?.number}';
-    } else if (widget.type == scPropertyCellTypeNormal || widget.type == scPropertyCellTypeRadio || widget.type == scPropertyCellTypeDelete  || widget.model?.materialType == 1) {
-      text = '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.assetCode ?? ''}';
+    } else if (widget.type == scPropertyCellTypeNormal ||
+        widget.type == scPropertyCellTypeRadio ||
+        widget.type == scPropertyCellTypeDelete ||
+        widget.model?.materialType == 1) {
+      text =
+          '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.assetCode ?? ''}';
     } else {
       text =
           '单位:${widget.model?.unitName ?? ''} 条形码:${widget.model?.barCode ?? ''}\n规格:${widget.model?.norms ?? ''}';
@@ -557,7 +651,9 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// radio
   Widget radioView() {
-    if (widget.type == scPropertyCellTypeNormal || widget.type == scPropertyCellTypeRadio || widget.type == scPropertyCellTypeDelete) {
+    if (widget.type == scPropertyCellTypeNormal ||
+        widget.type == scPropertyCellTypeRadio ||
+        widget.type == scPropertyCellTypeDelete) {
       isSelect = widget.model?.isSelect ?? false;
     } else {
       isSelect = widget.model?.isSelect ?? false;

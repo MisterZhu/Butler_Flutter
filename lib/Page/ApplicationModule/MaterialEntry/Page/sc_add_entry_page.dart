@@ -80,8 +80,14 @@ class SCAddEntryPageState extends State<SCAddEntryPage> {
 
   @override
   Widget build(BuildContext context) {
+    String title = '新增入库';
+    if (controller.isReturnEntry == true) {
+      title = '归还入库';
+    } else {
+      title = controller.isEdit ? "编辑" : "新增入库";
+    }
     return SCCustomScaffold(
-        title: controller.isEdit ? "编辑" : "新增入库",
+        title: title,
         centerTitle: true,
         elevation: 0,
         resizeToAvoidBottomInset: true,
