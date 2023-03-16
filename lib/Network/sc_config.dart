@@ -52,4 +52,13 @@ class SCConfig {
     }
   }
 
+  /// 亚运村特有属性，租户id
+  static String yycTenantId() {
+    if (env == SCEnvironment.production) {
+      return '124561229994101';
+    } else {
+      return '126034790258008';
+    }
+  }
+
 }
