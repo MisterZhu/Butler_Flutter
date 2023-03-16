@@ -427,7 +427,7 @@ class SCAddEntryController extends GetxController {
           List<SCMaterialListModel> materials = List<SCMaterialListModel>.from(
               value.map((e) => SCMaterialListModel.fromJson(e)).toList());
           for (SCMaterialListModel subModel in materials) {
-            subModel.localNum = subModel.number ?? 1;
+            subModel.localNum = subModel.unBackNum ?? 1;
             subModel.isSelect = true;
             subModel.name = subModel.materialName ?? '';
           }
