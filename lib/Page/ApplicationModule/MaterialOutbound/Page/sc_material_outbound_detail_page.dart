@@ -116,7 +116,7 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
           bool showBtns = false;
           if (state.model.status == 0) {
             showBtns = true;
-          } else if (state.model.status == 6) {/// 已通过
+          } else if (state.model.status == 6 && state.model.haveAuth == true) {/// 已通过
             showBtns = true;
             list = [
               {

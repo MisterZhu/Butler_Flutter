@@ -60,6 +60,7 @@ class SCMaterialTaskDetailModel {
     this.rangeValue,
     this.materialType,
     this.materialAssetsDetails,
+    this.haveAuth,
   });
 
   SCMaterialTaskDetailModel.fromJson(dynamic json) {
@@ -142,6 +143,7 @@ class SCMaterialTaskDetailModel {
     dealOrgId = json['dealOrgId'];
     dealOrgName = json['dealOrgName'];
     materialType = json['materialType'];
+    haveAuth = json['haveAuth'];
   }
   String? creator;
   String? creatorName;
@@ -196,6 +198,7 @@ class SCMaterialTaskDetailModel {
   String? taskStartTime;
   String? taskName;
   int? materialType;
+  bool? haveAuth;    //是否拥有仓库管理员或者仓库主管角色权限
   List<SCMaterialAssetsDetailsModel>? materialAssetsDetails;
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -263,6 +266,7 @@ class SCMaterialTaskDetailModel {
     map['dealOrgId'] = dealOrgId;
     map['dealOrgName'] = dealOrgName;
     map['materialType'] = materialType;
+    map['haveAuth'] = haveAuth;
     return map;
   }
 }
