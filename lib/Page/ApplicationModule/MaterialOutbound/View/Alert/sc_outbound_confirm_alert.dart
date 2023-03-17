@@ -91,6 +91,10 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
               SCBottomButtonItem(list: const ['取消', '确定'], buttonType: 1, leftTapAction: () {
                 Navigator.of(context).pop();
               }, rightTapAction: () {
+                if (outTime.isEmpty) {
+                  SCToast.showTip('请选择出库时间');
+                  return;
+                }
                 widget.sureAction?.call(outTime, input);
                 Navigator.of(context).pop();
               },),
@@ -159,7 +163,7 @@ class SCOutboundConfirmAlertState extends State<SCOutboundConfirmAlert> {
   Widget timeItem() {
     return Column(
       children: [
-        SCMaterialSelectItem(isRequired: false, title: '出库时间', content: time, selectAction: () {
+        SCMaterialSelectItem(isRequired: true, title: '出库时间', content: time, selectAction: () {
           showTimeAlert(context);
         },),
         line(),
