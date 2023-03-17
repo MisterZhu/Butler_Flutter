@@ -42,13 +42,13 @@ class SCFixedCheckMaterialDetailPageState extends State<SCFixedCheckMaterialDeta
         controller.checkId = params['checkId'];
       }
       if (params.containsKey('name')) {
-        controller.name = params['name'];
+        controller.name = params['name'] ?? '';
       }
       if (params.containsKey('unit')) {
-        controller.unit = params['unit'];
+        controller.unit = params['unit'] ?? '';
       }
       if (params.containsKey('norms')) {
-        controller.norms = params['norms'];
+        controller.norms = params['norms'] ?? '';
       }
       if (params.containsKey('model')) {
         var json = params['model'].toJson();

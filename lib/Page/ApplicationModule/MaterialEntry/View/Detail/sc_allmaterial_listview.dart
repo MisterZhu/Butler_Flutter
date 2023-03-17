@@ -134,9 +134,12 @@ class SCAllMaterialListView extends StatelessWidget {
   /// cell
   Widget cell(int index) {
     List<SCMaterialListModel> assetDetailList = [];
+    /// 固定资产盘点结果
+    String fixedCheckResult = '';
     if (materialAssetsDetails != null) {
       SCMaterialAssetsDetailsModel assetsDetailsModel = materialAssetsDetails![index];
       assetDetailList = assetsDetailsModel.assetsDetails ?? [];
+      fixedCheckResult = assetsDetailsModel.result ?? '';
     }
     if (list != null) {
       SCWarehouseManageType manageType = type ?? SCWarehouseManageType.entry;
@@ -153,6 +156,7 @@ class SCAllMaterialListView extends StatelessWidget {
         type: cellType,
         materialType: manageType,
         status: status,
+        fixedCheckResult: fixedCheckResult,
         onTap: () {
           onTap?.call(subModel, index);
         },

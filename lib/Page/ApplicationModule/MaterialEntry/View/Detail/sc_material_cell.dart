@@ -49,6 +49,7 @@ class SCMaterialCell extends StatefulWidget {
       this.status,
       this.materialType,
       this.assetDetailList,
+        this.fixedCheckResult,
       this.noNeedReturnAction})
       : super(key: key);
 
@@ -86,6 +87,9 @@ class SCMaterialCell extends StatefulWidget {
 
   /// 固定资产盘点-关联资产信息list
   final List<SCMaterialListModel>? assetDetailList;
+
+  /// 固定资产盘点结果
+  final String? fixedCheckResult;
 
   @override
   SCMaterialCellState createState() => SCMaterialCellState();
@@ -161,6 +165,12 @@ class SCMaterialCellState extends State<SCMaterialCell> {
 
   /// 资产-normal cell
   Widget propertyNormalCell() {
+    Widget imageItem;
+    if (widget.materialType == SCWarehouseManageType.fixedCheck) {
+      imageItem = fixedCheckImageView();
+    } else {
+      imageItem = imageView();
+    }
     return DecoratedBox(
         decoration: BoxDecoration(
             color: SCColors.color_FFFFFF,
@@ -170,7 +180,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              imageView(),
+              imageItem,
               const SizedBox(
                 width: 8.0,
               ),
@@ -429,6 +439,40 @@ class SCMaterialCellState extends State<SCMaterialCell> {
         ));
   }
 
+  /// 固定资产盘点的物资图片
+  Widget fixedCheckImageView() {
+    String url = SCConfig.getImageUrl(widget.model?.pic ?? '');
+    String result = widget.fixedCheckResult ?? '';
+    bool isShow = result.isNotEmpty;
+
+    return Container(
+        width: 80.0,
+        height: 80.0,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4.0),
+            color: SCColors.color_D9D9D9),
+        child: Stack(
+          children: [
+            SCImage(
+              url: url,
+              width: 80.0,
+              height: 80.0,
+              fit: BoxFit.cover,
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: isShow
+                  ? fixedCheckNumberView(result)
+                  : const SizedBox(
+                height: 1,
+              ),
+            )
+          ],
+        ));
+  }
+
   /// 盘点数量view
   Widget inventoryNumberView() {
     int number = widget.model?.number ?? 0; // 账存
@@ -452,6 +496,45 @@ class SCMaterialCellState extends State<SCMaterialCell> {
       bgColor = SCColors.color_F7F8FA;
       textColor = SCColors.color_5E5F66;
       text = "盘平";
+    }
+    return Container(
+      width: 80.0,
+      height: 20.0,
+      alignment: Alignment.center,
+      color: bgColor,
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+            fontSize: SCFonts.f12,
+            fontWeight: FontWeight.w400,
+            color: textColor),
+      ),
+    );
+  }
+
+  /// 盘点数量view
+  Widget fixedCheckNumberView(String result) {
+    Color bgColor = SCColors.color_F7F8FA; // 背景颜色
+    Color textColor = SCColors.color_5E5F66; // 文字颜色
+    String text = '';
+    if (result.contains('盘盈')) {
+      // 盘盈
+      bgColor = SCColors.color_E3FFF1.withOpacity(0.9);
+      textColor = SCColors.color_00B42A;
+      text = result;
+    } else if (result.contains('盘亏')) {
+      // 盘亏
+      bgColor = SCColors.color_FFF1F0;
+      textColor = SCColors.color_FF4040;
+      text = result;
+    } else {
+      // 盘平
+      bgColor = SCColors.color_F7F8FA;
+      textColor = SCColors.color_5E5F66;
+      text = result;
     }
     return Container(
       width: 80.0,
