@@ -214,6 +214,13 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
         "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=${model.status}&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}";
     if ((model.yycOrderType ?? 0) >= 99) {
       int type = model.yycOrderType ?? 0;
+      if (type == 99) {
+        title = "提交检查";
+      } else if (type == 100) {
+        title = "通过";
+      } else if (type == 101) {
+        title = "回退";
+      }
       url =
           "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=${model.status}&orderId=${model.orderId}&isCharge=0&type=$type&spaceId=${model.spaceId}&communityId=${model.communityId}";
     }
@@ -221,7 +228,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
       String realUrl = SCUtils.getWebViewUrl(url: url,title: title,  needJointParams: true);
 
       /// 调用Android WebView
-      var params = {"title": title, "url": realUrl};
+      var params = {"title": model.description, "url": realUrl};
       var channel = SCScaffoldManager.flutterToNative;
       var result =
           await channel.invokeMethod(SCScaffoldManager.android_webview, params);
@@ -229,7 +236,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     } else {
       String realUrl = SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
       SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
-        "title": model.categoryName ?? '',
+        "title": model.description ?? '',
         "url": realUrl,
         "needJointParams": false
       })?.then((value) {
