@@ -87,9 +87,9 @@ class SCFixedCheckMaterialDetailViewState
 
   /// header
   Widget headerItem() {
-    String materialName = widget.state.detailModel.materialInfo?.name ?? '';
-    String unitName = widget.state.detailModel.materialInfo?.unitName ?? '';
-    String norms = widget.state.detailModel.materialInfo?.norms ?? '';
+    String materialName = widget.state.name;
+    String unitName = widget.state.unit;
+    String norms = widget.state.norms;
     return SliverToBoxAdapter(
       child: SCFixedCheckMaterialDetailHeaderView(
           materialName: materialName, unitName: unitName, norms: norms),
@@ -143,7 +143,7 @@ class SCFixedCheckMaterialDetailViewState
               SCEntryTypeModel typeModel = widget.state.typeList[subIndex];
               model.reportReason = typeModel.code;
               model.reportReasonDesc = typeModel.name ?? '';
-              model.isFixedCheckFormLssDone = true;
+              model.status = 1;
               widget.state.initData();
               widget.state.update();
             },
@@ -168,7 +168,7 @@ class SCFixedCheckMaterialDetailViewState
         tapAction: (int index) {
           print("222222");
           SCMaterialListModel model = widget.state.doneList[index];
-          model.isFixedCheckFormLssDone = false;
+          model.status = 2;
           widget.state.initData();
           widget.state.update();
         },

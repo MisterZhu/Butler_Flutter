@@ -3,6 +3,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/sc_utils.dart';
+import '../../Model/sc_material_assets_details_model.dart';
 import '../../Model/sc_material_list_model.dart';
 import '../../Model/sc_material_task_detail_model.dart';
 
@@ -99,47 +100,56 @@ class SCAllMaterialTitleView extends StatelessWidget {
   /// 数量view 
   Widget numView() {
     String text = '';
-    if (isProperty == true) {
-      text = '共 ${model?.assets?.length ?? 0} 种';
-      if (type == SCWarehouseManageType.check) {
-        if (model?.status == 0 || model?.status == 1 || model?.status == 2) {
-          text = '共 ${model?.materials?.length ?? 0} 种 盘点数量 0';
-        } else if (model?.status == 3 || model?.status == 4) {
-          text = '共 0/${model?.materials?.length ?? 0}种 盘点数量 0';
-          if (model?.materials != null) {
-            List<SCMaterialListModel> list = model!.materials!;
-            int checkNum = 0;
-            int checkCount = 0;
-            for (int i = 0; i < list.length; i++) {
-              SCMaterialListModel model = list[i];
-              if (model.checkNum != null) {
-                checkNum = checkNum + model.checkNum!;
-                checkCount = checkCount + 1;
+    if (type == SCWarehouseManageType.fixedCheck) {
+      List<SCMaterialAssetsDetailsModel>? materialAssetsDetails = model?.materialAssetsDetails ?? [];
+      int count = 0;
+      for (SCMaterialAssetsDetailsModel model in materialAssetsDetails) {
+        count += (model.num ?? 0);
+      }
+      text = '共 ${model?.materialAssetsDetails?.length ?? 0} 种 总数量 $count';
+    } else {
+      if (isProperty == true) {
+        text = '共 ${model?.assets?.length ?? 0} 种';
+        if (type == SCWarehouseManageType.check) {
+          if (model?.status == 0 || model?.status == 1 || model?.status == 2) {
+            text = '共 ${model?.materials?.length ?? 0} 种 盘点数量 0';
+          } else if (model?.status == 3 || model?.status == 4) {
+            text = '共 0/${model?.materials?.length ?? 0}种 盘点数量 0';
+            if (model?.materials != null) {
+              List<SCMaterialListModel> list = model!.materials!;
+              int checkNum = 0;
+              int checkCount = 0;
+              for (int i = 0; i < list.length; i++) {
+                SCMaterialListModel model = list[i];
+                if (model.checkNum != null) {
+                  checkNum = checkNum + model.checkNum!;
+                  checkCount = checkCount + 1;
+                }
               }
+              text = '共 $checkCount/${list.length}种 盘点数量 $checkNum';
             }
-            text = '共 $checkCount/${list.length}种 盘点数量 $checkNum';
           }
         }
-      }
-    } else {
-      text = '共 ${model?.materials?.length ?? 0} 种 总数量 ${model?.materialNums ?? 0}';
-      if (type == SCWarehouseManageType.check) {
-        if (model?.status == 0 || model?.status == 1 || model?.status == 2) {
-          text = '共 ${model?.materials?.length ?? 0} 种 盘点数量 0';
-        } else if (model?.status == 3 || model?.status == 4) {
-          text = '共 0/${model?.materials?.length ?? 0}种 盘点数量 0';
-          if (model?.materials != null) {
-            List<SCMaterialListModel> list = model!.materials!;
-            int checkNum = 0;
-            int checkCount = 0;
-            for (int i = 0; i < list.length; i++) {
-              SCMaterialListModel model = list[i];
-              if (model.checkNum != null) {
-                checkNum = checkNum + model.checkNum!;
-                checkCount = checkCount + 1;
+      } else {
+        text = '共 ${model?.materials?.length ?? 0} 种 总数量 ${model?.materialNums ?? 0}';
+        if (type == SCWarehouseManageType.check) {
+          if (model?.status == 0 || model?.status == 1 || model?.status == 2) {
+            text = '共 ${model?.materials?.length ?? 0} 种 盘点数量 0';
+          } else if (model?.status == 3 || model?.status == 4) {
+            text = '共 0/${model?.materials?.length ?? 0}种 盘点数量 0';
+            if (model?.materials != null) {
+              List<SCMaterialListModel> list = model!.materials!;
+              int checkNum = 0;
+              int checkCount = 0;
+              for (int i = 0; i < list.length; i++) {
+                SCMaterialListModel model = list[i];
+                if (model.checkNum != null) {
+                  checkNum = checkNum + model.checkNum!;
+                  checkCount = checkCount + 1;
+                }
               }
+              text = '共 $checkCount/${list.length}种 盘点数量 $checkNum';
             }
-            text = '共 $checkCount/${list.length}种 盘点数量 $checkNum';
           }
         }
       }

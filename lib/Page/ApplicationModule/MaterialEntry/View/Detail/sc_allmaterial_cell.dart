@@ -69,6 +69,7 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
           SCAllMaterialListView(
             list: getRealList(),
             propertyList: getPropertyList(),
+            materialAssetsDetails: widget.state.model.materialAssetsDetails,
             isProperty: widget.isProperty,
             type: widget.type,
             status: widget.model?.status,
@@ -91,7 +92,7 @@ class SCAllMaterialCellState extends State<SCAllMaterialCell> {
                   List<SCMaterialAssetsDetailsModel> materialAssetsDetails = widget.model?.materialAssetsDetails ?? [];
                   if (materialAssetsDetails.isNotEmpty) {
                     SCMaterialAssetsDetailsModel detailModel = materialAssetsDetails[index];
-                    var backParams = await SCRouterHelper.pathPage(SCRouterPath.fixedCheckMaterialDetailPage, {'model': detailModel});
+                    var backParams = await SCRouterHelper.pathPage(SCRouterPath.fixedCheckMaterialDetailPage, {'model': detailModel, 'checkId': widget.state.model.id ?? '', 'name' : model.name, 'unit' : model.unitName, 'norms' : model.norms});
                     if (backParams != null) {
                       var data = backParams['data'];
                       print("vvv===${data}");

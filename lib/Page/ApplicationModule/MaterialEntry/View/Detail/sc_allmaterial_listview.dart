@@ -4,6 +4,7 @@ import 'package:smartcommunity/Constants/sc_enum.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_cell.dart';
 import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
+import '../../Model/sc_material_assets_details_model.dart';
 import '../../Model/sc_material_list_model.dart';
 
 /// 入库详情-所有物资listview
@@ -15,14 +16,18 @@ class SCAllMaterialListView extends StatelessWidget {
     this.type,
     this.status,
     this.propertyList,
+    this.materialAssetsDetails,
     this.isProperty,
   }) : super(key: key);
 
   /// 所有物资
   final List<SCMaterialListModel>? list;
 
-  /// 所有物资
+  /// 所有资产
   final List<SCMaterialListModel>? propertyList;
+
+  /// 固定资产盘点-物资list
+  final List<SCMaterialAssetsDetailsModel>? materialAssetsDetails;
 
   final bool? isProperty;
   /// cell点击
@@ -128,6 +133,11 @@ class SCAllMaterialListView extends StatelessWidget {
 
   /// cell
   Widget cell(int index) {
+    List<SCMaterialListModel> assetDetailList = [];
+    if (materialAssetsDetails != null) {
+      SCMaterialAssetsDetailsModel assetsDetailsModel = materialAssetsDetails![index];
+      assetDetailList = assetsDetailsModel.assetsDetails ?? [];
+    }
     if (list != null) {
       SCWarehouseManageType manageType = type ?? SCWarehouseManageType.entry;
       int cellType = scMaterialCellTypeNormal;
@@ -139,6 +149,7 @@ class SCAllMaterialListView extends StatelessWidget {
       SCMaterialListModel subModel = list![index];
       return SCMaterialCell(
         model: subModel,
+        assetDetailList: assetDetailList,
         type: cellType,
         materialType: manageType,
         status: status,

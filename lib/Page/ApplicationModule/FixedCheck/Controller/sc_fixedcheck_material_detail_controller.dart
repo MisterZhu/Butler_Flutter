@@ -3,6 +3,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../../../../Utils/Router/sc_router_helper.dart';
+import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart';
 import '../../MaterialEntry/Model/sc_entry_type_model.dart';
 import '../../MaterialEntry/Model/sc_material_assets_details_model.dart';
 import '../../MaterialEntry/Model/sc_material_list_model.dart';
@@ -26,6 +27,18 @@ class SCFixedCheckMaterialDetailController extends GetxController {
   /// doneList
   List<SCMaterialListModel> doneList = [];
 
+  /// 盘点Id
+  String checkId = '';
+
+  /// 名称
+  String name = '';
+
+  /// 单位
+  String unit = '';
+
+  /// 规格
+  String norms = '';
+
   @override
   onInit() {
     super.onInit();
@@ -40,11 +53,11 @@ class SCFixedCheckMaterialDetailController extends GetxController {
 
   /// 获取未处理的数据
   List<SCMaterialListModel> getNormalData() {
-    List list = detailModel.assetsDetails ?? [];
+    List list = List.from(detailModel.assetsDetails ?? []);
     List<SCMaterialListModel> newList = [];
     for (SCMaterialListModel model in list) {
-      bool normal = model.isFixedCheckFormLssDone ?? false;
-      if (!normal) {
+      int status = model.status ?? 2;
+      if (status == 2) {
         newList.add(model);
       }
     }
@@ -56,8 +69,8 @@ class SCFixedCheckMaterialDetailController extends GetxController {
     List list = detailModel.assetsDetails ?? [];
     List<SCMaterialListModel> newList = [];
     for (SCMaterialListModel model in list) {
-      bool normal = model.isFixedCheckFormLssDone ?? false;
-      if (normal) {
+      int status = model.status ?? 2;
+      if (status != 2) {
         newList.add(model);
       }
     }
@@ -103,7 +116,10 @@ class SCFixedCheckMaterialDetailController extends GetxController {
       print("ddd===${params}");
       list.add(params);
     }
-    SCRouterHelper.back({"data" : list});
+    SCMaterialEntryDetailController controller = SCMaterialEntryDetailController();
+    controller.fixedCheckSubmit(action: 0, checkId: checkId, materials: list,successHandler: (){
+      SCRouterHelper.back({"data" : list});
+    });
   }
 
 }

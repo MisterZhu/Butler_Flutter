@@ -48,6 +48,7 @@ class SCMaterialCell extends StatefulWidget {
       this.check,
       this.status,
       this.materialType,
+      this.assetDetailList,
       this.noNeedReturnAction})
       : super(key: key);
 
@@ -82,6 +83,9 @@ class SCMaterialCell extends StatefulWidget {
 
   /// materialType
   final SCWarehouseManageType? materialType;
+
+  /// 固定资产盘点-关联资产信息list
+  final List<SCMaterialListModel>? assetDetailList;
 
   @override
   SCMaterialCellState createState() => SCMaterialCellState();
@@ -623,9 +627,8 @@ class SCMaterialCellState extends State<SCMaterialCell> {
           widget.materialType ?? SCWarehouseManageType.entry;
 
       if (manageType == SCWarehouseManageType.fixedCheck) {
-        print("qqq===${widget.model?.toJson()}");
         text =
-        '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.code ?? ''}\n使用部门:${widget.model?.fetchOrgName ?? ''}\n在用数量:${widget.model?.localNum ?? ''}\n盘点数量:${widget.model?.checkNum ?? ''}';
+        '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.code ?? ''}\n使用部门:${widget.model?.fetchOrgName ?? ''}\n在用数量:${getFixedCheckUsingCount()}\n盘点数量:${getFixedCheckLssCount()}';
       } else {
         text =
         '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.assetCode ?? ''}';
@@ -647,6 +650,30 @@ class SCMaterialCellState extends State<SCMaterialCell> {
           fontWeight: FontWeight.w400,
           color: SCColors.color_8D8E99),
     );
+  }
+
+  /// 固定资产盘点-在用数量
+  int getFixedCheckUsingCount() {
+    int count = 0;
+    for (SCMaterialListModel model in (widget.assetDetailList ?? [])) {
+      int status = model.status ?? 0;
+      if (status == 2) {
+        count+=1;
+      }
+    }
+    return count;
+  }
+
+  /// 固定资产盘点-盘点数量
+  int getFixedCheckLssCount() {
+    int count = 0;
+    for (SCMaterialListModel model in (widget.assetDetailList ?? [])) {
+      int status = model.status ?? 0;
+      if (status == 1) {
+        count+=1;
+      }
+    }
+    return count;
   }
 
   /// 物资数量
