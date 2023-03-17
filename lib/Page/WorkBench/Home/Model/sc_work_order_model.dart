@@ -88,7 +88,10 @@ class SCWorkOrderModel {
       String? spaceId,
       int? status, 
       int? taskType, 
-      String? videos,}){
+      String? videos,
+    bool? asvCheck,
+    int? yycOrderType,/// 亚运村工单类型，101-回退，99-提交检测，100-通过
+  }){
     _address = address;
     _appointmentStartTime = appointmentStartTime;
     _appointmentStopTime = appointmentStopTime;
@@ -133,6 +136,8 @@ class SCWorkOrderModel {
     _status = status;
     _taskType = taskType;
     _videos = videos;
+    _asvCheck = asvCheck;
+    _yycOrderType = yycOrderType;
 }
 
   SCWorkOrderModel.fromJson(dynamic json) {
@@ -180,6 +185,8 @@ class SCWorkOrderModel {
     _status = json['status'];
     _taskType = json['taskType'];
     _videos = json['videos'];
+    _asvCheck = json['asvCheck'];
+    _yycOrderType = json['yycOrderType'];
   }
   String? _address;
   String? _appointmentStartTime;
@@ -225,6 +232,8 @@ class SCWorkOrderModel {
   int? _status;
   int? _taskType;
   String? _videos;
+  bool? _asvCheck;
+  int? _yycOrderType;
   SCWorkOrderModel copyWith({  String? address,
   String? appointmentStartTime,
   String? appointmentStopTime,
@@ -269,6 +278,8 @@ class SCWorkOrderModel {
   int? status,
   int? taskType,
   String? videos,
+    bool? asvCheck,
+    int? yycOrderType,
 }) => SCWorkOrderModel(  address: address ?? _address,
   appointmentStartTime: appointmentStartTime ?? _appointmentStartTime,
   appointmentStopTime: appointmentStopTime ?? _appointmentStopTime,
@@ -313,6 +324,8 @@ class SCWorkOrderModel {
   status: status ?? _status,
   taskType: taskType ?? _taskType,
   videos: videos ?? _videos,
+      asvCheck: asvCheck ?? _asvCheck,
+      yycOrderType: yycOrderType ?? _yycOrderType,
 );
   String? get address => _address;
   String? get appointmentStartTime => _appointmentStartTime;
@@ -358,9 +371,15 @@ class SCWorkOrderModel {
   int? get status => _status;
   int? get taskType => _taskType;
   String? get videos => _videos;
+  bool? get asvCheck => _asvCheck;
+  int? get yycOrderType => _yycOrderType;
 
   set remainingTime(int? value) {
     _remainingTime = value;
+  }
+
+  set yycOrderType(int? value) {
+    _yycOrderType = value;
   }
 
   Map<String, dynamic> toJson() {
@@ -409,6 +428,8 @@ class SCWorkOrderModel {
     map['status'] = _status;
     map['taskType'] = _taskType;
     map['videos'] = _videos;
+    map['asvCheck'] = _asvCheck;
+    map['yycOrderType'] = _yycOrderType;
     return map;
   }
 

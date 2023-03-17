@@ -121,7 +121,7 @@ class SCFixedCheckMaterialDetailViewState
 
   /// tabBarItem
   Widget tabBarItem() {
-    tabTitleList = ['使用中${widget.state.normalList.length}', '已报废${widget.state.doneList.length}'];
+    tabTitleList = ['使用中(${widget.state.normalList.length})', '已报废(${widget.state.doneList.length})'];
     return SCFixedTabBar(
       tabController: tabController,
       titleList: tabTitleList,

@@ -623,8 +623,9 @@ class SCMaterialCellState extends State<SCMaterialCell> {
           widget.materialType ?? SCWarehouseManageType.entry;
 
       if (manageType == SCWarehouseManageType.fixedCheck) {
+        print("qqq===${widget.model?.toJson()}");
         text =
-        '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.code ?? ''}';
+        '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.code ?? ''}\n使用部门:${widget.model?.fetchOrgName ?? ''}\n在用数量:${widget.model?.localNum ?? ''}\n盘点数量:${widget.model?.checkNum ?? ''}';
       } else {
         text =
         '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.assetCode ?? ''}';

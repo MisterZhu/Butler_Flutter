@@ -169,6 +169,8 @@ class SCMaterialEntryCell extends StatelessWidget {
       name = '调入：${model?.inWareHouseName}  调出：${model?.outWareHouseName}';
     } else if (type == SCWarehouseManageType.propertyFrmLoss) {
       name = model?.fetchOrgName ?? '';
+    } else if (type == SCWarehouseManageType.fixedCheck) {
+      name = model?.dealOrgName ?? '';
     } else {
       name = model?.wareHouseName ?? '';
     }
@@ -255,7 +257,7 @@ class SCMaterialEntryCell extends StatelessWidget {
       }
     }
 
-    String btnTitle = type == SCWarehouseManageType.check ? SCUtils.getCheckStatusButtonText(model?.status ?? 0) : SCUtils.getEntryStatusButtonText(model?.status ?? 0);
+    String btnTitle = (type == SCWarehouseManageType.check || type == SCWarehouseManageType.fixedCheck) ? SCUtils.getCheckStatusButtonText(model?.status ?? 0) : SCUtils.getEntryStatusButtonText(model?.status ?? 0);
     if (btnText != null) {
      btnTitle = btnText ?? '';
     }

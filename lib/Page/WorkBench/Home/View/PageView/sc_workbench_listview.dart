@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
+import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_empty_view.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_time_view.dart';
+import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
 
 import '../../Model/sc_work_order_model.dart';
@@ -23,6 +25,7 @@ class SCWorkBenchListView extends StatefulWidget {
     this.moreAction,
     this.likeAction,
     this.callAction,
+    this.isDealing
   }) : super(key: key);
 
   final List dataList;
@@ -41,6 +44,9 @@ class SCWorkBenchListView extends StatefulWidget {
 
   /// 工作台controller
   final SCWorkBenchController state;
+
+  /// 是否是处理中
+  final bool? isDealing;
 
   @override
   SCWorkBenchListViewState createState() => SCWorkBenchListViewState();
@@ -318,29 +324,125 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
               : const SizedBox(),
           SCWorkBenchTimeView(time: remainingTime),
           const Expanded(child: SizedBox()),
-          SizedBox(
-            width: 100.0,
-            height: 40.0,
-            child: CupertinoButton(
-                alignment: Alignment.center,
-                borderRadius: BorderRadius.circular(4.0),
-                minSize: 40.0,
-                color: SCColors.color_4285F4,
-                padding: EdgeInsets.zero,
-                child: Text(
-                  SCUtils.getWorkOrderButtonText(model.status ?? 0),
-                  style: const TextStyle(
-                      fontSize: SCFonts.f16,
-                      fontWeight: FontWeight.w400,
-                      color: SCColors.color_FFFFFF),
-                ),
-                onPressed: () {
-                  widget.detailAction?.call(model);
-                }),
-          )
+          btnItem(model),
         ],
       ),
     );
+  }
+
+  /// 按钮
+  Widget btnItem(SCWorkOrderModel model) {
+    String yycTenantId = SCConfig.yycTenantId();
+    if (yycTenantId == (SCScaffoldManager.instance.defaultConfigModel?.tenantId ?? '') && (widget.isDealing ?? false)) {
+      bool asvCheck = model.asvCheck ?? false;
+      if (asvCheck) {// 回退、通过
+        return SizedBox(
+          width: 130.0,
+          height: 40.0,
+          child: Row(
+            children: [
+              Container(
+                width: 60,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(4.0),
+                  border: Border.all(width: 0.5, color: SCColors.color_4285F4)
+                ),
+                child: CupertinoButton(
+                    alignment: Alignment.center,
+                    borderRadius: BorderRadius.circular(4.0),
+                    minSize: 60.0,
+                    color: SCColors.color_4285F4,
+                    padding: EdgeInsets.zero,
+                    child: const Text(
+                      '回退',
+                      style: TextStyle(
+                          fontSize: SCFonts.f16,
+                          fontWeight: FontWeight.w400,
+                          color: SCColors.color_FFFFFF),
+                    ),
+                    onPressed: () {
+                      model.yycOrderType = 101;
+                      widget.detailAction?.call(model);
+                    }),
+              ),
+              const SizedBox(width: 10.0,),
+              Container(
+                width: 60,
+                height: 40,
+                decoration: BoxDecoration(
+                    color: SCColors.color_4285F4,
+                    borderRadius: BorderRadius.circular(4.0),
+                ),
+                child: CupertinoButton(
+                    alignment: Alignment.center,
+                    borderRadius: BorderRadius.circular(4.0),
+                    minSize: 40.0,
+                    color: SCColors.color_4285F4,
+                    padding: EdgeInsets.zero,
+                    child: const Text(
+                      '通过',
+                      style: TextStyle(
+                          fontSize: SCFonts.f16,
+                          fontWeight: FontWeight.w400,
+                          color: SCColors.color_FFFFFF),
+                    ),
+                    onPressed: () {
+                      model.yycOrderType = 100;
+                      widget.detailAction?.call(model);
+                    }),
+              ),
+            ],
+          ),
+        );
+      } else {// 提交检查
+        return SizedBox(
+          width: 100.0,
+          height: 40.0,
+          child: CupertinoButton(
+              alignment: Alignment.center,
+              borderRadius: BorderRadius.circular(4.0),
+              minSize: 40.0,
+              color: SCColors.color_4285F4,
+              padding: EdgeInsets.zero,
+              child: const Text(
+                '提交检查',
+                style: TextStyle(
+                    fontSize: SCFonts.f16,
+                    fontWeight: FontWeight.w400,
+                    color: SCColors.color_FFFFFF),
+              ),
+              onPressed: () {
+                model.yycOrderType = 99;
+                widget.detailAction?.call(model);
+              }),
+        );
+      }
+    } else {
+      return SizedBox(
+        width: 100.0,
+        height: 40.0,
+        child: CupertinoButton(
+            alignment: Alignment.center,
+            borderRadius: BorderRadius.circular(4.0),
+            minSize: 40.0,
+            color: SCColors.color_4285F4,
+            padding: EdgeInsets.zero,
+            child: Text(
+              SCUtils.getWorkOrderButtonText(model.status ?? 0),
+              style: const TextStyle(
+                  fontSize: SCFonts.f16,
+                  fontWeight: FontWeight.w400,
+                  color: SCColors.color_FFFFFF),
+            ),
+            onPressed: () {
+              widget.detailAction?.call(model);
+            }),
+      );
+    }
+
+    return Container();
   }
 
   // /// 定时器

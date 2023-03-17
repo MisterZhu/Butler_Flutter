@@ -273,6 +273,7 @@ class SCWorkBenchView extends StatelessWidget {
                 return SCWorkBenchListView(
                   state: state,
                   dataList: doingController.dataList,
+                  isDealing: true,
                   detailAction: (SCWorkOrderModel model) {
                     detail(model);
                   },

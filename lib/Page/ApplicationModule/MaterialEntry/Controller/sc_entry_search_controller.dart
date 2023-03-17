@@ -104,6 +104,26 @@ class SCEntrySearchController extends GetxController {
       };
     } else if (type == SCWarehouseManageType.check) {
       url = SCUrl.kMaterialCheckListUrl;
+    } else if (type == SCWarehouseManageType.fixedCheck) {
+      url = SCUrl.kFixedCheckListUrl;
+      params = {
+        "conditions": {
+          "fields": [{
+            "map": {
+              "operatorName": searchString
+            },
+            "method": 7,
+            "name": "searchs",
+            "value": ""
+          }],
+          "specialMap": {}
+        },
+        "count": false,
+        "last": false,
+        "orderBy": [{"asc": false, "field": "gmtModify"}],
+        "pageNum": pageNum,
+        "pageSize": 20
+      };
     }
     SCHttpManager.instance.post(
         url: url,

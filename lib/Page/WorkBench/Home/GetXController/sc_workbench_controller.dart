@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
@@ -414,6 +415,7 @@ class SCWorkBenchController extends GetxController {
         url: SCUrl.kWorkOrderListUrl,
         params: params,
         success: (value) {
+          log('aaa===$value');
           SCLoadingUtils.hide();
           if (value is Map) {
             List list = value['records'];

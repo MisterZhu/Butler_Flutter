@@ -9,9 +9,11 @@ import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
+import '../../../../../Utils/sc_utils.dart';
 import '../../Controller/sc_entry_search_controller.dart';
 import '../../Controller/sc_material_entry_controller.dart';
 import '../../Model/sc_material_entry_model.dart';
+import '../../Model/sc_material_list_model.dart';
 import '../MaterialEntry/sc_material_entry_cell.dart';
 
 /// 出入库搜索view
@@ -231,10 +233,16 @@ class SCEntrySearchViewState extends State<SCEntrySearchView> {
               } else if (widget.state.type == SCWarehouseManageType.check) {
                 /// 盘点详情
                 SCRouterHelper.pathPage(SCRouterPath.checkDetailPage, {'id': model.id, 'canEdit': canEdit});
+              } else if (widget.state.type == SCWarehouseManageType.fixedCheck) {
+                /// 固定资产盘点详情
+                SCRouterHelper.pathPage(SCRouterPath.checkDetailPage, {'id': model.id, 'canEdit' : canEdit, 'isFixedCheck': true});
               }
             },
             btnTapAction: () {
               submit(index);
+            },
+            callAction: (String phone) {
+              call(phone);
             },
           );
         },
@@ -265,11 +273,110 @@ class SCEntrySearchViewState extends State<SCEntrySearchView> {
   /// 提交入库
   submit(int index) {
     SCMaterialEntryModel model = widget.state.dataList[index];
+    if (widget.state.type == SCWarehouseManageType.fixedCheck) {
+      fixedCheckEditAction(model);
+      return;
+    } else if (widget.state.type == SCWarehouseManageType.check) {
+      checkEditAction(model);
+      return;
+    }
     SCMaterialEntryController entryController = SCMaterialEntryController();
     entryController.submit(id:model.id ?? '', completeHandler: (bool success){
       if (success) {
         onRefresh();
       }
+    });
+  }
+
+  /// 盘点编辑
+  checkEditAction(SCMaterialEntryModel model) async {
+    String wareHouseName = model.wareHouseName ?? '';
+    String wareHouseId = model.wareHouseId ?? '';
+    String typeName = model.typeName ?? '';
+    int type = model.type ?? 0;
+    String remark = model.remark ?? '';
+    List<SCMaterialListModel> materials = model.materials ?? [];
+    String id = model.id ?? '';
+    String taskName = model.taskName ?? '';
+    String taskStartTime = model.taskStartTime ?? '';
+    String taskEndTime = model.taskEndTime ?? '';
+    String dealOrgName = model.dealOrgName ?? '';
+    String dealOrgId = model.dealOrgId ?? '';
+    String dealUserName = model.dealUserName ?? '';
+    String dealUserId = model.dealUserId ?? '';
+    int rangeValue = model.rangeValue ?? 1;
+
+    for (SCMaterialListModel model in materials) {
+      model.localNum = model.number ?? 1;
+      model.isSelect = true;
+      model.name = model.materialName ?? '';
+    }
+    var params = {
+      'isEdit': true,
+      'data': materials,
+      "wareHouseName": wareHouseName,
+      "wareHouseId": wareHouseId,
+      "typeName": typeName,
+      "type": type,
+      "remark": remark,
+      "id": id,
+      "taskName": taskName,
+      "startTime": taskStartTime,
+      "endTime": taskEndTime,
+      "dealOrgName": dealOrgName,
+      "dealOrgId": dealOrgId,
+      "dealUserName": dealUserName,
+      "dealUserId": dealUserId,
+      "rangeValue": rangeValue
+    };
+    SCRouterHelper.pathPage(SCRouterPath.addCheckPage, params)?.then((value) {
+      onRefresh();
+    });
+  }
+
+  /// 固定资产编辑
+  fixedCheckEditAction(SCMaterialEntryModel model) async {
+    String wareHouseName = model.wareHouseName ?? '';
+    String wareHouseId = model.wareHouseId ?? '';
+    String typeName = model.typeName ?? '';
+    int type = model.type ?? 0;
+    String remark = model.remark ?? '';
+    List<SCMaterialListModel> materials = model.materials ?? [];
+    String id = model.id ?? '';
+    String taskName = model.taskName ?? '';
+    String taskStartTime = model.taskStartTime ?? '';
+    String taskEndTime = model.taskEndTime ?? '';
+    String orgName = model.dealOrgName ?? '';
+    String orgId = model.dealOrgId ?? '';
+    String dealUserName = model.dealUserName ?? '';
+    String dealUserId = model.dealUserId ?? '';
+    int rangeValue = model.rangeValue ?? 1;
+
+    for (SCMaterialListModel model in materials) {
+      model.localNum = model.number ?? 1;
+      model.isSelect = true;
+      model.name = model.materialName ?? '';
+    }
+    var params = {
+      'isEdit': true,
+      'data': materials,
+      "wareHouseName": wareHouseName,
+      "wareHouseId": wareHouseId,
+      "typeName": typeName,
+      "type": type,
+      "remark": remark,
+      "id": id,
+      "taskName": taskName,
+      "startTime": taskStartTime,
+      "endTime": taskEndTime,
+      "dealOrgName": orgName,
+      "dealOrgId": orgId,
+      "dealUserName": dealUserName,
+      "dealUserId": dealUserId,
+      "rangeValue": rangeValue
+    };
+    SCRouterHelper.pathPage(SCRouterPath.addFixedCheckPage, params)?.then((value) {
+      onRefresh();
     });
   }
 
@@ -297,5 +404,10 @@ class SCEntrySearchViewState extends State<SCEntrySearchView> {
     super.dispose();
     controller.dispose();
     node.dispose();
+  }
+
+  /// 打电话
+  call(String phone) {
+    SCUtils.call(phone);
   }
 }

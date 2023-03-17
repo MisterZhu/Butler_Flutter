@@ -192,7 +192,7 @@ class SCFixedCheckViewState extends State<SCFixedCheckView> {
             SCMaterialEntryModel model = widget.state.dataList[index];
             return SCMaterialEntryCell(
               model: model,
-              type: SCWarehouseManageType.check,
+              type: SCWarehouseManageType.fixedCheck,
               detailTapAction: () {
                 detailAction(model);
               },
