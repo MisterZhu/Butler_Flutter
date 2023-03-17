@@ -1,5 +1,7 @@
 
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
+import '../../../../Constants/sc_key.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../../../../Utils/Router/sc_router_helper.dart';
@@ -118,6 +120,7 @@ class SCFixedCheckMaterialDetailController extends GetxController {
     }
     SCMaterialEntryDetailController controller = SCMaterialEntryDetailController();
     controller.fixedCheckSubmit(action: 0, checkId: checkId, materials: list,successHandler: (){
+      SCScaffoldManager.instance.eventBus.fire({"key" : SCKey.kRefreshFixedCheckDetailPage});
       SCRouterHelper.back({"data" : list});
     });
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,6 +18,7 @@ import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../../MaterialEntry/Controller/sc_material_entry_detail_controller.dart';
+import '../../MaterialEntry/Model/sc_material_assets_details_model.dart';
 
 /// 盘点详情
 
@@ -31,6 +34,9 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
 
   /// SCMaterialEntryDetailController - tag
   String controllerTag = '';
+
+  /// notify
+  late StreamSubscription subscription;
 
   @override
   initState() {
@@ -49,10 +55,12 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
       }
       controller.loadMaterialCheckDetail();
     }
+    addNotification();
   }
 
   @override
   dispose() {
+    subscription.cancel();
     SCScaffoldManager.instance.deleteGetXControllerTag(
         (SCMaterialCheckDetailPage).toString(), controllerTag);
     controller.dispose();
@@ -129,7 +137,6 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
           } else if (state.model.status == 3 || state.model.status ==  4) {// 盘点中（超时）、盘点中
             if (controller.isFixedCheck == true) {
               list = [
-                {"type": scMaterialBottomViewType1, "title": "暂存",},
                 {"type": scMaterialBottomViewType2, "title": "提交",},
               ];
             } else {
@@ -393,20 +400,27 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
 
   /// 固定资产盘点-提交
   submitFixedCheckAction(int action) {
-    if (controller.fixedList.isEmpty) {
+    bool canSubmit = true;
+    for (SCMaterialAssetsDetailsModel model in (controller.model.materialAssetsDetails ?? [])) {
+      if (model.result == null) {
+        canSubmit = false;
+        break;
+      }
+    }
+    if (!canSubmit) {
       SCToast.showTip('请盘点物资');
       return;
     }
-    List list = [];
-    for (int i = 0; i < controller.fixedList.length; i++) {
-      var params = controller.fixedList[i];
-      list.addAll(params['data']);
-    }
-    print('提交===========$list');
+    // List list = [];
+    // for (int i = 0; i < controller.fixedList.length; i++) {
+    //   var params = controller.fixedList[i];
+    //   list.addAll(params['data']);
+    // }
+    // print('提交===========$list');
     controller.fixedCheckSubmit(
         action: action,
         checkId: controller.model.id ?? '',
-        materials: list,
+        materials: [],
         successHandler: () {
           if (controller.isFixedCheck == true) {
             SCScaffoldManager.instance.eventBus
@@ -417,5 +431,15 @@ class SCMaterialCheckDetailPageState extends State<SCMaterialCheckDetailPage> {
           }
           SCRouterHelper.back(null);
         });
+  }
+
+  /// 通知
+  addNotification() {
+    subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
+      String key = event['key'];
+      if (key == SCKey.kRefreshFixedCheckDetailPage) {
+        controller.loadMaterialCheckDetail();
+      }
+    });
   }
 }

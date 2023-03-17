@@ -42,4 +42,6 @@ class SCKey {
   static const String kRefreshPropertyFrmLossPage = "kRefreshPropertyFrmLossPage";
   /// 固定资产盘点-刷新盘点任务页面
   static const String kRefreshFixedCheckPage = "kRefreshFixedCheckPage";
+  /// 固定资产盘点-刷新盘点详情页面
+  static const String kRefreshFixedCheckDetailPage = "kRefreshFixedCheckDetailPage";
 }
