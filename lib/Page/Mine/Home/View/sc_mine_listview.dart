@@ -6,10 +6,12 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Constants/sc_enum.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_mine_header_item.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_setting_cell.dart';
+import 'package:smartcommunity/Skin/View/sc_custom_scaffold.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../../Network/sc_config.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
+import '../../../../Utils/sc_utils.dart';
 
 /// 我的listview
 
@@ -68,9 +70,9 @@ class SCMineListView extends StatelessWidget {
   }
 
   Widget listview() {
-    int count = 9;
+    int count = 10;
     if (SCConfig.env == SCEnvironment.production && !SCConfig.isSupportProxyForProduction) {
-      count = 1;
+      count = 2;
     }
     return Expanded(child: ListView.separated(
         padding: EdgeInsets.zero,
@@ -93,6 +95,20 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineNewSetting,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.settingPath, null);
+        },);
+    } else if (index == 1 && SCConfig.yycTenantId() == (SCScaffoldManager.instance.defaultConfigModel?.tenantId ?? '')) {
+      return SCSettingCell(
+        title: '报事记录',
+        showLeftIcon: true,
+        leftIcon: SCAsset.iconMineService,
+        onTap: () {
+          String url = '${SCConfig.BASE_URL}/h5Manage-order/#/workOrderReport/propertyList';
+          String realUrl = SCUtils.getWebViewUrl(url: url, title: '报事记录', needJointParams: true);
+          SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+            "title": '报事记录',
+            "url": realUrl,
+            "needJointParams": true
+          });
         },);
     } else if (index == 1) {
       return SCSettingCell(
@@ -157,6 +173,14 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineService,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.fixedCheckPage, null);
+        },);
+    } else if (index == 9) {
+      return SCSettingCell(
+        title: '消息',
+        showLeftIcon: true,
+        leftIcon: SCAsset.iconMineService,
+        onTap: () {
+          SCRouterHelper.pathPage(SCRouterPath.messagePage, null);
         },);
     } else {
       return const SizedBox(height: 100.0,);

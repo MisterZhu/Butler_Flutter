@@ -49,6 +49,7 @@ import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_material_transfer_
 import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_add_property_frmLoss_page.dart';
 import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_property_frmLoss_detail_page.dart';
 import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_property_frmLoss_page.dart';
+import '../../Page/Message/Page/sc_message_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
 import '../../Page/Mine/Home/Page/sc_proxy_page.dart';
 import 'sc_router_path.dart';
@@ -161,6 +162,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.addFixedCheckPage, page: () => SCAddFixedCheckPage()),
     /*固定资产盘点-物资详情*/
     GetPage(name: SCRouterPath.fixedCheckMaterialDetailPage, page: () => SCFixedCheckMaterialDetailPage()),
+    /*消息*/
+    GetPage(name: SCRouterPath.messagePage, page: () => SCMessagePage()),
 
   ];
 

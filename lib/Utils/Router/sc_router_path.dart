@@ -181,5 +181,9 @@ class SCRouterPath {
   /// 固定资产盘点-物资详情
   static String fixedCheckMaterialDetailPage = "/lib/Page/PropertyFrmLoss/Page/sc_fixedcheck_material_detail_page";
 
+  ///*************************** 消息 ******************************/
+
+  /// 消息
+  static String messagePage = "/lib/Page/Message/Page/sc_message_page";
 
 }
