@@ -227,6 +227,14 @@ class SCAddOutboundController extends GetxController {
           SCLoadingUtils.hide();
           typeList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
           initEditParams();
+          if (isLL) {
+            for (SCEntryTypeModel model in typeList) {
+              if (model.code == 1) {
+                type = model.name ?? '';
+                break;
+              }
+            }
+          }
           update();
         },
         failure: (value) {
