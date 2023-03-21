@@ -250,6 +250,7 @@ class SCAsset {
 
   /// 物资调拨icon
   static const String iconMaterialTransfer = "images/materialTransfer/icon_material_transfer.png";
+
   /// ****************  物资盘点 ****************/
 
   /// 物资调拨icon
@@ -257,5 +258,17 @@ class SCAsset {
 
   /// 报损原因-已选择icon
   static const String iconFrmLossReasonSelected = "images/materialCheck/icon_frmLoss_reason_selected.png";
+
+  /// ****************  消息 ****************/
+
+  /// 消息-类型icon
+  static const String iconMessageType = "images/message/icon_message_type.png";
+
+  /// 消息-更多按钮icon
+  static const String iconMessageMore = "images/message/icon_message_more.png";
+
+  /// 内容图片-默认占位图icon
+  static const String iconMessageContentDefault = "images/message/icon_message_content_default.png";
+
 
 }

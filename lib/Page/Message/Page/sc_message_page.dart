@@ -19,7 +19,7 @@ class SCMessagePageState extends State<SCMessagePage> {
     return SCCustomScaffold(
         title: "消息",
         centerTitle: true,
-        navBackgroundColor: SCColors.color_F2F3F5,
+        navBackgroundColor: SCColors.color_FFFFFF,
         elevation: 0,
         body: body());
   }

@@ -10,6 +10,9 @@ class SCConfig {
   /// 生产环境是否支持抓包
   static bool isSupportProxyForProduction = false;
 
+  /// iOS是否支持平方SC字体
+  static bool isSupportPFSCForIOS = true;
+
   /// base url
   static String get BASE_URL {
     switch (env) {
@@ -58,6 +61,15 @@ class SCConfig {
       return '126034790258008';
     } else {
       return '124561229994101';
+    }
+  }
+
+  /// iOS平方SC配置
+  static List<String> getPFSCForIOS() {
+    if (isSupportPFSCForIOS) {
+      return ["PingFang SC"];
+    } else {
+      return [];
     }
   }
 
