@@ -54,7 +54,8 @@ class SCUrl {
   /// 租户列表url
   static const String kSwitchTenantUrl = '/api/user/switchTenant';
 
-
+  /// 项目列表
+  static const String kCommunityListUrl = '/api/space/community/list/per';
 
   /// 我的房号列表url
   static const String kMyHouseUrl = '/api/space/resident/user/housing/list';

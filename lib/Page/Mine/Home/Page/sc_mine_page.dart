@@ -33,7 +33,7 @@ class SCMinePageState extends State<SCMinePage> {
   @override
   initState() {
     super.initState();
-    SCUtils().changeStatusBarStyle(style: SystemUiOverlayStyle.light);
+    SCUtils().changeStatusBarStyle(style: SystemUiOverlayStyle.dark);
     addNotification();
   }
 
@@ -46,6 +46,7 @@ class SCMinePageState extends State<SCMinePage> {
         height: double.infinity,
         child: GetBuilder<SCMineController>(builder: (value) {
           return SCMineListView(
+            controller: mineController,
             qrCodeTapAction: () {
               SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
             },

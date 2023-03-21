@@ -1,9 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Constants/sc_enum.dart';
+import 'package:smartcommunity/Page/Mine/Home/Model/sc_community_alert_model.dart';
+import 'package:smartcommunity/Page/Mine/Home/View/SelectCommunityAlert/sc_community_alertview.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_mine_header_item.dart';
 import 'package:smartcommunity/Page/Mine/Home/View/sc_setting_cell.dart';
 import 'package:smartcommunity/Skin/View/sc_custom_scaffold.dart';
@@ -12,11 +13,12 @@ import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../../Network/sc_config.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Utils/sc_utils.dart';
+import '../GetXController/sc_mine_controller.dart';
+import '../Model/sc_community_common_model.dart';
 
 /// 我的listview
 
 class SCMineListView extends StatelessWidget {
-
   /// 点击二维码
   final Function? qrCodeTapAction;
 
@@ -32,7 +34,12 @@ class SCMineListView extends StatelessWidget {
   /// 点击个人资料
   final Function? userInfoTapAction;
 
-  const SCMineListView({Key? key,
+  /// controller
+  final SCMineController controller;
+
+  const SCMineListView({
+    Key? key,
+    required this.controller,
     this.qrCodeTapAction,
     this.settingTapAction,
     this.avatarTapAction,
@@ -42,52 +49,66 @@ class SCMineListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return body();
+    return body(context);
   }
 
   /// body
-  Widget body() {
+  Widget body(BuildContext context) {
     return Column(
       children: [
         SCMineHeaderItem(
-          avatar: SCScaffoldManager.instance.user.headPicUri?.fileKey != null ? SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri?.fileKey ?? '') : SCAsset.iconUserDefault,
+          avatar: SCScaffoldManager.instance.user.headPicUri?.fileKey != null
+              ? SCConfig.getImageUrl(
+                  SCScaffoldManager.instance.user.headPicUri?.fileKey ?? '')
+              : SCAsset.iconUserDefault,
           nickname: SCScaffoldManager.instance.user.userName ?? '',
           space: SCScaffoldManager.instance.user.tenantName ?? '',
           avatarTapAction: () {
             avatarTapAction?.call();
-        }, qrCodeTapAction: () {
+          },
+          qrCodeTapAction: () {
             qrCodeTapAction?.call();
-        }, settingTapAction: () {
+          },
+          settingTapAction: () {
             settingTapAction?.call();
-        }, switchTapAction: () {
+          },
+          switchTapAction: () {
             switchTapAction?.call();
-        }, userInfoTapAction: () {
+          },
+          userInfoTapAction: () {
             userInfoTapAction?.call();
-        },),
-        listview(),
+          },
+        ),
+        listview(context),
       ],
     );
   }
 
-  Widget listview() {
+  Widget listview(BuildContext context) {
     int count = 10;
-    if (SCConfig.env == SCEnvironment.production && !SCConfig.isSupportProxyForProduction) {
-      count = 2;
+    if (SCConfig.env == SCEnvironment.production &&
+        !SCConfig.isSupportProxyForProduction) {
+      if (SCConfig.yycTenantId() == (SCScaffoldManager.instance.defaultConfigModel?.tenantId ?? '')) {
+        count = 2;
+      } else {
+        count = 1;
+      }
     }
-    return Expanded(child: ListView.separated(
-        padding: EdgeInsets.zero,
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          return getCell(index);
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return line();
-        },
-        itemCount: count));
+    return Expanded(
+        child: ListView.separated(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return getCell(index, context);
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return line();
+            },
+            itemCount: count));
   }
 
   /// cell
-  Widget getCell(int index) {
+  Widget getCell(int index, BuildContext context) {
     if (index == 0) {
       return SCSettingCell(
         title: '设置',
@@ -95,29 +116,29 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineNewSetting,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.settingPath, null);
-        },);
-    } else if (index == 1 && SCConfig.yycTenantId() == (SCScaffoldManager.instance.defaultConfigModel?.tenantId ?? '')) {
-      return SCSettingCell(
-        title: '报事记录',
-        showLeftIcon: true,
-        leftIcon: SCAsset.iconMineService,
-        onTap: () {
-          String url = '${SCConfig.BASE_URL}/h5Manage-order/#/workOrderReport/propertyList';
-          String realUrl = SCUtils.getWebViewUrl(url: url, title: '报事记录', needJointParams: true);
-          SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
-            "title": '报事记录',
-            "url": realUrl,
-            "needJointParams": true
-          });
-        },);
+        },
+      );
     } else if (index == 1) {
-      return SCSettingCell(
-        title: '物资入库',
-        showLeftIcon: true,
-        leftIcon: SCAsset.iconMineService,
-        onTap: () {
-          SCRouterHelper.pathPage(SCRouterPath.materialEntryPage, null);
-      },);
+      if (SCConfig.yycTenantId() ==
+          (SCScaffoldManager.instance.defaultConfigModel?.tenantId ?? '')) {
+        return SCSettingCell(
+          title: '报事记录',
+          showLeftIcon: true,
+          leftIcon: SCAsset.iconMineService,
+          onTap: () {
+            showCommunityAlert(context);
+          },
+        );
+      } else {
+        return SCSettingCell(
+          title: '物资入库',
+          showLeftIcon: true,
+          leftIcon: SCAsset.iconMineService,
+          onTap: () {
+            SCRouterHelper.pathPage(SCRouterPath.materialEntryPage, null);
+          },
+        );
+      }
     } else if (index == 2) {
       return SCSettingCell(
         title: '物资出库',
@@ -125,7 +146,8 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineService,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.materialOutboundPage, null);
-        },);
+        },
+      );
     } else if (index == 3) {
       return SCSettingCell(
         title: '物资报损',
@@ -133,7 +155,8 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineService,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.materialFrmLossPage, null);
-        },);
+        },
+      );
     } else if (index == 4) {
       return SCSettingCell(
         title: '物资调拨',
@@ -141,7 +164,8 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineService,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.materialTransferPage, null);
-        },);
+        },
+      );
     } else if (index == 5) {
       return SCSettingCell(
         title: '盘点任务',
@@ -149,7 +173,8 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineService,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.materialCheckPage, null);
-        },);
+        },
+      );
     } else if (index == 6) {
       return SCSettingCell(
         title: '领料出入库',
@@ -157,7 +182,8 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineService,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.materialRequisitionPage, null);
-        },);
+        },
+      );
     } else if (index == 7) {
       return SCSettingCell(
         title: '资产报损',
@@ -165,7 +191,8 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineService,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.propertyFrmLossPage, null);
-        },);
+        },
+      );
     } else if (index == 8) {
       return SCSettingCell(
         title: '固定资产盘点',
@@ -173,7 +200,8 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineService,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.fixedCheckPage, null);
-        },);
+        },
+      );
     } else if (index == 9) {
       return SCSettingCell(
         title: '消息',
@@ -181,9 +209,12 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineService,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.messagePage, null);
-        },);
+        },
+      );
     } else {
-      return const SizedBox(height: 100.0,);
+      return const SizedBox(
+        height: 100.0,
+      );
     }
   }
 
@@ -200,4 +231,31 @@ class SCMineListView extends StatelessWidget {
     );
   }
 
+  /// 选择项目弹窗
+  showCommunityAlert(BuildContext context) {
+    controller.loadCommunity(success: (List<SCCommunityCommonModel> titleList) {
+      SCDialogUtils().showCustomBottomDialog(
+          context: context,
+          isDismissible: true,
+          widget: SCSelectCommunityAlert(
+            list: titleList,
+            title: '请选择项目',
+            onSure: (int index) {
+              Navigator.of(context).pop();
+              reportRecord(index);
+            },
+          ));
+    });
+  }
+
+  /// 报事记录
+  reportRecord(int index) {
+    SCCommunityAlertModel model = controller.communityList[index];
+    String url =
+        '${SCConfig.BASE_URL}/h5Manage-order/#/workOrderReport/propertyList?defCommunityId=${model.id}';
+    String realUrl =
+        SCUtils.getWebViewUrl(url: url, title: '报事记录', needJointParams: true);
+    SCRouterHelper.pathPage(SCRouterPath.webViewPath,
+        {"title": '报事记录', "url": realUrl, "needJointParams": true});
+  }
 }
