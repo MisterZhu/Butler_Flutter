@@ -32,7 +32,21 @@ class SCTypeDefine {
   static const int SC_HOME_TYPE_GOODS = 13;
 
 
-  /************************* 首页-cellType *************************/
+  /************************* 工作台 *************************/
+  /// 板块-工单处理
+  static const int SC_WORKBENCH_TASK_TYPE_WORKORDER = 0;
+  /// 板块-实地核验
+  static const int SC_WORKBENCH_TASK_TYPE_VERIFICATION = 1;
+  /// 板块-订单处理
+  static const int SC_WORKBENCH_TASK_TYPE_ORDER = 2;
+  /// 板块-物资入库
+  static const int SC_WORKBENCH_TASK_TYPE_MATERIAL_IN = 3;
+  /// 板块-物资出库
+  static const int SC_WORKBENCH_TASK_TYPE_MATERIAL_OUT = 4;
+  /// 板块-物资报损
+  static const int SC_WORKBENCH_TASK_TYPE_MATERIAL_FRMLSS = 5;
+  /// 板块-物资调拨
+  static const int SC_WORKBENCH_TASK_TYPE_MATERIAL_TRANSFER = 6;
 
   /************************* 我的-cellType *************************/
   /// header
