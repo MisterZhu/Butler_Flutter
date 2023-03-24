@@ -35,9 +35,6 @@ class SCFrmLossReasonAlert extends StatefulWidget {
 
 class SCFrmLossReasonAlertState extends State<SCFrmLossReasonAlert> {
 
-  /// 选中的标签
-  List<SCHomeTaskModel> selectList = [];
-
   /// 默认index
   int currentIndex = 0;
 

@@ -46,6 +46,8 @@ import '../../Page/ApplicationModule/MaterialRequisition/Page/sc_material_requis
 import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_add_transfer_page.dart';
 import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_material_transfer_detail_page.dart';
 import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_material_transfer_page.dart';
+import '../../Page/ApplicationModule/OnlineMonitor/Page/sc_monitor_search_page.dart';
+import '../../Page/ApplicationModule/OnlineMonitor/Page/sc_online_monitor_page.dart';
 import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_add_property_frmLoss_page.dart';
 import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_property_frmLoss_detail_page.dart';
 import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_property_frmLoss_page.dart';
@@ -164,6 +166,11 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.fixedCheckMaterialDetailPage, page: () => SCFixedCheckMaterialDetailPage()),
     /*消息*/
     GetPage(name: SCRouterPath.messagePage, page: () => SCMessagePage()),
+    /*在线监控*/
+    GetPage(name: SCRouterPath.onlineMonitorPage, page: () => SCOnlineMonitorPage()),
+    /*监控搜索*/
+    GetPage(name: SCRouterPath.monitorSearchPage, page: () => SCMonitorSearchPage()),
+
 
   ];
 

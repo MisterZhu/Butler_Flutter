@@ -270,5 +270,19 @@ class SCAsset {
   /// 内容图片-默认占位图icon
   static const String iconMessageContentDefault = "images/message/icon_message_content_default.png";
 
+  /// ****************  在线监控 ****************/
+
+  /// 监控-筛选icon
+  static const String iconMonitorStatusSift = "images/onlineMonitor/icon_monitor_status_sift.png";
+
+  /// 监控-默认占位图icon
+  static const String iconMonitorLoadingDefault = "images/onlineMonitor/icon_monitor_loading_default.png";
+
+  /// 监控-离线占位图icon
+  static const String iconMonitorOfflineDefault = "images/onlineMonitor/icon_monitor_offline_default.png";
+
+  /// 监控列表-空白占位图icon
+  static const String iconMonitorEmptyDefault = "images/onlineMonitor/icon_monitor_empty_default.png";
+
 
 }

@@ -13,7 +13,7 @@ class SCMessageListView extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return SCMessageCardCell(
             type: index,
-            title: '交易提醒',
+            title: '交易提醒标题最长是否',
             icon: SCAsset.iconMessageType,
             time: '2023-01-22',
             content: '订单状态更新',
@@ -21,7 +21,7 @@ class SCMessageListView extends StatelessWidget {
             contentIcon: SCAsset.iconMessageContentDefault,
             money: 300.00,
             bottomContentList: [{'title': '订单编号', 'content': '12345678901111'}, {'title': '备注', 'content': '已关闭'}],
-            detailTapAction: (index) {
+            detailTapAction: () {
 
             },
           );
