@@ -192,5 +192,10 @@ class SCRouterPath {
   static String onlineMonitorPage = "/lib/Page/OnlineMonitor/Page/sc_online_monitor_page";
   /// 监控搜索
   static String monitorSearchPage = "/lib/Page/OnlineMonitor/Page/sc_monitor_search_page";
-  
+
+  ///*************************** 任务 ******************************/
+
+  /// 任务
+  static String taskPage = "/lib/Page/Message/Page/sc_task_page";
+
 }

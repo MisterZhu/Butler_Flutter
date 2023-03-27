@@ -1,23 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../Skin/Tools/sc_scaffold_manager.dart';
-import '../Controller/sc_message_controller.dart';
-import '../View/sc_message_listview.dart';
+import '../Controller/sc_task_controller.dart';
+import '../View/sc_task_listview.dart';
 
-/// 消息page
 
-class SCMessagePage extends StatefulWidget {
+/// 任务page
+
+class SCTaskPage extends StatefulWidget {
   @override
-  SCMessagePageState createState() => SCMessagePageState();
+  SCTaskPageState createState() => SCTaskPageState();
 }
 
-class SCMessagePageState extends State<SCMessagePage> {
+class SCTaskPageState extends State<SCTaskPage> {
 
-  /// SCMessageController
-  late SCMessageController controller;
+
+  /// SCTaskController
+  late SCTaskController controller;
 
   /// SCMessageController - tag
   String controllerTag = '';
@@ -25,22 +28,22 @@ class SCMessagePageState extends State<SCMessagePage> {
   @override
   initState() {
     super.initState();
-    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCMessagePage).toString());
-    controller = Get.put(SCMessageController(), tag: controllerTag);
+    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCTaskPage).toString());
+    controller = Get.put(SCTaskController(), tag: controllerTag);
+    controller.startTimer();
   }
 
   @override
   dispose() {
-    SCScaffoldManager.instance.deleteGetXControllerTag((SCMessagePage).toString(), controllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCTaskPage).toString(), controllerTag);
     controller.dispose();
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: "消息",
+        title: "任务",
         centerTitle: true,
         navBackgroundColor: SCColors.color_FFFFFF,
         elevation: 0,
@@ -53,11 +56,11 @@ class SCMessagePageState extends State<SCMessagePage> {
       width: double.infinity,
       height: double.infinity,
       color: SCColors.color_F2F3F5,
-      child: GetBuilder<SCMessageController>(
+      child: GetBuilder<SCTaskController>(
           tag: controllerTag,
           init: controller,
           builder: (state) {
-            return SCMessageListView(state: state);
+            return SCTaskListView(state: state);
           }),
     );
   }

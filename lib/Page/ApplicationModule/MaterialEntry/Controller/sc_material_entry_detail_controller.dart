@@ -230,7 +230,6 @@ class SCMaterialEntryDetailController extends GetxController {
         url: SCUrl.kStartCheckTaskUrl + id,
         params: null,
         success: (value) {
-          print('开始盘点==========================');
           successHandler?.call();
         },
         failure: (value) {
@@ -393,7 +392,6 @@ class SCMaterialEntryDetailController extends GetxController {
         params: {'id': id},
         isQuery: true,
         success: (value) {
-          print('开始盘点==========================');
           successHandler?.call();
         },
         failure: (value) {

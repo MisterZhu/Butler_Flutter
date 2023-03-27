@@ -330,4 +330,8 @@ class SCUrl {
   /// 暂存或提交固定资产盘点任务
   static const String kFixedCheckSubmitUrl = "/api/warehouse/app/assetsCheck/submit";
 
+  /************************* 消息 *************************/
+  /// 消息列表
+  static const String kMessageListUrl = "/api/msg/message/page";
+
 }

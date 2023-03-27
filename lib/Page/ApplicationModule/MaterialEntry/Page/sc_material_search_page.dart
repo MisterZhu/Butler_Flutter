@@ -60,7 +60,7 @@ class SCMaterialSearchPageState extends State<SCMaterialSearchPage> {
 
   @override
   dispose() {
-    SCScaffoldManager.instance.deleteGetXControllerTag((SCAddMaterialPageState).toString(), controllerTag);
+    SCScaffoldManager.instance.deleteGetXControllerTag((SCMaterialSearchPage).toString(), controllerTag);
     controller.dispose();
     super.dispose();
   }
