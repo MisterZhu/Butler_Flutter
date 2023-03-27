@@ -83,9 +83,9 @@ class SCJPush {
   }
 
   /// 删除别名
-  static deleteAlias() {
+  static Future<Map<dynamic, dynamic>> deleteAlias() {
     JPush jPush = JPush();
-    jPush.deleteAlias();
+    return jPush.deleteAlias();
   }
 
   /// 清除通知
@@ -96,5 +96,11 @@ class SCJPush {
   /// 清空Badge
   static clearBadge(JPush jPush) {
     jPush.setBadge(0);
+  }
+
+  /// 获取RegistrationID
+  static Future<String> getRegistrationID() async{
+    JPush jPush = JPush();
+    return jPush.getRegistrationID();
   }
 }

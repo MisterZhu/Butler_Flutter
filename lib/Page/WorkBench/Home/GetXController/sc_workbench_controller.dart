@@ -665,8 +665,8 @@ class SCWorkBenchController extends GetxController {
         print("定位结果模型:${model?.toJson()}");
         int status = result['status'];
         if (status == 1) {
-          double longitude = result['longitude'];
-          double latitude = result['latitude'];
+          double longitude = result['longitude'] ?? 0.0;
+          double latitude = result['latitude'] ?? 0.0;
           SCScaffoldManager.instance.longitude = longitude;
           SCScaffoldManager.instance.latitude = latitude;
         }

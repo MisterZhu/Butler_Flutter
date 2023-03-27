@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
+import 'package:smartcommunity/Utils/JPush/sc_jpush.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
@@ -110,7 +111,7 @@ class SCLoginController extends GetxController {
           SCUserModel userModel = SCUserModel.fromJson(userParams);
           SCScaffoldManager.instance.user = userModel;
           SCScaffoldManager.instance.isLogin = true;
-
+          bindJPush(userModel);
           if (showCloseBtn) {
             SCRouterHelper.back(null);
             Get.forceAppUpdate();
@@ -124,5 +125,19 @@ class SCLoginController extends GetxController {
             SCToast.showTip(message);
           }
         });
+  }
+
+  /// 绑定极光
+  bindJPush(SCUserModel model) {
+    SCJPush.deleteAlias().then((value) async{
+      SCJPush.bindAlias(model.id ?? '');
+      String registrationID = await SCJPush.getRegistrationID();
+      var params = {
+        'userId' : model.id,
+        'tenantId' : model.tenantId,
+        'registrationId' : registrationID
+      };
+      SCHttpManager.instance.get(url: SCUrl.kBindJPushRegistrationIdUrl, params: params);
+    });
   }
 }
