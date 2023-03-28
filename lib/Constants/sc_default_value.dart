@@ -158,6 +158,9 @@ class SCDefaultValue {
   /// 仓储-新增出入库-请选择领用部门提示
   static const String selectDepartmentTip = "请选择领用部门";
 
+  /// 仓储-新增出入库-请选择领用人提示
+  static const String selectUserTip = "请选择领用人";
+
   /// 仓储-新增调拨-请选择调入仓库
   static const String selectInWareHouseTip = "请选择调入仓库";
 

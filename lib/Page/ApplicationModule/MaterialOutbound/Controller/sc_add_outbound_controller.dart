@@ -121,7 +121,7 @@ class SCAddOutboundController extends GetxController {
   }
 
   /// 新增出库, status=0暂存，1提交
-  addEntry({required int status, required dynamic data}) {
+  addOut({required int status, required dynamic data}) {
 
     var params = {
       "files": data['files'],
@@ -133,11 +133,15 @@ class SCAddOutboundController extends GetxController {
       "wareHouseId": data['wareHouseId'],
       "wareHouseName": data['wareHouseName']
     };
-    if (fetchOrgId.isNotEmpty && data['typeName'] == '领料出库') {
-      params.addAll({"fetchOrgId": fetchOrgId});
+    if (fetchOrgId.isNotEmpty) {
+      if (data['typeName'] == '领料出库' || data['typeName'] == '维修领料' || data['typeName'] == '资产领用出库') {
+        params.addAll({"fetchOrgId": fetchOrgId});
+      }
     }
-    if (fetchUserId.isNotEmpty && data['typeName'] == '领料出库') {
-      params.addAll({"fetchUserId": fetchUserId});
+    if (fetchUserId.isNotEmpty) {
+      if (data['typeName'] == '领料出库' || data['typeName'] == '维修领料' || data['typeName'] == '资产领用出库') {
+        params.addAll({"fetchUserId": fetchUserId});
+      }
     }
     if (isLL) {
       params.addAll({"workOrderId" : llMap['orderId']});
@@ -173,11 +177,15 @@ class SCAddOutboundController extends GetxController {
       "wareHouseId": data['wareHouseId'],
       "wareHouseName": data['wareHouseName']
     };
-    if (fetchOrgId.isNotEmpty && data['typeName'] == '领料出库') {
-      params.addAll({"fetchOrgId": fetchOrgId});
+    if (fetchOrgId.isNotEmpty) {
+      if (data['typeName'] == '领料出库' || data['typeName'] == '维修领料' || data['typeName'] == '资产领用出库') {
+        params.addAll({"fetchOrgId": fetchOrgId});
+      }
     }
-    if (fetchUserId.isNotEmpty && data['typeName'] == '领料出库') {
-      params.addAll({"fetchUserId": fetchUserId});
+    if (fetchUserId.isNotEmpty) {
+      if (data['typeName'] == '领料出库' || data['typeName'] == '维修领料' || data['typeName'] == '资产领用出库') {
+        params.addAll({"fetchUserId": fetchUserId});
+      }
     }
     SCLoadingUtils.show();
     SCHttpManager.instance.post(

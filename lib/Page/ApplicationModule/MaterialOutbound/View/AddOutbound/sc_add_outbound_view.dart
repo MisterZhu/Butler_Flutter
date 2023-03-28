@@ -240,9 +240,10 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
     ];
 
     List orgList = [
-      {'isRequired': false, 'title': '领用部门', 'content': widget.state.fetchOrgName, 'disable' : widget.state.isEdit},
-      {'isRequired': false, 'title': '领用人', 'content': widget.state.fetchUserName, 'disable' : widget.state.isEdit},];
-    if (widget.state.type == '领料出库') {
+      {'isRequired': true, 'title': '领用部门', 'content': widget.state.fetchOrgName, 'disable' : widget.state.isEdit},
+      {'isRequired': true, 'title': '领用人', 'content': widget.state.fetchUserName, 'disable' : widget.state.isEdit},
+    ];
+    if (widget.state.type == '领料出库' || widget.state.type == '维修领料' || widget.state.type == '资产领用出库') {
       baseInfoList.addAll(orgList);
     }
     return baseInfoList;
@@ -330,6 +331,16 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       return;
     }
 
+    if (widget.state.fetchOrgId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectDepartmentTip);
+      return;
+    }
+
+    if (widget.state.fetchUserId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectUserTip);
+      return;
+    }
+
     if (widget.state.selectedList.isEmpty) {
       SCToast.showTip(SCDefaultValue.addMaterialInfoTip);
       return;
@@ -351,7 +362,7 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       "remark" : widget.state.remark,
       "materialList" : materialList
     };
-    widget.state.addEntry(status: status, data: params);
+    widget.state.addOut(status: status, data: params);
   }
 
   /// 选择领用部门
@@ -526,6 +537,17 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
 
     if (widget.state.typeID <= 0) {
       SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
+      return;
+    }
+
+
+    if (widget.state.fetchOrgId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectDepartmentTip);
+      return;
+    }
+
+    if (widget.state.fetchUserId.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectUserTip);
       return;
     }
 

@@ -115,18 +115,22 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
         return const SizedBox();
       }
     } else {
-      if (type == SCWarehouseManageType.outbound && model?.typeName == '领料出库') {
+      if (type == SCWarehouseManageType.outbound) {
         // 领料出库才显示领用人
-        return Column(children: [
-          const SizedBox(
-            height: 10.0,
-          ),
-          userView(),
-          const SizedBox(
-            height: 10.0,
-          ),
-          userDepartmentView(),
-        ]);
+        if ( model?.typeName == '领料出库' ||  model?.typeName == '维修领料' ||  model?.typeName == '资产领用出库') {
+          return Column(children: [
+            const SizedBox(
+              height: 10.0,
+            ),
+            userView(),
+            const SizedBox(
+              height: 10.0,
+            ),
+            userDepartmentView(),
+          ]);
+        } else {
+          return const SizedBox();
+        }
       } else if (type == SCWarehouseManageType.transfer) {
         // 物料调拨，显示调入仓库、调出仓库
         return Column(children: [
