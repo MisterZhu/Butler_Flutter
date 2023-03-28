@@ -128,16 +128,15 @@ class SCLoginController extends GetxController {
   }
 
   /// 绑定极光
-  bindJPush(SCUserModel model) {
-    SCJPush.deleteAlias().then((value) async{
-      SCJPush.bindAlias(model.id ?? '');
-      String registrationID = await SCJPush.getRegistrationID();
-      var params = {
-        'userId' : model.id,
-        'tenantId' : model.tenantId,
-        'registrationId' : registrationID
-      };
-      SCHttpManager.instance.get(url: SCUrl.kBindJPushRegistrationIdUrl, params: params);
-    });
+  bindJPush(SCUserModel model) async {
+    SCJPush.bindAlias(model.id ?? '');
+    String registrationID = await SCJPush.getRegistrationID();
+    var params = {
+      'userId': model.id,
+      'tenantId': model.tenantId,
+      'registrationId': registrationID
+    };
+    SCHttpManager.instance.get(
+        url: SCUrl.kBindJPushRegistrationIdUrl, params: params);
   }
 }
