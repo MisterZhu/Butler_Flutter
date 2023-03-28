@@ -47,6 +47,9 @@ class SCMaterialOutboundDetailPageState extends State<SCMaterialOutboundDetailPa
       if (id != null) {
         controller.id = id;
       }
+      if (params.containsKey('isLL')) {
+        controller.isLL = params['isLL'];
+      }
     }
     controller.loadMaterialOutboundDetail();
   }

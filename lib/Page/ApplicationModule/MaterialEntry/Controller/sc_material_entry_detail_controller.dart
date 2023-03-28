@@ -47,6 +47,9 @@ class SCMaterialEntryDetailController extends GetxController {
   /// 新提交的数据
   List fixedList = [];
 
+  /// 是否是领料出入库
+  bool isLL = false;
+
   @override
   onInit() {
     super.onInit();

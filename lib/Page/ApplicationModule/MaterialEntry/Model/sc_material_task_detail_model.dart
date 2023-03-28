@@ -19,6 +19,7 @@ class SCMaterialTaskDetailModel {
     this.assets,
     this.mobileNum,
     this.number,
+    this.workOrderNumber,
     this.operator,
     this.operatorName,
     this.orgId,
@@ -103,6 +104,7 @@ class SCMaterialTaskDetailModel {
     }
     mobileNum = json['mobileNum'];
     number = json['number'];
+    workOrderNumber = json['workOrderNumber'];
     operator = json['operator'];
     operatorName = json['operatorName'];
     orgId = json['orgId'];
@@ -158,6 +160,7 @@ class SCMaterialTaskDetailModel {
   List<SCMaterialListModel>? assets;
   String? mobileNum;
   String? number;
+  String? workOrderNumber;
   String? operator;
   String? operatorName;
   String? orgId;
@@ -226,6 +229,7 @@ class SCMaterialTaskDetailModel {
     }
     map['mobileNum'] = mobileNum;
     map['number'] = number;
+    map['workOrderNumber'] = workOrderNumber;
     map['operator'] = operator;
     map['operatorName'] = operatorName;
     map['orgId'] = orgId;

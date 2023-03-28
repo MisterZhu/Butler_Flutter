@@ -58,6 +58,9 @@ class SCMaterialEntryDetailPageState extends State<SCMaterialEntryDetailPage> {
       if (params.containsKey('hideBottomBtn')) {
         hideBottomBtn = params['hideBottomBtn'];
       }
+      if (params.containsKey('isLL')) {
+        controller.isLL = params['isLL'];
+      }
       controller.loadMaterialEntryDetail();
     }
   }

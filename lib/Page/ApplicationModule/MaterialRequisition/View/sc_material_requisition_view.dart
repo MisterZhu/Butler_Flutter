@@ -243,9 +243,9 @@ class SCMaterialRequisitionViewState extends State<SCMaterialRequisitionView> {
     bool canEdit = (status == 0);
     print("status===$status");
     if (widget.state.categoryIndex == 0) {
-      SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, {'id': model.id, 'canEdit': canEdit, 'status' : status, 'hideBottomBtn' : true});
+      SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, {'id': model.id, 'canEdit': canEdit, 'status' : status, 'hideBottomBtn' : true, 'isLL': true});
     } else {
-      SCRouterHelper.pathPage(SCRouterPath.entryDetailPage, {'id': model.id, 'canEdit': canEdit, 'status' : status, 'hideBottomBtn' : true});
+      SCRouterHelper.pathPage(SCRouterPath.entryDetailPage, {'id': model.id, 'canEdit': canEdit, 'status' : status, 'hideBottomBtn' : true, 'isLL': true});
     }
   }
 

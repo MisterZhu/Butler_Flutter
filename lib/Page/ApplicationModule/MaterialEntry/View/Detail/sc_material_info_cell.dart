@@ -17,6 +17,9 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   /// type=entry入库详情，type=outbound出库详情
   final SCWarehouseManageType type;
 
+  /// 是否是领料出入库
+  final bool? isLL;
+
   /// 打电话
   final Function(String phone)? callAction;
 
@@ -27,6 +30,7 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
       {Key? key,
       this.model,
       required this.type,
+      this.isLL,
       this.callAction,
       this.pasteAction})
       : super(key: key);
@@ -99,48 +103,61 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   }
 
   Widget receiveView() {
-    if (type == SCWarehouseManageType.outbound && model?.typeName == '领料出库') {
-      // 领料出库才显示领用人
-      return Column(children: [
-        const SizedBox(
-          height: 10.0,
-        ),
-        userView(),
-        const SizedBox(
-          height: 10.0,
-        ),
-        userDepartmentView(),
-      ]);
-    } else if (type == SCWarehouseManageType.transfer) {
-      // 物料调拨，显示调入仓库、调出仓库
-      return Column(children: [
-        const SizedBox(
-          height: 10.0,
-        ),
-        inWareHouseView(),
-        const SizedBox(
-          height: 10.0,
-        ),
-        outWareHouseView(),
-      ]);
-    } else if (type == SCWarehouseManageType.frmLoss) {
-      // 物料调拨，显示报损人、报损部门、报损时间
-      return Column(children: [
-        const SizedBox(
-          height: 10.0,
-        ),
-        frmLossUserView(),
-        const SizedBox(
-          height: 10.0,
-        ),
-        frmLossDepartmentView(),
-        const SizedBox(
-          height: 10.0,
-        ),
-        frmLossTimeView(),
-      ]);
+    if (isLL == true) {
+      if (model?.workOrderNumber != null) {
+        return Column(children: [
+          const SizedBox(
+            height: 10.0,
+          ),
+          workOrderNumberView()
+        ]);
+      } else {
+        return const SizedBox();
+      }
     } else {
-      return const SizedBox();
+      if (type == SCWarehouseManageType.outbound && model?.typeName == '领料出库') {
+        // 领料出库才显示领用人
+        return Column(children: [
+          const SizedBox(
+            height: 10.0,
+          ),
+          userView(),
+          const SizedBox(
+            height: 10.0,
+          ),
+          userDepartmentView(),
+        ]);
+      } else if (type == SCWarehouseManageType.transfer) {
+        // 物料调拨，显示调入仓库、调出仓库
+        return Column(children: [
+          const SizedBox(
+            height: 10.0,
+          ),
+          inWareHouseView(),
+          const SizedBox(
+            height: 10.0,
+          ),
+          outWareHouseView(),
+        ]);
+      } else if (type == SCWarehouseManageType.frmLoss) {
+        // 物料调拨，显示报损人、报损部门、报损时间
+        return Column(children: [
+          const SizedBox(
+            height: 10.0,
+          ),
+          frmLossUserView(),
+          const SizedBox(
+            height: 10.0,
+          ),
+          frmLossDepartmentView(),
+          const SizedBox(
+            height: 10.0,
+          ),
+          frmLossTimeView(),
+        ]);
+      } else {
+        return const SizedBox();
+      }
     }
   }
   /// 盘点人
@@ -257,6 +274,13 @@ class SCMaterialEntryInfoCell extends StatelessWidget {
   Widget entryNumView() {
     return Row(
       children: [desLabel('单号'), numView(model?.number ?? '')],
+    );
+  }
+
+  /// 工单编号
+  Widget workOrderNumberView() {
+    return Row(
+      children: [desLabel('工单编号'), numView(model?.workOrderNumber ?? '')],
     );
   }
 

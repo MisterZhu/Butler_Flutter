@@ -54,6 +54,7 @@ class SCMaterialDetailListView extends StatelessWidget {
       return SCMaterialEntryInfoCell(
         model: state.model,
         type: type,
+        isLL: state.isLL,
         callAction: (String phone) {
           callAction(phone);
         },
