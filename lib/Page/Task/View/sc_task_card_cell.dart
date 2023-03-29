@@ -346,7 +346,17 @@ class SCTaskCardCell extends StatelessWidget {
 
   /// 时间，默认0：显示时间年-月-日 时分秒，1：显示时间差
   Widget timeItem() {
-    if (type == 1) {
+    if (type == 0) {
+      return Text(
+        time ?? '',
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(
+            fontSize: SCFonts.f14,
+            fontWeight: FontWeight.w400,
+            color: SCColors.color_5E5F66),
+      );
+    } else {
       if (remainingTime > 0) {
         return Row(
             mainAxisSize: MainAxisSize.min,
@@ -364,16 +374,6 @@ class SCTaskCardCell extends StatelessWidget {
       } else {
         return SCTaskTimeItem(time: remainingTime);
       }
-    } else {
-      return Text(
-        time ?? '',
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: const TextStyle(
-            fontSize: SCFonts.f14,
-            fontWeight: FontWeight.w400,
-            color: SCColors.color_5E5F66),
-      );
     }
   }
 
