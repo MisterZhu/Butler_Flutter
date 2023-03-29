@@ -84,6 +84,7 @@ class SCWorkBenchController extends GetxController {
   @override
   onInit() {
     super.onInit();
+    location();
     loadData();
   }
 
@@ -224,7 +225,6 @@ class SCWorkBenchController extends GetxController {
 
   /// 加载数据
   loadData() {
-    location();
     getDefaultConfig().then((value) {
       if (value == true) {
         getUserInfo().then((subValue) {
