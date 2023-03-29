@@ -327,9 +327,9 @@ class SCTaskCardCell extends StatelessWidget {
                     minSize: 40.0,
                     color: SCColors.color_4285F4,
                     padding: EdgeInsets.zero,
-                    child: Text(
+                    child: const Text(
                       '处理',
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: SCFonts.f16,
                           fontWeight: FontWeight.w400,
                           color: SCColors.color_FFFFFF),

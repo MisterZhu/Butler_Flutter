@@ -331,14 +331,16 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       return;
     }
 
-    if (widget.state.fetchOrgId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectDepartmentTip);
-      return;
-    }
+    if (widget.state.type == '领料出库' || widget.state.type == '维修领料' || widget.state.type == '资产领用出库') {
+      if (widget.state.fetchOrgId.isEmpty) {
+        SCToast.showTip(SCDefaultValue.selectDepartmentTip);
+        return;
+      }
 
-    if (widget.state.fetchUserId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectUserTip);
-      return;
+      if (widget.state.fetchUserId.isEmpty) {
+        SCToast.showTip(SCDefaultValue.selectUserTip);
+        return;
+      }
     }
 
     if (widget.state.selectedList.isEmpty) {
@@ -540,15 +542,16 @@ class SCAddOutboundViewState extends State<SCAddOutboundView> {
       return;
     }
 
+    if (widget.state.type == '领料出库' || widget.state.type == '维修领料' || widget.state.type == '资产领用出库') {
+      if (widget.state.fetchOrgId.isEmpty) {
+        SCToast.showTip(SCDefaultValue.selectDepartmentTip);
+        return;
+      }
 
-    if (widget.state.fetchOrgId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectDepartmentTip);
-      return;
-    }
-
-    if (widget.state.fetchUserId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectUserTip);
-      return;
+      if (widget.state.fetchUserId.isEmpty) {
+        SCToast.showTip(SCDefaultValue.selectUserTip);
+        return;
+      }
     }
 
     if (widget.state.selectedList.isEmpty) {
