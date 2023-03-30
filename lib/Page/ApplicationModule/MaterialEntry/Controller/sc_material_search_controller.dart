@@ -63,7 +63,7 @@ class SCMaterialSearchController extends GetxController {
         "enabled": true,
         "fields": [],
         "wareHouseId": wareHouseId,  /// 仓库ID
-        "name": searchString  /// 物资名称
+        "materialName": searchString  /// 物资名称
       },
       "count": false,
       "last": false,

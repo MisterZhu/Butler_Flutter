@@ -22,7 +22,7 @@ class SCOnlineMonitorController extends GetxController {
     loadData(isMore: false);
   }
 
-  /// 入库列表数据
+
   loadData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
