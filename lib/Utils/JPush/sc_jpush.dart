@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:jpush_flutter/jpush_flutter.dart';
+import 'package:smartcommunity/Utils/sc_utils.dart';
 
 import '../../Constants/sc_default_value.dart';
 import '../../Constants/sc_enum.dart';
 import '../../Network/sc_config.dart';
+import '../../Skin/Tools/sc_scaffold_manager.dart';
+import '../Router/sc_router_helper.dart';
+import '../Router/sc_router_path.dart';
 
 /// 极光推送
 
@@ -15,6 +21,7 @@ class SCJPush {
     setupJPush(jPush);
     clearNotification(jPush);
     clearBadge(jPush);
+    setUnShowAtTheForeground(jPush);
   }
 
   /// 设置极光配置
@@ -28,7 +35,8 @@ class SCJPush {
       production: production,
       debug: true,
     );
-    jPush.applyPushAuthority(const NotificationSettingsIOS(sound: true, alert: true, badge: true));
+    jPush.applyPushAuthority(
+        const NotificationSettingsIOS(sound: true, alert: true, badge: true));
 
     // Platform messages may fail, so we use a try/catch PlatformException.
     jPush.getRegistrationID().then((rid) {
@@ -44,12 +52,13 @@ class SCJPush {
     try {
       jPush.addEventHandler(
           onReceiveNotification: (Map<String, dynamic> message) async {
-            print("flutter onReceiveNotification: $message");
-            // setState(() {
-            //   debugLable = "flutter onReceiveNotification: $message";
-            // });
-          }, onOpenNotification: (Map<String, dynamic> message) async {
+        print("flutter onReceiveNotification: $message");
+        // setState(() {
+        //   debugLable = "flutter onReceiveNotification: $message";
+        // });
+      }, onOpenNotification: (Map<String, dynamic> message) async {
         print("flutter onOpenNotification: $message");
+        dealJPush(message);
         // setState(() {
         //   debugLable = "flutter onOpenNotification: $message";
         // });
@@ -59,13 +68,12 @@ class SCJPush {
         //   debugLable = "flutter onReceiveMessage: $message";
         // });
       }, onReceiveNotificationAuthorization:
-          (Map<String, dynamic> message) async {
+              (Map<String, dynamic> message) async {
         print("flutter onReceiveNotificationAuthorization: $message");
         // setState(() {
         //   debugLable = "flutter onReceiveNotificationAuthorization: $message";
         // });
-      },onNotifyMessageUnShow:
-          (Map<String, dynamic> message) async {
+      }, onNotifyMessageUnShow: (Map<String, dynamic> message) async {
         print("flutter onNotifyMessageUnShow: $message");
         // setState(() {
         //   debugLable = "flutter onNotifyMessageUnShow: $message";
@@ -99,8 +107,59 @@ class SCJPush {
   }
 
   /// 获取RegistrationID
-  static Future<String> getRegistrationID() async{
+  static Future<String> getRegistrationID() async {
     JPush jPush = JPush();
     return jPush.getRegistrationID();
+  }
+
+  /// APP活跃在前台时是否展示通知
+  static setUnShowAtTheForeground(JPush jPush) {
+    jPush.setUnShowAtTheForeground(unShow: true);
+  }
+
+  /// 处理推送
+  static dealJPush(var message) {
+    if (message.containsKey('extras')) {
+      var extras = message['extras'];
+      var alert = message['alert'];
+      int type = -1;
+      String url = '';
+      String title = '';
+      if (alert.containsKey('title')) {
+        title = alert['title'];
+      }
+      if (extras.containsKey['type']) {
+        type = extras['type'];
+      }
+      if (extras.containsKey['url']) {
+        url = extras['url'];
+      }
+
+      if (url.isNotEmpty) {
+        detailAction(title, url);
+      }
+    }
+  }
+
+  /// 详情
+  static detailAction(String title, String url) async {
+    if (Platform.isAndroid) {
+      String realUrl =
+          SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
+
+      /// 调用Android WebView
+      var params = {"title": title, "url": realUrl};
+      var channel = SCScaffoldManager.flutterToNative;
+      var result =
+          await channel.invokeMethod(SCScaffoldManager.android_webview, params);
+    } else {
+      String realUrl =
+          SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+        "title": title,
+        "url": realUrl,
+        "needJointParams": false
+      })?.then((value) {});
+    }
   }
 }
