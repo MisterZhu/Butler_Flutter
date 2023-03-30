@@ -78,7 +78,8 @@ class SCHttpManager {
 
   /// 设置代理
   setProxy(HttpClient client) {
-    if (SCConfig.env != SCEnvironment.production || SCConfig.isSupportProxyForProduction) {
+    if (SCConfig.env != SCEnvironment.production ||
+        SCConfig.isSupportProxyForProduction) {
       if (SCSpUtil.getKeys().contains(SCKey.kProxyMap)) {
         var map = SCSpUtil.getMap(SCKey.kProxyMap);
         client.findProxy = (uri) {
@@ -189,9 +190,8 @@ class SCHttpManager {
     bool status = false;
 
     try {
-      response = await _dio!.put(url,
-          data: params,
-          options: headers == null ? null : options);
+      response = await _dio!
+          .put(url, data: params, options: headers == null ? null : options);
       status = true;
     } catch (e) {
       status = false;
@@ -223,9 +223,8 @@ class SCHttpManager {
     bool status = false;
 
     try {
-      response = await _dio!.delete(url,
-          data: params,
-          options: headers == null ? null : options);
+      response = await _dio!
+          .delete(url, data: params, options: headers == null ? null : options);
       status = true;
     } catch (e) {
       status = false;
@@ -247,19 +246,18 @@ class SCHttpManager {
   /// 通用的PATCH请求
   patch(
       {required String url,
-        dynamic params,
-        Map<String, dynamic>? headers,
-        Function(dynamic value)? success,
-        Function(dynamic value)? failure}) async {
+      dynamic params,
+      Map<String, dynamic>? headers,
+      Function(dynamic value)? success,
+      Function(dynamic value)? failure}) async {
     Options options = Options(headers: headers);
     late Response response;
     late Object exception;
     bool status = false;
 
     try {
-      response = await _dio!.patch(url,
-          data: params,
-          options: headers == null ? null : options);
+      response = await _dio!
+          .patch(url, data: params, options: headers == null ? null : options);
       status = true;
     } catch (e) {
       status = false;
@@ -440,7 +438,9 @@ doError(e) {
 /// token失效
 accountExpired() {
   log('登陆已失效，清空用户数据，刷新本地缓存用户数据');
-  SCLoadingUtils.failure(text: SCDefaultValue.accountExpiredMessage);
-  SCScaffoldManager.instance.cacheUserIsLogin(false);
-  SCScaffoldManager.instance.logout(isAfterTip: true);
+  SCLoadingUtils.failure(text: SCDefaultValue.accountExpiredMessage)
+      .then((value) {
+    SCScaffoldManager.instance.cacheUserIsLogin(false);
+    SCScaffoldManager.instance.logout(isAfterTip: true);
+  });
 }

@@ -16,6 +16,9 @@ class SCUrl {
   /// 退出登录url
   static const String kLogoutUrl = '/api/user/loginOut';
 
+  /// 绑定极光RegistrationId
+  static const String kBindJPushRegistrationIdUrl = '/api/user/bindRegistrationId';
+
   /************************* 工作台 *************************/
 
   /// 用户信息url

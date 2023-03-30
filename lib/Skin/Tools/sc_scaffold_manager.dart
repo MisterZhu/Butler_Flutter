@@ -5,12 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:jpush_flutter/jpush_flutter.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartcommunity/Constants/sc_flutter_key.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_default_config_model.dart';
+import 'package:smartcommunity/Utils/JPush/sc_jpush.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../Constants/sc_default_value.dart';
 import '../../Constants/sc_key.dart';
@@ -65,6 +67,9 @@ class SCScaffoldManager {
   static String android_webview = "android_webview";
   static String android_baidu_ocr = "android_baidu_ocr";
 
+  /// 极光
+  static late JPush _jPush;
+
   SCScaffoldManager._internal() {
     _scaffoldModel = SCScaffoldModel();
     _user = SCUserModel();
@@ -91,6 +96,8 @@ class SCScaffoldManager {
   double get latitude => _latitude;
 
   double get longitude => _longitude;
+
+  JPush get jPush => _jPush;
 
   /// 初始化
   Future initBase() {
@@ -139,6 +146,11 @@ class SCScaffoldManager {
     _longitude = longitude;
   }
 
+  /// set jPush
+  set jPush(JPush jPush) {
+    _jPush = jPush;
+  }
+
   /// 初始化scaffold数据
   Future initScaffold() async {
     _getXTagList = [];
@@ -146,6 +158,9 @@ class SCScaffoldManager {
     _eventBus = EventBus();
 
     bool hasScaffoldKey = _preferences.containsKey(SkinDefaultKey.scaffold_key);
+
+    /// 是否同意用户协议
+    bool agreeProtocol = _preferences.containsKey(SCKey.isShowPrivacyAlert);
 
     if (hasScaffoldKey) {
       String? scaffoldJsonString =
@@ -166,7 +181,15 @@ class SCScaffoldManager {
         SCHexColor(_scaffoldModel.titleColor ?? scaffoldJson['titleColor']));
 
     getUserData();
+    initJPush(agreeProtocol);
     return _preferences;
+  }
+
+  /// 初始化极光
+  initJPush(bool agreeProtocol) {
+    if (agreeProtocol) {
+      SCJPush.initJPush();
+    }
   }
 
   /// 获取Router的BasePath
@@ -235,6 +258,7 @@ class SCScaffoldManager {
       'Content-Type': 'application/json; charset=utf-8',
       'client': SCDefaultValue.client
     });
+    SCJPush.deleteAlias();
 
     bool isAfterTipStatus = isAfterTip ?? false;
 
