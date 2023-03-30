@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -16,12 +17,12 @@ import '../Router/sc_router_path.dart';
 class SCJPush {
   /// 初始化极光推送
   static initJPush() {
-    JPush jPush = JPush();
-    jPushEventHandler(jPush);
+    JPush jPush = new JPush();
+    SCScaffoldManager.instance.jPush = jPush;
     setupJPush(jPush);
+    jPushEventHandler(jPush);
     clearNotification(jPush);
-    clearBadge(jPush);
-    setUnShowAtTheForeground(jPush);
+    clearBadge();
   }
 
   /// 设置极光配置
@@ -86,14 +87,12 @@ class SCJPush {
 
   /// 绑定别名
   static bindAlias(String alias) {
-    JPush jPush = JPush();
-    jPush.setAlias(alias);
+    SCScaffoldManager.instance.jPush.setAlias(alias);
   }
 
   /// 删除别名
   static Future<Map<dynamic, dynamic>> deleteAlias() {
-    JPush jPush = JPush();
-    return jPush.deleteAlias();
+    return SCScaffoldManager.instance.jPush.deleteAlias();
   }
 
   /// 清除通知
@@ -102,14 +101,13 @@ class SCJPush {
   }
 
   /// 清空Badge
-  static clearBadge(JPush jPush) {
-    jPush.setBadge(0);
+  static clearBadge() {
+    SCScaffoldManager.instance.jPush.setBadge(0);
   }
 
   /// 获取RegistrationID
   static Future<String> getRegistrationID() async {
-    JPush jPush = JPush();
-    return jPush.getRegistrationID();
+    return SCScaffoldManager.instance.jPush.getRegistrationID();
   }
 
   /// APP活跃在前台时是否展示通知
@@ -119,22 +117,27 @@ class SCJPush {
 
   /// 处理推送
   static dealJPush(var message) {
+    clearBadge();
     if (message.containsKey('extras')) {
-      var extras = message['extras'];
-      var alert = message['alert'];
+      var extras;
+      var alert = message['aps']['alert'];
       int type = -1;
       String url = '';
       String title = '';
+      if (Platform.isIOS) {
+        extras = message['extras'];
+      } else {
+        extras = jsonDecode(message['extras']['cn.jpush.android.EXTRA']);
+      }
       if (alert.containsKey('title')) {
         title = alert['title'];
       }
-      if (extras.containsKey['type']) {
+      if (extras.containsKey('type')) {
         type = extras['type'];
       }
-      if (extras.containsKey['url']) {
+      if (extras.containsKey('url')) {
         url = extras['url'];
       }
-
       if (url.isNotEmpty) {
         detailAction(title, url);
       }
