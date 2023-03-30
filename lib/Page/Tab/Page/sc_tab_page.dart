@@ -166,6 +166,11 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
     List<SCMenuItemModel> list =
         testList.map((e) => SCMenuItemModel.fromJson(e)).toList();
 
+    /// todo 亚运村项目临时修改
+    if (SCConfig.yycTenantId() == (SCScaffoldManager.instance.defaultConfigModel?.tenantId ?? '') && SCScaffoldManager.instance.user.mobileNum != '13695805827') {
+      list = [];
+    }
+
     SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
       SCDialogUtils().showCustomBottomDialog(
           isDismissible: true,
