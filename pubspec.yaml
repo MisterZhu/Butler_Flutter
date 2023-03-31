@@ -114,6 +114,7 @@ dependencies:
   photo_view: ^0.14.0
   # 极光推送 https://pub.flutter-io.cn/packages/jpush_flutter/install
   jpush_flutter: 2.3.6
+  jmessage_flutter: 2.0.7
   # 设置 https://pub.dev/packages/app_settings/install
   app_settings: ^4.2.0
   # 私有UI库

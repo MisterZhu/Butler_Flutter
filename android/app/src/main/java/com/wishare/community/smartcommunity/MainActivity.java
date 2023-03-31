@@ -60,7 +60,7 @@ public class MainActivity extends FlutterActivity {
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
 
-        GeneratedPluginRegistrant.registerWith(flutterEngine);
+//        GeneratedPluginRegistrant.registerWith(flutterEngine);
 
         // flutter 调用 Android
         new MethodChannel(flutterEngine.getDartExecutor(), Constant.FlutterChannelEnum.kFlutterToNative).setMethodCallHandler(new MethodChannel.MethodCallHandler() {

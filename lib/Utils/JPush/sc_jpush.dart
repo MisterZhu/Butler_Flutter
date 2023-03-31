@@ -19,8 +19,8 @@ class SCJPush {
   static initJPush() {
     JPush jPush = new JPush();
     SCScaffoldManager.instance.jPush = jPush;
-    setupJPush(jPush);
     jPushEventHandler(jPush);
+    setupJPush(jPush);
     clearNotification(jPush);
     clearBadge();
   }
@@ -120,24 +120,29 @@ class SCJPush {
     clearBadge();
     if (message.containsKey('extras')) {
       var extras;
-      var alert = message['aps']['alert'];
+      var alert;
       int type = -1;
       String url = '';
       String title = '';
+      print("1111111");
       if (Platform.isIOS) {
         extras = message['extras'];
+        alert = message['aps']['alert'];
+        if (alert.containsKey('title')) {
+          title = alert['title'];
+        }
       } else {
         extras = jsonDecode(message['extras']['cn.jpush.android.EXTRA']);
+        title = message['title'];
       }
-      if (alert.containsKey('title')) {
-        title = alert['title'];
-      }
+      print("222222222===$extras");
       if (extras.containsKey('type')) {
         type = extras['type'];
       }
       if (extras.containsKey('url')) {
         url = extras['url'];
       }
+      print("3333333:url===$url");
       if (url.isNotEmpty) {
         detailAction(title, url);
       }
