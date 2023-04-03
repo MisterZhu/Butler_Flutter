@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:jpush_flutter/jpush_flutter.dart';
+import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Constants/sc_flutter_key.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
 
 import '../../Constants/sc_default_value.dart';
@@ -124,7 +126,6 @@ class SCJPush {
       int type = -1;
       String url = '';
       String title = '';
-      print("1111111");
       if (Platform.isIOS) {
         extras = message['extras'];
         alert = message['aps']['alert'];
@@ -135,14 +136,12 @@ class SCJPush {
         extras = jsonDecode(message['extras']['cn.jpush.android.EXTRA']);
         title = message['title'];
       }
-      print("222222222===$extras");
       if (extras.containsKey('type')) {
         type = extras['type'];
       }
       if (extras.containsKey('url')) {
         url = extras['url'];
       }
-      print("3333333:url===$url");
       if (url.isNotEmpty) {
         detailAction(title, url);
       }
@@ -156,10 +155,23 @@ class SCJPush {
           SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
 
       /// 调用Android WebView
-      var params = {"title": title, "url": realUrl};
-      var channel = SCScaffoldManager.flutterToNative;
-      var result =
-          await channel.invokeMethod(SCScaffoldManager.android_webview, params);
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+        "title": title,
+        "url": realUrl,
+        "needJointParams": false
+      })?.then((value) {
+        if (value != null) {
+          var params = jsonDecode(value);
+          if (params.containsKey("orderId")) {
+            SCLoadingUtils.show();
+            Future.delayed(const Duration(milliseconds: 1000), () {
+              SCLoadingUtils.hide();
+              SCRouterHelper.pathPage(SCRouterPath.addOutboundPage,
+                  {"isLL": true, "llData": params});
+            });
+          }
+        }
+      });
     } else {
       String realUrl =
           SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
@@ -167,7 +179,21 @@ class SCJPush {
         "title": title,
         "url": realUrl,
         "needJointParams": false
-      })?.then((value) {});
+      })?.then((value) {
+        if (value != null && value is Map) {
+          if (value.containsKey("key")) {
+            String key = value['key'];
+            if (key == SCFlutterKey.kGotoMaterialKey) {
+              SCLoadingUtils.show();
+              Future.delayed(const Duration(milliseconds: 1000), () {
+                SCLoadingUtils.hide();
+                SCRouterHelper.pathPage(SCRouterPath.addOutboundPage,
+                    {"isLL": true, "llData": jsonDecode(value['data'])});
+              });
+            }
+          }
+        }
+      });
     }
   }
 }
