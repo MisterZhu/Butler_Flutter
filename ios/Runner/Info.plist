@@ -111,7 +111,7 @@
 	<key>NSCalendarsUsageDescription</key>
 	<string>允许App访问日历，您将可以使用提醒功能</string>
 	<key>NSCameraUsageDescription</key>
-	<string>允许App访问相机，您将可以在App中拍摄照片、视频、使用扫一扫功能。</string>
+	<string>允许App访问相机，您将可以在App中拍摄照片、视频、使用扫一扫、更换头像等功能。</string>
 	<key>NSContactsUsageDescription</key>
 	<string>允许App访问通讯录，帮助你更快的新增用户信息</string>
 	<key>NSLocalNetworkUsageDescription</key>
@@ -125,9 +125,9 @@
 	<key>NSMotionUsageDescription</key>
 	<string>需要您的同意, APP才能访问运动与健身</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>允许App访问相册，您将可以上传相册照片及保存照片到相册。</string>
+	<string>允许App访问相册，您将可以更换头像、上传相册照片及保存照片到相册。</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>允许App访问相册，您将可以上传相册照片及保存照片到相册。</string>
+	<string>允许App访问相册，您将可以更换头像、上传相册照片及保存照片到相册。</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>APP需要您的同意，才能进行语音识别，以便于获取更好的使用体验</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
