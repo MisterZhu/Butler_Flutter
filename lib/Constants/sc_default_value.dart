@@ -30,6 +30,12 @@ class SCDefaultValue {
   /// 微信universalLink
   static const String kWeChatUniversalLink = "https://90ebce5254556de5a7c4db4334ced558.share2dlink.com/";
 
+  /// 极光appKey
+  static const String kJPushAppKey = "f02a45b9542a99cd79446472";
+
+  /// 极光channel
+  static const String kJPushChannel = "WishareAppStore";
+
   /// 网络超时时间
   static const int timeOut = 30000;
 
@@ -80,6 +86,9 @@ class SCDefaultValue {
 
   /// 定位权限弹窗提示内容
   static const String locationAlertMessage = "允许“$appName”访问您的位置权限，用于您快速定位获取周边服务";
+
+  /// 设置通知弹窗提示内容
+  static const String setNotificationAlertMessage = "允许“$appName”访问您的通知权限，用于“$appName”向您提供消息推送服务";
 
   /// 输入姓名提示
   static const String inputNameTip = "请输入姓名";

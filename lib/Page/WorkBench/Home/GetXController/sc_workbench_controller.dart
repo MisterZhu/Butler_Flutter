@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Network/sc_url.dart';
@@ -14,12 +14,13 @@ import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_default_config_model
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_model.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
-import 'package:smartcommunity/Utils/Location/sc_location_utils.dart';
 import 'package:smartcommunity/Utils/Permission/sc_permission_utils.dart';
 
 import '../../../../Constants/sc_asset.dart';
+import '../../../../Constants/sc_key.dart';
 import '../../../../Utils/Location/sc_location_model.dart';
 import '../../../ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
+import '../../../../Utils/sc_sp_utils.dart';
 import '../Model/sc_work_order_model.dart';
 
 /// 工作台Controller
@@ -1004,17 +1005,36 @@ class SCWorkBenchController extends GetxController {
   }
 
   /// 获取定位
-  location() {
-    SCPermissionUtils.startLocationWithPrivacyAlert(completionHandler: (dynamic result, SCLocationModel? model) {
-      print("定位结果:$result");
-      print("定位结果模型:${model?.toJson()}");
-    });
-    // SCLocationUtils.locationOnlyPosition((position, status) {
-    //   if (status == 1) {
-    //     SCScaffoldManager.instance.longitude = position?.longitude ?? 0;
-    //     SCScaffoldManager.instance.latitude = position?.latitude ?? 0;
-    //   }
-    // });
+  location() async{
+    bool isShowAlert = SCSpUtil.getBool(SCKey.kIsShowSetNotificationAlert);
+    PermissionStatus permissionStatus = await SCPermissionUtils.notification();
+    if (permissionStatus != PermissionStatus.granted && !isShowAlert) {
+      SCPermissionUtils.notificationAlert(completionHandler: (success) {
+        SCPermissionUtils.startLocationWithPrivacyAlert(completionHandler: (dynamic result, SCLocationModel? model) {
+          print("定位结果:$result");
+          print("定位结果模型:${model?.toJson()}");
+          int status = result['status'];
+          if (status == 1) {
+            double longitude = result['longitude'];
+            double latitude = result['latitude'];
+            SCScaffoldManager.instance.longitude = longitude;
+            SCScaffoldManager.instance.latitude = latitude;
+          }
+        });
+      });
+    } else {
+      SCPermissionUtils.startLocationWithPrivacyAlert(completionHandler: (dynamic result, SCLocationModel? model) {
+        print("定位结果:$result");
+        print("定位结果模型:${model?.toJson()}");
+        int status = result['status'];
+        if (status == 1) {
+          double longitude = result['longitude'] ?? 0.0;
+          double latitude = result['latitude'] ?? 0.0;
+          SCScaffoldManager.instance.longitude = longitude;
+          SCScaffoldManager.instance.latitude = latitude;
+        }
+      });
+    }
   }
 
   @override

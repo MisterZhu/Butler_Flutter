@@ -1,7 +1,6 @@
 
 import 'package:get/get.dart';
-
-import '../../../ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 
 /// listView-controller
 

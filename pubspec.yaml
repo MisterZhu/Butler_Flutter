@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.1+1
 
 environment:
   sdk: ">=2.17.1 <3.0.0"
@@ -112,6 +112,11 @@ dependencies:
   flutter_keyboard_visibility: ^5.4.0
   # 图片预览 https://pub.flutter-io.cn/packages/photo_view/install
   photo_view: ^0.14.0
+  # 极光推送 https://pub.flutter-io.cn/packages/jpush_flutter/install
+  jpush_flutter: 2.3.6
+#  jmessage_flutter: 2.0.7
+  # 设置 https://pub.dev/packages/app_settings/install
+  app_settings: ^4.2.0
   # 私有UI库
 #  sc_uikit:
 #    path: D:\workspace\flutterWorkspace\projectWorkspcae\sc_uikit
