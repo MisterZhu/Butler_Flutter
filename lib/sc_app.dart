@@ -48,6 +48,7 @@ void startApp() async {
     getPages: SCRouterPages.getPages,
     initialRoute: basePath,
     initialBinding: SCAllBinding(),
+    defaultTransition: Transition.cupertino,
     builder: EasyLoading.init(builder: (context, widget) {
       return MediaQuery(
         // 设置文字大小不随系统设置改变
