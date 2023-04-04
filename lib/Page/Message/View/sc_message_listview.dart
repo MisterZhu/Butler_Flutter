@@ -44,6 +44,8 @@ class SCMessageListView extends StatelessWidget {
             title: '交易提醒标题最长是否',
             icon: SCAsset.iconMessageType,
             time: '2023-01-22',
+            isUnread: index == 0 ? true: false,
+            showMoreBtn: false,
             content: '订单状态更新',
             contentDesc: '交易金额',
             contentIcon: SCAsset.iconMessageContentDefault,
