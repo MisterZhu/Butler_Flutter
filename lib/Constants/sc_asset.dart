@@ -75,6 +75,10 @@ class SCAsset {
   /// 首页-占位图
   static const String iconWorkBenchEmpty = "images/common/icon_work_bench_empty.png";
 
+  /// 首页-任务筛选
+  static const String iconWorkBenchTaskSift = "images/common/icon_task_sift.png";
+
+
   /***********************  首页  ************************/
   /// 首页弹窗-关闭icon
   static const String iconHomeAlertClose = "images/home/icon_alert_close.png";

@@ -23,6 +23,7 @@ import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../Model/sc_home_task_model.dart';
 import '../View/Alert/sc_task_module_alert.dart';
+import '../View/Alert/sc_task_sift_alert.dart';
 
 /// 工作台-page
 
@@ -44,7 +45,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   late SCWorkBenchListViewController processingController;
 
   /// tab-title
-  List<String> tabTitleList = ['待处理', '处理中'];
+  List<String> tabTitleList = ['我执行的(0)', '我关注的(0)', '我创建的(0)', '抢单大厅(0)'];
 
   /// tabController
   late TabController tabController;
@@ -142,16 +143,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
                 doingController: processingController,
                 height: constraints.maxHeight,
                 tabTitleList: tabTitleList,
-                classificationList: workBenchController.plateList,
                 tabController: tabController,
-                tagAction: (index) {
-                  if (workBenchController.currentPlateIndex != index) {
-                    workBenchController.updatePlateIndex(index);
-                  }
-                },
-                menuTap: () {
-                  showTaskAlert();
-                },
                 onRefreshAction: () {
                   workBenchController.loadData();
                 },
@@ -173,6 +165,12 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
                 headerAction: () {
                   userInfoAction();
                 },
+                searchAction: () {
+                  searchAction();
+                },
+                siftAction: () {
+                  siftAction();
+                },
                 verificationDetailAction: (SCVerificationOrderModel model) {
                   verificationDetailAction(model);
                 },
@@ -183,28 +181,6 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
             });
       }),
     );
-  }
-
-  /// 弹出任务模块弹窗
-  showTaskAlert() {
-    List<SCHomeTaskModel> list = [];
-    for (int i=0; i<workBenchController.plateList.length; i++) {
-      var map = workBenchController.plateList[i];
-      list.add(SCHomeTaskModel.fromJson({"name" : map['title'], "id" : "${map["type"]}", "isSelect" : i == workBenchController.currentPlateIndex}));
-    }
-    SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-      SCDialogUtils().showCustomBottomDialog(
-          isDismissible: true,
-          context: context,
-          widget: SCTaskModuleAlert(
-            title: '任务板块',
-            list: list,
-            currentIndex: workBenchController.currentPlateIndex,
-            closeTap: (SCHomeTaskModel model, int index) {
-              workBenchController.updatePlateIndex(index);
-            },
-          ));
-    });
   }
 
   /// 详情
@@ -314,7 +290,9 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   }
 
   /// 消息
-  messageAction() {}
+  messageAction() {
+    SCRouterHelper.pathPage(SCRouterPath.messagePage, null);
+  }
 
   /// 卡片详情
   cardDetailAction(int index) {}
@@ -322,6 +300,36 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   /// 用户信息
   userInfoAction() {
     SCRouterHelper.pathPage(SCRouterPath.personalInfoPath, null);
+  }
+
+  /// 点击搜索
+  searchAction() {
+
+  }
+
+  /// 点击筛选
+  siftAction() {
+    SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+      SCDialogUtils().showCustomBottomDialog(
+          isDismissible: true,
+          context: context,
+          widget: SCTaskSiftAlert(
+            myTaskList: workBenchController.myTaskList,
+            taskTypeList: workBenchController.taskTypeList,
+            selectTaskList: workBenchController.myTaskSelectList,
+            selectTypeList: workBenchController.taskTypeSelectList,
+            resetAction: () {
+              workBenchController.updateMyTaskSelectList([]);
+              workBenchController.updateTaskTypeSelectList([]);
+              Navigator.of(context).pop();
+            },
+            sureAction: (list1, list2) {
+              workBenchController.updateMyTaskSelectList(list1);
+              workBenchController.updateTaskTypeSelectList(list2);
+              Navigator.of(context).pop();
+            },
+          ));
+    });
   }
 
   /// 通知

@@ -26,6 +26,7 @@ import '../Model/sc_work_order_model.dart';
 /// 工作台Controller
 
 class SCWorkBenchController extends GetxController {
+
   String pageName = '';
 
   String tag = '';
@@ -42,14 +43,17 @@ class SCWorkBenchController extends GetxController {
   /// 处理中工单 数据
   List processingDataList = [];
 
-  /// 进行中数量
-  int processOrder = 0;
+  /// 抢单大厅数量
+  int orderNum = 10;
 
-  /// 新增数量
-  int newOrder = 0;
+  /// 今日任务数量
+  int taskNum = 20;
 
-  /// 我的关注数量
-  int myAttention = 0;
+  /// 收缴率
+  num collectionRate = 88.8;
+
+  /// 今日服务业主数量
+  int serviceNum = 2;
 
   List numDataList = [];
 
@@ -71,22 +75,37 @@ class SCWorkBenchController extends GetxController {
   /// 当前板块index,0-工单处理，1-实地核验，2-订单处理
   int currentPlateIndex = 0;
 
-  /// 板块数据源
-  List plateList = [
-    {"type": 0, "title": "工单处理"},
-    {"type": 1, "title": "实地核验"},
-    {"type": 2, "title": "订单处理"},
-    {"type": 3, "title": "物资入库"},
-    {"type": 4, "title": "物资出库"},
-    {"type": 5, "title": "物资报损"},
-    {"type": 6, "title": "物资调拨"},
-  ];
+  /// 我的任务数组
+  List myTaskList = [];
+
+  /// 任务类型数组
+  List taskTypeList = [];
+
+  /// 我的任务选中的数组
+  List myTaskSelectList = [];
+
+  /// 任务类型选中的数组
+  List taskTypeSelectList = [];
 
   @override
   onInit() {
     super.onInit();
+    myTaskList = ['全部', '我执行的', '抢单大厅', '我关注的', '我创建的', '我经办的',];
+    taskTypeList = ['全部', '工单服务', '增值服务', '审批中心', '巡查任务', '收费账单', '业主拜访'];
     location();
     loadData();
+  }
+
+  /// 更新选中的我的任务
+  updateMyTaskSelectList(List list) {
+    myTaskSelectList = list;
+    update();
+  }
+
+  /// 更新选中的任务类型
+  updateTaskTypeSelectList(List list) {
+    taskTypeSelectList = list;
+    update();
   }
 
   /// 更新当前工单index
@@ -206,19 +225,20 @@ class SCWorkBenchController extends GetxController {
   updateNumData() {
     numDataList = [
       {
-        'number': newOrder,
-        'description': '今日新增',
-        'iconUrl': SCAsset.iconTodayAdd
+        'number': orderNum,
+        'description': '抢单大厅',
       },
       {
-        'number': processOrder,
-        'description': '进行中',
-        'iconUrl': SCAsset.iconDoing
+        'number': taskNum,
+        'description': '今日任务',
       },
       {
-        'number': myAttention,
-        'description': '我的关注',
-        'iconUrl': SCAsset.iconLike
+        'number': collectionRate,
+        'description': '收缴率',
+      },
+      {
+        'number': serviceNum,
+        'description': '今日服务业主',
       }
     ];
     update();
@@ -319,8 +339,8 @@ class SCWorkBenchController extends GetxController {
         url: SCUrl.kWorkOrderNumberUrl,
         params: null,
         success: (value) {
-          processOrder = value['processOrder'] ?? 0;
-          newOrder = value['newOrder'] ?? 0;
+          // processOrder = value['processOrder'] ?? 0;
+          // newOrder = value['newOrder'] ?? 0;
           updateNumData();
         });
   }

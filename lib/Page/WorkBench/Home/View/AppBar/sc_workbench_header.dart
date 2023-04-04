@@ -21,17 +21,14 @@ class SCWorkBenchHeader extends StatelessWidget {
     required this.height,
     required this.tabController,
     required this.tabTitleList,
-    required this.classificationList,
     required this.currentTabIndex,
-    required this.currentTagIndex,
     this.switchSpaceAction,
     this.headerAction,
     this.searchAction,
     this.scanAction,
     this.messageAction,
     this.cardDetailAction,
-    this.tagMenuAction,
-    this.tagAction,
+    this.siftAction,
   }) : super(key: key);
 
   final SCWorkBenchController state;
@@ -45,14 +42,8 @@ class SCWorkBenchHeader extends StatelessWidget {
   /// tab标题list
   final List tabTitleList;
 
-  /// 分类list
-  final List classificationList;
-
   /// 当前tabIndex
   final int currentTabIndex;
-
-  /// 当前tagIndex
-  final int currentTagIndex;
 
   /// 切换空间
   final Function? switchSpaceAction;
@@ -72,11 +63,8 @@ class SCWorkBenchHeader extends StatelessWidget {
   /// 卡片详情
   final Function(int index)? cardDetailAction;
 
-  /// 标签-菜单点击
-  final Function? tagMenuAction;
-
   /// 点击标签
-  final Function(int index)? tagAction;
+  final Function()? siftAction;
 
   @override
   Widget build(BuildContext context) {
@@ -113,20 +101,21 @@ class SCWorkBenchHeader extends StatelessWidget {
               headerAction?.call();
             },
           ),
-          // const SizedBox(
-          //   height: 15.0,
-          // ),
-          // SCWorkBenchSearch(
-          //   searchAction: () {
-          //     searchAction?.call();
-          //   },
-          //   scanAction: () {
-          //     scanAction?.call();
-          //   },
-          //   messageAction: () {
-          //     messageAction?.call();
-          //   },
-          // ),
+          const SizedBox(
+            height: 7.0,
+          ),
+          SCWorkBenchSearch(
+            unreadNum: 10,
+            searchAction: () {
+              searchAction?.call();
+            },
+            scanAction: () {
+              scanAction?.call();
+            },
+            messageAction: () {
+              messageAction?.call();
+            },
+          ),
           const SizedBox(
             height: 22.0,
           ),
@@ -137,19 +126,14 @@ class SCWorkBenchHeader extends StatelessWidget {
             },
           ),
           const SizedBox(
-            height: 4.0,
+            height: 12.0,
           ),
           SCWorkBenchTabBar(
             tabController: tabController,
             tabTitleList: tabTitleList,
-            classificationList: classificationList,
             currentTabIndex: currentTabIndex,
-            currentTagIndex: currentTagIndex,
-            menuTap: () {
-              tagMenuAction?.call();
-            },
-            tagTap: (int index) {
-              tagAction?.call(index);
+            siftAction: () {
+              siftAction?.call();
             },
           )
         ],

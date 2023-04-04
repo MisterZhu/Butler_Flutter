@@ -20,7 +20,7 @@ class SCWorkBenchEmptyView extends StatelessWidget {
   /// listView
   Widget listView() {
     return ListView.separated(
-        padding: const EdgeInsets.only(top: 44.0),
+        padding: const EdgeInsets.only(top: 120.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
@@ -34,7 +34,7 @@ class SCWorkBenchEmptyView extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) {
           if (index == 0) {
             return const SizedBox(
-              height: 16.0,
+              height: 2.0,
             );
           } else {
             return const SizedBox();
@@ -47,22 +47,22 @@ class SCWorkBenchEmptyView extends StatelessWidget {
   Widget emptyIconCell() {
     return Image.asset(
       SCAsset.iconWorkBenchEmpty,
-      width: 143.0,
-      height: 143.0,
+      width: 120.0,
+      height: 120.0,
     );
   }
 
   /// title
   Widget titleCell() {
     return const Text(
-      '暂无内容',
+      '暂无任务',
       textAlign: TextAlign.center,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
           fontSize: SCFonts.f14,
           fontWeight: FontWeight.w400,
-          color: SCColors.color_B0B1B8),
+          color: SCColors.color_8D8E99),
     );
   }
 }
