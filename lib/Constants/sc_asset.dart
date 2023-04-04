@@ -75,7 +75,7 @@ class SCAsset {
   /// 首页-占位图
   static const String iconWorkBenchEmpty = "images/common/icon_work_bench_empty.png";
 
-  /***********************  首页  ************************/
+  /*********************** 首页 ************************/
   /// 首页弹窗-关闭icon
   static const String iconHomeAlertClose = "images/home/icon_alert_close.png";
 
@@ -85,7 +85,7 @@ class SCAsset {
   /// 首页-酒店icon
   static const String iconHotel = "images/home/icon_hotel.png";
 
-  /***********************  登录  ************************/
+  /*********************** 登录 ************************/
   /// 清除icon
   static const String iconLoginClear = "images/login/icon_login_clear.png";
   /// 底部icon
@@ -95,7 +95,7 @@ class SCAsset {
   /// 协议勾选框-选中
   static const String iconSelectRadio = "images/login/icon_radio_select.png";
 
-  /***********************  全部应用  ************************/
+  /*********************** 全部应用 ************************/
   /// 添加
   static const String iconEditAppAdd = "images/application/icon_application_add.png";
 
@@ -123,7 +123,7 @@ class SCAsset {
   /// 快捷报事
   static const String iconApplicationQuickReport = "images/application/icon_application_quick_report.png";
 
-  /// ****************  我的 ****************/
+  /**************** 我的 ****************/
   /// 背景图片
   static const String iconMineBgImage = "images/mine/icon_mine_bg_image.png";
   /// 默认头像
@@ -150,7 +150,7 @@ class SCAsset {
   /// 切换身份-箭头icon
   static const String iconSwitchIdentityArrow = "images/mine/icon_switch_identity_arrow.png";
 
-  /// ****************  入伙验房 ****************/
+  /**************** 入伙验房 ****************/
   /// 已开通
   static const String iconOpened = "images/houseInspect/icon_opened.png";
   /// 未开通
@@ -184,7 +184,7 @@ class SCAsset {
   /// 签名-返回按钮
   static const String iconInspectBack = "images/houseInspect/icon_circle_back.png";
 
-  /// ****************  物资入库 ****************/
+  /**************** 物资入库 ****************/
 
   /// 物资icon
   static const String iconMaterialIcon = "images/materialEntry/icon_material_icon.png";
@@ -226,7 +226,7 @@ class SCAsset {
   static const String iconTestMaterial = "images/materialEntry/icon_test_material.png";
 
 
-  /// ****************  物资出库 ****************/
+  /**************** 物资出库 ****************/
 
   /// 物资出库icon
   static const String iconMaterialOutbound = "images/materialOutbound/icon_material_outbound.png";
@@ -240,18 +240,18 @@ class SCAsset {
   /// 联系领用人icon
   static const String iconReceiverCall = "images/materialOutbound/icon_receiver_call.png";
 
-  /// ****************  物资报损 ****************/
+  /**************** 物资报损 ****************/
 
   /// 物资报损icon
   static const String iconMaterialFrmLoss = "images/materialFrmLoss/icon_material_frmLoss.png";
 
 
-  /// ****************  物资调拨 ****************/
+  /**************** 物资调拨 ****************/
 
   /// 物资调拨icon
   static const String iconMaterialTransfer = "images/materialTransfer/icon_material_transfer.png";
 
-  /// ****************  物资盘点 ****************/
+  /**************** 物资盘点 ****************/
 
   /// 物资调拨icon
   static const String iconMaterialCheck = "images/materialCheck/icon_material_check.png";
@@ -259,7 +259,7 @@ class SCAsset {
   /// 报损原因-已选择icon
   static const String iconFrmLossReasonSelected = "images/materialCheck/icon_frmLoss_reason_selected.png";
 
-  /// ****************  消息 ****************/
+  /**************** 消息 ****************/
 
   /// 消息-类型icon
   static const String iconMessageType = "images/message/icon_message_type.png";
@@ -279,7 +279,7 @@ class SCAsset {
   /// 消息列表-tab更多弹窗背景图
   static const String iconMessageMoreBg = "images/message/icon_message_more_dialog_bg.png";
 
-  /// ****************  在线监控 ****************/
+  /**************** 在线监控 ****************/
 
   /// 监控-筛选icon
   static const String iconMonitorStatusSift = "images/onlineMonitor/icon_monitor_status_sift.png";
@@ -293,5 +293,31 @@ class SCAsset {
   /// 监控列表-空白占位图icon
   static const String iconMonitorEmptyDefault = "images/onlineMonitor/icon_monitor_empty_default.png";
 
+  /**************** 空白占位图 ****************/
+  /// 开发中
+  static const String iconEmptyDeveloping = "images/empty/icon_empty_developing.svg";
 
+  /// 无记录
+  static const String iconEmptyRecord = "images/empty/icon_empty_record.svg";
+
+  /// 无缴费
+  static const String iconEmptyPayment = "images/empty/icon_empty_payment.svg";
+
+  /// 无商品
+  static const String iconEmptyProduct = "images/empty/icon_empty_product.svg";
+
+  /// 无视频
+  static const String iconEmptyVideo = "images/empty/icon_empty_video.svg";
+
+  /// 无网络
+  static const String iconEmptyNetwork = "images/empty/icon_empty_network.svg";
+
+  /// 无物品
+  static const String iconEmptyGoods = "images/empty/icon_empty_goods.svg";
+
+  /// 无消息
+  static const String iconEmptyMessage = "images/empty/icon_empty_message.svg";
+
+  /// 无优惠券
+  static const String iconEmptyCoupon = "images/empty/icon_empty_coupon.svg";
 }

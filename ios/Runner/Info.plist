@@ -17,6 +17,7 @@
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>zh</string>
+		<string>en</string>
 	</array>
 	<key>CFBundleName</key>
 	<string>smartcommunity</string>
