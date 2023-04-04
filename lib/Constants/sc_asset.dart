@@ -270,6 +270,15 @@ class SCAsset {
   /// 内容图片-默认占位图icon
   static const String iconMessageContentDefault = "images/message/icon_message_content_default.png";
 
+  /// 消息列表-空白占位图icon
+  static const String iconMessageEmpty = "images/message/icon_message_empty_default.png";
+
+  /// 消息列表-tab更多icon
+  static const String iconMessageTabMore = "images/message/icon_message_tab_more.png";
+
+  /// 消息列表-tab更多弹窗背景图
+  static const String iconMessageMoreBg = "images/message/icon_message_more_dialog_bg.png";
+
   /// ****************  在线监控 ****************/
 
   /// 监控-筛选icon

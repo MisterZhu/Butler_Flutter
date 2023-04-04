@@ -8,12 +8,23 @@ class SCMessageController extends GetxController {
 
   int pageNum = 1;
 
-  List<SCMessageModel> dataList = [];
+  int currentIndex = 0;
 
+  List<SCMessageModel> allDataList = [];
+
+  List<SCMessageModel> unreadDataList = [];
+
+  /// 是否显示更多弹窗，默认不显示
+  bool showMoreDialog = false;
   @override
   onInit() {
     super.onInit();
     loadData(isMore: false);
+  }
+
+  updateMoreDialogStatus() {
+    showMoreDialog = !showMoreDialog;
+    update();
   }
 
   loadData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
@@ -48,10 +59,10 @@ class SCMessageController extends GetxController {
           SCLoadingUtils.hide();
           List list = value['records'];
           if (isLoadMore == true) {
-            dataList.addAll(List<SCMessageModel>.from(
+            allDataList.addAll(List<SCMessageModel>.from(
                 list.map((e) => SCMessageModel.fromJson(e)).toList()));
           } else {
-            dataList = List<SCMessageModel>.from(
+            allDataList = List<SCMessageModel>.from(
                 list.map((e) => SCMessageModel.fromJson(e)).toList());
           }
           update();
