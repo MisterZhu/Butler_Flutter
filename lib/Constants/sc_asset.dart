@@ -259,6 +259,16 @@ class SCAsset {
   /// 报损原因-已选择icon
   static const String iconFrmLossReasonSelected = "images/materialCheck/icon_frmLoss_reason_selected.png";
 
+  /**************** 资产维保 ****************/
+  /// 上传文件icon
+  static const String iconUploadFile = "images/propertyMaintenance/icon_file_upload.png";
+
+  /// 文件icon
+  static const String iconGreyFile = "images/propertyMaintenance/icon_file_grey.png";
+
+  /// 删除文件icon
+  static const String iconFileDelete = "images/propertyMaintenance/icon_file_delete.png";
+
   /**************** 消息 ****************/
 
   /// 消息-类型icon

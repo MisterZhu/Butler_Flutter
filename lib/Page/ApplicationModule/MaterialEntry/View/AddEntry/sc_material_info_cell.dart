@@ -230,6 +230,11 @@ class SCMaterialInfoCell extends StatelessWidget {
     );
   }
 
+  /// 资产列表
+  Widget propertyView() {
+    return Container();
+  }
+
   Widget cell() {
     return Container(
       height: 100,

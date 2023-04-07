@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_enum.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_material_select_item.dart';
+import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/View/Add/sc_addfile_view.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../HouseInspect/View/sc_deliver_evidence_cell.dart';
@@ -23,8 +25,14 @@ class SCBasicInfoCell extends StatefulWidget {
   /// 需要添加图片
   final bool requiredPhotos;
 
+  /// 需要上传附件
+  final bool? requiredAttachment;
+
   /// 图片数组
   final List? files;
+
+  /// 附件数组
+  final List? attachmentList;
 
   /// 盘点范围数组
   final List? rangeList;
@@ -62,6 +70,8 @@ class SCBasicInfoCell extends StatefulWidget {
     this.selectRangeAction,
     required this.requiredRemark,
     required this.requiredPhotos,
+    this.requiredAttachment,
+    this.attachmentList,
     this.rangeList,
     this.rangeValue,
     this.disableEditRange
@@ -122,9 +132,7 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
               checkRangeItem(),
               inputItem(),
               photosItem(),
-              const SizedBox(
-                height: 12.0,
-              ),
+              filesItem(),
             ]));
   }
 
@@ -138,6 +146,8 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
           var dic = widget.list[index];
           bool disable = false;
           bool hideArrow = false;
+          TextInputType keyboardType;
+          List<TextInputFormatter> inputFormatters;
           if (dic.containsKey('disable')) {
             disable = dic['disable'];
           }
@@ -148,6 +158,16 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
           if (dic.containsKey('hideArrow')) {
             hideArrow = dic['hideArrow'];
           }
+          if (dic.containsKey('keyboard')) {
+            keyboardType = dic['keyboard'];
+          } else {
+            keyboardType = TextInputType.text;
+          }
+          if (dic.containsKey('inputFormatters')) {
+            inputFormatters = dic['inputFormatters'];
+          } else {
+            inputFormatters = [LengthLimitingTextInputFormatter(50)];
+          }
           return SCMaterialSelectItem(
             isRequired: dic['isRequired'],
             title: dic['title'],
@@ -155,6 +175,8 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
             content: dic['content'],
             disable: disable,
             hideArrow: hideArrow,
+            keyboardType: keyboardType,
+            inputFormatters: inputFormatters,
             selectAction: () {
               SCUtils().hideKeyboard(context: context);
               widget.selectAction?.call(index, dic['title']);
@@ -207,6 +229,18 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
             },
           )),
     );
+  }
+
+  /// 文件
+  Widget filesItem() {
+    bool requiredAttachment = widget.requiredAttachment ?? false;
+    if (requiredAttachment) {
+      return const Padding(padding: EdgeInsets.only(bottom: 12.0), child: SCAddFileView(),);
+    } else {
+      return const SizedBox(
+        height: 12.0,
+      );
+    }
   }
 
   /// line

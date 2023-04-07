@@ -33,6 +33,12 @@ class SCMaterialSelectItem extends StatefulWidget {
   /// 隐藏详情icon
   final bool? hideArrow;
 
+  /// 键盘类型
+  final TextInputType? keyboardType;
+
+  /// inputFormatters
+  final List<TextInputFormatter>? inputFormatters;
+
   SCMaterialSelectItem({Key? key,
     required this.isRequired,
     required this.title,
@@ -41,7 +47,9 @@ class SCMaterialSelectItem extends StatefulWidget {
     this.selectAction,
     this.inputNameAction,
     this.disable,
-    this.hideArrow
+    this.hideArrow,
+    this.keyboardType,
+    this.inputFormatters,
   }) : super(key: key);
 
 
@@ -177,7 +185,7 @@ class SCMaterialSelectItemState extends State<SCMaterialSelectItem> {
       cursorColor: SCColors.color_1B1C33,
       cursorWidth: 2,
       focusNode: node,
-      inputFormatters: [
+      inputFormatters: widget.inputFormatters ?? [
         LengthLimitingTextInputFormatter(50),
       ],
       decoration: const InputDecoration(
@@ -198,7 +206,7 @@ class SCMaterialSelectItemState extends State<SCMaterialSelectItem> {
         widget.inputNameAction?.call(value);
 
       },
-      keyboardType: TextInputType.text,
+      keyboardType: widget.keyboardType ?? TextInputType.text,
       keyboardAppearance: Brightness.light,
       textInputAction: TextInputAction.done,
     );

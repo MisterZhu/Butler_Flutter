@@ -44,7 +44,7 @@ class SCRouterPath {
   /// 抓包设置
   static String proxyPage = "/lib/Page/Mine/Home/Page/sc_proxy_page";
 
-  /// *************************** 入伙验房 ******************************/
+  /*************************** 入伙验房 ******************************/
 
   /// 选择房号
   static String houseInspectSelectPath = "/lib/Page/ApplicationModule/Page/sc_house_inspect_select_page";
@@ -70,7 +70,7 @@ class SCRouterPath {
   /// 签名
   static String signaturePage = "/lib/Page/HouseInspect/Page/sc_house_inspect_signature_page";
 
-  /// *************************** 物资入库 ******************************/
+  /*************************** 物资入库 ******************************/
 
   /// 物资入库
   static String materialEntryPage = "/lib/Page/MaterialEntry/Page/sc_material_entry_page";
@@ -96,7 +96,7 @@ class SCRouterPath {
   /// 采购单选择物资
   static String purchaseSelectMaterialPage = "/lib/Page/materialEntry/Page/sc_purchase_selectmaterial_page";
 
-  /// *************************** 物资出库 ******************************/
+  /*************************** 物资出库 ******************************/
 
   /// 物资出库
   static String materialOutboundPage = "/lib/Page/MaterialOutbound/Page/sc_material_outbound_page";
@@ -110,7 +110,7 @@ class SCRouterPath {
   /// 出库详情
   static String outboundDetailPage = "/lib/Page/MaterialOutbound/Page/sc_material_outbound_detail_page";
 
-  /// *************************** 物资报损 ******************************/
+  /*************************** 物资报损 ******************************/
 
   /// 物资报损
   static String materialFrmLossPage = "/lib/Page/MaterialFrmLoss/Page/sc_material_frmLoss_page";
@@ -121,7 +121,7 @@ class SCRouterPath {
   /// 报损详情
   static String frmLossDetailPage = "/lib/Page/MaterialFrmLoss/Page/sc_material_frmLoss_detail_page";
 
-  /// *************************** 物资调拨 ******************************/
+  /*************************** 物资调拨 ******************************/
 
   /// 物资调拨
   static String materialTransferPage = "/lib/Page/MaterialTransfer/Page/sc_material_transfer_page";
@@ -132,7 +132,7 @@ class SCRouterPath {
   /// 调拨详情
   static String transferDetailPage = "/lib/Page/MaterialTransfer/Page/sc_material_transfer_detail_page";
 
-  /// *************************** 盘点任务 ******************************/
+  /*************************** 盘点任务 ******************************/
 
   /// 盘点任务
   static String materialCheckPage = "/lib/Page/MaterialCheck/Page/sc_material_check_page";
@@ -150,7 +150,7 @@ class SCRouterPath {
   static String checkMaterialDetailPage = "/lib/Page/MaterialCheck/Page/sc_check_material_detail_page";
 
 
-  /// *************************** 领料物资出入任务 ******************************/
+  /*************************** 领料物资出入任务 ******************************/
 
   /// 领料出入库
   static String materialRequisitionPage = "/lib/Page/MaterialCheck/Page/sc_material_requisition_page";
@@ -166,12 +166,12 @@ class SCRouterPath {
   /// 固定资产报损详情
   static String propertyFrmLossDetailPage = "/lib/Page/PropertyFrmLoss/Page/sc_property_frmLoss_detail_page";
 
-/// *************************** 物资调拨 ******************************/
+ /*************************** 物资调拨 ******************************/
 
 
-  /// *************************** 资产 ******************************/
+  /*************************** 资产 ******************************/
 
- /*************************** 固定资产盘点 ******************************/
+  /*************************** 固定资产盘点 ******************************/
   /// 固定资产盘点
   static String fixedCheckPage = "/lib/Page/PropertyFrmLoss/Page/sc_fixedcheck_page";
 
@@ -181,21 +181,28 @@ class SCRouterPath {
   /// 固定资产盘点-物资详情
   static String fixedCheckMaterialDetailPage = "/lib/Page/PropertyFrmLoss/Page/sc_fixedcheck_material_detail_page";
 
-  ///*************************** 消息 ******************************/
+  /*************************** 消息 ******************************/
 
   /// 消息
   static String messagePage = "/lib/Page/Message/Page/sc_message_page";
 
-  ///*************************** 在线监控 ******************************/
+  /*************************** 在线监控 ******************************/
 
   /// 在线监控
   static String onlineMonitorPage = "/lib/Page/OnlineMonitor/Page/sc_online_monitor_page";
   /// 监控搜索
   static String monitorSearchPage = "/lib/Page/OnlineMonitor/Page/sc_monitor_search_page";
 
-  ///*************************** 任务 ******************************/
+  /*************************** 任务 ******************************/
 
   /// 任务
   static String taskPage = "/lib/Page/Message/Page/sc_task_page";
+
+  /*************************** 资产维保 ******************************/
+
+  /// 资产维保记录
+  static String propertyRecordPage = "/lib/Page/PropertyMaintenance/Page/sc_peroperty_record_page";
+  /// 资产维保登记
+  static String addPropertyRecordPage = "/lib/Page/PropertyMaintenance/Page/sc_add_propertymaintenance_page";
 
 }
