@@ -177,10 +177,18 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
           deleteAction(subIndex);
         },
         unifyPropertyCompanyAction: (bool value) {
-          widget.state.updateUnifyCompanyStatus(value);
+          if (value) {
+            unifyCompanyOrContentTip(0);
+          } else {
+            widget.state.updateUnifyCompanyStatus(value);
+          }
         },
         unifyPropertyContentAction: (bool value) {
-          widget.state.updateUnifyContentStatus(value);
+          if (value) {
+            unifyCompanyOrContentTip(1);
+          } else {
+            widget.state.updateUnifyContentStatus(value);
+          }
         },
         propertyCompanyAction: (String value) {
           widget.state.updateUnifyCompany(value);
@@ -717,5 +725,31 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
     }
 
     widget.state.updateSelectedMaterial(newList);
+  }
+
+  /// 统一维保单位或内容提示
+  unifyCompanyOrContentTip(int type) {
+    /// type,0-维保单位，1-维保内容
+    String content = type == 0 ? SCDefaultValue.unifyMaintenanceCompanyTip : SCDefaultValue.unifyMaintenanceContentTip;
+    SCDialogUtils.instance.showMiddleDialog(
+      context: context,
+      content: content,
+      customWidgetButtons: [
+        defaultCustomButton(context,
+            text: '取消',
+            textColor: SCColors.color_1B1C33,
+            fontWeight: FontWeight.w400),
+        defaultCustomButton(context,
+            text: '确定',
+            textColor: SCColors.color_4285F4,
+            fontWeight: FontWeight.w400, onTap: () async {
+              if (type == 0) {
+                widget.state.updateUnifyCompanyStatus(true);
+              } else {
+                widget.state.updateUnifyContentStatus(true);
+              }
+            }),
+      ],
+    );
   }
 }

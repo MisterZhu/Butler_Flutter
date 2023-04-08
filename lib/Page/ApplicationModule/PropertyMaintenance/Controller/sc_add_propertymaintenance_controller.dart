@@ -169,6 +169,9 @@ class SCAddPropertyMaintenanceController extends GetxController {
   /// 更新统一维保部门状态
   updateUnifyCompanyStatus(bool select) {
     unifyCompany = select;
+    for (SCMaterialListModel subModel in selectedList) {
+      subModel.unifyMaintenanceCompany = select;
+    }
     update();
   }
 
@@ -181,6 +184,9 @@ class SCAddPropertyMaintenanceController extends GetxController {
   /// 更新统一维保内容状态
   updateUnifyContentStatus(bool select) {
     unifyContent = select;
+    for (SCMaterialListModel subModel in selectedList) {
+      subModel.unifyMaintenanceContent = select;
+    }
     update();
   }
 
@@ -337,6 +343,13 @@ class SCAddPropertyMaintenanceController extends GetxController {
   /// 更新已选的物资数据
   updateSelectedMaterial(List<SCMaterialListModel> list) {
     selectedList = list;
+    for (SCMaterialListModel subModel in selectedList) {
+      subModel.unifyMaintenanceCompany = unifyCompany;
+      subModel.unifyMaintenanceContent = unifyContent;
+      subModel.maintenanceCompany = '';
+      subModel.maintenanceContent = '';
+      subModel.maintenancePrice = 0;
+    }
     update();
   }
 

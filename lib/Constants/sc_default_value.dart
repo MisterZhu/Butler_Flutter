@@ -251,6 +251,12 @@ class SCDefaultValue {
   /// 选择维保人tip
   static const String selectMaintenanceUser = "请选择维保负责人";
 
+  /// 统一维保单位tip
+  static const String unifyMaintenanceCompanyTip = "选择“是”，\n提交或暂存将统一维保单位";
+
+  /// 统一维保内容tip
+  static const String unifyMaintenanceContentTip = "选择“是”，\n提交或暂存将统一维保内容";
+
   /// 图片路径
   static const files = "/files/";
 }

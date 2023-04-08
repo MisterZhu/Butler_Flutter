@@ -289,6 +289,7 @@ class SCMaterialInfoCell extends StatelessWidget {
             list: list,
             isReturnEntry: isReturnEntry,
             isProperty: isProperty,
+            isPropertyMaintenance: true,
             deleteAction: (int index) {
               deleteAction?.call(index);
             },

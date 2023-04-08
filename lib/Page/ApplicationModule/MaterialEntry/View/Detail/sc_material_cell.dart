@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
+import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/View/Add/sc_propertyinfo_listview.dart';
 import 'package:smartcommunity/Utils/Strings/sc_string.dart';
 import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Network/sc_config.dart';
 import '../../Model/sc_material_list_model.dart';
 import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
+import '../AddEntry/sc_material_select_item.dart';
 import '../AddMaterial/sc_material_stepper.dart';
 
 /// 详情cell
@@ -34,6 +36,9 @@ const int scPropertyCellTypeDelete = 6;
 /// 领料归还入库-物资cell
 const int scReturnMaterialCellTypeNormal = 7;
 
+/// 资产维保-删除cell
+const int scPropertyMaintenanceCellTypeDelete = 8;
+
 /// 物资cell
 class SCMaterialCell extends StatefulWidget {
   const SCMaterialCell(
@@ -49,7 +54,7 @@ class SCMaterialCell extends StatefulWidget {
       this.status,
       this.materialType,
       this.assetDetailList,
-        this.fixedCheckResult,
+      this.fixedCheckResult,
       this.noNeedReturnAction})
       : super(key: key);
 
@@ -133,6 +138,8 @@ class SCMaterialCellState extends State<SCMaterialCell> {
       return propertyDeleteCell();
     } else if (widget.type == scReturnMaterialCellTypeNormal) {
       return returnMaterialCell();
+    } else if (widget.type == scPropertyMaintenanceCellTypeDelete) {
+      return propertyMaintenanceDeleteCell();
     } else {
       return normalCell();
     }
@@ -235,6 +242,54 @@ class SCMaterialCellState extends State<SCMaterialCell> {
                 width: 8.0,
               ),
               detailInfoView(),
+            ],
+          ),
+        ));
+  }
+
+  /// 资产维保-删除cell
+  Widget propertyMaintenanceDeleteCell() {
+    return DecoratedBox(
+        decoration: BoxDecoration(
+            color: SCColors.color_FFFFFF,
+            borderRadius: BorderRadius.circular(4.0)),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 12.0),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    deleteView(),
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    imageView(),
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    detailInfoView(),
+                  ],
+                ),
+              ),
+              SCPropertyInfoListView(
+                price: widget.model?.maintenancePrice,
+                unifyCompany: widget.model?.unifyMaintenanceCompany ?? false,
+                unifyContent: widget.model?.unifyMaintenanceContent ?? false,
+                company: widget.model?.maintenanceCompany ?? '',
+                content: widget.model?.maintenanceContent ?? '',
+                companyAction: (String value){
+                  widget.model?.maintenanceCompany = value;
+                },
+                contentAction: (String value) {
+                  widget.model?.maintenanceContent = value;
+                },
+                priceAction: (double value) {
+                  widget.model?.maintenancePrice = value;
+                },
+              )
             ],
           ),
         ));
@@ -466,8 +521,8 @@ class SCMaterialCellState extends State<SCMaterialCell> {
               child: isShow
                   ? fixedCheckNumberView(result)
                   : const SizedBox(
-                height: 1,
-              ),
+                      height: 1,
+                    ),
             )
           ],
         ));
@@ -705,16 +760,15 @@ class SCMaterialCellState extends State<SCMaterialCell> {
         widget.type == scPropertyCellTypeRadio ||
         widget.type == scPropertyCellTypeDelete ||
         widget.model?.materialType == 1) {
-
       SCWarehouseManageType manageType =
           widget.materialType ?? SCWarehouseManageType.entry;
 
       if (manageType == SCWarehouseManageType.fixedCheck) {
         text =
-        '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.code ?? ''}\n使用部门:${widget.model?.fetchOrgName ?? ''}\n在用数量:${getFixedCheckUsingCount()}\n盘点数量:${getFixedCheckLssCount()}';
+            '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.code ?? ''}\n使用部门:${widget.model?.fetchOrgName ?? ''}\n在用数量:${getFixedCheckUsingCount()}\n盘点数量:${getFixedCheckLssCount()}';
       } else {
         text =
-        '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.assetCode ?? ''}';
+            '单位:${widget.model?.unitName ?? ''}\n规格:${widget.model?.norms ?? ''}\n资产编号:${widget.model?.assetCode ?? ''}';
       }
     } else {
       text =
@@ -741,7 +795,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     for (SCMaterialListModel model in (widget.assetDetailList ?? [])) {
       int status = model.status ?? 0;
       if (status == 2) {
-        count+=1;
+        count += 1;
       }
     }
     return count;
@@ -753,7 +807,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     for (SCMaterialListModel model in (widget.assetDetailList ?? [])) {
       int status = model.status ?? 0;
       if (status == 1) {
-        count+=1;
+        count += 1;
       }
     }
     return count;

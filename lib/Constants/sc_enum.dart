@@ -74,4 +74,6 @@ enum SCWarehouseManageType {
   propertyFrmLoss,
   // 固定资产盘点任务
   fixedCheck,
+  // 资产维保
+  propertyMaintenance
 }
