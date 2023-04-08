@@ -248,6 +248,9 @@ class SCDefaultValue {
   /// 选择维保部门tip
   static const String selectMaintenanceDepartment = "请选择维保部门";
 
+  /// 选择维保人tip
+  static const String selectMaintenanceUser = "请选择维保负责人";
+
   /// 图片路径
   static const files = "/files/";
 }

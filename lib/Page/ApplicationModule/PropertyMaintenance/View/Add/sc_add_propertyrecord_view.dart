@@ -125,6 +125,7 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
       return SCBasicInfoCell(
         list: getBaseInfoList(),
         requiredRemark: true,
+        requiredAttachment: true,
         requiredPhotos: widget.state.isEdit ? false : true,
         remark: widget.state.remark,
         files: widget.state.files,
@@ -134,17 +135,17 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
             List list = widget.state.typeList.map((e) => e.name).toList();
             showAlert(0, '类型', list);
           } else if (index == 1) {
-            // 使用部门
-            showSelectDepartmentAlert(false);
-          } else if (index == 2) {
-            // 报损部门
+            // 维保部门
             showSelectDepartmentAlert(true);
-          } else if (index == 3) {
-            // 报损人
+          } else if (index == 2) {
+            // 维保负责人
             selectFrmLossUser();
+          } else if (index == 3) {
+            // 开始时间
+            showTimeAlert(context, true);
           } else if (index == 4) {
-            // 报损时间
-            showTimeAlert(context);
+            // 结束时间
+            showTimeAlert(context, false);
           }
         },
         inputAction: (content) {
@@ -156,16 +157,36 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
         },
       );
     } else if (index == 1) {
+      var propertyMap = {
+        'unifyCompany': widget.state.unifyCompany,
+        'company': widget.state.maintenanceCompany,
+        'unifyContent': widget.state.unifyContent,
+        'content': widget.state.maintenanceContent,
+      };
       return SCMaterialInfoCell(
         title: '维保资产',
         showAdd: true,
+        materialType: 4,
         list: widget.state.selectedList,
         isProperty: true,
+        propertyMap: propertyMap,
         addAction: () {
           addAction();
         },
         deleteAction: (int subIndex) {
           deleteAction(subIndex);
+        },
+        unifyPropertyCompanyAction: (bool value) {
+          widget.state.updateUnifyCompanyStatus(value);
+        },
+        unifyPropertyContentAction: (bool value) {
+          widget.state.updateUnifyContentStatus(value);
+        },
+        propertyCompanyAction: (String value) {
+          widget.state.updateUnifyCompany(value);
+        },
+        propertyContentAction: (String value) {
+          widget.state.updateUnifyContent(value);
         },
       );
     } else {
@@ -218,19 +239,26 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
   }
 
   /// 报损时间弹窗
-  showTimeAlert(BuildContext context) {
+  showTimeAlert(BuildContext context, bool isStart) {
     DateTime now = DateTime.now();
     SCPickerUtils pickerUtils = SCPickerUtils();
-    pickerUtils.title = '报损时间';
+    pickerUtils.title = isStart ? '开始时间' : '结束时间';
     pickerUtils.cancelText = '取消';
     pickerUtils.pickerType = SCPickerType.date;
     pickerUtils.completionHandler = (selectedValues, selecteds) {
       DateTime value = selectedValues.first;
       setState(() {
-        widget.state.reportTimeStr =
-            formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
-        widget.state.reportTime = formatDate(
-            value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]);
+        if (isStart) {
+          widget.state.reportStartTimeStr =
+              formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+          widget.state.reportStartTime = formatDate(
+              value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]);
+        } else {
+          widget.state.reportEndTimeStr =
+              formatDate(value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+          widget.state.reportEndTime = formatDate(
+              value, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]);
+        }
       });
     };
     pickerUtils.showDatePicker(
@@ -258,12 +286,12 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
       {
         'isRequired': true,
         'title': '开始时间',
-        'content': widget.state.reportTimeStr
+        'content': widget.state.reportStartTimeStr
       },
       {
         'isRequired': true,
         'title': '结束时间',
-        'content': widget.state.reportTimeStr
+        'content': widget.state.reportEndTimeStr
       },
     ];
     return baseInfoList;
@@ -344,23 +372,23 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
       return;
     }
 
-    if (widget.state.fetchOrgId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectUserDepartment);
-      return;
-    }
-
     if (widget.state.reportOrgId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectFrmLossDepartment);
+      SCToast.showTip(SCDefaultValue.selectMaintenanceDepartment);
       return;
     }
 
     if (widget.state.reportUserId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectFrmLossUser);
+      SCToast.showTip(SCDefaultValue.selectMaintenanceUser);
       return;
     }
 
-    if (widget.state.reportTime.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectFrmLossTime);
+    if (widget.state.reportStartTime.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectStartTime);
+      return;
+    }
+
+    if (widget.state.reportEndTime.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectEndTime);
       return;
     }
 
@@ -382,7 +410,8 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
       "reportOrgName": widget.state.reportOrgName,
       "reportUserId": widget.state.reportUserId,
       "reportUserName": widget.state.reportUserName,
-      "reportTime": widget.state.reportTime,
+      "reportStartTime": widget.state.reportStartTime,
+      "reportEndTime": widget.state.reportEndTime,
       "typeName": widget.state.type,
       "typeId": widget.state.typeID,
       "remark": widget.state.remark,
@@ -565,7 +594,7 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
       var params = {
         'receiverModel': receiverModel,
         'orgId': widget.state.reportOrgId,
-        'title': '选择报损人',
+        'title': '选择维保负责人',
       };
       var backParams = await SCRouterHelper.pathPage(
           SCRouterPath.selectReceiverPage, params);
@@ -611,7 +640,12 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
       return;
     }
 
-    if (widget.state.reportTime.isEmpty) {
+    if (widget.state.reportStartTime.isEmpty) {
+      SCToast.showTip(SCDefaultValue.selectFrmLossTime);
+      return;
+    }
+
+    if (widget.state.reportEndTime.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectFrmLossTime);
       return;
     }
@@ -630,7 +664,8 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
       "reportOrgId": widget.state.reportOrgId,
       "reportUserName": widget.state.reportUserName,
       "reportUserId": widget.state.reportUserId,
-      "reportTime": widget.state.reportTime,
+      "reportStartTime": widget.state.reportStartTime,
+      "reportEndTime": widget.state.reportEndTime,
       "remark": widget.state.remark,
       "id": widget.state.editId,
       "files": widget.state.files,

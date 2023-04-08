@@ -45,23 +45,29 @@ class SCAddPropertyMaintenanceController extends GetxController {
   /// 使用组织(或部门)ID
   String fetchOrgId = '';
 
-  /// 报损人
+  /// 维保人
   String reportUserName = '';
 
-  /// 报损人ID
+  /// 维保人ID
   String reportUserId = '';
 
-  /// 报损组织(或部门)
+  /// 维保组织(或部门)
   String reportOrgName = '';
 
-  /// 报损组织(或部门)ID
+  /// 维保组织(或部门)ID
   String reportOrgId = '';
 
-  /// 报损日期，页面上显示，格式yyyy-mm-dd HH:nn
-  String reportTimeStr = '';
+  /// 维保开始日期，页面上显示，格式yyyy-mm-dd HH:nn
+  String reportStartTimeStr = '';
 
-  /// 报损日期，接口使用，格式yyyy-mm-dd HH:nn:ss
-  String reportTime = '';
+  /// 维保开始日期，接口使用，格式yyyy-mm-dd HH:nn:ss
+  String reportStartTime = '';
+
+  /// 维保结束日期，页面上显示，格式yyyy-mm-dd HH:nn
+  String reportEndTimeStr = '';
+
+  /// 维保结束日期，接口使用，格式yyyy-mm-dd HH:nn:ss
+  String reportEndTime = '';
 
   /// 备注
   String remark = '';
@@ -69,11 +75,23 @@ class SCAddPropertyMaintenanceController extends GetxController {
   /// 主键id
   String editId = '';
 
-  /// 报损单号
+  /// 维保单号
   String number = '';
 
   /// 上传的图片文件数组
   List files = [];
+
+  /// 是否统一维保部门
+  bool unifyCompany = false;
+
+  /// 维保部门
+  String maintenanceCompany = '';
+
+  /// 是否统一维保内容
+  bool unifyContent = false;
+
+  /// 维保部门
+  String maintenanceContent = '';
 
   @override
   onInit() {
@@ -108,24 +126,24 @@ class SCAddPropertyMaintenanceController extends GetxController {
       /// 使用组织(或部门)ID
       fetchOrgId = params['fetchOrgId'];
 
-      /// 报损人
+      /// 维保人
       reportUserName = params['reportUserName'];
 
-      /// 报损人ID
+      /// 维保人ID
       reportUserId = params['reportUserId'];
 
-      /// 报损组织(或部门)
+      /// 维保组织(或部门)
       reportOrgName = params['reportOrgName'];
 
-      /// 报损组织(或部门)ID
+      /// 维保组织(或部门)ID
       reportOrgId = params['reportOrgId'];
 
-      /// 报损日期
-      reportTime = params['reportTime'];
+      /// 维保日期
+      reportStartTime = params['reportTime'];
 
-      if (reportTime != '') {
-        /// 报损日期Str
-        reportTimeStr = formatDate(DateTime.parse(reportTime),
+      if (reportStartTime != '') {
+        /// 维保日期Str
+        reportStartTimeStr = formatDate(DateTime.parse(reportStartTime),
             [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
       }
 
@@ -135,7 +153,7 @@ class SCAddPropertyMaintenanceController extends GetxController {
       /// 主键id
       editId = params['id'];
 
-      /// 报损单号
+      /// 维保单号
       number = params['number'];
 
       for (int i = 0; i < typeList.length; i++) {
@@ -148,7 +166,31 @@ class SCAddPropertyMaintenanceController extends GetxController {
     }
   }
 
-  /// 新增报损, status=0暂存，1提交
+  /// 更新统一维保部门状态
+  updateUnifyCompanyStatus(bool select) {
+    unifyCompany = select;
+    update();
+  }
+
+  /// 更新统一维保部门
+  updateUnifyCompany(String value) {
+    maintenanceCompany = value;
+    update();
+  }
+
+  /// 更新统一维保内容状态
+  updateUnifyContentStatus(bool select) {
+    unifyContent = select;
+    update();
+  }
+
+  /// 更新统一维保内容
+  updateUnifyContent(String value) {
+    maintenanceContent = value;
+    update();
+  }
+
+  /// 新增维保, status=0暂存，1提交
   addFrmLoss({required int status, required dynamic data}) {
     var params = {
       "files": data['files'],
@@ -180,7 +222,7 @@ class SCAddPropertyMaintenanceController extends GetxController {
         });
   }
 
-  /// 编辑报损基础信息
+  /// 编辑维保基础信息
   editMaterialBaseInfo({required dynamic data}) {
     print('编辑基础信息=========$data');
     //List materialList = data['materialList'];
@@ -236,7 +278,7 @@ class SCAddPropertyMaintenanceController extends GetxController {
       {required String reportId,
         Function(bool success)? completeHandler}) {
     var params = {"reportId": reportId};
-    print("删除报损参数：$params");
+    print("删除维保参数：$params");
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         isQuery: true,
@@ -252,7 +294,7 @@ class SCAddPropertyMaintenanceController extends GetxController {
         });
   }
 
-  /// 报损类型
+  /// 维保类型
   loadFrmLossType() {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
@@ -270,7 +312,7 @@ class SCAddPropertyMaintenanceController extends GetxController {
         });
   }
 
-  /// 报损详情
+  /// 维保详情
   loadMaterialEntryDetail() {
     SCHttpManager.instance.get(
         url: SCUrl.kPropertyFrmLossDetailUrl,

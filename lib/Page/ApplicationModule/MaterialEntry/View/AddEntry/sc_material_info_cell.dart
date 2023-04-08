@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialCheck/View/AddCheck/sc_all_category_listview.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_add_entry_allmaterial_view.dart';
+import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/View/Add/sc_unify_propertyinfo_view.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../MaterialCheck/Model/sc_check_type_model.dart';
 import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
@@ -34,7 +35,7 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 是否显示添加
   final bool showAdd;
 
-  /// 2显示物资分类,3显示采购单,其它显示物资信息，
+  /// 2显示物资分类,3显示采购单,4资产维保,其它显示物资信息，
   final int? materialType;
 
   /// title
@@ -49,8 +50,23 @@ class SCMaterialInfoCell extends StatelessWidget {
   /// 是否是资产
   final bool? isProperty;
 
+  /// 资产维保数据
+  final dynamic? propertyMap;
+
   /// 无需归还勾选
   final Function(int index, bool status)? noNeedReturnAction;
+
+  /// 是否统一维保单位
+  final Function(bool value)? unifyPropertyCompanyAction;
+
+  /// 是否统一维保内容
+  final Function(bool value)? unifyPropertyContentAction;
+
+  /// 统一维保内容
+  final Function(String value)? propertyCompanyAction;
+
+  /// 维保内容
+  final Function(String value)? propertyContentAction;
 
   SCMaterialInfoCell({
     Key? key,
@@ -67,7 +83,12 @@ class SCMaterialInfoCell extends StatelessWidget {
     this.hideMaterialNumTextField,
     this.isReturnEntry,
     this.isProperty,
-    this.noNeedReturnAction
+    this.propertyMap,
+    this.noNeedReturnAction,
+    this.unifyPropertyCompanyAction,
+    this.unifyPropertyContentAction,
+    this.propertyCompanyAction,
+    this.propertyContentAction
   }) : super(key: key);
 
   @override
@@ -179,9 +200,12 @@ class SCMaterialInfoCell extends StatelessWidget {
     if (materialType == 2) {
       // 分类列表
       return classifyView();
-    } if (materialType == 3) {
+    } else if (materialType == 3) {
       // 采购单物资
       return purchaseView();
+    } else if (materialType == 4) {
+      /// 资产维保
+      return propertyView();
     } else {
       // 物资列表
       return materialListView();
@@ -230,9 +254,53 @@ class SCMaterialInfoCell extends StatelessWidget {
     );
   }
 
-  /// 资产列表
+  /// 资产维保列表
   Widget propertyView() {
-    return Container();
+    bool unifyCompany = propertyMap['unifyCompany'];
+    bool unifyContent = propertyMap['unifyContent'];
+    String company = propertyMap['company'];
+    String content = propertyMap['content'];
+    return DecoratedBox(decoration: BoxDecoration(
+      color: SCColors.color_FFFFFF,
+      borderRadius: BorderRadius.circular(4.0)
+    ), child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SCUnifyPropertyInfoView(
+          unifyCompany: unifyCompany,
+          unifyContent: unifyContent,
+          company: company,
+          content: content,
+          companyAction: (String value){
+            propertyCompanyAction?.call(value);
+          },
+          contentAction: (String value) {
+            propertyContentAction?.call(value);
+          },
+          unifyCompanyAction: (bool value){
+            unifyPropertyCompanyAction?.call(value);
+          },
+          unifyContentAction: (bool value) {
+            unifyPropertyContentAction?.call(value);
+          },
+        ),
+        SCAddEntryAllMaterialView(
+            hideMaterialNumTextField: hideMaterialNumTextField,
+            list: list,
+            isReturnEntry: isReturnEntry,
+            isProperty: isProperty,
+            deleteAction: (int index) {
+              deleteAction?.call(index);
+            },
+            updateNumAction: (int index, int value) {
+              updateNumAction?.call(index, value);
+            },
+            noNeedReturnAction: (int index, bool status) {
+              noNeedReturnAction?.call(index, status);
+            }
+        )
+      ],
+    ),);
   }
 
   Widget cell() {

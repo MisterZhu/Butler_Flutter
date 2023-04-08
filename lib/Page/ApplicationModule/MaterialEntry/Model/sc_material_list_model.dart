@@ -70,6 +70,11 @@ class SCMaterialListModel {
     int? reportReason,// 报损类型
     String? reportReasonDesc,// 报损类型描述
     int? status,// 1-已报损，2-使用中
+    bool? unifyMaintenanceCompany,// 是否统一维保单位
+    bool? unifyMaintenanceContent,// 是否统一维保内容
+    String? maintenanceCompany,// 维保单位
+    String? maintenanceContent,// 维保内容
+    double? maintenancePrice,// 维保费用
   }) {
     _barCode = barCode;
     _classifyId = classifyId;
@@ -120,6 +125,11 @@ class SCMaterialListModel {
     _reportReason = reportReason;
     _reportReasonDesc = reportReasonDesc;
     _status = status;
+    _unifyMaintenanceCompany = unifyMaintenanceCompany;
+    _unifyMaintenanceContent = unifyMaintenanceContent;
+    _maintenanceCompany = maintenanceCompany;
+    _maintenanceContent = maintenanceContent;
+    _maintenancePrice = maintenancePrice;
   }
 
   SCMaterialListModel.fromJson(dynamic json) {
@@ -174,6 +184,11 @@ class SCMaterialListModel {
     _reportReason = json['reportReason'];
     _reportReasonDesc = json['reportReasonDesc'];
     _status = json['status'];
+    _unifyMaintenanceCompany = json['unifyMaintenanceCompany'];
+    _unifyMaintenanceContent = json['unifyMaintenanceContent'];
+    _maintenanceCompany = json['maintenanceCompany'];
+    _maintenanceContent = json['maintenanceContent'];
+    _maintenancePrice = json['maintenancePrice'];
   }
   String? _barCode;
   String? _classifyId;
@@ -224,6 +239,11 @@ class SCMaterialListModel {
   int? _reportReason;
   String? _reportReasonDesc;
   int? _status;
+  bool? _unifyMaintenanceCompany;
+  bool? _unifyMaintenanceContent;
+  String? _maintenanceCompany;
+  String? _maintenanceContent;
+  double? _maintenancePrice;
   SCMaterialListModel copyWith({
     String? barCode,
     String? classifyId,
@@ -274,6 +294,11 @@ class SCMaterialListModel {
     int? reportReason,
     String? reportReasonDesc,
     int? status,
+    bool? unifyMaintenanceCompany,
+    bool? unifyMaintenanceContent,
+    String? maintenanceCompany,
+    String? maintenanceContent,
+    double? maintenancePrice,
   }) =>
       SCMaterialListModel(
         barCode: barCode ?? _barCode,
@@ -325,6 +350,11 @@ class SCMaterialListModel {
         reportReason: reportReason ?? _reportReason,
         reportReasonDesc: reportReasonDesc ?? _reportReasonDesc,
           status: status ?? _status,
+       unifyMaintenanceCompany: unifyMaintenanceCompany ?? _unifyMaintenanceCompany,
+        unifyMaintenanceContent: unifyMaintenanceContent ?? _unifyMaintenanceContent,
+        maintenanceCompany: maintenanceCompany ?? _maintenanceCompany,
+        maintenanceContent: maintenanceContent ?? _maintenanceContent,
+        maintenancePrice: maintenancePrice ?? _maintenancePrice,
       );
   String? get barCode => _barCode;
   String? get classifyId => _classifyId;
@@ -375,6 +405,11 @@ class SCMaterialListModel {
   String? get reportReasonDesc => _reportReasonDesc;
   int? get reportReason => _reportReason;
   int? get status => _status;
+  bool? get unifyMaintenanceCompany => _unifyMaintenanceCompany;
+  bool? get unifyMaintenanceContent => _unifyMaintenanceContent;
+  String? get maintenanceCompany => _maintenanceCompany;
+  String? get maintenanceContent => _maintenanceContent;
+  double? get maintenancePrice => _maintenancePrice;
 
   /// set checkNum
   set checkNum(int? value) {
@@ -442,6 +477,26 @@ class SCMaterialListModel {
     _status = value;
   }
 
+  set unifyMaintenanceCompany(bool? value) {
+    _unifyMaintenanceCompany = value;
+  }
+
+  set unifyMaintenanceContent(bool? value) {
+    _unifyMaintenanceContent = value;
+  }
+
+  set maintenanceCompany(String? value) {
+    _maintenanceCompany = value;
+  }
+
+  set maintenanceContent(String? value) {
+    _maintenanceContent = value;
+  }
+
+  set maintenancePrice(double? value) {
+    _maintenancePrice = value;
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['barCode'] = _barCode;
@@ -493,6 +548,11 @@ class SCMaterialListModel {
     map['reportReason'] = _reportReason;
     map['reportReasonDesc'] = _reportReasonDesc;
     map['status'] = _status;
+    map['unifyMaintenanceCompany'] = _unifyMaintenanceCompany;
+    map['unifyMaintenanceContent'] = _unifyMaintenanceContent;
+    map['maintenanceCompany'] = _maintenanceCompany;
+    map['maintenanceContent'] = _maintenanceContent;
+    map['maintenancePrice'] = _maintenancePrice;
     return map;
   }
 }
