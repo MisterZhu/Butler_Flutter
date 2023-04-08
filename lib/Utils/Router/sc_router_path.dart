@@ -204,5 +204,7 @@ class SCRouterPath {
   static String propertyRecordPage = "/lib/Page/PropertyMaintenance/Page/sc_peroperty_record_page";
   /// 资产维保登记
   static String addPropertyRecordPage = "/lib/Page/PropertyMaintenance/Page/sc_add_propertymaintenance_page";
+  /// 资产维保详情
+  static String propertyMaintenanceDetailPage = "/lib/Page/PropertyMaintenance/Page/sc_propertymaintenance_detail_page";
 
 }

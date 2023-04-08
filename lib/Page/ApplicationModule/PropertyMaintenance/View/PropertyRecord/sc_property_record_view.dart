@@ -208,7 +208,7 @@ class SCPropertyRecordViewState extends State<SCPropertyRecordView> {
   detailAction(SCMaterialEntryModel model) {
     int status = model.status ?? -1;
     bool canEdit = (status == 0);
-    SCRouterHelper.pathPage(SCRouterPath.outboundDetailPage, {'id': model.id, 'canEdit': canEdit});
+    SCRouterHelper.pathPage(SCRouterPath.propertyMaintenanceDetailPage, {'id': model.id, 'canEdit': canEdit});
   }
 
   /// 出库状态弹窗

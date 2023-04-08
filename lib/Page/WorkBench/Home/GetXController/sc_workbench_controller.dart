@@ -1010,29 +1010,33 @@ class SCWorkBenchController extends GetxController {
     PermissionStatus permissionStatus = await SCPermissionUtils.notification();
     if (permissionStatus != PermissionStatus.granted && !isShowAlert) {
       SCPermissionUtils.notificationAlert(completionHandler: (success) {
+       Future.delayed(const Duration(milliseconds: 1500), (){
+         SCPermissionUtils.startLocationWithPrivacyAlert(completionHandler: (dynamic result, SCLocationModel? model) {
+           print("定位结果:$result");
+           print("定位结果模型:${model?.toJson()}");
+           int status = result['status'];
+           if (status == 1) {
+             double longitude = result['longitude'];
+             double latitude = result['latitude'];
+             SCScaffoldManager.instance.longitude = longitude;
+             SCScaffoldManager.instance.latitude = latitude;
+           }
+         });
+       });
+      });
+    } else {
+      Future.delayed(const Duration(milliseconds: 1500), () {
         SCPermissionUtils.startLocationWithPrivacyAlert(completionHandler: (dynamic result, SCLocationModel? model) {
           print("定位结果:$result");
           print("定位结果模型:${model?.toJson()}");
           int status = result['status'];
           if (status == 1) {
-            double longitude = result['longitude'];
-            double latitude = result['latitude'];
+            double longitude = result['longitude'] ?? 0.0;
+            double latitude = result['latitude'] ?? 0.0;
             SCScaffoldManager.instance.longitude = longitude;
             SCScaffoldManager.instance.latitude = latitude;
           }
         });
-      });
-    } else {
-      SCPermissionUtils.startLocationWithPrivacyAlert(completionHandler: (dynamic result, SCLocationModel? model) {
-        print("定位结果:$result");
-        print("定位结果模型:${model?.toJson()}");
-        int status = result['status'];
-        if (status == 1) {
-          double longitude = result['longitude'] ?? 0.0;
-          double latitude = result['latitude'] ?? 0.0;
-          SCScaffoldManager.instance.longitude = longitude;
-          SCScaffoldManager.instance.latitude = latitude;
-        }
       });
     }
   }
