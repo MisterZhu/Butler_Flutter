@@ -28,7 +28,6 @@ class SCOnlineMonitorPageState extends State<SCOnlineMonitorPage> with Automatic
         .getXControllerTag((SCOnlineMonitorPage).toString());
     controller = Get.put(SCOnlineMonitorController(), tag: controllerTag);
     controller.loadData(isMore: false);
-
   }
 
   @override

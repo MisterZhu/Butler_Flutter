@@ -3,20 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/sc_utils.dart';
+import '../Model/sc_select_model.dart';
 
 /// 选择弹窗
 
 class SCSelectListView extends StatefulWidget {
 
-  final List list;
+  final List<SCSelectModel> list;
 
-  final int selectIndex;
+  final int selectId;
 
   /// 点击
   final Function(int index)? tapAction;
 
 
-  SCSelectListView({Key? key, required this.list, required this.selectIndex, this.tapAction}) : super(key: key);
+  SCSelectListView({Key? key, required this.list, required this.selectId, this.tapAction}) : super(key: key);
 
   @override
   SCSelectListViewState createState() => SCSelectListViewState();
@@ -24,10 +25,13 @@ class SCSelectListView extends StatefulWidget {
 
 class SCSelectListViewState extends State<SCSelectListView> {
 
-  late int currentIndex;
+  late int currentId;
 
   /// 最大数量
   int maxCount = 10;
+
+  /// 最小数量
+  int minCount = 5;
 
   /// cell高度
   double cellHeight = 48.0;
@@ -35,7 +39,7 @@ class SCSelectListViewState extends State<SCSelectListView> {
   @override
   initState() {
     super.initState();
-    currentIndex = widget.selectIndex;
+    currentId = widget.selectId;
   }
 
   @override
@@ -58,6 +62,7 @@ class SCSelectListViewState extends State<SCSelectListView> {
               return const SizedBox(height: 0.0,);
             },
             itemCount: widget.list.length));
+
     if (widget.list.length > maxCount) {
       return SizedBox(
         height: cellHeight * maxCount + 12.0,
@@ -69,11 +74,12 @@ class SCSelectListViewState extends State<SCSelectListView> {
   }
 
   Widget cell(int index) {
+    SCSelectModel model = widget.list[index];
     return GestureDetector(
       onTap: () {
-        if (index != widget.selectIndex) {
-          currentIndex = index;
-          widget.tapAction?.call(index);
+        if (model.id != widget.selectId) {
+          currentId = model.id ?? 0;
+          widget.tapAction?.call(model.id ?? 0);
         }
       },
       behavior: HitTestBehavior.opaque,
@@ -85,16 +91,16 @@ class SCSelectListViewState extends State<SCSelectListView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              widget.list[index],
+              model.name ?? '',
               textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: SCFonts.f16,
-                color: currentIndex == index ? SCColors.color_4285F4 : SCColors.color_1B1D33,
+                color: currentId == model.id ? SCColors.color_4285F4 : SCColors.color_1B1D33,
                 fontWeight: FontWeight.w400,
               ),),
             const SizedBox(width: 10.0,),
-            currentIndex == index ? Image.asset(SCAsset.iconFrmLossReasonSelected, width: 22.0, height: 22.0) : const SizedBox(),
+            currentId == model.id ? Image.asset(SCAsset.iconFrmLossReasonSelected, width: 22.0, height: 22.0) : const SizedBox(),
           ],
         ),
       ),

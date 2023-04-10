@@ -4,33 +4,35 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/OnlineMonitor/Model/sc_select_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/OnlineMonitor/View/sc_select_listview.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/Alert/sc_alert_header_view.dart';
 import '../../../../Constants/sc_asset.dart';
 import '../../MaterialEntry/View/MaterialEntry/sc_material_search_item.dart';
 import '../Controller/sc_monitor_sift_controller.dart';
+import '../Controller/sc_online_monitor_controller.dart';
 
 /// 筛选弹窗
 
 class SCMonitorSiftAlert extends StatefulWidget {
   SCMonitorSiftAlert({Key? key,
-    required this.list,
-    required this.selectIndex,
-    this.closeTap,
+    required this.monitorController,
+    required this.selectId,
+    required this.originalLength,
     this.tapAction,
   }) : super(key: key);
 
-  /// 关闭
-  final Function? closeTap;
+  /// SCOnlineMonitorController
+  final SCOnlineMonitorController monitorController;
+
+  /// 原始数组长度
+  final int originalLength;
 
   /// 点击
-  final Function(int index)? tapAction;
+  final Function(int id)? tapAction;
 
-  /// 数据源
-  final List list;
-
-  /// 当前选中的index
-  final int selectIndex;
+  /// 当前选中的spaceId
+  final int selectId;
 
   @override
   SCMonitorSiftAlertState createState() => SCMonitorSiftAlertState();
@@ -44,10 +46,8 @@ class SCMonitorSiftAlertState extends State<SCMonitorSiftAlert> {
 
   final FocusNode node = FocusNode();
 
+  /// 是否显示取消
   bool showCancel = false;
-
-  /// 默认index
-  int currentIndex = 0;
 
   /// 监听键盘
   late StreamSubscription<bool> keyboardSubscription;
@@ -55,10 +55,19 @@ class SCMonitorSiftAlertState extends State<SCMonitorSiftAlert> {
   /// 是否显示键盘
   bool keyboardVisible = false;
 
+  /// 最多数量
+  int maxCount = 10;
+
+  /// 最少数量
+  int minCount = 5;
+
+  /// 当前选中的id
+  late int currentId;
+
   @override
   initState() {
     super.initState();
-    currentIndex = widget.selectIndex;
+    currentId = widget.selectId;
     var keyboardVisibilityController = KeyboardVisibilityController();
     keyboardSubscription =
         keyboardVisibilityController.onChange.listen((bool visible) {
@@ -76,11 +85,18 @@ class SCMonitorSiftAlertState extends State<SCMonitorSiftAlert> {
 
   @override
   Widget build(BuildContext context) {
-    double listViewHeight = widget.list.length > 10 ? 44.0 * 10 : 44.0 * widget.list.length;
+    double listViewHeight = 44.0 * widget.originalLength;
+    if (widget.originalLength > maxCount) {
+      listViewHeight = 44.0 * maxCount;
+    } else if (widget.originalLength < minCount) {
+      listViewHeight = 44.0 * minCount;
+    }
     double height = 48.0 + 44.0 + listViewHeight + 12.0 + MediaQuery.of(context).padding.bottom;
+    double height1 = (MediaQuery.of(context).size.height - 200.0);
     return Container(
       width: double.infinity,
-      height: keyboardVisible ? (MediaQuery.of(context).size.height - 250.0) : height,
+      //height: keyboardVisible ? (MediaQuery.of(context).size.height - 250.0) : height,
+      height: height1,
       decoration: const BoxDecoration(
           color: SCColors.color_FFFFFF,
           borderRadius: BorderRadius.only(
@@ -92,12 +108,12 @@ class SCMonitorSiftAlertState extends State<SCMonitorSiftAlert> {
         children: [
           titleItem(context),
           headerItem(),
-          SCSelectListView(
-            list: widget.list,
-            selectIndex: widget.selectIndex,
-            tapAction: (index) {
-              widget.tapAction?.call(index);
-          },),
+          Expanded(child: SCSelectListView(
+            list: widget.monitorController.spaceList,
+            selectId: currentId,
+            tapAction: (id) {
+              widget.tapAction?.call(id);
+            },)),
           Container(
             color: SCColors.color_FFFFFF,
             height: MediaQuery.of(context).padding.bottom,
@@ -190,7 +206,7 @@ class SCMonitorSiftAlertState extends State<SCMonitorSiftAlert> {
           },
           onSubmitted: (value) {
             state.updateSearchString(value);
-            state.searchData(isMore: false);
+            widget.monitorController.getSpaceData(isSearch: true, name: value);
             node.unfocus();
           },
           onTap: () {

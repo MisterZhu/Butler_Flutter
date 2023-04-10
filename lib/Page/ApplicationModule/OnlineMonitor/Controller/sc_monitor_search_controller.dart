@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
+import '../Model/sc_monitor_list_model.dart';
 
 /// 监控搜索controller
 
@@ -10,7 +10,7 @@ class SCMonitorSearchController extends GetxController {
 
   int pageNum = 1;
 
-  List<SCMaterialEntryModel> dataList = [];
+  List<SCMonitorListModel> dataList = [];
 
   /// 搜索内容
   String searchString = '';
@@ -33,47 +33,31 @@ class SCMonitorSearchController extends GetxController {
       SCLoadingUtils.show();
     }
     var params = {
-      "conditions": {
-        "fields": [{
-          "map": {
-            "wareHouseName": searchString,
-            "operatorName": searchString
-          },
-          "method": 7,
-          "name": "searchs",
-          "value": ""
-        }],
-        "specialMap": {}
-      },
+      "conditions": {"cameraName": searchString},
       "count": false,
       "last": false,
-      "orderBy": [{"asc": false, "field": "gmtModify"}],
+      "orderBy": [
+        {"asc": true, "field": ""}
+      ],
       "pageNum": pageNum,
       "pageSize": 20
     };
     SCHttpManager.instance.post(
-        url: SCUrl.kMaterialEntryListUrl,
+        url: SCUrl.kMonitorListUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
           if (value is Map) {
             List list = value['records'];
             if (isLoadMore == true) {
-              dataList.addAll(List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+              dataList.addAll(List<SCMonitorListModel>.from(list.map((e) => SCMonitorListModel.fromJson(e)).toList()));
             } else {
-              dataList = List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+              dataList = List<SCMonitorListModel>.from(list.map((e) => SCMonitorListModel.fromJson(e)).toList());
             }
           } else {
             if (isLoadMore == false) {
               dataList = [];
             }
-          }
-          if (dataList.isNotEmpty) {
-            tips = '';
-          } else {
-            tips = '暂无搜索结果';
           }
           update();
           bool last = false;
@@ -88,6 +72,21 @@ class SCMonitorSearchController extends GetxController {
           }
           SCToast.showTip(value['message']);
           completeHandler?.call(false, false);
+        });
+  }
+
+  /// 根据视频监控设备ID获取视频监控播放地址
+  getMonitorPlayUrl({required String id, required Function(String url) completeHandler}) {
+    SCHttpManager.instance.get(
+        url: SCUrl.kMonitorPlayUrl+id,
+        params: null,
+        success: (value) {
+          String url = value['hls'];
+          completeHandler(url);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+          completeHandler('');
         });
   }
 

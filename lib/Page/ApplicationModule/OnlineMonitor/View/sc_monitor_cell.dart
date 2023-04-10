@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 
+import '../../../../Network/sc_config.dart';
+import '../Model/sc_monitor_list_model.dart';
+
 /// 监控cell
 
 class SCMonitorCell extends StatelessWidget {
@@ -10,13 +13,10 @@ class SCMonitorCell extends StatelessWidget {
   /// 详情
   final Function? onTapAction;
 
-  final String? title;
-
-  final String? pic;
+  final SCMonitorListModel? model;
 
   SCMonitorCell({Key? key,
-    this.title,
-    this.pic,
+    this.model,
     this.onTapAction,
   }) : super(key: key);
 
@@ -42,7 +42,7 @@ class SCMonitorCell extends StatelessWidget {
             imageItem(),
             const SizedBox(height: 6.0,),
             Text(
-              title ?? '',
+              model?.cameraName ?? '',
               textAlign: TextAlign.left,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -60,12 +60,19 @@ class SCMonitorCell extends StatelessWidget {
   /// 图片
   Widget imageItem() {
     double imageScale = 159.0 / 96.0;
+    String url = '';
+    if (model?.picUrl != null) {
+      url = SCConfig.getImageUrl(model?.picUrl  ?? '');
+    } else {
+      url = model?.status == 1 ? SCAsset.iconMonitorLoadingDefault : SCAsset.iconMonitorOfflineDefault;
+    }
     return AspectRatio(
       aspectRatio: imageScale,
       child: ClipRRect(
-        child: Image.asset(
-          pic ?? SCAsset.iconMonitorLoadingDefault,
+        child: SCImage(
+          url: url,
           fit: BoxFit.cover,
+          placeholder: model?.status == 1 ? SCAsset.iconMonitorLoadingDefault : SCAsset.iconMonitorOfflineDefault,
         ),
       ),
     );

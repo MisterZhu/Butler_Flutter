@@ -337,4 +337,22 @@ class SCUrl {
   /// 消息列表
   static const String kMessageListUrl = "/api/msg/message/page";
 
+
+  /************************* 在线监控 *************************/
+
+  /// 监控视频详情
+  static const String kMonitorDetailUrl = "/api/device-chentian/camera/detail/";
+
+  /// 根据视频监控设备ID获取视频监控播放地址
+  static const String kMonitorPlayUrl = "/api/device-chentian/camera/hls/";
+
+  /// 查询视频监控设备列表
+  static const String kMonitorListUrl = "/api/device-chentian/camera/search";
+
+/// 分页查询视频设备
+//static const String kMonitorListUrl = "/api/device-chentian/camera/searchCamera";
+
+  /// 查询空间列表
+  static const String kSpaceListUrl = "/api/space/component/space/select";
+
 }

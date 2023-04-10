@@ -5,6 +5,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_search_item.dart';
+import 'package:smartcommunity/Page/ApplicationModule/OnlineMonitor/Model/sc_select_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/OnlineMonitor/View/sc_monitor_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/OnlineMonitor/View/sc_monitor_sift_alert.dart';
 import 'package:smartcommunity/Page/ApplicationModule/OnlineMonitor/View/sc_select_listview.dart';
@@ -13,6 +14,7 @@ import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../Constants/sc_asset.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../Controller/sc_online_monitor_controller.dart';
+import '../Model/sc_monitor_list_model.dart';
 
 /// 在线监控view
 
@@ -30,11 +32,9 @@ class SCOnlineMonitorViewState extends State<SCOnlineMonitorView> {
 
   int selectStatusIndex = 0;
 
-  int selectNameIndex = 0;
-
   bool showStatusAlert = false;
 
-  List statusList = ['全部', '在线', '离线'];
+  List<SCSelectModel> statusList = [];
 
   /// RefreshController
   RefreshController refreshController = RefreshController(initialRefresh: false);
@@ -42,6 +42,8 @@ class SCOnlineMonitorViewState extends State<SCOnlineMonitorView> {
   @override
   void initState() {
     super.initState();
+    List list = [{'id': 0, 'name': '全部'}, {'id': 1, 'name': '在线'}, {'id': 2, 'name': '离线'}];
+    statusList = list.map((e) => SCSelectModel.fromJson(e)).toList();
   }
 
   @override
@@ -88,6 +90,11 @@ class SCOnlineMonitorViewState extends State<SCOnlineMonitorView> {
           statusItem(),
           GestureDetector(
             onTap: () {
+              if (showStatusAlert == true) {
+                setState(() {
+                  showStatusAlert = false;
+                });
+              }
               showSiftAlert();
             },
             behavior: HitTestBehavior.opaque,
@@ -122,7 +129,7 @@ class SCOnlineMonitorViewState extends State<SCOnlineMonitorView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-                statusList[selectStatusIndex],
+                statusList[selectStatusIndex].name ?? '',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -176,14 +183,14 @@ class SCOnlineMonitorViewState extends State<SCOnlineMonitorView> {
         crossAxisSpacing: 10.0,
         crossAxisCount: 2,
         shrinkWrap: true,
-        itemCount: 10,
+        itemCount: widget.state.dataList.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
+          SCMonitorListModel model = widget.state.dataList[index];
           return SCMonitorCell(
-            pic: SCAsset.iconMonitorLoadingDefault,
-            title: '设备名称',
+            model: model,
             onTapAction: () {
-              detailAction('');
+              detailAction(model);
             },
           );
         },
@@ -194,30 +201,38 @@ class SCOnlineMonitorViewState extends State<SCOnlineMonitorView> {
 
   /// 空白列表占位图
   Widget emptyView() {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(height: 124.0,),
-          Image.asset(SCAsset.iconMonitorEmptyDefault, width: 120.0, height: 120.0, fit: BoxFit.cover,),
-          const SizedBox(height: 2.0,),
-          const Text(
-              '暂无监控记录',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: SCFonts.f14,
-                  fontWeight: FontWeight.w400,
-                  color: SCColors.color_8D8E99)),
-        ]
-    );
+    if (widget.state.loadDone == true) {
+      return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 124.0,),
+            Image.asset(SCAsset.iconMonitorEmptyDefault, width: 120.0, height: 120.0, fit: BoxFit.cover,),
+            const SizedBox(height: 2.0,),
+            const Text(
+                '暂无监控记录',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: SCFonts.f14,
+                    fontWeight: FontWeight.w400,
+                    color: SCColors.color_8D8E99)),
+          ]
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   /// 详情
-  detailAction(String id) {
-    var params = {'title' : '监控', 'url' : 'https://saasprod.4001113900.com:10020/hls-czf/openUrl/JVsVFAc/live.m3u8'};
-    SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
+  detailAction(SCMonitorListModel model) {
+    widget.state.getMonitorPlayUrl(id: '${model.id}', completeHandler: (String url) {
+      var params = {'title' : model.cameraName, 'url' : url};
+      if (url.isNotEmpty && url != '') {
+        SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
+      }
+    });
   }
 
   /// 筛选状态弹窗
@@ -231,7 +246,7 @@ class SCOnlineMonitorViewState extends State<SCOnlineMonitorView> {
           children: [
             SCSelectListView(
               list: statusList,
-              selectIndex: selectStatusIndex,
+              selectId: selectStatusIndex,
               tapAction: (index) {
                 if (selectStatusIndex != index) {
                   setState(() {
@@ -259,18 +274,24 @@ class SCOnlineMonitorViewState extends State<SCOnlineMonitorView> {
 
   /// 筛选名称弹窗
   showSiftAlert() {
-    SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-      SCDialogUtils().showCustomBottomDialog(
-          isDismissible: true,
-          context: context,
-          widget: SCMonitorSiftAlert(
-            list: const ['不限', '绿城生活', '绿城国际'],
-            selectIndex: selectNameIndex,
-            tapAction: (subIndex) {
-              selectNameIndex = subIndex;
-              Navigator.of(context).pop();
-            },
-          ));
+    widget.state.getSpaceData(isSearch: false, completeHandler: (status) {
+      if (status == true) {
+        SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+          SCDialogUtils().showCustomBottomDialog(
+              isDismissible: true,
+              context: context,
+              widget: SCMonitorSiftAlert(
+                monitorController: widget.state,
+                selectId: widget.state.selectSpaceId,
+                originalLength: widget.state.originalLength,
+                tapAction: (id) {
+                  widget.state.selectSpaceId = id;
+                  widget.state.loadData(isMore: false);
+                  Navigator.of(context).pop();
+                },
+              ));
+        });
+      }
     });
   }
 

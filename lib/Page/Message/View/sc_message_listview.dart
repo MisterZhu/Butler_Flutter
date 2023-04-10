@@ -47,9 +47,7 @@ class SCMessageListView extends StatelessWidget {
             isUnread: index == 0 ? true: false,
             showMoreBtn: false,
             content: '订单状态更新',
-            contentDesc: '交易金额',
             contentIcon: SCAsset.iconMessageContentDefault,
-            money: 300.00,
             bottomContentList: [{'title': '订单编号', 'content': '12345678901111'}, {'title': '备注', 'content': '已关闭'}],
             detailTapAction: () {
 

@@ -6,7 +6,10 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/OnlineMonitor/View/sc_monitor_cell.dart';
 import '../../../../../Constants/sc_asset.dart';
+import '../../../../Utils/Router/sc_router_helper.dart';
+import '../../../../Utils/Router/sc_router_path.dart';
 import '../Controller/sc_monitor_search_controller.dart';
+import '../Model/sc_monitor_list_model.dart';
 
 /// 监控搜索view
 
@@ -203,14 +206,14 @@ class SCMonitorSearchViewState extends State<SCMonitorSearchView> {
         crossAxisSpacing: 10.0,
         crossAxisCount: 2,
         shrinkWrap: true,
-        itemCount: 10,
+        itemCount: widget.state.dataList.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
+          SCMonitorListModel model = widget.state.dataList[index];
           return SCMonitorCell(
-            pic: SCAsset.iconMonitorLoadingDefault,
-            title: '设备名称',
+            model: model,
             onTapAction: () {
-
+              detailAction(model);
             },
           );
         },
@@ -234,6 +237,15 @@ class SCMonitorSearchViewState extends State<SCMonitorSearchView> {
               color: SCColors.color_8D8E99)),);
   }
 
+  /// 详情
+  detailAction(SCMonitorListModel model) {
+    widget.state.getMonitorPlayUrl(id: '${model.id}', completeHandler: (String url) {
+      var params = {'title' : model.cameraName, 'url' : url};
+      if (url.isNotEmpty && url != '') {
+        SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
+      }
+    });
+  }
 
   /// 下拉刷新
   Future onRefresh() async {
