@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:date_format/date_format.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -25,7 +26,6 @@ import '../../../MaterialOutbound/Controller/sc_select_department_controller.dar
 import '../../../MaterialOutbound/Model/sc_receiver_model.dart';
 import '../../Controller/sc_add_propertymaintenance_controller.dart';
 
-
 /// 新增资产维保view
 
 class SCAddPropertyMaintenanceView extends StatefulWidget {
@@ -39,10 +39,12 @@ class SCAddPropertyMaintenanceView extends StatefulWidget {
       {Key? key, required this.state, required this.selectDepartmentController})
       : super(key: key);
   @override
-  SCAddPropertyMaintenanceViewState createState() => SCAddPropertyMaintenanceViewState();
+  SCAddPropertyMaintenanceViewState createState() =>
+      SCAddPropertyMaintenanceViewState();
 }
 
-class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceView> {
+class SCAddPropertyMaintenanceViewState
+    extends State<SCAddPropertyMaintenanceView> {
   /// 报损人
   SCReceiverModel receiverModel = SCReceiverModel();
 
@@ -58,10 +60,10 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
     isShowKeyboard = keyboardVisibilityController.isVisible;
     keyboardSubscription =
         keyboardVisibilityController.onChange.listen((bool visible) {
-          setState(() {
-            isShowKeyboard = visible;
-          });
-        });
+      setState(() {
+        isShowKeyboard = visible;
+      });
+    });
   }
 
   @override
@@ -129,6 +131,7 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
         requiredPhotos: widget.state.isEdit ? false : true,
         remark: widget.state.remark,
         files: widget.state.files,
+        attachmentsList: widget.state.attachmentsList,
         selectAction: (index, title) async {
           if (index == 0) {
             // 类型
@@ -154,6 +157,12 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
         updatePhoto: (list) {
           widget.state.files = list;
           widget.state.update();
+        },
+        uploadFileAction: () {
+          uploadFileAction();
+        },
+        deleteAttachmentAction: (int value) {
+          widget.state.deleteAttachment(value);
         },
       );
     } else if (index == 1) {
@@ -235,7 +244,7 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
                 if (index == 0) {
                   // 类型
                   SCEntryTypeModel subModel =
-                  widget.state.typeList[selectIndex];
+                      widget.state.typeList[selectIndex];
                   widget.state.typeIndex = selectIndex;
                   widget.state.type = model.name ?? '';
                   widget.state.typeID = subModel.code ?? 0;
@@ -322,7 +331,7 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
   addMaterialAction() async {
     var list = await SCRouterHelper.pathPage(SCRouterPath.addMaterialPage, {
       'propertyData': widget.state.selectedList,
-      'materialType' : SCWarehouseManageType.propertyFrmLoss,
+      'materialType': SCWarehouseManageType.propertyFrmLoss,
       'orgId': widget.state.reportOrgId,
       'isProperty': true
     });
@@ -337,7 +346,7 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
       'propertyData': widget.state.selectedList,
       'orgId': widget.state.fetchOrgId,
       'isEdit': true,
-      "materialType" : SCWarehouseManageType.propertyFrmLoss,
+      "materialType": SCWarehouseManageType.propertyFrmLoss,
       'isProperty': true
     });
     if (list != null) {
@@ -433,37 +442,37 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
   showSelectDepartmentAlert(bool isReport) {
     widget.selectDepartmentController.loadDataList(
         completeHandler: (success, list) {
-          widget.selectDepartmentController.initHeaderData();
-          widget.selectDepartmentController.footerList = list;
-          if (success) {
-            SCDialogUtils().showCustomBottomDialog(
-                context: context,
-                isDismissible: true,
-                widget: GetBuilder<SCSelectDepartmentController>(
-                    tag: widget.selectDepartmentController.tag,
-                    init: widget.selectDepartmentController,
-                    builder: (value) {
-                      return SCSelectCategoryAlert(
-                        title: '选择部门',
-                        headerList: widget.selectDepartmentController.headerList,
-                        footerList: widget.selectDepartmentController.footerList,
-                        headerTap: (int index, SCSelectCategoryModel model) {
-                          headerAction(index, model);
-                        },
-                        footerTap: (int index, SCSelectCategoryModel model) {
-                          footerAction(index, model);
-                        },
-                        onSure: () {
-                          if (isReport == true) {
-                            sureSelectDepartment();
-                          } else {
-                            sureSelectUserDepartment();
-                          }
-                        },
-                      );
-                    }));
-          }
-        });
+      widget.selectDepartmentController.initHeaderData();
+      widget.selectDepartmentController.footerList = list;
+      if (success) {
+        SCDialogUtils().showCustomBottomDialog(
+            context: context,
+            isDismissible: true,
+            widget: GetBuilder<SCSelectDepartmentController>(
+                tag: widget.selectDepartmentController.tag,
+                init: widget.selectDepartmentController,
+                builder: (value) {
+                  return SCSelectCategoryAlert(
+                    title: '选择部门',
+                    headerList: widget.selectDepartmentController.headerList,
+                    footerList: widget.selectDepartmentController.footerList,
+                    headerTap: (int index, SCSelectCategoryModel model) {
+                      headerAction(index, model);
+                    },
+                    footerTap: (int index, SCSelectCategoryModel model) {
+                      footerAction(index, model);
+                    },
+                    onSure: () {
+                      if (isReport == true) {
+                        sureSelectDepartment();
+                      } else {
+                        sureSelectUserDepartment();
+                      }
+                    },
+                  );
+                }));
+      }
+    });
   }
 
   /// 点击header
@@ -474,7 +483,7 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
           widget.selectDepartmentController.treeList;
       List<SCSelectCategoryModel> list = [];
       for (SCSelectCategoryTreeModel subModel
-      in widget.selectDepartmentController.treeList) {
+          in widget.selectDepartmentController.treeList) {
         String orgName = subModel.orgName ?? '';
         String subId = subModel.id ?? '';
         var subParams = {
@@ -485,14 +494,14 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
           "childList": subModel.children
         };
         SCSelectCategoryModel selectCategoryModel =
-        SCSelectCategoryModel.fromJson(subParams);
+            SCSelectCategoryModel.fromJson(subParams);
         list.add(selectCategoryModel);
       }
       widget.selectDepartmentController.footerList = list;
       widget.selectDepartmentController.update();
     } else {
       SCSelectCategoryModel subModel =
-      widget.selectDepartmentController.headerList[index - 1];
+          widget.selectDepartmentController.headerList[index - 1];
       List list = subModel.childList ?? [];
       List<SCSelectCategoryModel> newList = [];
       for (SCSelectCategoryTreeModel childModel in list) {
@@ -506,7 +515,7 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
           "childList": childModel.children
         };
         SCSelectCategoryModel selectCategoryModel =
-        SCSelectCategoryModel.fromJson(subParams);
+            SCSelectCategoryModel.fromJson(subParams);
         newList.add(selectCategoryModel);
       }
 
@@ -530,7 +539,7 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
   /// 点击footer
   footerAction(int index, SCSelectCategoryModel model) {
     SCSelectCategoryTreeModel treeModel =
-    widget.selectDepartmentController.childrenList[index];
+        widget.selectDepartmentController.childrenList[index];
     List<SCSelectCategoryTreeModel> childrenList = treeModel.children ?? [];
     List<SCSelectCategoryModel> subList = [];
 
@@ -546,7 +555,7 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
       };
 
       SCSelectCategoryModel selectCategoryModel =
-      SCSelectCategoryModel.fromJson(subParams);
+          SCSelectCategoryModel.fromJson(subParams);
       subList.add(selectCategoryModel);
     }
 
@@ -562,9 +571,13 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
         widget.selectDepartmentController.currentDepartmentModel.enable ??
             false;
     if (enable) {
-      if (widget.state.fetchOrgId != (widget.selectDepartmentController.currentDepartmentModel.id ?? '')) {
-        widget.state.fetchOrgId = widget.selectDepartmentController.currentDepartmentModel.id ?? '';
-        widget.state.fetchOrgName = widget.selectDepartmentController.currentDepartmentModel.title ?? '';
+      if (widget.state.fetchOrgId !=
+          (widget.selectDepartmentController.currentDepartmentModel.id ?? '')) {
+        widget.state.fetchOrgId =
+            widget.selectDepartmentController.currentDepartmentModel.id ?? '';
+        widget.state.fetchOrgName =
+            widget.selectDepartmentController.currentDepartmentModel.title ??
+                '';
         widget.state.update();
       }
     } else {
@@ -703,7 +716,6 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
       }
 
       if (contains) {
-
       } else {
         addList.add(model);
       }
@@ -730,7 +742,9 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
   /// 统一维保单位或内容提示
   unifyCompanyOrContentTip(int type) {
     /// type,0-维保单位，1-维保内容
-    String content = type == 0 ? SCDefaultValue.unifyMaintenanceCompanyTip : SCDefaultValue.unifyMaintenanceContentTip;
+    String content = type == 0
+        ? SCDefaultValue.unifyMaintenanceCompanyTip
+        : SCDefaultValue.unifyMaintenanceContentTip;
     SCDialogUtils.instance.showMiddleDialog(
       context: context,
       content: content,
@@ -743,13 +757,24 @@ class SCAddPropertyMaintenanceViewState extends State<SCAddPropertyMaintenanceVi
             text: '确定',
             textColor: SCColors.color_4285F4,
             fontWeight: FontWeight.w400, onTap: () async {
-              if (type == 0) {
-                widget.state.updateUnifyCompanyStatus(true);
-              } else {
-                widget.state.updateUnifyContentStatus(true);
-              }
-            }),
+          if (type == 0) {
+            widget.state.updateUnifyCompanyStatus(true);
+          } else {
+            widget.state.updateUnifyContentStatus(true);
+          }
+        }),
       ],
     );
+  }
+
+  /// 上传文件
+  uploadFileAction() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+    );
+
+    if (result != null) {
+      widget.state.updateAttachment(result.files);
+    }
   }
 }

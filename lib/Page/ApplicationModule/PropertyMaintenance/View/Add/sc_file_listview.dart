@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
+import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/Model/sc_attachment_model.dart';
 
 /// 文件listView
 
@@ -32,7 +33,8 @@ class SCFileListView extends StatelessWidget {
 
   /// cell
   Widget cell(int index) {
-    String title = '2022年车辆年检报告.PDF';
+    SCAttachmentModel model = list[index];
+    String title = model.name ?? '';
     return Container(
       constraints: BoxConstraints(
         maxWidth: Get.width - 48.0,
@@ -87,7 +89,7 @@ class SCFileListView extends StatelessWidget {
 
   /// line
   Widget line(int index) {
-    return SizedBox(
+    return const SizedBox(
       height: 12.0,
     );
   }

@@ -1,7 +1,9 @@
 import 'package:date_format/date_format.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
+import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/Model/sc_attachment_model.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Network/sc_http_manager.dart';
@@ -80,6 +82,9 @@ class SCAddPropertyMaintenanceController extends GetxController {
 
   /// 上传的图片文件数组
   List files = [];
+
+  /// 上传的附件
+  List<SCAttachmentModel> attachmentsList = [];
 
   /// 是否统一维保部门
   bool unifyCompany = false;
@@ -378,5 +383,23 @@ class SCAddPropertyMaintenanceController extends GetxController {
               SCScaffoldManager.instance.user.orgNames?.first.toString() ?? '';
           update();
         });
+  }
+
+  /// 更新选择的附件
+  updateAttachment(List<PlatformFile> localFiles) {
+    attachmentsList = List.from(localFiles.map((e) {
+      return SCAttachmentModel.fromJson({
+        'path': e.path,
+        'name': e.name,
+        'size': e.size
+      });
+    }));
+    update();
+  }
+
+  /// 删除附件
+  deleteAttachment(int index) {
+    attachmentsList.removeAt(index);
+    update();
   }
 }

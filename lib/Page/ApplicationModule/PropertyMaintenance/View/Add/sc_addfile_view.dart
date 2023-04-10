@@ -4,15 +4,23 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/View/Add/sc_file_listview.dart';
 
 import '../../../../../Constants/sc_asset.dart';
+import '../../Model/sc_attachment_model.dart';
 
 /// 添加附件view
 
 class SCAddFileView extends StatelessWidget {
-
-  /// 新增文件
+  /// 新增附件
   final Function? addAction;
 
-  const SCAddFileView({Key? key, this.addAction}) : super(key: key);
+  /// 附件数组
+  final List<SCAttachmentModel>? attachmentsList;
+
+  /// 删除
+  final Function(int index)? deleteAction;
+
+  SCAddFileView(
+      {Key? key, this.addAction, this.attachmentsList, this.deleteAction})
+      : super(key: key);
 
   Widget build(BuildContext context) {
     return body();
@@ -20,18 +28,21 @@ class SCAddFileView extends StatelessWidget {
 
   /// body
   Widget body() {
-    return Padding(padding: EdgeInsets.symmetric(horizontal: 12.0), child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        titleItem(),
-        desItem(),
-        const SizedBox(
-          height: 12.0,
-        ),
-        listView(),
-      ],
-    ),);
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          titleItem(),
+          desItem(),
+          const SizedBox(
+            height: 12.0,
+          ),
+          listView(),
+        ],
+      ),
+    );
   }
 
   /// titleItem
@@ -42,11 +53,11 @@ class SCAddFileView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
+            const Expanded(
               child: Text('附件',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: SCFonts.f16,
                       fontWeight: FontWeight.w500,
                       color: SCColors.color_1B1D33)),
@@ -99,6 +110,12 @@ class SCAddFileView extends StatelessWidget {
 
   /// listView
   Widget listView() {
-    return SCFileListView(list: ['', '', '']);
+    print("选择的额附件aaa===$attachmentsList");
+    return SCFileListView(
+      list: attachmentsList ?? [],
+      deleteAction: (int index) {
+        deleteAction?.call(index);
+      },
+    );
   }
 }

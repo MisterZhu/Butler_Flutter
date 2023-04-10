@@ -31,10 +31,10 @@ class SCPropertyMaintenanceDetailPage extends StatefulWidget {
 
 class SCPropertyMaintenanceDetailPageState extends State<SCPropertyMaintenanceDetailPage> {
 
-  /// SCPropertyMaintenanceDetailController
-  late SCPropertyMaintenanceDetailController controller;
+  /// SCMaterialEntryDetailController
+  late SCMaterialEntryDetailController controller;
 
-  /// SCPropertyMaintenanceDetailController - tag
+  /// SCMaterialEntryDetailController - tag
   String controllerTag = '';
 
   @override
@@ -42,7 +42,7 @@ class SCPropertyMaintenanceDetailPageState extends State<SCPropertyMaintenanceDe
     super.initState();
     controllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCMaterialEntryDetailPage).toString());
-    controller = Get.put(SCPropertyMaintenanceDetailController(), tag: controllerTag);
+    controller = Get.put(SCMaterialEntryDetailController(), tag: controllerTag);
     var params = Get.arguments;
     print('上个页面传过来的参数:$params');
     if (params != null) {
@@ -67,7 +67,7 @@ class SCPropertyMaintenanceDetailPageState extends State<SCPropertyMaintenanceDe
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: '出库详情',
+        title: '资产维保详情',
         body: body()
     );
   }
@@ -97,7 +97,7 @@ class SCPropertyMaintenanceDetailPageState extends State<SCPropertyMaintenanceDe
             offstage: !controller.success,
             child: SCMaterialDetailListView(
               state: controller,
-              type: SCWarehouseManageType.outbound,
+              type: SCWarehouseManageType.propertyMaintenance,
             ),
           );
         });

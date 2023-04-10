@@ -9,6 +9,7 @@ import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../HouseInspect/View/sc_deliver_evidence_cell.dart';
 import '../../../HouseInspect/View/sc_deliver_explain_cell.dart';
+import '../../../PropertyMaintenance/Model/sc_attachment_model.dart';
 
 /// 基础信息cell
 
@@ -31,11 +32,11 @@ class SCBasicInfoCell extends StatefulWidget {
   /// 图片数组
   final List? files;
 
-  /// 附件数组
-  final List? attachmentList;
-
   /// 盘点范围数组
   final List? rangeList;
+
+  /// 附件数组
+  final List<SCAttachmentModel>? attachmentsList;
 
   /// 点击选择
   final Function(int index, String title)? selectAction;
@@ -52,11 +53,17 @@ class SCBasicInfoCell extends StatefulWidget {
   /// 添加/删除图片
   final Function(List list)? updatePhoto;
 
+  /// 上传文件
+  final Function? uploadFileAction;
+
   /// 范围
   final int? rangeValue;
 
   /// 是否可以编辑范围
   final bool? disableEditRange;
+
+  /// 删除附件
+  final Function(int index)? deleteAttachmentAction;
 
   SCBasicInfoCell({
     Key? key,
@@ -71,10 +78,12 @@ class SCBasicInfoCell extends StatefulWidget {
     required this.requiredRemark,
     required this.requiredPhotos,
     this.requiredAttachment,
-    this.attachmentList,
     this.rangeList,
     this.rangeValue,
-    this.disableEditRange
+    this.disableEditRange,
+    this.uploadFileAction,
+    this.attachmentsList,
+    this.deleteAttachmentAction
   }) : super(key: key);
 
   @override
@@ -235,7 +244,15 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
   Widget filesItem() {
     bool requiredAttachment = widget.requiredAttachment ?? false;
     if (requiredAttachment) {
-      return const Padding(padding: EdgeInsets.only(bottom: 12.0), child: SCAddFileView(),);
+      return Padding(padding: const EdgeInsets.only(bottom: 12.0), child: SCAddFileView(
+        attachmentsList: widget.attachmentsList,
+        addAction: (){
+          widget.uploadFileAction?.call();
+        },
+        deleteAction: (int index) {
+          widget.deleteAttachmentAction?.call(index);
+        },
+      ),);
     } else {
       return const SizedBox(
         height: 12.0,

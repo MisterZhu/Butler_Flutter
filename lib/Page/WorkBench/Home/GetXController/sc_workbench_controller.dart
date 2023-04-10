@@ -114,19 +114,23 @@ class SCWorkBenchController extends GetxController {
       realVerificationAPI();
     } else if (currentPlateIndex == 2) {
       orderFormAPI();
-    } else if (currentPlateIndex == 3) {// 物资入库
+    } else if (currentPlateIndex == 3) {
+      // 物资入库
       if (currentWorkOrderIndex == 0) {
         materialEntryAPI();
       }
-    } else if (currentPlateIndex == 4) {// 物资出库
+    } else if (currentPlateIndex == 4) {
+      // 物资出库
       if (currentWorkOrderIndex == 0) {
         materialOutAPI();
       }
-    } else if (currentPlateIndex == 5) {// 物资报损
+    } else if (currentPlateIndex == 5) {
+      // 物资报损
       if (currentWorkOrderIndex == 0) {
         materialFrmLossAPI();
       }
-    } else if (currentPlateIndex == 6) {// 物资调拨
+    } else if (currentPlateIndex == 6) {
+      // 物资调拨
       if (currentWorkOrderIndex == 0) {
         materialTransferAPI();
       }
@@ -137,28 +141,38 @@ class SCWorkBenchController extends GetxController {
   Future loadMore() async {
     if (currentWorkOrderIndex == 0) {
       /// 待处理
-      if (currentPlateIndex == 0) {// 工单处理
+      if (currentPlateIndex == 0) {
+        // 工单处理
         return getWorkOrderList(isMore: true);
-      } else if (currentPlateIndex == 1) {// 实地核验
+      } else if (currentPlateIndex == 1) {
+        // 实地核验
         return getRealVerificationWaitList(isMore: true);
-      } else if (currentPlateIndex == 2) {// 订单处理
+      } else if (currentPlateIndex == 2) {
+        // 订单处理
         return getOrderFormWaitList(isMore: true);
-      } else if (currentPlateIndex == 3) {// 物资入库
+      } else if (currentPlateIndex == 3) {
+        // 物资入库
         return getMaterialEntryWaitList(isMore: true);
-      } else if (currentPlateIndex == 4) {// 物资出库
+      } else if (currentPlateIndex == 4) {
+        // 物资出库
         return getMaterialOutWaitList(isMore: true);
-      } else if (currentPlateIndex == 5) {// 物资报损
+      } else if (currentPlateIndex == 5) {
+        // 物资报损
         return getMaterialFrmLossWaitList(isMore: true);
-      } else if (currentPlateIndex == 6) {// 物资调拨
+      } else if (currentPlateIndex == 6) {
+        // 物资调拨
         return getMaterialTransferWaitList(isMore: true);
       }
     } else {
       /// 处理中
-      if (currentPlateIndex == 0) {// 工单处理
+      if (currentPlateIndex == 0) {
+        // 工单处理
         return getProcessingWorkOrderList(isMore: true);
-      } else if (currentPlateIndex == 1) {// 实地核验
+      } else if (currentPlateIndex == 1) {
+        // 实地核验
         return getRealVerificationProcessingList(isMore: true);
-      } else if (currentPlateIndex == 2) {// 订单处理
+      } else if (currentPlateIndex == 2) {
+        // 订单处理
         return getOrderFormProcessingList(isMore: true);
       }
     }
@@ -661,12 +675,7 @@ class SCWorkBenchController extends GetxController {
       SCLoadingUtils.show();
     }
     List fields = [];
-    var dic = {
-      "map": {},
-      "method": 1,
-      "name": "status",
-      "value": 1
-    };
+    var dic = {"map": {}, "method": 1, "name": "status", "value": 1};
     fields.add(dic);
     var params = {
       "conditions": {"fields": fields, "specialMap": {}},
@@ -686,11 +695,15 @@ class SCWorkBenchController extends GetxController {
           if (value is Map) {
             List list = value['records'];
             if (isLoadMore == true) {
-              waitController.materialEntryList.addAll(List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+              waitController.materialEntryList.addAll(
+                  List<SCMaterialEntryModel>.from(list
+                      .map((e) => SCMaterialEntryModel.fromJson(e))
+                      .toList()));
             } else {
-              waitController.materialEntryList = List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+              waitController.materialEntryList =
+                  List<SCMaterialEntryModel>.from(list
+                      .map((e) => SCMaterialEntryModel.fromJson(e))
+                      .toList());
             }
           } else {
             if (isLoadMore == false) {
@@ -720,12 +733,7 @@ class SCWorkBenchController extends GetxController {
       SCLoadingUtils.show();
     }
     List fields = [];
-    var dic = {
-      "map": {},
-      "method": 1,
-      "name": "status",
-      "value": 1
-    };
+    var dic = {"map": {}, "method": 1, "name": "status", "value": 1};
     fields.add(dic);
     var params = {
       "conditions": {"fields": fields, "specialMap": {}},
@@ -745,8 +753,10 @@ class SCWorkBenchController extends GetxController {
           if (value is Map) {
             List list = value['records'];
             if (isLoadMore == true) {
-              waitController.materialOutList.addAll(List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+              waitController.materialOutList.addAll(
+                  List<SCMaterialEntryModel>.from(list
+                      .map((e) => SCMaterialEntryModel.fromJson(e))
+                      .toList()));
             } else {
               waitController.materialOutList = List<SCMaterialEntryModel>.from(
                   list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
@@ -776,12 +786,7 @@ class SCWorkBenchController extends GetxController {
       SCLoadingUtils.show();
     }
     List fields = [];
-    var dic = {
-      "map": {},
-      "method": 1,
-      "name": "status",
-      "value": 1
-    };
+    var dic = {"map": {}, "method": 1, "name": "status", "value": 1};
     fields.add(dic);
     var params = {
       "conditions": {"fields": fields, "specialMap": {}},
@@ -801,11 +806,15 @@ class SCWorkBenchController extends GetxController {
           if (value is Map) {
             List list = value['records'];
             if (isLoadMore == true) {
-              waitController.materialReportList.addAll(List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+              waitController.materialReportList.addAll(
+                  List<SCMaterialEntryModel>.from(list
+                      .map((e) => SCMaterialEntryModel.fromJson(e))
+                      .toList()));
             } else {
-              waitController.materialReportList = List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+              waitController.materialReportList =
+                  List<SCMaterialEntryModel>.from(list
+                      .map((e) => SCMaterialEntryModel.fromJson(e))
+                      .toList());
             }
           } else {
             if (isLoadMore == false) {
@@ -832,12 +841,7 @@ class SCWorkBenchController extends GetxController {
       SCLoadingUtils.show();
     }
     List fields = [];
-    var dic = {
-      "map": {},
-      "method": 1,
-      "name": "status",
-      "value": 1
-    };
+    var dic = {"map": {}, "method": 1, "name": "status", "value": 1};
     fields.add(dic);
     var params = {
       "conditions": {"fields": fields, "specialMap": {}},
@@ -857,11 +861,15 @@ class SCWorkBenchController extends GetxController {
           if (value is Map) {
             List list = value['records'];
             if (isLoadMore == true) {
-              waitController.materialTransferList.addAll(List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+              waitController.materialTransferList.addAll(
+                  List<SCMaterialEntryModel>.from(list
+                      .map((e) => SCMaterialEntryModel.fromJson(e))
+                      .toList()));
             } else {
-              waitController.materialTransferList = List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+              waitController.materialTransferList =
+                  List<SCMaterialEntryModel>.from(list
+                      .map((e) => SCMaterialEntryModel.fromJson(e))
+                      .toList());
             }
           } else {
             if (isLoadMore == false) {
@@ -880,7 +888,8 @@ class SCWorkBenchController extends GetxController {
   }
 
   /// 提交入库
-  materialEntrySubmit({required String id, Function(bool success)? completeHandler}) async {
+  materialEntrySubmit(
+      {required String id, Function(bool success)? completeHandler}) async {
     var params = {
       "wareHouseInId": id,
     };
@@ -900,7 +909,8 @@ class SCWorkBenchController extends GetxController {
   }
 
   /// 提交出库
-  materialOutSubmit({required String id, Function(bool success)? completeHandler}) async{
+  materialOutSubmit(
+      {required String id, Function(bool success)? completeHandler}) async {
     var params = {
       "wareHouseOutId": id,
     };
@@ -920,7 +930,8 @@ class SCWorkBenchController extends GetxController {
   }
 
   /// 提交报损
-  materialFrmLossSubmit({required String id, Function(bool success)? completeHandler}) async{
+  materialFrmLossSubmit(
+      {required String id, Function(bool success)? completeHandler}) async {
     var params = {
       "wareHouseReportId": id,
     };
@@ -940,7 +951,8 @@ class SCWorkBenchController extends GetxController {
   }
 
   /// 提交调拨
-  materialTransferSubmit({required String id, Function(bool success)? completeHandler}) async{
+  materialTransferSubmit(
+      {required String id, Function(bool success)? completeHandler}) async {
     var params = {
       "wareHouseChangeId": id,
     };
@@ -1005,28 +1017,30 @@ class SCWorkBenchController extends GetxController {
   }
 
   /// 获取定位
-  location() async{
+  location() async {
     bool isShowAlert = SCSpUtil.getBool(SCKey.kIsShowSetNotificationAlert);
     PermissionStatus permissionStatus = await SCPermissionUtils.notification();
     if (permissionStatus != PermissionStatus.granted && !isShowAlert) {
-      SCPermissionUtils.notificationAlert(completionHandler: (success) {
-       Future.delayed(const Duration(milliseconds: 1500), (){
-         SCPermissionUtils.startLocationWithPrivacyAlert(completionHandler: (dynamic result, SCLocationModel? model) {
-           print("定位结果:$result");
-           print("定位结果模型:${model?.toJson()}");
-           int status = result['status'];
-           if (status == 1) {
-             double longitude = result['longitude'];
-             double latitude = result['latitude'];
-             SCScaffoldManager.instance.longitude = longitude;
-             SCScaffoldManager.instance.latitude = latitude;
-           }
-         });
-       });
+      Future.delayed(const Duration(milliseconds: 1500), () {
+        SCPermissionUtils.notificationAlert(completionHandler: (success) {
+          SCPermissionUtils.startLocationWithPrivacyAlert(
+              completionHandler: (dynamic result, SCLocationModel? model) {
+            print("定位结果:$result");
+            print("定位结果模型:${model?.toJson()}");
+            int status = result['status'];
+            if (status == 1) {
+              double longitude = result['longitude'];
+              double latitude = result['latitude'];
+              SCScaffoldManager.instance.longitude = longitude;
+              SCScaffoldManager.instance.latitude = latitude;
+            }
+          });
+        });
       });
     } else {
       Future.delayed(const Duration(milliseconds: 1500), () {
-        SCPermissionUtils.startLocationWithPrivacyAlert(completionHandler: (dynamic result, SCLocationModel? model) {
+        SCPermissionUtils.startLocationWithPrivacyAlert(
+            completionHandler: (dynamic result, SCLocationModel? model) {
           print("定位结果:$result");
           print("定位结果模型:${model?.toJson()}");
           int status = result['status'];

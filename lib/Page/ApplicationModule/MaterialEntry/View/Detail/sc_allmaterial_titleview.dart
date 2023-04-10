@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
+import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/View/Detail/sc_unifycompany_detail_view.dart';
 import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../Model/sc_material_assets_details_model.dart';
@@ -25,7 +26,8 @@ class SCAllMaterialTitleView extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         titleView(),
-        numView()
+        numView(),
+        propertyMaintenanceUnifyInfoView(),
       ],
     ),);
   }
@@ -162,6 +164,21 @@ class SCAllMaterialTitleView extends StatelessWidget {
           fontWeight: FontWeight.w400,
           color: SCColors.color_5E5F66
       ),),
+    );
+  }
+
+  /// 资产维保-统一信息
+  Widget propertyMaintenanceUnifyInfoView() {
+    bool unifyCompany = model?.unifyMaintenanceCompany ?? false;
+    bool unifyContent = model?.unifyMaintenanceContent ?? false;
+    return Offstage(
+      offstage: type != SCWarehouseManageType.propertyMaintenance,
+      child: SCUnifyCompanyDetailView(
+        unifyCompany: unifyCompany,
+        maintenanceCompany: model?.maintenanceCompany,
+        unifyContent: unifyContent,
+        maintenanceContent: model?.maintenanceContent,
+      )
     );
   }
 }

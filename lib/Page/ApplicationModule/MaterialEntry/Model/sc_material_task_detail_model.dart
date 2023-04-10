@@ -62,6 +62,11 @@ class SCMaterialTaskDetailModel {
     this.materialType,
     this.materialAssetsDetails,
     this.haveAuth,
+    this.unifyMaintenanceCompany,// 是否统一维保单位
+    this.unifyMaintenanceContent,// 是否统一维保内容
+    this.maintenanceCompany,// 维保单位
+    this.maintenanceContent,// 维保内容
+    this.maintenancePrice,// 维保费用
   });
 
   SCMaterialTaskDetailModel.fromJson(dynamic json) {
@@ -146,6 +151,11 @@ class SCMaterialTaskDetailModel {
     dealOrgName = json['dealOrgName'];
     materialType = json['materialType'];
     haveAuth = json['haveAuth'];
+    unifyMaintenanceCompany = json['unifyMaintenanceCompany'];
+    unifyMaintenanceContent = json['unifyMaintenanceContent'];
+    maintenanceCompany = json['maintenanceCompany'];
+    maintenanceContent = json['maintenanceContent'];
+    maintenancePrice = json['maintenancePrice'];
   }
   String? creator;
   String? creatorName;
@@ -202,6 +212,11 @@ class SCMaterialTaskDetailModel {
   String? taskName;
   int? materialType;
   bool? haveAuth;    //是否拥有仓库管理员或者仓库主管角色权限
+  bool? unifyMaintenanceCompany;
+  bool? unifyMaintenanceContent;
+  String? maintenanceCompany;
+  String? maintenanceContent;
+  double? maintenancePrice;
   List<SCMaterialAssetsDetailsModel>? materialAssetsDetails;
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -271,6 +286,11 @@ class SCMaterialTaskDetailModel {
     map['dealOrgName'] = dealOrgName;
     map['materialType'] = materialType;
     map['haveAuth'] = haveAuth;
+    map['unifyMaintenanceCompany'] = unifyMaintenanceCompany;
+    map['unifyMaintenanceContent'] = unifyMaintenanceContent;
+    map['maintenanceCompany'] = maintenanceCompany;
+    map['maintenanceContent'] = maintenanceContent;
+    map['maintenancePrice'] = maintenancePrice;
     return map;
   }
 }

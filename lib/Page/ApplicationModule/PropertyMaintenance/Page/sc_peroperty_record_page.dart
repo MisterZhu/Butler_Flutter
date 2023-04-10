@@ -75,7 +75,7 @@ class SCPropertyMaintenanceRecordPageState extends State<SCPropertyMaintenanceRe
   addNotification() {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
-      if (key == SCKey.kRefreshMaterialOutboundPage) {
+      if (key == SCKey.kRefreshPropertyMaintenancePage) {
         controller.loadData(isMore: false);
       }
     });

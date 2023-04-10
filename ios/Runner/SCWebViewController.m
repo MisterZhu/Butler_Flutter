@@ -131,7 +131,11 @@
         strongSelf.completeHandler(@{@"key" : kGotoMaterialKey, @"data" : data});
         [strongSelf dismissViewControllerAnimated:YES completion:nil];
     }];
-
+    // 打开浏览器
+    [self.bridge registerHandler:@"sc_app_browser" handler:^(id data, WVJBResponseCallback responseCallback) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf openBrowser];
+    }];
 }
 
 /// 返回
@@ -146,6 +150,11 @@
 /// 关闭
 - (void)closeAction {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+     
+/// 打开浏览器
+- (void)openBrowser {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@""] options:nil completionHandler:nil];
 }
 
 ///  加载H5页面
