@@ -55,6 +55,7 @@ import '../../Page/Message/Page/sc_message_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
 import '../../Page/Mine/Home/Page/sc_proxy_page.dart';
 import '../../Page/Task/Page/sc_task_page.dart';
+import '../../Page/WorkBench/Home/Page/sc_workbench_search_page.dart';
 import 'sc_router_path.dart';
 
 /// 路由-pages
@@ -173,6 +174,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.monitorSearchPage, page: () => SCMonitorSearchPage()),
     /*任务*/
     GetPage(name: SCRouterPath.taskPage, page: () => SCTaskPage()),
+    /*工作台-搜索*/
+    GetPage(name: SCRouterPath.workBenchSearchPage, page: () => SCWorkBenchSearchPage()),
 
   ];
 

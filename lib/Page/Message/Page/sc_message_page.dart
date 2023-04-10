@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../Skin/Tools/sc_scaffold_manager.dart';
@@ -24,8 +25,10 @@ class SCMessagePageState extends State<SCMessagePage> with SingleTickerProviderS
   /// SCMessageController - tag
   String controllerTag = '';
 
-
   late TabController tabController;
+
+  /// RefreshController
+  RefreshController refreshController = RefreshController(initialRefresh: false);
 
   List tabList = ['全部', '未读'];
 
@@ -48,6 +51,7 @@ class SCMessagePageState extends State<SCMessagePage> with SingleTickerProviderS
   dispose() {
     SCScaffoldManager.instance.deleteGetXControllerTag((SCMessagePage).toString(), controllerTag);
     controller.dispose();
+    refreshController.dispose();
     super.dispose();
   }
 
@@ -108,8 +112,8 @@ class SCMessagePageState extends State<SCMessagePage> with SingleTickerProviderS
         Expanded(child: TabBarView(
             controller: tabController,
             children: [
-              SCMessageListView(state: controller, type: 0,),
-              SCMessageListView(state: controller, type: 1,),
+              SCMessageListView(state: controller, type: 0, refreshController: refreshController,),
+              SCMessageListView(state: controller, type: 1, refreshController: refreshController,),
             ])
         ),
       ],

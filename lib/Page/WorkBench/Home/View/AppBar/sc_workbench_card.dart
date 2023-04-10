@@ -27,9 +27,7 @@ class SCWorkBenchCard extends StatelessWidget {
             color: SCColors.color_FFFFFF,
             borderRadius: BorderRadius.circular(4.0)),
         child: StaggeredGridView.countBuilder(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10.0,
-            ),
+            padding: EdgeInsets.zero,
             mainAxisSpacing: 0.0,
             crossAxisSpacing: 10.0,
             crossAxisCount: 4,

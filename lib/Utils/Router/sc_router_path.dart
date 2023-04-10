@@ -24,6 +24,10 @@ class SCRouterPath {
   /// 详情
   static String workBenchDetailPath = "/lib/Page/WorkBench/Home/Page/sc_workbench_detail_page";
 
+  /// 搜索
+  static String workBenchSearchPage = "/lib/Page/WorkBench/Home/Page/sc_workbench_search_page";
+
+
   /***************************** 通讯录 ******************************/
   /// 通讯录
   static String addressBookPath = "/lib/Page/AddressBook/Home/Page/sc_addressbook_page";

@@ -304,7 +304,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
 
   /// 点击搜索
   searchAction() {
-
+    SCRouterHelper.pathPage(SCRouterPath.workBenchSearchPage, null);
   }
 
   /// 点击筛选

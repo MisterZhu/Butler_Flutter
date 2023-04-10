@@ -3,7 +3,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import '../Controller/sc_message_controller.dart';
-import '../Model/sc_message_model.dart';
+import '../Model/sc_message_card_model.dart';
 
 /// 消息listview
 class SCMessageListView extends StatelessWidget {
@@ -13,10 +13,12 @@ class SCMessageListView extends StatelessWidget {
 
   /// 类型，0全部，1未读
   final int type;
-  SCMessageListView({Key? key, required this.state, required this.type}) : super(key: key);
 
   /// RefreshController
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  final RefreshController refreshController;
+
+  SCMessageListView({Key? key, required this.state, required this.type, required this.refreshController}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,15 +43,14 @@ class SCMessageListView extends StatelessWidget {
           //SCMessageModel model = state.dataList[index];
           return SCMessageCardCell(
             type: index,
-            title: '交易提醒标题最长是否',
+            title: '交易提醒标题最长',
             icon: SCAsset.iconMessageType,
             time: '2023-01-22',
-            isUnread: index == 0 ? true: false,
+            isUnread: false,
             showMoreBtn: false,
             content: '订单状态更新',
-            contentDesc: '交易金额',
+            head: '交易金额',
             contentIcon: SCAsset.iconMessageContentDefault,
-            money: 300.00,
             bottomContentList: [{'title': '订单编号', 'content': '12345678901111'}, {'title': '备注', 'content': '已关闭'}],
             detailTapAction: () {
 

@@ -2,7 +2,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../Network/sc_http_manager.dart';
 import '../../../Network/sc_url.dart';
-import '../Model/sc_message_model.dart';
+import '../Model/sc_message_card_model.dart';
 
 class SCMessageController extends GetxController {
 
@@ -10,9 +10,9 @@ class SCMessageController extends GetxController {
 
   int currentIndex = 0;
 
-  List<SCMessageModel> allDataList = [];
+  List<SCMessageCardModel> allDataList = [];
 
-  List<SCMessageModel> unreadDataList = [];
+  List<SCMessageCardModel> unreadDataList = [];
 
   /// 是否显示更多弹窗，默认不显示
   bool showMoreDialog = false;
@@ -35,35 +35,18 @@ class SCMessageController extends GetxController {
       pageNum = 1;
       SCLoadingUtils.show();
     }
-    var params = {
-      "conditions": {
-        "isRead": 0,
-        "title": "",
-        "typeId": ""
-      },
-      "count": false,
-      "last": false,
-      "orderBy": [
-        {
-          "asc": true,
-          "field": ""
-        }
-      ],
-      "pageNum": pageNum,
-      "pageSize": 20
-    };
     SCHttpManager.instance.post(
         url: SCUrl.kMessageListUrl,
-        params: params,
+        params: null,
         success: (value) {
           SCLoadingUtils.hide();
           List list = value['records'];
           if (isLoadMore == true) {
-            allDataList.addAll(List<SCMessageModel>.from(
-                list.map((e) => SCMessageModel.fromJson(e)).toList()));
+            allDataList.addAll(List<SCMessageCardModel>.from(
+                list.map((e) => SCMessageCardModel.fromJson(e)).toList()));
           } else {
-            allDataList = List<SCMessageModel>.from(
-                list.map((e) => SCMessageModel.fromJson(e)).toList());
+            allDataList = List<SCMessageCardModel>.from(
+                list.map((e) => SCMessageCardModel.fromJson(e)).toList());
           }
           update();
           bool last = false;

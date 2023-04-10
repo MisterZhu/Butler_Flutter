@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smartcommunity/Page/Task/View/sc_task_card_cell.dart';
-
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:sc_uikit/sc_uikit.dart';
 import '../Controller/sc_task_controller.dart';
 
 
@@ -8,11 +8,13 @@ import '../Controller/sc_task_controller.dart';
 
 class SCTaskListView extends StatelessWidget {
 
-
   /// SCTaskController
   final SCTaskController state;
 
-  SCTaskListView({Key? key, required this.state}) : super(key: key);
+  /// RefreshController
+  final RefreshController refreshController;
+
+  SCTaskListView({Key? key, required this.state, required this.refreshController}) : super(key: key);
 
 
   @override
@@ -22,7 +24,7 @@ class SCTaskListView extends StatelessWidget {
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return SCTaskCardCell(
-            type: index,
+            timeType: 0,
             tagList: index == 0 ? const ['标签1', '标签2', '标签3'] : [],
             remainingTime: state.timeList[index],
             time: state.testTimeList[index],
