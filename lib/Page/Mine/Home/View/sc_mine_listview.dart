@@ -85,7 +85,7 @@ class SCMineListView extends StatelessWidget {
   }
 
   Widget listview(BuildContext context) {
-    int count = 13;
+    int count = 14;
     if (SCConfig.env == SCEnvironment.production &&
         !SCConfig.isSupportProxyForProduction) {
       if (SCConfig.yycTenantId() == (SCScaffoldManager.instance.defaultConfigModel?.tenantId ?? '')) {
@@ -238,7 +238,16 @@ class SCMineListView extends StatelessWidget {
           SCRouterHelper.pathPage(SCRouterPath.propertyRecordPage, null);
         },
       );
-    }else {
+    } else if (index == 13) {
+      return SCSettingCell(
+        title: '预警中心',
+        showLeftIcon: true,
+        leftIcon: SCAsset.iconMineService,
+        onTap: () {
+          SCRouterHelper.pathPage(SCRouterPath.warningCenterPage, null);
+        },
+      );
+    } else {
       return const SizedBox(
         height: 100.0,
       );

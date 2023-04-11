@@ -11,6 +11,7 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialOutbound/Page/sc_a
 import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/Page/sc_add_propertymaintenance_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/Page/sc_peroperty_record_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/Page/sc_propertymaintenance_detail_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Page/sc_warningcenter_page.dart';
 import 'package:smartcommunity/Page/Base/Scan/Page/sc_scan_page.dart';
 import 'package:smartcommunity/Page/Login/Home/Page/sc_login_page.dart';
 import 'package:smartcommunity/Page/Login/Privacy/Page/sc_privacy_alert_page.dart';
@@ -182,6 +183,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.addPropertyRecordPage, page: () => SCAddPropertyMaintenancePage()),
     /*资产维保登记*/
     GetPage(name: SCRouterPath.propertyMaintenanceDetailPage, page: () => SCPropertyMaintenanceDetailPage()),
+    /*预计中心*/
+    GetPage(name: SCRouterPath.warningCenterPage, page: () => SCWarningCenterPage())
   ];
 
   /*根据code使用路由*/

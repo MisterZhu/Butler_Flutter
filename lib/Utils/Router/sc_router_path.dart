@@ -207,4 +207,9 @@ class SCRouterPath {
   /// 资产维保详情
   static String propertyMaintenanceDetailPage = "/lib/Page/PropertyMaintenance/Page/sc_propertymaintenance_detail_page";
 
+  /*************************** 预警中心 ******************************/
+
+  /// 预警中心
+  static String warningCenterPage = "/lib/Page/PropertyMaintenance/Page/sc_warningcenter_page";
+
 }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +5,6 @@ import 'package:sc_uikit/sc_uikit.dart';
 
 /// 标题+输入框 cell
 class SCDeliverExplainCell extends StatefulWidget {
-
   /// 标题
   final String title;
 
@@ -19,14 +17,23 @@ class SCDeliverExplainCell extends StatefulWidget {
   /// 输入内容
   final Function(String content)? inputAction;
 
-  SCDeliverExplainCell({ Key? key, required this.title, this.content, this.inputHeight = 86.0, this.inputAction}) : super(key: key);
+  /// 是否必填
+  final bool? isRequired;
+
+  SCDeliverExplainCell(
+      {Key? key,
+      required this.title,
+      this.content,
+      this.inputHeight = 86.0,
+      this.inputAction,
+      this.isRequired})
+      : super(key: key);
 
   @override
   SCDeliverExplainCellState createState() => SCDeliverExplainCellState();
 }
 
 class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
-
   TextEditingController controller = TextEditingController();
   FocusNode node = FocusNode();
 
@@ -40,8 +47,8 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
       controller.value = TextEditingValue(
           text: widget.content ?? '',
           selection: TextSelection.fromPosition(TextPosition(
-              affinity: TextAffinity.downstream, offset: widget.content?.length ?? 0)));
-
+              affinity: TextAffinity.downstream,
+              offset: widget.content?.length ?? 0)));
     }
   }
 
@@ -52,8 +59,8 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
       controller.value = TextEditingValue(
           text: widget.content ?? '',
           selection: TextSelection.fromPosition(TextPosition(
-              affinity: TextAffinity.downstream, offset: widget.content?.length ?? 0)));
-
+              affinity: TextAffinity.downstream,
+              offset: widget.content?.length ?? 0)));
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -77,44 +84,78 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
       mainAxisSize: MainAxisSize.min,
       children: [
         titleItem(),
-        const SizedBox(height: 12.0,),
+        const SizedBox(
+          height: 12.0,
+        ),
         inputItem(),
       ],
     );
   }
 
+  /// *
+  Widget requiredItem() {
+    return Container(
+      width: 12.0,
+      alignment: Alignment.centerRight,
+      child: const Text('*',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.right,
+          style: TextStyle(
+              fontSize: SCFonts.f16,
+              fontWeight: FontWeight.w400,
+              color: SCColors.color_FF4040)),
+    );
+  }
+
   /// title
   Widget titleItem() {
-    return Text(
-        widget.title,
-        textAlign: TextAlign.left,
-        overflow: TextOverflow.ellipsis,
-        style: const TextStyle(
-          fontSize: SCFonts.f16,
-          color: SCColors.color_1B1D33,
-          fontWeight: FontWeight.w400,
-        ),
+    bool showRequired = widget.isRequired ?? false;
+    Widget textItem = Text(
+      widget.title,
+      textAlign: TextAlign.left,
+      overflow: TextOverflow.ellipsis,
+      style: const TextStyle(
+        fontSize: SCFonts.f16,
+        color: SCColors.color_1B1D33,
+        fontWeight: FontWeight.w400,
+      ),
     );
+    if (showRequired) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [requiredItem(), textItem],
+      );
+    } else {
+      return textItem;
+    }
   }
 
   /// inputItem
   Widget inputItem() {
-    return Container(
-      width: double.infinity,
-      height: widget.inputHeight,
-      padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0, bottom: 6.0),
-      decoration: BoxDecoration(
-        color: SCColors.color_F7F8FA, borderRadius: BorderRadius.circular(4.0)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Expanded(child: textField()),
-          countItem(),
-        ],
-      )
-    );
+    bool showRequired = widget.isRequired ?? false;
+    Widget item = Container(
+        width: double.infinity,
+        height: widget.inputHeight,
+        padding: const EdgeInsets.only(
+            left: 10.0, right: 10.0, top: 10.0, bottom: 6.0),
+        decoration: BoxDecoration(
+            color: SCColors.color_F7F8FA,
+            borderRadius: BorderRadius.circular(4.0)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(child: textField()),
+            countItem(),
+          ],
+        ));
+    if (showRequired) {
+      return Padding(padding: const EdgeInsets.symmetric(horizontal: 12.0), child: item,);
+    } else {
+      return item;
+    }
   }
 
   /// textField
@@ -122,7 +163,10 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
     return TextField(
       controller: controller,
       maxLines: null,
-      style: const TextStyle(fontSize: SCFonts.f16, fontWeight:  FontWeight.w400, color: SCColors.color_1B1D33),
+      style: const TextStyle(
+          fontSize: SCFonts.f16,
+          fontWeight: FontWeight.w400,
+          color: SCColors.color_1B1D33),
       cursorColor: SCColors.color_1B1C33,
       cursorWidth: 2,
       focusNode: node,
@@ -146,9 +190,7 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
       onChanged: (value) {
         widget.inputAction?.call(value);
         count = value.length;
-        setState(() {
-
-        });
+        setState(() {});
       },
       keyboardType: TextInputType.text,
       keyboardAppearance: Brightness.light,
@@ -169,5 +211,4 @@ class SCDeliverExplainCellState extends State<SCDeliverExplainCell> {
       ),
     );
   }
-
 }

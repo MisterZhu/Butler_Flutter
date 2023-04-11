@@ -337,4 +337,8 @@ class SCUrl {
   /// 消息列表
   static const String kMessageListUrl = "/api/msg/message/page";
 
+  /************************* 预警中心 *************************/
+  /// 预警列表
+  static const String kWarningCenterListUrl = "/api/alert/alert/getAlertsPage";
+
 }

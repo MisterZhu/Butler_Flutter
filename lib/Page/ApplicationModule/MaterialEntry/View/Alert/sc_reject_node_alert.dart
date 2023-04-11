@@ -16,7 +16,7 @@ class SCRejectNodeAlert extends StatefulWidget {
   final String? currentNode;
 
   /// 点击
-  final Function(String node)? tapAction;
+  final Function(String node, int index)? tapAction;
 
   SCRejectNodeAlert({Key? key, required this.list, this.currentNode, this.tapAction}) : super(key: key);
 
@@ -72,7 +72,7 @@ class SCRejectNodeAlertState extends State<SCRejectNodeAlert> {
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
-          return cell(widget.list[index]);
+          return cell(widget.list[index], index);
         },
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 10.0,);
@@ -81,10 +81,10 @@ class SCRejectNodeAlertState extends State<SCRejectNodeAlert> {
   }
 
   /// cell
-  Widget cell(String name) {
+  Widget cell(String name, int index) {
     return GestureDetector(
       onTap: () {
-        widget.tapAction?.call(name);
+        widget.tapAction?.call(name, index);
         Navigator.of(context).pop();
       },
       behavior: HitTestBehavior.opaque,
