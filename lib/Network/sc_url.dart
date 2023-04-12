@@ -335,7 +335,10 @@ class SCUrl {
 
   /************************* 消息 *************************/
   /// 消息列表
-  static const String kMessageListUrl = "/api/msg/message/page";
+  static const String kMessageListUrl = "/api/msg-xl/noticeBusiness/list";
+
+  /// 获取详情并更新为已读
+  static const String kMessageDetailUrl = "/api/msg-xl/noticeBusiness";
 
 
   /************************* 在线监控 *************************/

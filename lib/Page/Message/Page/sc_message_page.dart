@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../Skin/Tools/sc_scaffold_manager.dart';
@@ -24,10 +25,15 @@ class SCMessagePageState extends State<SCMessagePage> with SingleTickerProviderS
   /// SCMessageController - tag
   String controllerTag = '';
 
-
   late TabController tabController;
 
   List tabList = ['全部', '未读'];
+
+  /// RefreshController
+  RefreshController refreshController1 = RefreshController(initialRefresh: false);
+
+  /// RefreshController
+  RefreshController refreshController2 = RefreshController(initialRefresh: false);
 
   @override
   initState() {
@@ -37,6 +43,7 @@ class SCMessagePageState extends State<SCMessagePage> with SingleTickerProviderS
     controller = Get.put(SCMessageController(), tag: controllerTag);
     tabController.addListener(() {
       if (controller.currentIndex != tabController.index) {
+        controller.updateCurrentIndex(tabController.index);
         if (controller.showMoreDialog == true) {
           controller.updateMoreDialogStatus();
         }
@@ -48,6 +55,8 @@ class SCMessagePageState extends State<SCMessagePage> with SingleTickerProviderS
   dispose() {
     SCScaffoldManager.instance.deleteGetXControllerTag((SCMessagePage).toString(), controllerTag);
     controller.dispose();
+    refreshController1.dispose();
+    refreshController2.dispose();
     super.dispose();
   }
 
@@ -102,18 +111,26 @@ class SCMessagePageState extends State<SCMessagePage> with SingleTickerProviderS
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SCMessageTopItem(tabController: tabController, titleList: tabList, moreAction: () {
+        SCMessageTopItem(tabController: tabController, titleList: updateTabList(), moreAction: () {
           controller.updateMoreDialogStatus();
         },),
         Expanded(child: TabBarView(
             controller: tabController,
             children: [
-              SCMessageListView(state: controller, type: 0,),
-              SCMessageListView(state: controller, type: 1,),
+              SCMessageListView(state: controller, type: 0, refreshController: refreshController1),
+              SCMessageListView(state: controller, type: 1, refreshController: refreshController2),
             ])
         ),
       ],
     );
+  }
+
+  updateTabList() {
+    if (controller.unreadDataList.isNotEmpty) {
+      return ['全部', '未读(${controller.unreadDataList.length})'];
+    } else {
+      return ['全部', '未读'];
+    }
   }
 }
 

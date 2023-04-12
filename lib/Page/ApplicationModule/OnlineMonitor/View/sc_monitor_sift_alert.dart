@@ -92,7 +92,7 @@ class SCMonitorSiftAlertState extends State<SCMonitorSiftAlert> {
       listViewHeight = 44.0 * minCount;
     }
     double height = 48.0 + 44.0 + listViewHeight + 12.0 + MediaQuery.of(context).padding.bottom;
-    double height1 = (MediaQuery.of(context).size.height - 200.0);
+    double height1 = (MediaQuery.of(context).size.height - 200.0); //固定高度
     return Container(
       width: double.infinity,
       //height: keyboardVisible ? (MediaQuery.of(context).size.height - 250.0) : height,
