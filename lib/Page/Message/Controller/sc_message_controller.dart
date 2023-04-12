@@ -5,15 +5,19 @@ import '../../../Network/sc_url.dart';
 import '../Model/sc_message_card_model.dart';
 
 class SCMessageController extends GetxController {
-
+  /// 全部消息列表的indexId
   int? indexId;
 
+  /// 未读消息列表的indexId
   int? unreadIndexId;
 
+  /// 当前tab的index
   int currentIndex = 0;
 
+  /// 全部消息列表数据
   List<SCMessageCardModel> allDataList = [];
 
+  /// 未读消息列表数据
   List<SCMessageCardModel> unreadDataList = [];
 
   /// 是否显示更多弹窗，默认不显示
@@ -131,6 +135,33 @@ class SCMessageController extends GetxController {
         },
         failure: (value) {
           SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 全部清空/全部已读接口
+  deleteMessage({bool? allClear, bool? allRead, String? noticeId, Function(bool success)? completeHandler}) {
+    Map<String, dynamic> params = {};
+
+    if (allClear != null) {
+      params.addAll({"allClear": allClear});
+    }
+    if (allRead != null) {
+      params.addAll({"allRead": allRead});
+    }
+    if (noticeId != null) {
+      params.addAll({"noticeId": noticeId});
+    }
+    SCHttpManager.instance.delete(
+        url: SCUrl.kMessageDetailUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          update();
+          completeHandler?.call(true);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+          completeHandler?.call(false);
         });
   }
 }

@@ -93,9 +93,17 @@ class SCMessagePageState extends State<SCMessagePage> with SingleTickerProviderS
                 list: const ['全部已读', '全部清除'],
                 tapAction: (index) {
                   if (index == 0) {
-
+                    controller.deleteMessage(allRead: true, completeHandler: (status) {
+                      if (status == true) {
+                        reloadData();
+                      }
+                    });
                   } else if (index == 1) {
-
+                    controller.deleteMessage(allClear: true, completeHandler: (status) {
+                      if (status == true) {
+                        reloadData();
+                      }
+                    });
                   }
                   controller.updateMoreDialogStatus();
                 },),
@@ -125,12 +133,19 @@ class SCMessagePageState extends State<SCMessagePage> with SingleTickerProviderS
     );
   }
 
+  /// 刷新tabList
   updateTabList() {
     if (controller.unreadDataList.isNotEmpty) {
       return ['全部', '未读(${controller.unreadDataList.length})'];
     } else {
       return ['全部', '未读'];
     }
+  }
+
+  /// 重新加载数据
+  reloadData() {
+    controller.loadAllData(isMore: false);
+    controller.loadUnreadData(isMore: false);
   }
 }
 
