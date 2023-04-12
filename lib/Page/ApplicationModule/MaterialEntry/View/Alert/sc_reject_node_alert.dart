@@ -15,10 +15,13 @@ class SCRejectNodeAlert extends StatefulWidget {
   /// 当前节点
   final String? currentNode;
 
+  /// title
+  final String? title;
+
   /// 点击
   final Function(String node, int index)? tapAction;
 
-  SCRejectNodeAlert({Key? key, required this.list, this.currentNode, this.tapAction}) : super(key: key);
+  SCRejectNodeAlert({Key? key, required this.list, this.currentNode, this.tapAction, this.title}) : super(key: key);
 
   @override
   SCRejectNodeAlertState createState() => SCRejectNodeAlertState();
@@ -56,7 +59,7 @@ class SCRejectNodeAlertState extends State<SCRejectNodeAlert> {
   /// titleItem
   Widget titleItem(BuildContext context) {
     return SCAlertHeaderView(
-      title: '驳回节点',
+      title: widget.title ?? '',
       rightText: '上一步',
       rightTap: () {
         Navigator.of(context).pop();

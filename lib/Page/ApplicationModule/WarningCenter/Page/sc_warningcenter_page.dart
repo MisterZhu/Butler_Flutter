@@ -78,8 +78,8 @@ class SCWarningCenterPageState extends State<SCWarningCenterPage> with Automatic
   addNotification() {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
-      if (key == SCKey.kRefreshPropertyMaintenancePage) {
-        // controller.loadData(isMore: false);
+      if (key == SCKey.kRefreshWarningCenterPage) {
+        controller.loadData(isMore: false);
       }
     });
   }

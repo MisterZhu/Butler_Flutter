@@ -211,5 +211,7 @@ class SCRouterPath {
 
   /// 预警中心
   static String warningCenterPage = "/lib/Page/PropertyMaintenance/Page/sc_warningcenter_page";
+  /// 预警中心-搜索
+  static String searchWarningPage = "/lib/Page/PropertyMaintenance/Page/sc_warning_search_page";
 
 }

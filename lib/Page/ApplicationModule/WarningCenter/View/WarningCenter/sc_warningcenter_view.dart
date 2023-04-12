@@ -1,17 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_empty_view.dart';
-
 import '../../../../../Constants/sc_asset.dart';
 import '../../../MaterialEntry/View/Alert/sc_reject_alert.dart';
 import '../../Controller/sc_warningcenter_controller.dart';
+import '../../Model/sc_warning_dealresult_model.dart';
+import '../../Model/sc_warningcenter_model.dart';
 import '../Alert/sc_warningtype_alert.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
-import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_entry_cell.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_search_item.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/MaterialEntry/sc_material_sift_item.dart';
 import '../../../../../Constants/sc_enum.dart';
@@ -19,8 +17,6 @@ import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
-import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
-import '../../../MaterialEntry/View/MaterialEntry/sc_add_entry_button.dart';
 
 /// 预警中心view
 
@@ -35,11 +31,6 @@ class SCWarningCenterView extends StatefulWidget {
 }
 
 class SCWarningCenterViewState extends State<SCWarningCenterView> {
-  List typeList = ['全部'];
-
-  int selectGrade1 = 0;
-
-  int selectStatus1 = 0;
 
   bool showTypeAlert = false;
 
@@ -47,24 +38,13 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
 
   bool showStatusAlert = false;
 
-  /// RefreshController
-  RefreshController refreshController =
-      RefreshController(initialRefresh: false);
-
   @override
   void initState() {
     super.initState();
-    widget.state.loadOutboundType(() {
-      List list = widget.state.outboundList.map((e) => e.name).toList();
-      setState(() {
-        typeList.addAll(list);
-      });
-    });
   }
 
   @override
   dispose() {
-    refreshController.dispose();
     super.dispose();
   }
 
@@ -82,8 +62,7 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
         SCMaterialSearchItem(
           name: '搜索预警编号',
           searchAction: () {
-            SCRouterHelper.pathPage(SCRouterPath.entrySearchPage,
-                {'type': SCWarehouseManageType.propertyMaintenance});
+            SCRouterHelper.pathPage(SCRouterPath.searchWarningPage, {});
           },
         ),
         SCMaterialSiftItem(
@@ -147,10 +126,33 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
 
   /// listview
   Widget listview() {
-    // int count = widget.state.dataList.length;
-    int count = 10;
+    int count = widget.state.dataList.length;
+    Widget item;
+    if (widget.state.loadDataSuccess) {
+      item = count > 0
+          ? ListView.separated(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return cell(index);
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(
+                  height: 10.0,
+                );
+              },
+              itemCount: count)
+          : const SCWorkBenchEmptyView(
+              emptyIcon: SCAsset.iconEmptyRecord,
+              emptyDes: '暂无预警信息',
+              scrollPhysics: BouncingScrollPhysics(),
+            );
+    } else {
+      item = const SizedBox();
+    }
     return SmartRefresher(
-        controller: refreshController,
+        controller: widget.state.refreshController,
         enablePullUp: true,
         enablePullDown: true,
         header: const SCCustomHeader(
@@ -158,64 +160,58 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
         ),
         onRefresh: onRefresh,
         onLoading: loadMore,
-        child: count > 0 ? ListView.separated(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, int index) {
-              return SCTaskCardCell(
-                timeType: 0,
-                remainingTime: 0,
-                tagList: ['严重'],
-                tagBGColorList: [SCColors.color_FFF1F0],
-                tagTextColorList: [SCColors.color_FF4040],
-                time: '2023-1-1',
-                title: '标题',
-                statusTitle: '处理中',
-                content: '内容',
-                address: '预警编号：ABC1',
-                btnText: '处理',
-                hideBtn: false,
-                hideAddressIcon: true,
-                hideCallIcon: true,
-                detailTapAction: () {},
-                btnTapAction: () {
-                  dealAction();
-                },
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(
-                height: 10.0,
-              );
-            },
-            itemCount: 10) : const SCWorkBenchEmptyView(
-          emptyIcon: SCAsset.iconEmptyRecord,
-          emptyDes: '暂无预警信息',
-          scrollPhysics: BouncingScrollPhysics(),
-        ));
+        child: item);
+  }
+
+  /// cell
+  Widget cell(int index) {
+    SCWarningCenterModel model = widget.state.dataList[index];
+    return SCTaskCardCell(
+      timeType: 0,
+      remainingTime: 0,
+      tagList: [model.levelName ?? ''],
+      tagBGColorList: [widget.state.getLevelBGColor(model.levelId ?? 0)],
+      tagTextColorList: [widget.state.getLevelTextColor(model.levelId ?? 0)],
+      time: model.generationTime,
+      title: model.ruleName,
+      statusTitle: model.statusName,
+      statusTitleColor:
+      widget.state.getStatusColor(model.status ?? -1),
+      content: model.alertContext,
+      contentMaxLines: 30,
+      address: '预警编号：${model.alertCode}',
+      btnText: '处理',
+      hideBtn: (model.status ?? -1) == 3,
+      hideAddressIcon: true,
+      hideCallIcon: true,
+      detailTapAction: () {},
+      btnTapAction: () {
+        dealAction(model);
+      },
+    );
   }
 
   /// 预警类型弹窗
   Widget typeAlert() {
     List list = [];
-    for (int i = 0; i < widget.state.statusList.length; i++) {
-      list.add(widget.state.statusList[i]['name']);
+    for (int i = 0; i < widget.state.warningTypeList.length; i++) {
+      SCWarningDealResultModel model = widget.state.warningTypeList[i];
+      list.add(model.name);
     }
     return Offstage(
       offstage: !showTypeAlert,
       child: SCWarningTypeView(
-        index1: widget.state.index1,
-        index2: widget.state.index2,
+        list: widget.state.warningTypeList,
+        index1: widget.state.warningTypeIndex1,
+        index2: widget.state.warningTypeIndex2,
         resetAction: () {
           widget.state.resetAction();
         },
-        sureAction: () {},
-        onTap1: (int value) {
-          widget.state.updateIndex1(value);
-        },
-        onTap2: (int value) {
-          widget.state.updateIndex2(value);
+        sureAction: (int index1, int index2) {
+          widget.state.updateWarningTypeIndex(index1, index2);
+          setState(() {
+            showTypeAlert = false;
+          });
         },
         closeAction: () {
           setState(() {
@@ -228,26 +224,27 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
 
   /// 预警等级弹窗
   Widget gradeAlert() {
+    List list = [];
+    for (int i = 0; i < widget.state.warningGradeList.length; i++) {
+      SCWarningDealResultModel model = widget.state.warningGradeList[i];
+      list.add(model.name);
+    }
     return Offstage(
       offstage: !showGradeAlert,
       child: SCSiftAlert(
         title: '预警等级',
-        list: typeList,
-        selectIndex: selectGrade1,
+        list: list,
+        selectIndex: widget.state.warningGradeIndex,
         closeAction: () {
           setState(() {
             showGradeAlert = false;
           });
         },
         tapAction: (value) {
-          if (selectGrade1 != value) {
+          if (widget.state.warningGradeIndex != value) {
             setState(() {
               showGradeAlert = false;
-              selectGrade1 = value;
-              widget.state.siftList[1] = value == 0 ? '预警等级' : typeList[value];
-              widget.state.updateType(value == 0
-                  ? -1
-                  : widget.state.outboundList[value - 1].code ?? -1);
+              widget.state.updateWarningGradeIndex(value);
             });
           }
         },
@@ -257,26 +254,27 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
 
   /// 预警状态弹窗
   Widget statusAlert() {
+    List list = [];
+    for (int i = 0; i < widget.state.warningStatusList.length; i++) {
+      SCWarningDealResultModel model = widget.state.warningStatusList[i];
+      list.add(model.name);
+    }
     return Offstage(
       offstage: !showStatusAlert,
       child: SCSiftAlert(
         title: '预警状态',
-        list: typeList,
-        selectIndex: selectStatus1,
+        list: list,
+        selectIndex: widget.state.warningStatusIndex,
         closeAction: () {
           setState(() {
             showStatusAlert = false;
           });
         },
         tapAction: (value) {
-          if (selectStatus1 != value) {
+          if (widget.state.warningStatusIndex != value) {
             setState(() {
               showStatusAlert = false;
-              selectStatus1 = value;
-              widget.state.siftList[1] = value == 0 ? '预警状态' : typeList[value];
-              widget.state.updateType(value == 0
-                  ? -1
-                  : widget.state.outboundList[value - 1].code ?? -1);
+              widget.state.updateWarningStatusIndex(value);
             });
           }
         },
@@ -285,23 +283,34 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
   }
 
   /// 处理
-  dealAction() {
-      SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-        SCDialogUtils().showCustomBottomDialog(
-            isDismissible: true,
-            context: context,
-            widget: SCRejectAlert(
-              title: '处理',
-              resultDes: '处理结果',
-              reasonDes: '处理说明',
-              isRequired: true,
-              tagList: const ['节点1', '节点2', '节点3'],
-              showNode: true,
-              sureAction: (int index, String value, List list) {
-
-              },
-            ));
-      });
+  dealAction(SCWarningCenterModel centerModel) {
+    widget.state.loadDictionaryCode(centerModel.alertType ?? '' ,(success, list) {
+      if (success) {
+        List<String> tagList = [];
+        for (SCWarningDealResultModel model in list) {
+          tagList.add(model.name ?? '');
+        }
+        SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+          SCDialogUtils().showCustomBottomDialog(
+              isDismissible: true,
+              context: context,
+              widget: SCRejectAlert(
+                title: '处理',
+                resultDes: '处理结果',
+                reasonDes: '处理说明',
+                isRequired: true,
+                tagList: tagList,
+                hiddenTags: true,
+                showNode: true,
+                sureAction: (int index, String value, List imageList) {
+                  SCWarningDealResultModel model = list[index];
+                  widget.state.deal(value, int.parse(model.code ?? '0'),
+                      centerModel.id ?? 0, imageList, centerModel.status ?? 0);
+                },
+              ));
+        });
+      }
+    });
   }
 
   /// 打电话
@@ -311,12 +320,12 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
 
   /// 提交
   submit(int index) {
-    SCMaterialEntryModel model = widget.state.dataList[index];
-    widget.state.submit(
-        id: model.id ?? '',
-        completeHandler: (bool success) {
-          widget.state.loadData(isMore: false);
-        });
+    // SCMaterialEntryModel model = widget.state.dataList[index];
+    // widget.state.submit(
+    //     id: model.id ?? '',
+    //     completeHandler: (bool success) {
+    //       widget.state.loadData(isMore: false);
+    //     });
   }
 
   /// 下拉刷新
@@ -324,8 +333,8 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
     widget.state.loadData(
         isMore: false,
         completeHandler: (bool success, bool last) {
-          refreshController.refreshCompleted();
-          refreshController.loadComplete();
+          widget.state.refreshController.refreshCompleted();
+          widget.state.refreshController.loadComplete();
         });
   }
 
@@ -335,9 +344,9 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
         isMore: true,
         completeHandler: (bool success, bool last) {
           if (last) {
-            refreshController.loadNoData();
+            widget.state.refreshController.loadNoData();
           } else {
-            refreshController.loadComplete();
+            widget.state.refreshController.loadComplete();
           }
         });
   }

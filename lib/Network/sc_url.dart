@@ -341,4 +341,10 @@ class SCUrl {
   /// 预警列表
   static const String kWarningCenterListUrl = "/api/alert/alert/getAlertsPage";
 
+  /// 数据字典
+  static const String kConfigDictionaryPidCodeUrl = "/api/config/dictionary/pidCode";
+
+  /// 处理
+  static const String kAlertDealUrl = "/api/alert/alert/alertDeal";
+
 }

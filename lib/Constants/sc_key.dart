@@ -50,4 +50,6 @@ class SCKey {
   static const String kRefreshFixedCheckDetailPage = "kRefreshFixedCheckDetailPage";
   /// 仓储-刷新资产维保页面
   static const String kRefreshPropertyMaintenancePage = "kRefreshPropertyMaintenancePage";
+  /// 预警中心-刷新页面
+  static const String kRefreshWarningCenterPage = "kRefreshWarningCenterPage";
 }

@@ -1,20 +1,39 @@
-import 'package:get/get.dart';
-import 'package:sc_uikit/sc_uikit.dart';
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Model/sc_warning_dealresult_model.dart';
+import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Other/sc_warning_utils.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../../MaterialEntry/Model/sc_entry_type_model.dart';
-import '../../MaterialEntry/Model/sc_material_entry_model.dart';
+import '../Model/sc_warningcenter_model.dart';
 
 /// 预警中心controller
 
 class SCWarningCenterController extends GetxController {
 
-  /// 第一列的index
-  int index1 = -1;
+  /// 预警类型第一列的index
+  int warningTypeIndex1 = -1;
 
-  /// 第二列的index
-  int index2 = -1;
+  /// 预警类型第二列的index
+  int warningTypeIndex2 = -1;
+
+  /// 预警等级index
+  int warningGradeIndex = 0;
+
+  /// 预警状态index
+  int warningStatusIndex = 0;
+
+  /// 预警类型列表
+  List<SCWarningDealResultModel> warningTypeList = [];
+
+  /// 预警等级列表
+  List warningGradeList = [];
+
+  /// 预警状态列表
+  List warningStatusList = [];
 
   int pageNum = 1;
 
@@ -27,28 +46,26 @@ class SCWarningCenterController extends GetxController {
   /// 排序，true操作时间正序，false操作时间倒序
   bool sort = false;
 
-  List<SCMaterialEntryModel> dataList = [];
+  List<SCWarningCenterModel> dataList = [];
 
   /// 出库类型数组
   List<SCEntryTypeModel> outboundList = [];
 
   List siftList =  ['预警类型', '预警等级', '预警状态'];
 
-  List statusList = [
-    {'name': '全部', 'code': -1},
-    {'name': '待提交', 'code': 0},
-    {'name': '待审批', 'code': 1},
-    {'name': '审批中', 'code': 2},
-    {'name': '已拒绝', 'code': 3},
-    {'name': '已驳回', 'code': 4},
-    {'name': '已撤回', 'code': 5},
-    {'name': '已通过', 'code': 6},
-    {'name': '已出库', 'code': 7},
-  ];
+  /// RefreshController
+  RefreshController refreshController =
+  RefreshController(initialRefresh: false);
+
+  /// 数据是否加载成功
+  bool loadDataSuccess = false;
 
   @override
   onInit() {
     super.onInit();
+    getWarningTypeData((success, list) {});
+    getWarningGradeData((success, list) {});
+    getWarningStatusData((success, list) {});
   }
 
   /// 选择状态，刷新页面数据
@@ -75,7 +92,7 @@ class SCWarningCenterController extends GetxController {
     loadData(isMore: false);
   }
 
-  /// 出库列表数据
+  /// 预警中心数据
   loadData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
@@ -119,26 +136,27 @@ class SCWarningCenterController extends GetxController {
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
-          // if (value is Map) {
-          //   List list = value['records'];
-          //   if (isLoadMore == true) {
-          //     dataList.addAll(List<SCMaterialEntryModel>.from(
-          //         list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
-          //   } else {
-          //     dataList = List<SCMaterialEntryModel>.from(
-          //         list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
-          //   }
-          // } else {
-          //   if (isLoadMore == false) {
-          //     dataList = [];
-          //   }
-          // }
-          // update();
-          // bool last = false;
-          // if (isLoadMore) {
-          //   last = value['last'];
-          // }
-          // completeHandler?.call(true, last);
+          loadDataSuccess = true;
+          if (value is Map) {
+            List list = value['records'];
+            if (isLoadMore == true) {
+              dataList.addAll(List<SCWarningCenterModel>.from(
+                  list.map((e) => SCWarningCenterModel.fromJson(e)).toList()));
+            } else {
+              dataList = List<SCWarningCenterModel>.from(
+                  list.map((e) => SCWarningCenterModel.fromJson(e)).toList());
+            }
+          } else {
+            if (isLoadMore == false) {
+              dataList = [];
+            }
+          }
+          update();
+          bool last = false;
+          if (isLoadMore) {
+            last = value['last'];
+          }
+          completeHandler?.call(true, last);
         },
         failure: (value) {
           if (isLoadMore) {
@@ -149,57 +167,152 @@ class SCWarningCenterController extends GetxController {
         });
   }
 
-  /// 出库类型
-  loadOutboundType(Function? resultHandler) {
-    SCHttpManager.instance.post(
-        url: SCUrl.kWareHouseTypeUrl,
-        params: {'dictionaryCode' : 'OUTBOUND'},
-        success: (value) {
-          outboundList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
-          update();
-          resultHandler?.call();
-        },
-        failure: (value) {
-        });
-  }
-
-
-  /// 提交出库
-  submit({required String id, Function(bool success)? completeHandler}) async{
-    var params = {
-      "wareHouseOutId": id,
-    };
+  /// 处理结果数据字典
+  loadDictionaryCode(String code,Function(bool success, List list)? completeHandler) {
     SCLoadingUtils.show();
-    SCHttpManager.instance.post(
-        url: SCUrl.kSubmitOutboundUrl,
-        isQuery: true,
-        params: params,
+    SCHttpManager.instance.get(
+        url: SCUrl.kConfigDictionaryPidCodeUrl,
+        params: {'dictionaryCode': 'ALERT_CONFIRM_RESULT', 'code': code},
         success: (value) {
           SCLoadingUtils.hide();
-          completeHandler?.call(true);
+          List<SCWarningDealResultModel> list = List<SCWarningDealResultModel>.from(value.map((e) => SCWarningDealResultModel.fromJson(e)).toList());
+          for (SCWarningDealResultModel model in list) {
+            if (model.code == code) {
+              completeHandler?.call(true, model.pdictionary ?? []);
+              break;
+            }
+          }
         },
         failure: (value) {
-          completeHandler?.call(false);
+          completeHandler?.call(false, []);
           SCToast.showTip(value['message']);
         });
   }
 
-  /// 更新第一列的index
-  updateIndex1(int value) {
-    index1 = value;
+  /// 预警类型
+  getWarningTypeData(Function(bool success, List list)? completeHandler) {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.get(
+        url: SCUrl.kConfigDictionaryPidCodeUrl,
+        params: {'dictionaryCode': 'ALERT_CONFIRM_RESULT'},
+        success: (value) {
+          SCLoadingUtils.hide();
+          List<SCWarningDealResultModel> list = List<SCWarningDealResultModel>.from(value.map((e) => SCWarningDealResultModel.fromJson(e)).toList());
+          warningTypeList = list;
+          completeHandler?.call(true, list);
+        },
+        failure: (value) {
+          completeHandler?.call(false, []);
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 预警等级
+  getWarningGradeData(Function(bool success, List list)? completeHandler) {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.get(
+        url: SCUrl.kConfigDictionaryPidCodeUrl,
+        params: {'dictionaryCode': 'EARLY_WARNING_LEVEL'},
+        success: (value) {
+          SCLoadingUtils.hide();
+          List<SCWarningDealResultModel> list = List<SCWarningDealResultModel>.from(value.map((e) => SCWarningDealResultModel.fromJson(e)).toList());
+          SCWarningDealResultModel model = SCWarningDealResultModel.fromJson({"name": "全部"});
+          list.insert(0, model);
+          warningGradeList = list;
+          completeHandler?.call(true, list);
+        },
+        failure: (value) {
+          completeHandler?.call(false, []);
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 预警状态
+  getWarningStatusData(Function(bool success, List list)? completeHandler) {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.get(
+        url: SCUrl.kConfigDictionaryPidCodeUrl,
+        params: {'dictionaryCode': 'EARLY_WARNING_STATE'},
+        success: (value) {
+          SCLoadingUtils.hide();
+          List<SCWarningDealResultModel> list = List<SCWarningDealResultModel>.from(value.map((e) => SCWarningDealResultModel.fromJson(e)).toList());
+          SCWarningDealResultModel model = SCWarningDealResultModel.fromJson({"name": "全部"});
+          list.insert(0, model);
+          warningStatusList= list;
+          completeHandler?.call(true, list);
+        },
+        failure: (value) {
+          completeHandler?.call(false, []);
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 处理
+  deal(String alertExplain, int confirmResult, int id, List fileVoList, int status) {
+    SCLoadingUtils.show();
+    var params = {
+      "alertExplain": alertExplain,
+      "confirmResult": confirmResult,
+      "id": id,
+      "fileVoList": fileVoList,
+      "status": status
+    };
+    SCHttpManager.instance.post(
+        url: SCUrl.kAlertDealUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          loadData(isMore: false);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 更新预警类型的index
+  updateWarningTypeIndex(int value1, int value2) {
+    warningTypeIndex1 = value1;
+    warningTypeIndex2 = value2;
     update();
   }
 
-  /// 更新第二列的index
-  updateIndex2(int value) {
-    index2 = value;
-    update();
-  }
-
-  /// 重置
+  /// 重置预警类型
   resetAction() {
-    index1 = -1;
-    index2 = -1;
+    warningTypeIndex1 = -1;
+    warningTypeIndex2 = -1;
     update();
+  }
+
+  /// 更新预警等级的index
+  updateWarningGradeIndex(int value) {
+    warningGradeIndex = value;
+    update();
+  }
+
+  /// 更新预警状态的index
+  updateWarningStatusIndex(int value) {
+    warningStatusIndex = value;
+    update();
+  }
+
+  @override
+  onClose() {
+    refreshController.dispose();
+    super.onClose();
+  }
+
+  /// 处理状态文本颜色
+  Color getStatusColor(int status) {
+    return SCWarningCenterUtils.getStatusColor(status);
+  }
+
+  /// 预警等级文本颜色
+  Color getLevelTextColor(int level) {
+    return SCWarningCenterUtils.getLevelTextColor(level);
+  }
+
+  /// 预警等级背景颜色
+  Color getLevelBGColor(int level) {
+    return SCWarningCenterUtils.getLevelBGColor(level);
   }
 }

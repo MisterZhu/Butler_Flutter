@@ -27,6 +27,7 @@ class SCRejectAlert extends StatefulWidget {
   /// 说明-title
   final String reasonDes;
 
+  /// 标签list
   final List tagList;
 
   final bool showNode;
@@ -34,19 +35,24 @@ class SCRejectAlert extends StatefulWidget {
   /// 是否必填原因
   final bool? isRequired;
 
-  /// 确定
-  final Function(int resultIndex, String explainValue, List imageList)? sureAction;
+  /// 隐藏输入框底部提示标签
+  final bool? hiddenTags;
 
-  SCRejectAlert(
-      {Key? key,
-      required this.title,
-      required this.resultDes,
-      required this.reasonDes,
-      required this.tagList,
-      required this.showNode,
-      this.isRequired,
-      this.sureAction,})
-      : super(key: key);
+  /// 确定
+  final Function(int resultIndex, String explainValue, List imageList)?
+      sureAction;
+
+  SCRejectAlert({
+    Key? key,
+    required this.title,
+    required this.resultDes,
+    required this.reasonDes,
+    required this.tagList,
+    required this.showNode,
+    this.isRequired,
+    this.hiddenTags,
+    this.sureAction,
+  }) : super(key: key);
 
   @override
   SCRejectAlertState createState() => SCRejectAlertState();
@@ -94,7 +100,8 @@ class SCRejectAlertState extends State<SCRejectAlert> {
     double height = 395.0 +
         54.0 +
         MediaQuery.of(context).padding.bottom +
-        (isShowKeyboard ? 100.0 : 0.0) + (widget.tagList.isNotEmpty ? 32 : 0.0);
+        (isShowKeyboard ? 100.0 : 0.0) +
+        ((widget.tagList.isNotEmpty && ((widget.hiddenTags ?? false) == false)) ? 32 : 0.0);
     return GestureDetector(
         onTap: () {
           SCUtils().hideKeyboard(context: context);
@@ -252,7 +259,7 @@ class SCRejectAlertState extends State<SCRejectAlert> {
 
   /// tagsView
   Widget tagsView() {
-    if (widget.tagList.isNotEmpty) {
+    if (widget.tagList.isNotEmpty && (widget.hiddenTags ?? false) == false) {
       return Padding(
         padding: const EdgeInsets.only(top: 10.0, left: 12.0, right: 12.0),
         child: Wrap(
@@ -308,6 +315,7 @@ class SCRejectAlertState extends State<SCRejectAlert> {
           isDismissible: true,
           context: context,
           widget: SCRejectNodeAlert(
+            title: widget.resultDes,
             list: widget.tagList,
             currentNode: node,
             tapAction: (value, index) {
