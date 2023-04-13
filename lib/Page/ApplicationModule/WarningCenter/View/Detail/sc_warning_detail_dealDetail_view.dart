@@ -23,38 +23,20 @@ class SCWarningDetailDealDetailView extends StatelessWidget {
   Widget body() {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        view(),
-        const Expanded(child: SizedBox()),
+        listview(),
+        const SizedBox(height: 6.0,),
+        SCWarningDetailPhotosItem(state: state),
       ],
-    );
-  }
-
-  Widget view() {
-    return Container(
-      decoration: BoxDecoration(
-          color: SCColors.color_FFFFFF,
-          borderRadius: BorderRadius.circular(4.0)),
-      padding: const EdgeInsets.only(top: 12.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          listview(),
-          const SizedBox(height: 6.0,),
-          SCWarningDetailPhotosItem(state: state),
-        ],
-      ),
     );
   }
 
   Widget listview() {
     return ListView.separated(
         shrinkWrap: true,
-        padding: EdgeInsets.zero,
+        padding: const EdgeInsets.only(top: 12.0),
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
           var dic = state.dealDetailList[index];

@@ -22,7 +22,7 @@ class SCWarningDetailMiddleView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: SCColors.color_F2F3F5,
+          color: SCColors.color_FFFFFF,
           borderRadius: BorderRadius.circular(4.0)),
       child: Column(
         mainAxisSize: MainAxisSize.min,

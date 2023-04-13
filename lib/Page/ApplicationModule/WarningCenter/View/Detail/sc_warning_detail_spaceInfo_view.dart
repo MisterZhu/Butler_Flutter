@@ -21,24 +21,12 @@ class SCWarningDetailSpaceInfoView extends StatelessWidget {
 
   /// body
   Widget body() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        listview(),
-        const Expanded(child: SizedBox()),
-      ],
-    );
+    return listview();
   }
 
   /// body
   Widget listview() {
-    return Container(
-        decoration: BoxDecoration(
-            color: SCColors.color_FFFFFF,
-            borderRadius: BorderRadius.circular(4.0)),
-      child: ListView.separated(
+    return ListView.separated(
         shrinkWrap: true,
         padding: const EdgeInsets.symmetric(vertical: 12.0),
         physics: const NeverScrollableScrollPhysics(),
@@ -54,6 +42,6 @@ class SCWarningDetailSpaceInfoView extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 12.0,);
         },
-        itemCount: state.spaceInfoList.length));
+        itemCount: state.spaceInfoList.length);
   }
 }

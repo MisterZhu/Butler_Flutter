@@ -16,15 +16,7 @@ class SCWarningDetailWarnDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return body();
-  }
-
-  /// body
-  Widget body() {
-    return Container(
-      color: SCColors.color_FFFFFF,
-      child: listview(),
-    );
+    return listview();
   }
 
   Widget listview() {

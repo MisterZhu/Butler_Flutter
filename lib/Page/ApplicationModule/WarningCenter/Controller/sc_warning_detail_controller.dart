@@ -3,7 +3,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
-import '../Model/sc_warning_detail_model.dart';
+import '../Model/sc_warningcenter_detail_model.dart';
 
 /// 预警详情controller
 
@@ -15,7 +15,7 @@ class SCWarningDetailController extends GetxController {
   /// 预警id
   String id = '';
 
-  SCWarningDetailModel detailModel = SCWarningDetailModel();
+  SCWarningCenterDetailModel detailModel = SCWarningCenterDetailModel();
 
   List warnDetailList = [];
 
@@ -57,7 +57,7 @@ class SCWarningDetailController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           success = true;
-          detailModel = SCWarningDetailModel.fromJson(value);
+          detailModel = SCWarningCenterDetailModel.fromJson(value);
           update();
         },
         failure: (value) {
