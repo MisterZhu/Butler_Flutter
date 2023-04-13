@@ -13,7 +13,6 @@ import '../../Model/sc_warning_dealresult_model.dart';
 /// 搜索view
 
 class SCSearchWarningView extends StatefulWidget {
-
   final SCSearchWarningController state;
 
   const SCSearchWarningView({Key? key, required this.state}) : super(key: key);
@@ -30,7 +29,8 @@ class SCSearchWarningViewState extends State<SCSearchWarningView> {
   bool showCancel = true;
 
   /// RefreshController
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   initState() {
@@ -45,7 +45,7 @@ class SCSearchWarningViewState extends State<SCSearchWarningView> {
 
   /// 弹出键盘
   showKeyboard(BuildContext context) {
-    Future.delayed(const Duration(milliseconds: 100),(){
+    Future.delayed(const Duration(milliseconds: 100), () {
       node.requestFocus();
     });
   }
@@ -55,11 +55,7 @@ class SCSearchWarningViewState extends State<SCSearchWarningView> {
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          headerItem(),
-          Expanded(child: contentView())
-        ]
-    );
+        children: [headerItem(), Expanded(child: contentView())]);
   }
 
   /// 搜索
@@ -111,51 +107,49 @@ class SCSearchWarningViewState extends State<SCSearchWarningView> {
     String hintText = "搜索预警编号";
     return Expanded(
         child: TextField(
-          controller: controller,
-          maxLines: 1,
-          cursorColor: SCColors.color_1B1C33,
-          cursorWidth: 2,
-          focusNode: node,
-          style: const TextStyle(
-              fontSize: SCFonts.f14,
-              fontWeight: FontWeight.w400,
-              color: SCColors.color_1B1C33),
-          keyboardType: TextInputType.text,
-          keyboardAppearance: Brightness.light,
-          textInputAction: TextInputAction.search,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 4),
-            hintText: hintText,
-            hintStyle: const TextStyle(
-                fontSize: SCFonts.f14,
-                fontWeight: FontWeight.w400,
-                color: SCColors.color_B0B1B8),
-            focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(width: 0, color: Colors.transparent)),
-            disabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(width: 0, color: Colors.transparent)),
-            enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(width: 0, color: Colors.transparent)),
-            border: const OutlineInputBorder(
-                borderSide: BorderSide(width: 0, color: Colors.transparent)),
-            isCollapsed: true,
-          ),
-          onChanged: (value) {
-
-          },
-          onSubmitted: (value) {
-            widget.state.updateSearchString(value);
-            widget.state.searchData(isMore: false);
-            node.unfocus();
-          },
-          onTap: () {
-            if (!showCancel) {
-              setState(() {
-                showCancel = true;
-              });
-            }
-          },
-        ));
+      controller: controller,
+      maxLines: 1,
+      cursorColor: SCColors.color_1B1C33,
+      cursorWidth: 2,
+      focusNode: node,
+      style: const TextStyle(
+          fontSize: SCFonts.f14,
+          fontWeight: FontWeight.w400,
+          color: SCColors.color_1B1C33),
+      keyboardType: TextInputType.text,
+      keyboardAppearance: Brightness.light,
+      textInputAction: TextInputAction.search,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(vertical: 4),
+        hintText: hintText,
+        hintStyle: const TextStyle(
+            fontSize: SCFonts.f14,
+            fontWeight: FontWeight.w400,
+            color: SCColors.color_B0B1B8),
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(width: 0, color: Colors.transparent)),
+        disabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(width: 0, color: Colors.transparent)),
+        enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(width: 0, color: Colors.transparent)),
+        border: const OutlineInputBorder(
+            borderSide: BorderSide(width: 0, color: Colors.transparent)),
+        isCollapsed: true,
+      ),
+      onChanged: (value) {},
+      onSubmitted: (value) {
+        widget.state.updateSearchString(value);
+        widget.state.searchData(isMore: false);
+        node.unfocus();
+      },
+      onTap: () {
+        if (!showCancel) {
+          setState(() {
+            showCancel = true;
+          });
+        }
+      },
+    ));
   }
 
   /// 取消按钮
@@ -199,16 +193,21 @@ class SCSearchWarningViewState extends State<SCSearchWarningView> {
       header: const SCCustomHeader(
         style: SCCustomHeaderStyle.noNavigation,
       ),
-      onRefresh: onRefresh, onLoading: loadMore, child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          return cell(index);
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(height: 10.0,);
-        },
-        itemCount: widget.state.dataList.length),);
+      onRefresh: onRefresh,
+      onLoading: loadMore,
+      child: ListView.separated(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            return cell(index);
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox(
+              height: 10.0,
+            );
+          },
+          itemCount: widget.state.dataList.length),
+    );
   }
 
   /// cell
@@ -223,8 +222,7 @@ class SCSearchWarningViewState extends State<SCSearchWarningView> {
       time: model.generationTime,
       title: model.ruleName,
       statusTitle: model.statusName,
-      statusTitleColor:
-      widget.state.getStatusColor(model.status ?? -1),
+      statusTitleColor: widget.state.getStatusColor(model.status ?? -1),
       content: model.alertContext,
       contentMaxLines: 30,
       address: '预警编号：${model.alertCode}',
@@ -244,8 +242,7 @@ class SCSearchWarningViewState extends State<SCSearchWarningView> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(top: 104.0),
-      child: Text(
-          widget.state.tips,
+      child: Text(widget.state.tips,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
@@ -258,21 +255,25 @@ class SCSearchWarningViewState extends State<SCSearchWarningView> {
 
   /// 下拉刷新
   Future onRefresh() async {
-    widget.state.searchData(isMore: false, completeHandler: (bool success, bool last){
-      refreshController.refreshCompleted();
-      refreshController.loadComplete();
-    });
+    widget.state.searchData(
+        isMore: false,
+        completeHandler: (bool success, bool last) {
+          refreshController.refreshCompleted();
+          refreshController.loadComplete();
+        });
   }
 
   /// 上拉加载
-  void loadMore() async{
-    widget.state.searchData(isMore: true, completeHandler: (bool success, bool last){
-      if (last) {
-        refreshController.loadNoData();
-      } else {
-        refreshController.loadComplete();
-      }
-    });
+  void loadMore() async {
+    widget.state.searchData(
+        isMore: true,
+        completeHandler: (bool success, bool last) {
+          if (last) {
+            refreshController.loadNoData();
+          } else {
+            refreshController.loadComplete();
+          }
+        });
   }
 
   @override
@@ -289,7 +290,8 @@ class SCSearchWarningViewState extends State<SCSearchWarningView> {
 
   /// 处理
   dealAction(SCWarningCenterModel centerModel) {
-    widget.state.loadDictionaryCode(centerModel.alertType ?? '' ,(success, list) {
+    widget.state.loadDictionaryCode(centerModel.alertType ?? '',
+        (success, list) {
       if (success) {
         List<String> tagList = [];
         for (SCWarningDealResultModel model in list) {

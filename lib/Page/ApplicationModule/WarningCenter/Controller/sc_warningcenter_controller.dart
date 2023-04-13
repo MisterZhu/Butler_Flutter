@@ -102,27 +102,57 @@ class SCWarningCenterController extends GetxController {
       SCLoadingUtils.show();
     }
     List fields = [];
-    if (selectTypeId >= 0) {
+    if (warningTypeIndex1 >= 0) {// 预警类型
+      SCWarningDealResultModel model1 = warningTypeList[warningTypeIndex1];
+      if (warningTypeIndex2 >= 0) {
+        SCWarningDealResultModel model2 = model1.pdictionary![warningTypeIndex2];
+        var dic1 = {
+          "map": {},
+          "method": 1,
+          "name": "a.status",
+          "value": model1.code
+        };
+        var dic2 = {
+          "map": {},
+          "method": 1,
+          "name": "a.confirm_result",
+          "value": model2.code
+        };
+        fields.add(dic1);
+        fields.add(dic2);
+      } else {
+        var dic = {
+          "map": {},
+          "method": 1,
+          "name": "a.status",
+          "value": model1.code
+        };
+        fields.add(dic);
+      }
+    }
+    if (warningGradeIndex > 0) {// 预警等级
+      SCWarningDealResultModel model = warningGradeList[warningGradeIndex];
       var dic = {
         "map": {},
         "method": 1,
-        "name": "type",
-        "value": selectTypeId
+        "name": "a.level_id",
+        "value": model.code
       };
       fields.add(dic);
     }
-    if (selectStatusId >= 0) {
+    if (warningStatusIndex > 0) {// 预警状态
+      SCWarningDealResultModel model = warningStatusList[warningStatusIndex];
       var dic = {
         "map": {},
         "method": 1,
-        "name": "status",
-        "value": selectStatusId
+        "name": "a.status",
+        "value": model.code
       };
       fields.add(dic);
     }
     var params = {
       "conditions": {
-        "fields": [],
+        "fields": fields,
         "specialMap": {}
       },
       "count": false,
@@ -215,6 +245,7 @@ class SCWarningCenterController extends GetxController {
         params: {'dictionaryCode': 'EARLY_WARNING_LEVEL'},
         success: (value) {
           SCLoadingUtils.hide();
+          print("预警等级===$value");
           List<SCWarningDealResultModel> list = List<SCWarningDealResultModel>.from(value.map((e) => SCWarningDealResultModel.fromJson(e)).toList());
           SCWarningDealResultModel model = SCWarningDealResultModel.fromJson({"name": "全部"});
           list.insert(0, model);
@@ -234,6 +265,7 @@ class SCWarningCenterController extends GetxController {
         url: SCUrl.kConfigDictionaryPidCodeUrl,
         params: {'dictionaryCode': 'EARLY_WARNING_STATE'},
         success: (value) {
+          print("预警状态===$value");
           SCLoadingUtils.hide();
           List<SCWarningDealResultModel> list = List<SCWarningDealResultModel>.from(value.map((e) => SCWarningDealResultModel.fromJson(e)).toList());
           SCWarningDealResultModel model = SCWarningDealResultModel.fromJson({"name": "全部"});
@@ -274,6 +306,7 @@ class SCWarningCenterController extends GetxController {
     warningTypeIndex1 = value1;
     warningTypeIndex2 = value2;
     update();
+    loadData(isMore: false);
   }
 
   /// 重置预警类型
@@ -281,18 +314,21 @@ class SCWarningCenterController extends GetxController {
     warningTypeIndex1 = -1;
     warningTypeIndex2 = -1;
     update();
+    loadData(isMore: false);
   }
 
   /// 更新预警等级的index
   updateWarningGradeIndex(int value) {
     warningGradeIndex = value;
     update();
+    loadData(isMore: false);
   }
 
   /// 更新预警状态的index
   updateWarningStatusIndex(int value) {
     warningStatusIndex = value;
     update();
+    loadData(isMore: false);
   }
 
   @override

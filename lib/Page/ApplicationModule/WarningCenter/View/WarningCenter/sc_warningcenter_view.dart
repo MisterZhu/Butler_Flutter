@@ -128,7 +128,9 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
   Widget listview() {
     int count = widget.state.dataList.length;
     Widget item;
+    bool isEmpty = false;
     if (widget.state.loadDataSuccess) {
+      isEmpty = count > 0 ? false : true;
       item = count > 0
           ? ListView.separated(
               padding:
@@ -153,7 +155,7 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
     }
     return SmartRefresher(
         controller: widget.state.refreshController,
-        enablePullUp: true,
+        enablePullUp: !isEmpty,
         enablePullDown: true,
         header: const SCCustomHeader(
           style: SCCustomHeaderStyle.noNavigation,
@@ -206,6 +208,9 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
         index2: widget.state.warningTypeIndex2,
         resetAction: () {
           widget.state.resetAction();
+          setState(() {
+            showTypeAlert = false;
+          });
         },
         sureAction: (int index1, int index2) {
           widget.state.updateWarningTypeIndex(index1, index2);
@@ -316,16 +321,6 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
   /// 打电话
   call(String phone) {
     SCUtils.call(phone);
-  }
-
-  /// 提交
-  submit(int index) {
-    // SCMaterialEntryModel model = widget.state.dataList[index];
-    // widget.state.submit(
-    //     id: model.id ?? '',
-    //     completeHandler: (bool success) {
-    //       widget.state.loadData(isMore: false);
-    //     });
   }
 
   /// 下拉刷新
