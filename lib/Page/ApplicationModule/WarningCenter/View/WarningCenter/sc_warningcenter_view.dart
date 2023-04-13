@@ -176,6 +176,7 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
       tagTextColorList: [widget.state.getLevelTextColor(model.levelId ?? 0)],
       time: model.generationTime,
       title: model.ruleName,
+      titleIcon: SCAsset.iconWarningTypeOrange,
       statusTitle: model.statusName,
       statusTitleColor:
       widget.state.getStatusColor(model.status ?? -1),
@@ -186,7 +187,9 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
       hideBtn: (model.status ?? -1) == 3,
       hideAddressIcon: true,
       hideCallIcon: true,
-      detailTapAction: () {},
+      detailTapAction: () {
+        SCRouterHelper.pathPage(SCRouterPath.warningDetailPage, {'id': '${model.id}'});
+      },
       btnTapAction: () {
         dealAction(model);
       },
