@@ -8,6 +8,11 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_mate
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_purchase_search_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_purchase_selectmaterial_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialOutbound/Page/sc_add_outbound_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/Page/sc_add_propertymaintenance_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/Page/sc_peroperty_record_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/Page/sc_propertymaintenance_detail_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Page/sc_warning_search_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Page/sc_warningcenter_page.dart';
 import 'package:smartcommunity/Page/Base/Scan/Page/sc_scan_page.dart';
 import 'package:smartcommunity/Page/Login/Home/Page/sc_login_page.dart';
 import 'package:smartcommunity/Page/Login/Privacy/Page/sc_privacy_alert_page.dart';
@@ -173,7 +178,16 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.monitorSearchPage, page: () => SCMonitorSearchPage()),
     /*任务*/
     GetPage(name: SCRouterPath.taskPage, page: () => SCTaskPage()),
-
+    /*资产维保记录*/
+    GetPage(name: SCRouterPath.propertyRecordPage, page: () => SCPropertyMaintenanceRecordPage()),
+    /*资产维保登记*/
+    GetPage(name: SCRouterPath.addPropertyRecordPage, page: () => SCAddPropertyMaintenancePage()),
+    /*资产维保登记*/
+    GetPage(name: SCRouterPath.propertyMaintenanceDetailPage, page: () => SCPropertyMaintenanceDetailPage()),
+    /*预警中心*/
+    GetPage(name: SCRouterPath.warningCenterPage, page: () => SCWarningCenterPage()),
+    /*搜索预警*/
+    GetPage(name: SCRouterPath.searchWarningPage, page: () => SCSearchWarningPage()),
   ];
 
   /*根据code使用路由*/

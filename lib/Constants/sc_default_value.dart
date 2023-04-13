@@ -51,6 +51,9 @@ class SCDefaultValue {
   /// 非负数正则表达式
   static const String nonNegativeReg = r'^([1-9][0-9]*|0)';
 
+  /// 金额表达式
+  static const String priceReg = r'^\d+(\.)?[0-9]{0,2}';
+
   /// 网络加载中
   static const String loadingMessage = '加载中...';
 
@@ -241,6 +244,18 @@ class SCDefaultValue {
 
   /// 采购单暂无物资tip
   static const String purchaseNoMaterialTip = "暂无物资";
+
+  /// 选择维保部门tip
+  static const String selectMaintenanceDepartment = "请选择维保部门";
+
+  /// 选择维保人tip
+  static const String selectMaintenanceUser = "请选择维保负责人";
+
+  /// 统一维保单位tip
+  static const String unifyMaintenanceCompanyTip = "选择“是”，\n提交或暂存将统一维保单位";
+
+  /// 统一维保内容tip
+  static const String unifyMaintenanceContentTip = "选择“是”，\n提交或暂存将统一维保内容";
 
   /// 图片路径
   static const files = "/files/";

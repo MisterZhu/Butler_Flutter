@@ -8,6 +8,8 @@
 #ifndef SCFlutterKey_h
 #define SCFlutterKey_h
 
+#define ISNULL(x) ((x) == nil || [(x) isEqualToString:@"(null)"] ? @"" : (x))
+
 #define kNativeToFlutter @"native_flutter"
 
 #define kFlutterNative @"flutter_native"

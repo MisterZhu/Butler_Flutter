@@ -26,7 +26,7 @@ class SCAllMaterialCell extends StatefulWidget {
   /// SCMaterialEntryDetailController
   final SCMaterialEntryDetailController state;
 
-  /// 是否至资产
+  /// 是否是资产
   final bool? isProperty;
 
   SCAllMaterialCell({Key? key, required this.state,required this.type, this.model, this.remainingTime, this.isProperty}) : super(key: key);

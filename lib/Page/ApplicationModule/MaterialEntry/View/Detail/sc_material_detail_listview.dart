@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Detail/sc_material_info_cell.dart';
 import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Utils/sc_utils.dart';
+import '../../../PropertyMaintenance/View/Detail/sc_maintenance_detailinfo_view.dart';
 import '../../Controller/sc_material_entry_detail_controller.dart';
 import 'sc_allmaterial_cell.dart';
 
@@ -50,18 +51,22 @@ class SCMaterialDetailListView extends StatelessWidget {
       //
       //   },);
     } else {
-      // 入库信息
-      return SCMaterialEntryInfoCell(
-        model: state.model,
-        type: type,
-        isLL: state.isLL,
-        callAction: (String phone) {
-          callAction(phone);
-        },
-        pasteAction: (String value) {
-          pasteAction(value);
-        },
-      );
+      if (type == SCWarehouseManageType.propertyMaintenance) {
+        return SCMaintenanceDetailInfoCell();
+      } else {
+        // 入库信息
+        return SCMaterialEntryInfoCell(
+          model: state.model,
+          type: type,
+          isLL: state.isLL,
+          callAction: (String phone) {
+            callAction(phone);
+          },
+          pasteAction: (String value) {
+            pasteAction(value);
+          },
+        );
+      }
     }
   }
 

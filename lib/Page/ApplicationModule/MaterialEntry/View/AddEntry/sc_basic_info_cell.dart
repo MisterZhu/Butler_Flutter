@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_enum.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/AddEntry/sc_material_select_item.dart';
+import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/View/Add/sc_addfile_view.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../HouseInspect/View/sc_deliver_evidence_cell.dart';
 import '../../../HouseInspect/View/sc_deliver_explain_cell.dart';
+import '../../../PropertyMaintenance/Model/sc_attachment_model.dart';
 
 /// 基础信息cell
 
@@ -23,11 +26,17 @@ class SCBasicInfoCell extends StatefulWidget {
   /// 需要添加图片
   final bool requiredPhotos;
 
+  /// 需要上传附件
+  final bool? requiredAttachment;
+
   /// 图片数组
   final List? files;
 
   /// 盘点范围数组
   final List? rangeList;
+
+  /// 附件数组
+  final List<SCAttachmentModel>? attachmentsList;
 
   /// 点击选择
   final Function(int index, String title)? selectAction;
@@ -44,11 +53,17 @@ class SCBasicInfoCell extends StatefulWidget {
   /// 添加/删除图片
   final Function(List list)? updatePhoto;
 
+  /// 上传文件
+  final Function? uploadFileAction;
+
   /// 范围
   final int? rangeValue;
 
   /// 是否可以编辑范围
   final bool? disableEditRange;
+
+  /// 删除附件
+  final Function(int index)? deleteAttachmentAction;
 
   SCBasicInfoCell({
     Key? key,
@@ -62,9 +77,13 @@ class SCBasicInfoCell extends StatefulWidget {
     this.selectRangeAction,
     required this.requiredRemark,
     required this.requiredPhotos,
+    this.requiredAttachment,
     this.rangeList,
     this.rangeValue,
-    this.disableEditRange
+    this.disableEditRange,
+    this.uploadFileAction,
+    this.attachmentsList,
+    this.deleteAttachmentAction
   }) : super(key: key);
 
   @override
@@ -122,9 +141,7 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
               checkRangeItem(),
               inputItem(),
               photosItem(),
-              const SizedBox(
-                height: 12.0,
-              ),
+              filesItem(),
             ]));
   }
 
@@ -138,6 +155,8 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
           var dic = widget.list[index];
           bool disable = false;
           bool hideArrow = false;
+          TextInputType keyboardType;
+          List<TextInputFormatter> inputFormatters;
           if (dic.containsKey('disable')) {
             disable = dic['disable'];
           }
@@ -148,6 +167,16 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
           if (dic.containsKey('hideArrow')) {
             hideArrow = dic['hideArrow'];
           }
+          if (dic.containsKey('keyboard')) {
+            keyboardType = dic['keyboard'];
+          } else {
+            keyboardType = TextInputType.text;
+          }
+          if (dic.containsKey('inputFormatters')) {
+            inputFormatters = dic['inputFormatters'];
+          } else {
+            inputFormatters = [LengthLimitingTextInputFormatter(50)];
+          }
           return SCMaterialSelectItem(
             isRequired: dic['isRequired'],
             title: dic['title'],
@@ -155,6 +184,8 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
             content: dic['content'],
             disable: disable,
             hideArrow: hideArrow,
+            keyboardType: keyboardType,
+            inputFormatters: inputFormatters,
             selectAction: () {
               SCUtils().hideKeyboard(context: context);
               widget.selectAction?.call(index, dic['title']);
@@ -207,6 +238,26 @@ class SCBasicInfoCellState extends State<SCBasicInfoCell> {
             },
           )),
     );
+  }
+
+  /// 文件
+  Widget filesItem() {
+    bool requiredAttachment = widget.requiredAttachment ?? false;
+    if (requiredAttachment) {
+      return Padding(padding: const EdgeInsets.only(bottom: 12.0), child: SCAddFileView(
+        attachmentsList: widget.attachmentsList,
+        addAction: (){
+          widget.uploadFileAction?.call();
+        },
+        deleteAction: (int index) {
+          widget.deleteAttachmentAction?.call(index);
+        },
+      ),);
+    } else {
+      return const SizedBox(
+        height: 12.0,
+      );
+    }
   }
 
   /// line

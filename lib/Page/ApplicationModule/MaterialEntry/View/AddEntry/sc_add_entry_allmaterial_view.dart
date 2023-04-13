@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sc_uikit/sc_uikit.dart';
 import '../../../PropertyFrmLoss/Model/sc_property_list_model.dart';
 import '../../Model/sc_material_list_model.dart';
 import '../Detail/sc_material_cell.dart';
@@ -13,7 +14,8 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
     this.hideMaterialNumTextField,
     this.isReturnEntry,
     this.isProperty,
-    this.noNeedReturnAction
+    this.noNeedReturnAction,
+    this.isPropertyMaintenance,
   }) : super(key: key);
 
   /// 数据源
@@ -37,6 +39,9 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
   /// 无需归还勾选
   final Function(int index, bool status)? noNeedReturnAction;
 
+  /// 是否是资产维保
+  final bool? isPropertyMaintenance;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -59,6 +64,20 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
 
   /// cell
   Widget cell(int index) {
+    if (isPropertyMaintenance == true) {
+      SCMaterialListModel propertyModel = list[index];
+      return SCMaterialCell(
+        hideMaterialNumTextField: true,
+        type: scPropertyMaintenanceCellTypeDelete,
+        model: propertyModel,
+        onTap: () {
+
+        },
+        deleteAction: () {
+          deleteAction?.call(index);
+        },
+      );
+    }
     if (isProperty == true) {
       SCMaterialListModel propertyModel = list[index];
       return SCMaterialCell(
@@ -108,8 +127,15 @@ class SCAddEntryAllMaterialView extends StatelessWidget {
 
   /// line
   Widget line() {
-    return const SizedBox(
-      height: 10.0,
-    );
+    if ((isPropertyMaintenance ?? false)) {
+      return Padding(padding: const EdgeInsets.only(left: 12.0), child: Container(
+        height: 0.5,
+        color: SCColors.color_F2F3F5,
+      ),);
+    } else {
+      return const SizedBox(
+        height: 10.0,
+      );
+    }
   }
 }

@@ -85,7 +85,7 @@ class SCMineListView extends StatelessWidget {
   }
 
   Widget listview(BuildContext context) {
-    int count = 12;
+    int count = 14;
     if (SCConfig.env == SCEnvironment.production &&
         !SCConfig.isSupportProxyForProduction) {
       if (SCConfig.yycTenantId() == (SCScaffoldManager.instance.defaultConfigModel?.tenantId ?? '')) {
@@ -227,6 +227,24 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineService,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.taskPage, null);
+        },
+      );
+    } else if (index == 12) {
+      return SCSettingCell(
+        title: '资产维保',
+        showLeftIcon: true,
+        leftIcon: SCAsset.iconMineService,
+        onTap: () {
+          SCRouterHelper.pathPage(SCRouterPath.propertyRecordPage, null);
+        },
+      );
+    } else if (index == 13) {
+      return SCSettingCell(
+        title: '预警中心',
+        showLeftIcon: true,
+        leftIcon: SCAsset.iconMineService,
+        onTap: () {
+          SCRouterHelper.pathPage(SCRouterPath.warningCenterPage, null);
         },
       );
     } else {

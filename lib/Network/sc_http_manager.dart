@@ -427,7 +427,6 @@ doError(e) {
     code = 500;
     message = SCDefaultValue.errorMessage;
   }
-
   var params = {
     'code': code,
     'message': message,
