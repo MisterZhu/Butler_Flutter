@@ -56,6 +56,7 @@ import '../../Page/ApplicationModule/OnlineMonitor/Page/sc_online_monitor_page.d
 import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_add_property_frmLoss_page.dart';
 import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_property_frmLoss_detail_page.dart';
 import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_property_frmLoss_page.dart';
+import '../../Page/ApplicationModule/WarningCenter/Page/sc_warning_detail_page.dart';
 import '../../Page/Message/Page/sc_message_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
 import '../../Page/Mine/Home/Page/sc_proxy_page.dart';
@@ -188,6 +189,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.warningCenterPage, page: () => SCWarningCenterPage()),
     /*搜索预警*/
     GetPage(name: SCRouterPath.searchWarningPage, page: () => SCSearchWarningPage()),
+    /*预警详情*/
+    GetPage(name: SCRouterPath.warningDetailPage, page: () => SCWarningDetailPage()),
   ];
 
   /*根据code使用路由*/

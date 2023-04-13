@@ -370,5 +370,4 @@ class SCUrl {
 
   /// 预警详情
   static const String kWarningDetailUrl = "/api/alert/alert/alertDetails/";
-
 }

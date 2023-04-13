@@ -330,4 +330,20 @@ class SCAsset {
 
   /// 无优惠券
   static const String iconEmptyCoupon = "images/empty/icon_empty_coupon.svg";
+
+/**************** 预警中心 ****************/
+
+  /// 预警-蓝色icon
+  static const String iconWarningTypeBlue = "images/warning/icon_warning_type_blue.png";
+
+  /// 预警-蓝色icon
+  static const String iconWarningTypeOrange = "images/warning/icon_warning_type_orange.png";
+
+  /// 预警-箭头-向下
+  static const String iconWarningArrowDown = "images/warning/icon_warning_arrow_down.png";
+
+  /// 预警-箭头-向右
+  static const String iconWarningArrowRight = "images/warning/icon_warning_arrow_right.png";
+
+
 }

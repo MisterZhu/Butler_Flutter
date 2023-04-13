@@ -210,8 +210,10 @@ class SCRouterPath {
   /*************************** 预警中心 ******************************/
 
   /// 预警中心
-  static String warningCenterPage = "/lib/Page/PropertyMaintenance/Page/sc_warningcenter_page";
+  static String warningCenterPage = "/lib/Page/WarningCenter/Page/sc_warningcenter_page";
   /// 预警中心-搜索
-  static String searchWarningPage = "/lib/Page/PropertyMaintenance/Page/sc_warning_search_page";
+  static String searchWarningPage = "/lib/Page/WarningCenter/Page/sc_warning_search_page";
+  /// 预警详情
+  static String warningDetailPage = "/lib/Page/WarningCenter/Page/sc_warning_detail_page";
 
 }
