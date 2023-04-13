@@ -186,7 +186,9 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
       hideBtn: (model.status ?? -1) == 3,
       hideAddressIcon: true,
       hideCallIcon: true,
-      detailTapAction: () {},
+      detailTapAction: () {
+        widget.state.detail((model.id ?? 0).toString());
+      },
       btnTapAction: () {
         dealAction(model);
       },

@@ -368,4 +368,7 @@ class SCUrl {
   /// 处理
   static const String kAlertDealUrl = "/api/alert/alert/alertDeal";
 
+  /// 预警详情
+  static const String kWarningDetailUrl = "/api/alert/alert/alertDetails/";
+
 }

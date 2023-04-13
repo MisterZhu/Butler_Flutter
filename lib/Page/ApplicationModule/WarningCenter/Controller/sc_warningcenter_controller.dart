@@ -1,9 +1,13 @@
 
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Model/sc_warning_dealresult_model.dart';
+import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Model/sc_warningcenter_detail_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Other/sc_warning_utils.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
@@ -350,5 +354,16 @@ class SCWarningCenterController extends GetxController {
   /// 预警等级背景颜色
   Color getLevelBGColor(int level) {
     return SCWarningCenterUtils.getLevelBGColor(level);
+  }
+
+  /// 预警详情
+  detail(String id) {
+    String url = SCUrl.kWarningDetailUrl + id;
+    SCHttpManager.instance.get(url: url, success: (value){
+      SCWarningCenterDetailModel model = SCWarningCenterDetailModel.fromJson(value);
+      log('详情===${jsonEncode(value)}');
+    }, failure: (value) {
+      SCToast.showTip(value['message']);
+    });
   }
 }
