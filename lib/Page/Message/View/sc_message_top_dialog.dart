@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Utils/sc_utils.dart';
 import '../../../../../Constants/sc_asset.dart';
 
 /// 消息-更多弹窗
@@ -11,7 +12,10 @@ class SCMessageTopDialog extends StatelessWidget{
   /// 点击
   final Function(int index)? tapAction;
 
-  SCMessageTopDialog({Key? key, required this.list, this.tapAction}) : super(key: key);
+  /// 点击空白位置关闭弹窗
+  final Function? closeAction;
+
+  SCMessageTopDialog({Key? key, required this.list, this.tapAction, this.closeAction}) : super(key: key);
 
   /// cell高度
   double cellHeight = 46.0;
@@ -40,21 +44,43 @@ class SCMessageTopDialog extends StatelessWidget{
   }
 
   Widget body() {
-    double height = list.length > maxCount ? cellHeight * maxCount + shadowOffSet * 2 + triangleHeight : cellHeight * list.length + shadowOffSet * 2 + triangleHeight;
-    return Padding(
-      padding: EdgeInsets.only(top: topOffSet, right: 2.0),
-      child: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Image.asset(
-            SCAsset.iconMessageMoreBg,
-            centerSlice: const Rect.fromLTRB(24, 23, 86, 95),
-            width: width,
-            height: height,
-          ),
-          listview(),
-        ],
-      ),
+    double viewHeight = list.length > maxCount ? cellHeight * maxCount + shadowOffSet * 2 + triangleHeight : cellHeight * list.length + shadowOffSet * 2 + triangleHeight;
+    return Stack(
+      children: [
+        Positioned(
+          left: 0.0,
+          right: 0.0,
+          top: 0.0,
+          bottom: 0.0,
+          child: GestureDetector(
+            onTap: () {
+              closeAction?.call();
+            },
+            child: Container(color: Colors.transparent,),
+          )),
+        Positioned(
+          top: topOffSet,
+          right: 2.0,
+          width: width,
+          height: viewHeight,
+          child: contentView(viewHeight))
+      ],
+    );
+  }
+
+  /// 弹窗view
+  Widget contentView(double height) {
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        Image.asset(
+          SCAsset.iconMessageMoreBg,
+          centerSlice: const Rect.fromLTRB(24, 23, 86, 95),
+          width: width,
+          height: height,
+        ),
+        listview(),
+      ],
     );
   }
 

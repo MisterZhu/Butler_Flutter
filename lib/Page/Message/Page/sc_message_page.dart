@@ -91,6 +91,9 @@ class SCMessagePageState extends State<SCMessagePage> with SingleTickerProviderS
               offstage: !state.showMoreDialog,
               child: SCMessageTopDialog(
                 list: const ['全部已读', '全部清除'],
+                closeAction: () {
+                  controller.updateMoreDialogStatus();
+                },
                 tapAction: (index) {
                   if (index == 0) {
                     controller.deleteMessage(allRead: true, completeHandler: (status) {
