@@ -94,25 +94,35 @@ class SCWarningDetailPageState extends State<SCWarningDetailPage>
 
   /// bottomView
   Widget bottomView() {
-    List list = [
-      {
-        "type": scMaterialBottomViewType1,
-        "title": "新增",
-      },
-      {
-        "type": scMaterialBottomViewType2,
-        "title": "处理",
-      },
-    ];
     return GetBuilder<SCWarningDetailController>(
         tag: controllerTag,
         init: controller,
         builder: (state) {
+          List list;
+          if (controller.detailModel.status == 3) {
+            list = [
+              {
+                "type": scMaterialBottomViewType2,
+                "title": "新增报事",
+              },
+            ];
+          } else {
+            list = [
+              {
+                "type": scMaterialBottomViewType1,
+                "title": "新增报事",
+              },
+              {
+                "type": scMaterialBottomViewType2,
+                "title": "处理",
+              },
+            ];
+          }
           if (controller.success) {
             return SCMaterialDetailBottomView(
               list: list,
               onTap: (value) {
-                if (value == '新增') {
+                if (value == '新增报事') {
                   addAction();
                 } else if (value == '处理') {
                   dealAction();
@@ -120,7 +130,7 @@ class SCWarningDetailPageState extends State<SCWarningDetailPage>
               },
             );
           } else {
-            return SizedBox();
+            return const SizedBox();
           }
         });
   }

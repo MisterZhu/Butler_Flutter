@@ -135,6 +135,12 @@ class SCApplicationPageState extends State<SCApplicationPage>
     } else if (title == "资产盘点") {
       SCRouterHelper.pathPage(SCRouterPath.fixedCheckPage, null);
       return;
+    } else if (title == "预警中心") {
+      SCRouterHelper.pathPage(SCRouterPath.warningCenterPage, null);
+      return;
+    } else if (title == "鹰眼服务") {
+      SCRouterHelper.pathPage(SCRouterPath.onlineMonitorPage, null);
+      return;
     }
 
     if (Platform.isAndroid) {
