@@ -8,6 +8,7 @@ import '../../../Network/sc_config.dart';
 import '../../../Utils/Date/sc_date_utils.dart';
 import '../../../Utils/Router/sc_router_helper.dart';
 import '../../../Utils/Router/sc_router_path.dart';
+import '../../../Utils/sc_utils.dart';
 import '../Controller/sc_message_controller.dart';
 import '../Model/sc_message_card_model.dart';
 
@@ -86,7 +87,12 @@ class SCMessageListView extends StatelessWidget {
               if (model.ext != null) {
                 var ext = jsonDecode(model.ext ?? '');
                 if (ext['jumpUrl'] != null) {
-                  SCRouterHelper.pathPage(SCRouterPath.webViewPath, {'title' : '详情', 'url' : ext['jumpUrl']});
+                  if (model.cardCode == 'CONTENT_MESSAGE') {
+                    // 跳转到站内信详情h5
+                    String jumpUrl = SCConfig.getH5Url('/h5Manage/#${ext['jumpUrl']}');
+                    String url = SCUtils.getWebViewUrl(url: jumpUrl, title: '详情',  needJointParams: true);
+                    SCRouterHelper.pathPage(SCRouterPath.webViewPath, {'title' : '详情', 'url' : url});
+                  }
                 }
               }
               if (model.noticeArriveId != null) {

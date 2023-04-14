@@ -130,11 +130,9 @@ class SCMessageController extends GetxController {
         url: SCUrl.kMessageDetailUrl,
         params: {"noticeArriveId": noticeArriveId},
         success: (value) {
-          SCLoadingUtils.hide();
           update();
         },
         failure: (value) {
-          SCToast.showTip(value['message']);
         });
   }
 
