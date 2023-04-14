@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/View/Detail/sc_warning_detail_cell_item.dart';
 import '../../Controller/sc_warning_detail_controller.dart';
+import '../../Model/sc_warningcenter_detail_model.dart';
 
 /// 预警详情-预警明细
 class SCWarningDetailWarnDetailView extends StatelessWidget {
@@ -24,12 +25,13 @@ class SCWarningDetailWarnDetailView extends StatelessWidget {
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         itemBuilder: (BuildContext context, int index) {
-          return SCWarningDetailCellItem(state: state,);
+          SCAlertDetailedVs model = state.detailModel.alertDetailedVS![index];
+          return SCWarningDetailCellItem(model: model,);
         },
         separatorBuilder: (BuildContext context, int index) {
           return lineItem();
         },
-        itemCount: 3);
+        itemCount: (state.detailModel.alertDetailedVS ?? []).length);
   }
 
   /// lineItem

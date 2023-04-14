@@ -1,6 +1,9 @@
 import 'package:flutter/widgets.dart';
+import 'package:smartcommunity/Page/Mine/Home/View/SelectCommunityAlert/sc_community_alertview.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_empty_view.dart';
+import 'package:smartcommunity/Utils/Community/sc_selectcommunity_utils.dart';
 import '../../../../../Constants/sc_asset.dart';
+import '../../../../Mine/Home/Model/sc_community_alert_model.dart';
 import '../../../MaterialEntry/View/Alert/sc_reject_alert.dart';
 import '../../Controller/sc_warningcenter_controller.dart';
 import '../../Model/sc_warning_dealresult_model.dart';
@@ -109,6 +112,7 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
               showStatusAlert = false;
             });
             // 点击筛选空间
+            selectCommunity();
           },
           behavior: HitTestBehavior.opaque,
           child: Container(
@@ -217,7 +221,7 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
       hideCallIcon: true,
       detailTapAction: () {
         SCRouterHelper.pathPage(
-            SCRouterPath.warningDetailPage, {'id': (model.id ?? 0).toString()});
+            SCRouterPath.warningDetailPage, {'id': (model.id ?? 0).toString(), 'alertContext': model.alertContext ?? ''});
       },
       btnTapAction: () {
         dealAction(model);
@@ -377,5 +381,12 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
             widget.state.refreshController.loadComplete();
           }
         });
+  }
+
+  /// 选择项目
+  void selectCommunity() {
+    SCSelectCommunityUtils.showCommunityAlert(resultHandler: (SCCommunityAlertModel model, int index){
+      widget.state.updateCommunityId(model.id ?? '', index);
+    }, isShowSelectAll: true, currentIndex: widget.state.currentCommunityIndex);
   }
 }

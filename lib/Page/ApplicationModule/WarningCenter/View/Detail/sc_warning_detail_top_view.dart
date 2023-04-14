@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Other/sc_warning_utils.dart';
 import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/View/Detail/sc_warning_detail_text_cell.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Network/sc_config.dart';
@@ -8,13 +11,10 @@ import '../../Controller/sc_warning_detail_controller.dart';
 
 /// 预警详情-topView
 class SCWarningDetailTopView extends StatelessWidget {
-
   /// SCWarningDetailController
   final SCWarningDetailController state;
 
-  SCWarningDetailTopView({Key? key, required this.state}): super(key: key);
-
-  List tagList = ['严重'];
+  SCWarningDetailTopView({Key? key, required this.state}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,15 +42,21 @@ class SCWarningDetailTopView extends StatelessWidget {
             height: 12.0,
           ),
           tagsItem(),
-          nameItem('正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正测试标题11111111'),
+          nameItem(state.alertContext),
           const SizedBox(
             height: 12.0,
           ),
-          SCWarningDetailTextCell(leftText: '预警编号', rightText: 'YJ20230308000406',),
+          SCWarningDetailTextCell(
+            leftText: '预警编号',
+            rightText: state.detailModel.alertCode ?? '',
+          ),
           const SizedBox(
             height: 12.0,
           ),
-          SCWarningDetailTextCell(leftText: '预警日期', rightText: '2023-02-21 18:00:00',),
+          SCWarningDetailTextCell(
+            leftText: '预警日期',
+            rightText: state.detailModel.generationTime ?? '',
+          ),
         ],
       ),
     );
@@ -64,28 +70,37 @@ class SCWarningDetailTopView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(SCAsset.iconWarningTypeOrange, width: 18.0, height: 18.0,),
-          const SizedBox(width: 6.0,),
-          const Expanded(child: Text(
-              '火警预警',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontSize: SCFonts.f14,
-                  fontWeight: FontWeight.w400,
-                  color: SCColors.color_1B1D33)),),
-          const SizedBox(width: 20.0,),
+          Image.asset(
+            SCAsset.iconMaterialIcon,
+            width: 18.0,
+            height: 18.0,
+          ),
+          const SizedBox(
+            width: 6.0,
+          ),
+          Expanded(
+            child: Text(state.detailModel.ruleName ?? '',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    fontSize: SCFonts.f14,
+                    fontWeight: FontWeight.w400,
+                    color: SCColors.color_1B1D33)),
+          ),
+          const SizedBox(
+            width: 20.0,
+          ),
           SizedBox(
             width: 82.0,
-            child: Text(
-                '处理中',
+            child: Text(state.detailModel.statusName ?? '',
                 maxLines: 1,
                 textAlign: TextAlign.right,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     fontSize: SCFonts.f14,
                     fontWeight: FontWeight.w400,
-                    color: SCColors.color_4285F4)),
+                    color: SCWarningCenterUtils.getStatusColor(
+                        state.detailModel.status ?? -1))),
           )
         ],
       ),
@@ -105,6 +120,7 @@ class SCWarningDetailTopView extends StatelessWidget {
 
   /// 标签
   Widget tagsItem() {
+    List tagList = [state.detailModel.levelName ?? ''];
     if (tagList.isNotEmpty) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 6.0),
@@ -116,7 +132,7 @@ class SCWarningDetailTopView extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
-                return tagCell(index);
+                return tagCell(index, tagList);
               },
               separatorBuilder: (BuildContext context, int index) {
                 return const SizedBox(
@@ -127,17 +143,21 @@ class SCWarningDetailTopView extends StatelessWidget {
         ),
       );
     } else {
-      return const SizedBox(height: 0.0,);
+      return const SizedBox(
+        height: 0.0,
+      );
     }
   }
 
-  Widget tagCell(int index) {
+  /// tagCell
+  Widget tagCell(int index, List tagList) {
     return Container(
         height: 17.0,
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 4.0),
         decoration: BoxDecoration(
-          color: SCColors.color_F2F3F5,
+          color: SCWarningCenterUtils.getLevelBGColor(
+              state.detailModel.levelId ?? -1),
           borderRadius: BorderRadius.circular(2.0),
         ),
         child: Text(
@@ -145,13 +165,13 @@ class SCWarningDetailTopView extends StatelessWidget {
           textAlign: TextAlign.center,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: SCFonts.f12,
             fontWeight: FontWeight.w400,
-            color: SCColors.color_5E5F66,
+            color: SCWarningCenterUtils.getLevelTextColor(
+                state.detailModel.levelId ?? -1),
           ),
-        )
-    );
+        ));
   }
 
   /// nameItem
@@ -160,7 +180,7 @@ class SCWarningDetailTopView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0),
         child: Text(
           name,
-          maxLines: 2,
+          maxLines: 10,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
               fontSize: SCFonts.f16,

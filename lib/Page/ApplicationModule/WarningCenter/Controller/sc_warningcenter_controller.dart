@@ -30,6 +30,12 @@ class SCWarningCenterController extends GetxController {
   /// 预警状态index
   int warningStatusIndex = 0;
 
+  /// 项目id
+  String communityId = "";
+
+  /// 已选的项目index
+  int currentCommunityIndex = 0;
+
   /// 预警类型列表
   List<SCWarningDealResultModel> warningTypeList = [];
 
@@ -133,6 +139,15 @@ class SCWarningCenterController extends GetxController {
         };
         fields.add(dic);
       }
+    }
+    if (communityId.isNotEmpty) {
+      var dic = {
+        "map": {},
+        "method": 1,
+        "name": "a.community_id",
+        "value": communityId
+      };
+      fields.add(dic);
     }
     if (warningGradeIndex > 0) {// 预警等级
       SCWarningDealResultModel model = warningGradeList[warningGradeIndex];
@@ -335,10 +350,12 @@ class SCWarningCenterController extends GetxController {
     loadData(isMore: false);
   }
 
-  @override
-  onClose() {
-    refreshController.dispose();
-    super.onClose();
+  /// 更新项目id
+  updateCommunityId(String value, int index) {
+    communityId = value;
+    currentCommunityIndex = index;
+    update();
+    loadData(isMore: false);
   }
 
   /// 处理状态文本颜色
@@ -365,5 +382,11 @@ class SCWarningCenterController extends GetxController {
     }, failure: (value) {
       SCToast.showTip(value['message']);
     });
+  }
+
+  @override
+  onClose() {
+    refreshController.dispose();
+    super.onClose();
   }
 }

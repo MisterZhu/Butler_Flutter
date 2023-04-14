@@ -19,6 +19,7 @@ class SCSelectCommunityAlert extends StatelessWidget {
     Key? key,
     required this.list,
     required this.title,
+    this.currentIndex,
     this.onSure,
     this.onCancel
   }) : super(key: key);
@@ -34,6 +35,9 @@ class SCSelectCommunityAlert extends StatelessWidget {
 
   /// title
   final String title;
+
+  /// currentIndex
+  final int? currentIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +96,7 @@ class SCSelectCommunityAlert extends StatelessWidget {
 
   /// 项目listView
   Widget communityListView() {
-    return Expanded(child: SCCommunityListView(list: list, onTap: (int index) {
+    return Expanded(child: SCCommunityListView(currentIndex: currentIndex ,list: list, onTap: (int index) {
       onSure?.call(index);
     },)
     );

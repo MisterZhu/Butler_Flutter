@@ -30,7 +30,7 @@ class SCWarningDetailPhotosItem extends StatelessWidget {
   Widget photosItem() {
     if (state.detailModel.fileVoList != null) {
       return StaggeredGridView.countBuilder(
-          padding: EdgeInsets.zero,
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
           crossAxisCount: 4,

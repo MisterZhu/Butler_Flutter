@@ -98,7 +98,7 @@ class SCWarningCenterDetailModel {
   String? gmtCreate;
   dynamic alertExplain;
   List<dynamic>? fileVoList;
-  dynamic alertContext;
+  String? alertContext;
   List<SCAlertDetailedVs>? alertDetailedVS;
   List<SCAlertWorkOrderVList>? alertWorkOrderVList;
   String? alertType;

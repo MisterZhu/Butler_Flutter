@@ -34,12 +34,17 @@ class SCWarningDetailDealDetailView extends StatelessWidget {
   }
 
   Widget listview() {
+    List dealDetailList = [
+      {'name': '处理人', 'content': state.detailModel.operatorName},
+      {'name': '处理时间', 'content': state.detailModel.endTime},
+      {'name': '处理结果', 'content': state.detailModel.confirmResultName},
+    ];
     return ListView.separated(
         shrinkWrap: true,
         padding: const EdgeInsets.only(top: 12.0),
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          var dic = state.dealDetailList[index];
+          var dic = dealDetailList[index];
           return SCWarningDetailTextCell(
             leftText: dic['name'],
             rightText: dic['content'],
@@ -50,6 +55,6 @@ class SCWarningDetailDealDetailView extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 12.0,);
         },
-        itemCount: state.dealDetailList.length);
+        itemCount: dealDetailList.length);
   }
 }

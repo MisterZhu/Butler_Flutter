@@ -370,4 +370,7 @@ class SCUrl {
 
   /// 预警详情
   static const String kWarningDetailUrl = "/api/alert/alert/alertDetails/";
+
+  /// 预警详情-空间信息
+  static const String kWarningSpaceInfoUrl = "/api/space/community/getDetail";
 }

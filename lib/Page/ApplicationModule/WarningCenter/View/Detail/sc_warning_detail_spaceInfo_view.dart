@@ -26,12 +26,19 @@ class SCWarningDetailSpaceInfoView extends StatelessWidget {
 
   /// body
   Widget listview() {
+    List spaceInfoList = [
+      {'name': '空间名称', 'content': state.spaceModel.name, 'isContact': false},
+      {'name': '空间类型', 'content': state.spaceModel.typeNameFlag, 'isContact': false},
+      {'name': '地址', 'content': state.spaceModel.address, 'isContact': false},
+      {'name': '联系人', 'content': state.spaceModel.contacts, 'isContact': false},
+      {'name': '联系人电话', 'content': state.spaceModel.contactsPhone, 'isContact': true, 'mobile': state.spaceModel.contactsPhone},
+    ];
     return ListView.separated(
         shrinkWrap: true,
         padding: const EdgeInsets.symmetric(vertical: 12.0),
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          var dic = state.spaceInfoList[index];
+          var dic = spaceInfoList[index];
           return SCWarningDetailTextCell(
             leftText: dic['name'],
             rightText: dic['content'],
@@ -42,6 +49,6 @@ class SCWarningDetailSpaceInfoView extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 12.0,);
         },
-        itemCount: state.spaceInfoList.length);
+        itemCount: spaceInfoList.length);
   }
 }
