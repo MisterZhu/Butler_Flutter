@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-
 import '../../../../../Network/sc_config.dart';
 import '../../../../../Utils/Preview/sc_image_preview_utils.dart';
 import '../../Controller/sc_warning_detail_controller.dart';
-import '../../Model/sc_warning_detail_model.dart';
+import '../../Model/sc_warningcenter_model.dart';
 
 /// 预警详情-处理明细-图片
 
@@ -51,7 +50,7 @@ class SCWarningDetailPhotosItem extends StatelessWidget {
 
   /// 图片
   Widget photoItem(int index) {
-    FileVoList? file = state.detailModel.fileVoList?[index];
+    SCFileVoList? file = state.detailModel.fileVoList?[index];
     String fileKey = file?.fileKey ?? '';
     String url = SCConfig.getImageUrl(fileKey);
     return GestureDetector(
