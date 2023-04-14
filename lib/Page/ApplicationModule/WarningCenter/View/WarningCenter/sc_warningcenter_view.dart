@@ -31,7 +31,6 @@ class SCWarningCenterView extends StatefulWidget {
 }
 
 class SCWarningCenterViewState extends State<SCWarningCenterView> {
-
   bool showTypeAlert = false;
 
   bool showGradeAlert = false;
@@ -178,8 +177,7 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
       title: model.ruleName,
       titleIcon: SCAsset.iconWarningTypeOrange,
       statusTitle: model.statusName,
-      statusTitleColor:
-      widget.state.getStatusColor(model.status ?? -1),
+      statusTitleColor: widget.state.getStatusColor(model.status ?? -1),
       content: model.alertContext,
       contentMaxLines: 30,
       address: '预警编号：${model.alertCode}',
@@ -188,7 +186,8 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
       hideAddressIcon: true,
       hideCallIcon: true,
       detailTapAction: () {
-        SCRouterHelper.pathPage(SCRouterPath.warningDetailPage, {'id': (model.id ?? 0).toString()});
+        SCRouterHelper.pathPage(
+            SCRouterPath.warningDetailPage, {'id': (model.id ?? 0).toString()});
       },
       btnTapAction: () {
         dealAction(model);
@@ -292,7 +291,8 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
 
   /// 处理
   dealAction(SCWarningCenterModel centerModel) {
-    widget.state.loadDictionaryCode(centerModel.alertType ?? '' ,(success, list) {
+    widget.state.loadDictionaryCode(centerModel.alertType ?? '',
+        (success, list) {
       if (success) {
         List<String> tagList = [];
         for (SCWarningDealResultModel model in list) {
