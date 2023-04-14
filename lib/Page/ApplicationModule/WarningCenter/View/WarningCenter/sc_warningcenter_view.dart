@@ -65,7 +65,20 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
             SCRouterHelper.pathPage(SCRouterPath.searchWarningPage, {});
           },
         ),
-        SCMaterialSiftItem(
+        siftItem(),
+        Expanded(child: contentItem())
+      ],
+    );
+  }
+
+  /// siftItem
+  Widget siftItem() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(child: SCMaterialSiftItem(
           tagList: widget.state.siftList,
           tapAction: (index) {
             if (index == 0) {
@@ -88,8 +101,25 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
               });
             }
           },
-        ),
-        Expanded(child: contentItem())
+        ),),
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              showTypeAlert = false;
+              showGradeAlert = false;
+              showStatusAlert = false;
+            });
+            // 点击筛选空间
+          },
+          behavior: HitTestBehavior.opaque,
+          child: Container(
+            color: SCColors.color_FFFFFF,
+            width: 52,
+            height: 44.0,
+            alignment: Alignment.center,
+            child: Image.asset(SCAsset.iconMonitorStatusSift, fit: BoxFit.cover, width: 20.0, height: 20.0,),
+          ),
+        )
       ],
     );
   }
