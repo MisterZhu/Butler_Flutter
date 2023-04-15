@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Skin/View/sc_custom_scaffold.dart';
 
+import '../../../../Constants/sc_key.dart';
 import '../Controller/sc_warning_search_controller.dart';
 import '../View/Search/sc_warning_search_view.dart';
 
@@ -22,6 +25,9 @@ class SCSearchWarningPageState extends State<SCSearchWarningPage> with Automatic
   /// SCSearchWarningController - tag
   String controllerTag = '';
 
+  /// notify
+  late StreamSubscription subscription;
+
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
@@ -32,6 +38,7 @@ class SCSearchWarningPageState extends State<SCSearchWarningPage> with Automatic
     controllerTag = SCScaffoldManager.instance.getXControllerTag((SCSearchWarningPage).toString());
     controller = Get.put(SCSearchWarningController(), tag: controllerTag);
     initPageData();
+    addNotification();
   }
 
   /// 页面传递过来的数据
@@ -42,8 +49,19 @@ class SCSearchWarningPageState extends State<SCSearchWarningPage> with Automatic
     }
   }
 
+  /// 通知
+  addNotification() {
+    subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
+      String key = event['key'];
+      if (key == SCKey.kRefreshWarningCenterPage) {
+        controller.searchData(isMore: false);
+      }
+    });
+  }
+
   @override
   dispose() {
+    subscription.cancel();
     SCScaffoldManager.instance.deleteGetXControllerTag((SCSearchWarningPage).toString(), controllerTag);
     controller.dispose();
     super.dispose();

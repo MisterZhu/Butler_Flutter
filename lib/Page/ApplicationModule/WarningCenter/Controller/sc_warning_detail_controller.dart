@@ -83,6 +83,7 @@ class SCWarningDetailController extends GetxController {
         url: SCUrl.kWarningDetailUrl + id,
         params: null,
         success: (value) {
+          log('详情===$value');
           SCLoadingUtils.hide();
           success = true;
           detailModel = SCWarningCenterDetailModel.fromJson(value);
@@ -138,6 +139,7 @@ class SCWarningDetailController extends GetxController {
   /// 处理
   deal(String alertExplain, int confirmResult, int id, List fileVoList,
       int status) {
+    log("图片===$fileVoList");
     SCLoadingUtils.show();
     var params = {
       "alertExplain": alertExplain,

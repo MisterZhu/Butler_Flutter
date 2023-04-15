@@ -6,6 +6,8 @@ import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Controller/s
 import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Model/sc_warningcenter_model.dart';
 
 import '../../../../../Constants/sc_asset.dart';
+import '../../../../../Utils/Router/sc_router_helper.dart';
+import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../MaterialEntry/View/Alert/sc_reject_alert.dart';
 import '../../Model/sc_warning_dealresult_model.dart';
@@ -230,7 +232,10 @@ class SCSearchWarningViewState extends State<SCSearchWarningView> {
       hideBtn: (model.status ?? -1) == 3,
       hideAddressIcon: true,
       hideCallIcon: true,
-      detailTapAction: () {},
+      detailTapAction: () {
+        SCRouterHelper.pathPage(
+            SCRouterPath.warningDetailPage, {'id': (model.id ?? 0).toString(), 'alertContext': model.alertContext ?? ''});
+      },
       btnTapAction: () {
         dealAction(model);
       },
