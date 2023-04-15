@@ -40,6 +40,21 @@ class SCWorkBenchController extends GetxController {
   /// 处理中pageNum
   int processingPageNum = 1;
 
+  /// 我执行的pageNum
+  int iExecutedPageNum = 1;
+
+  /// 我创建的
+  int iCreatedPageNum = 1;
+
+  /// 我经办的
+  int iDoPageNum = 1;
+
+  /// 我关注的
+  int iLikedPageNum = 1;
+
+  /// 抢单大厅
+  int grabHallPageNum = 1;
+
   /// 处理中工单 数据
   List processingDataList = [];
 
@@ -94,6 +109,7 @@ class SCWorkBenchController extends GetxController {
     taskTypeList = ['全部', '工单服务', '增值服务', '审批中心', '巡查任务', '收费账单', '业主拜访'];
     location();
     loadData();
+    getTaskData(isMore: false);
   }
 
   /// 更新选中的我的任务
@@ -150,6 +166,8 @@ class SCWorkBenchController extends GetxController {
         materialTransferAPI();
       }
     }
+
+    getTaskData(isMore: false);
   }
 
   /// 加载更多
@@ -1055,6 +1073,51 @@ class SCWorkBenchController extends GetxController {
         }
       });
     }
+  }
+
+  /// 我执行的
+  getTaskData({bool? isMore}) {
+    bool isLoadMore = isMore ?? false;
+    if (isLoadMore == true) {
+      iExecutedPageNum++;
+    } else {
+      SCLoadingUtils.show();
+    }
+    var params = {
+      "conditions": {
+        // "fields": [
+        //   {"map": {}}
+        // ]
+      },
+      // "count": true,
+      // "last": true,
+      "pageNum": iExecutedPageNum,
+      "pageSize": 10
+    };
+    return SCHttpManager.instance.post(
+        url: SCUrl.kSearchTaskUrl,
+        params: params,
+        success: (value) {
+          log('数据===$value');
+          SCLoadingUtils.hide();
+          if (value is Map) {
+
+          } else {
+            if (isLoadMore == false) {
+              // waitDataList = [];
+            }
+          }
+          // update();
+          // waitController.dataList = waitDataList;
+          // waitController.update();
+        },
+        failure: (value) {
+          SCLoadingUtils.hide();
+          log('失败===$value');
+          if (currentPlateIndex == 0 && isLoadMore == true) {
+            iExecutedPageNum--;
+          }
+        });
   }
 
   @override

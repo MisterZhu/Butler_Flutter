@@ -30,6 +30,9 @@ class SCUrl {
   /// 实地核验工单点击url
   static const String kDealActualVerifyUrl = '/api/stylestay/house/actualVerify/dealActualVerify';
 
+  /// 待办任务url
+  static const String kSearchTaskUrl = '/api/search/task/page';
+
   /************************* 工单 *************************/
 
   /// 工单数量url
