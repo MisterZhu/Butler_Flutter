@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
@@ -9,47 +8,57 @@ import '../../Controller/sc_warning_detail_controller.dart';
 
 /// 预警详情-middleView
 class SCWarningDetailMiddleView extends StatelessWidget {
-
   /// SCWarningDetailController
   final SCWarningDetailController state;
 
   final TabController tabController;
 
-  SCWarningDetailMiddleView({Key? key, required this.state, required this.tabController}): super(key: key);
-
+  SCWarningDetailMiddleView(
+      {Key? key, required this.state, required this.tabController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          color: SCColors.color_FFFFFF,
-          borderRadius: BorderRadius.circular(4.0)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          topItem(),
-          lineItem(),
-          Expanded(child: TabBarView(
-            controller: tabController,
+        decoration: BoxDecoration(
+            color: SCColors.color_FFFFFF,
+            borderRadius: BorderRadius.circular(4.0)),
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SCWarningDetailWarnDetailView(state: state),
-              SCWarningDetailSpaceInfoView(state: state),
-              SCWarningDetailDealDetailView(state: state),
-            ]
-          ))
-        ]
-      )
-    );
+              topItem(),
+              lineItem(),
+              Expanded(
+                  child: TabBarView(
+                      controller: tabController,
+                      children: state.detailModel.status == 1
+                          ? [
+                              SCWarningDetailWarnDetailView(state: state),
+                              SCWarningDetailSpaceInfoView(state: state),
+                            ]
+                          : [
+                              SCWarningDetailWarnDetailView(state: state),
+                              SCWarningDetailSpaceInfoView(state: state),
+                              SCWarningDetailDealDetailView(state: state),
+                            ]))
+            ]));
   }
 
   /// topItem
   Widget topItem() {
-    List titleList = ['预警明细', '空间信息', '处理明细'];
+    List titleList;
+    if (state.detailModel.status == 1) {
+      titleList = ['预警明细', '空间信息'];
+    } else {
+      titleList = ['预警明细', '空间信息', '处理明细'];
+    }
     List<Tab> tabItemList = [];
     for (String title in titleList) {
-      tabItemList.add(Tab(text: title,));
+      tabItemList.add(Tab(
+        text: title,
+      ));
     }
     return Container(
       decoration: BoxDecoration(
@@ -59,7 +68,7 @@ class SCWarningDetailMiddleView extends StatelessWidget {
       width: double.infinity,
       height: 44.0,
       child: PreferredSize(
-          preferredSize: Size.fromHeight(44.0),
+          preferredSize: const Size.fromHeight(44.0),
           child: Material(
             color: Colors.transparent,
             child: Theme(
@@ -75,12 +84,11 @@ class SCWarningDetailMiddleView extends StatelessWidget {
                     unselectedLabelColor: SCColors.color_5E5E66,
                     labelColor: SCColors.color_1B1D33,
                     indicatorWeight: 2.0,
-                    labelStyle:
-                    const TextStyle(fontSize: SCFonts.f14, fontWeight: FontWeight.w500),
+                    labelStyle: const TextStyle(
+                        fontSize: SCFonts.f14, fontWeight: FontWeight.w500),
                     unselectedLabelStyle: const TextStyle(
                         fontSize: SCFonts.f14, fontWeight: FontWeight.w400),
-                    tabs: tabItemList
-                )),
+                    tabs: tabItemList)),
           )),
     );
   }
@@ -92,5 +100,4 @@ class SCWarningDetailMiddleView extends StatelessWidget {
       color: SCColors.color_EDEDF0,
     );
   }
-
 }
