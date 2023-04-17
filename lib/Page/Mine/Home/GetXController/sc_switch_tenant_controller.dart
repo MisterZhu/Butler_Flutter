@@ -45,7 +45,10 @@ class SCSwitchTenantController extends GetxController {
         },
         failure: (value) {
           SCLoadingUtils.hide();
-          log('appList失败===$value');
+          if (value['message'] != null) {
+            String message = value['message'];
+            SCToast.showTip(message);
+          }
         });
   }
 
