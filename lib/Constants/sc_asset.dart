@@ -336,7 +336,7 @@ class SCAsset {
   /// 预警-蓝色icon
   static const String iconWarningTypeBlue = "images/warning/icon_warning_type_blue.png";
 
-  /// 预警-蓝色icon
+  /// 预警-橙色icon
   static const String iconWarningTypeOrange = "images/warning/icon_warning_type_orange.png";
 
   /// 预警-箭头-向下
