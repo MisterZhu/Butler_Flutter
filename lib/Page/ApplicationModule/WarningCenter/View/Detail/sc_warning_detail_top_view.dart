@@ -71,7 +71,7 @@ class SCWarningDetailTopView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
-            SCAsset.iconMaterialIcon,
+            SCAsset.iconWarningTypeOrange,
             width: 18.0,
             height: 18.0,
           ),
