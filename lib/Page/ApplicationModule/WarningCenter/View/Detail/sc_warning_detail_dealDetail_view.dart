@@ -29,6 +29,8 @@ class SCWarningDetailDealDetailView extends StatelessWidget {
       {'name': '处理人', 'content': state.detailModel.operatorName},
       {'name': '处理时间', 'content': state.detailModel.endTime},
       {'name': '处理结果', 'content': state.detailModel.confirmResultName},
+      {'name': '处理说明', 'content': state.detailModel.alertExplain},
+      {'name': '图片', 'content': (state.detailModel.fileVoList ?? []).isNotEmpty ? '' : '无'},
       {}
     ];
     return ListView.separated(

@@ -373,4 +373,10 @@ class SCUrl {
 
   /// 预警详情-空间信息
   static const String kWarningSpaceInfoUrl = "/api/space/community/getDetail";
+
+  /// 预警-紧急联系人
+  static const String kWarningEmergencyUrl = "/api/space/worker/0101/";
+
+  /// 预警-通过id获取空间类型
+  static const String kWarningSpaceTypeUrl = "/api/space/space/type/getDetail";
 }

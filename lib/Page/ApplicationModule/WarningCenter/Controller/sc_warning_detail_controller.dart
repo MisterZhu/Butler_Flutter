@@ -10,6 +10,7 @@ import '../../../../Constants/sc_key.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../Model/sc_warning_dealresult_model.dart';
+import '../Model/sc_warning_emergencycontacts_model.dart';
 import '../Model/sc_warningcenter_detail_model.dart';
 import '../Model/sc_warningspace_model.dart';
 
@@ -30,6 +31,9 @@ class SCWarningDetailController extends GetxController {
 
   /// 空间信息model
   SCWarningSpaceModel spaceModel = SCWarningSpaceModel();
+
+  /// 紧急联系人
+  List<SCWarningEmergencyContactsModel> emergencyContactsList = [];
 
   late TabController tabController;
 
@@ -90,6 +94,7 @@ class SCWarningDetailController extends GetxController {
           tabController = TabController(
               length: detailModel.status == 1 ? 2 : 3, vsync: provider);
           getSpaceInfo();
+          getEmergencyData();
           update();
         },
         failure: (value) {
@@ -105,6 +110,7 @@ class SCWarningDetailController extends GetxController {
         params: {"id": detailModel.communityId},
         success: (value) {
           spaceModel = SCWarningSpaceModel.fromJson(value);
+          getSpaceType(spaceModel.type);
           update();
         },
         failure: (value) {});
@@ -139,7 +145,6 @@ class SCWarningDetailController extends GetxController {
   /// 处理
   deal(String alertExplain, int confirmResult, int id, List fileVoList,
       int status) {
-    log("图片===$fileVoList");
     SCLoadingUtils.show();
     var params = {
       "alertExplain": alertExplain,
@@ -160,6 +165,38 @@ class SCWarningDetailController extends GetxController {
         failure: (value) {
           SCToast.showTip(value['message']);
         });
+  }
+
+  /// 紧急联系人
+  getEmergencyData() {
+    SCLoadingUtils.show();
+    String url = SCUrl.kWarningEmergencyUrl + (detailModel.communityId ?? '');
+    SCHttpManager.instance.get(
+        url: url,
+        success: (value) {
+          SCLoadingUtils.hide();
+          if (value is List) {
+            emergencyContactsList =  List<SCWarningEmergencyContactsModel>.from(
+                value.map((e) => SCWarningEmergencyContactsModel.fromJson(e)).toList());
+            update();
+          }
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 空间类型
+  getSpaceType(int? typeId) {
+    SCHttpManager.instance.get(url: SCUrl.kWarningSpaceTypeUrl, params: {
+      'typeId': typeId
+    }, success: (value) {
+      spaceModel.typeNameFlag = value['name'];
+      update();
+    }, failure: (value) {
+      spaceModel.typeNameFlag = '';
+      update();
+    });
   }
 
   @override

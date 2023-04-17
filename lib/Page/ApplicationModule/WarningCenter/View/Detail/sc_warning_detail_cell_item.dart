@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/View/Detail/sc_warning_detail_text_cell.dart';
 import '../../../../../Constants/sc_asset.dart';
@@ -10,7 +11,10 @@ class SCWarningDetailCellItem extends StatefulWidget {
   /// model
   final SCAlertDetailedVs model;
 
-  SCWarningDetailCellItem({Key? key, required this.model}) : super(key: key);
+  /// 状态
+  final int? status;
+
+  SCWarningDetailCellItem({Key? key, required this.model, this.status}) : super(key: key);
 
   @override
   SCWarningDetailCellItemState createState() => SCWarningDetailCellItemState();
@@ -82,7 +86,7 @@ class SCWarningDetailCellItemState extends State<SCWarningDetailCellItem> {
       {'name': '地址号', 'content': widget.model.addressCode},
       {'name': '设备位置', 'content': widget.model.position},
       {'name': '预警事件', 'content': widget.model.eventName},
-      {'name': '处理时间', 'content': widget.model.nowAlertTime},
+      {'name': widget.status == 1 ? '最新预警时间' : '预警时间', 'content': widget.model.nowAlertTime},
     ];
     return Offstage(
       offstage: !unfold,

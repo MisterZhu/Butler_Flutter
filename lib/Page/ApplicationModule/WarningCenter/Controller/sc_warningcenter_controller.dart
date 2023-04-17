@@ -119,7 +119,7 @@ class SCWarningCenterController extends GetxController {
         var dic1 = {
           "map": {},
           "method": 1,
-          "name": "a.status",
+          "name": "b.alert_type",
           "value": model1.code
         };
         var dic2 = {
@@ -134,7 +134,7 @@ class SCWarningCenterController extends GetxController {
         var dic = {
           "map": {},
           "method": 1,
-          "name": "a.status",
+          "name": "b.alert_type",
           "value": model1.code
         };
         fields.add(dic);

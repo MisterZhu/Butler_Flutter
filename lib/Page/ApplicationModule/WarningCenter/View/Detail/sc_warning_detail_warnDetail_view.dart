@@ -26,7 +26,7 @@ class SCWarningDetailWarnDetailView extends StatelessWidget {
         padding: EdgeInsets.zero,
         itemBuilder: (BuildContext context, int index) {
           SCAlertDetailedVs model = state.detailModel.alertDetailedVS![index];
-          return SCWarningDetailCellItem(model: model,);
+          return SCWarningDetailCellItem(model: model, status: state.detailModel.status,);
         },
         separatorBuilder: (BuildContext context, int index) {
           return lineItem();

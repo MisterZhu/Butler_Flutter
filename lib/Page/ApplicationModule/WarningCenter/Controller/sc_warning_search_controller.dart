@@ -42,7 +42,7 @@ class SCSearchWarningController extends GetxController {
     var params = {
       "conditions": {
         "fields": [
-          {"map": {}, "method": 1, "name": "a.alert_code", "value": searchString}
+          {"map": {}, "method": 7, "name": "a.alert_code", "value": searchString}
         ],
         "specialMap": {}
       },
