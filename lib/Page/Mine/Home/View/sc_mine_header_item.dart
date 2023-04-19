@@ -94,6 +94,9 @@ class SCMineHeaderItem extends StatelessWidget {
 
   /// topItem
   Widget topItem() {
+    return const SizedBox(
+      height: 30.0,
+    );
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
