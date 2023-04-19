@@ -216,4 +216,12 @@ class SCRouterPath {
   /// 预警详情
   static String warningDetailPage = "/lib/Page/WarningCenter/Page/sc_warning_detail_page";
 
+  /*************************** 巡查 ******************************/
+
+  /// 巡查列表
+  static String patrolPage = "/lib/Page/Patrol/Page/sc_patrol_page";
+
+  /// 任务日志
+  static String taskLogPage = "/lib/Page/Patrol/Page/sc_task_log_page";
+
 }

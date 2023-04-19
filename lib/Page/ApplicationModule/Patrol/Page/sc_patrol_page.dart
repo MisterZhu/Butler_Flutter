@@ -1,27 +1,25 @@
-/// 预警中心page
 
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/View/PropertyRecord/sc_property_record_view.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
-import '../Controller/sc_warningcenter_controller.dart';
-import '../View/WarningCenter/sc_warningcenter_view.dart';
+import '../Controller/sc_patrol_controller.dart';
+import '../View/Patrol/sc_patrol_view.dart';
 
+/// 巡查任务列表page
 
-class SCWarningCenterPage extends StatefulWidget {
+class SCPatrolPage extends StatefulWidget {
   @override
-  SCWarningCenterPageState createState() => SCWarningCenterPageState();
+  SCPatrolPageState createState() => SCPatrolPageState();
 }
 
-class SCWarningCenterPageState extends State<SCWarningCenterPage> with AutomaticKeepAliveClientMixin{
+class SCPatrolPageState extends State<SCPatrolPage> with AutomaticKeepAliveClientMixin{
 
-  /// SCWarningCenterController
-  late SCWarningCenterController controller;
+  /// SCPatrolController
+  late SCPatrolController controller;
 
   /// SCWarningCenterController - tag
   String controllerTag = '';
@@ -32,9 +30,8 @@ class SCWarningCenterPageState extends State<SCWarningCenterPage> with Automatic
   @override
   initState() {
     super.initState();
-    controllerTag = SCScaffoldManager.instance
-        .getXControllerTag((SCWarningCenterPage).toString());
-    controller = Get.put(SCWarningCenterController(), tag: controllerTag);
+    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCPatrolPage).toString());
+    controller = Get.put(SCPatrolController(), tag: controllerTag);
     controller.loadData(isMore: false);
     addNotification();
   }
@@ -50,7 +47,7 @@ class SCWarningCenterPageState extends State<SCWarningCenterPage> with Automatic
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: "预警中心", centerTitle: true, elevation: 0, body: body());
+        title: "任务处理", centerTitle: true, elevation: 0, body: body());
   }
 
   /// body
@@ -59,25 +56,25 @@ class SCWarningCenterPageState extends State<SCWarningCenterPage> with Automatic
       width: double.infinity,
       height: double.infinity,
       color: SCColors.color_F2F3F5,
-      child: GetBuilder<SCWarningCenterController>(
+      child: GetBuilder<SCPatrolController>(
           tag: controllerTag,
           init: controller,
           builder: (state) {
-            return SCWarningCenterView(state: state,);
+            return SCPatrolView(state: state,);
           }),
     );
   }
 
   /// pageName
   String pageName() {
-    return (SCWarningCenterPage).toString();
+    return (SCPatrolPage).toString();
   }
 
   /// 通知
   addNotification() {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
-      if (key == SCKey.kRefreshWarningCenterPage) {
+      if (key == SCKey.kRefreshPatrolPage) {
         controller.loadData(isMore: false);
       }
     });

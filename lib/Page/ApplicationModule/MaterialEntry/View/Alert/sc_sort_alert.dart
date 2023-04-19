@@ -60,13 +60,13 @@ class SCSortAlertState extends State<SCSortAlert> {
     return Container(
         color: SCColors.color_FFFFFF,
         child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0,),
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
               return cell(index);
             },
             separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(height: 4.0,);
+              return const SizedBox();
             },
             itemCount: list.length));
   }
@@ -80,12 +80,8 @@ class SCSortAlertState extends State<SCSortAlert> {
         }
       },
       behavior: HitTestBehavior.opaque,
-      child: Container(
-        height: 44.0,
-        padding: const EdgeInsets.symmetric(horizontal: 10.0,),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4.0),
-          color: currentIndex == index ? SCColors.color_F7F8FA : SCColors.color_FFFFFF,),
+      child: SizedBox(
+        height: 48.0,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -96,7 +92,7 @@ class SCSortAlertState extends State<SCSortAlert> {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: SCFonts.f16,
-                color: currentIndex == index ? SCColors.color_0849B5 : SCColors.color_1B1D33,
+                color: currentIndex == index ? SCColors.color_4285F4 : SCColors.color_1B1D33,
                 fontWeight: FontWeight.w400,
               ),),
             const SizedBox(width: 10.0,),
