@@ -1,6 +1,10 @@
 
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:sc_uikit/sc_uikit.dart';
+import '../../../../Network/sc_http_manager.dart';
+import '../../../../Network/sc_url.dart';
+import '../Model/sc_patrol_task_model.dart';
 
 /// 巡查controller
 
@@ -30,10 +34,11 @@ class SCPatrolController extends GetxController {
 
   List statusList = [
     {'name': '全部', 'code': -1},
-    {'name': '待处理', 'code': 0},
-    {'name': '处理中', 'code': 1},
-    {'name': '已处理', 'code': 2},
-    {'name': '已拒绝', 'code': 3},
+    {'name': '未开始', 'code': 0},
+    {'name': '待处理', 'code': 1},
+    {'name': '处理中', 'code': 2},
+    {'name': '已完成', 'code': 3},
+    {'name': '已关闭', 'code': 4},
   ];
 
   List typeList = [];
@@ -50,7 +55,7 @@ class SCPatrolController extends GetxController {
   /// 数据是否加载成功
   bool loadDataSuccess = false;
 
-  List dataList = ['', '', ''];
+  List<SCPatrolTaskModel> dataList = [];
 
   @override
   onInit() {
@@ -100,10 +105,63 @@ class SCPatrolController extends GetxController {
       pageNum++;
     } else {
       pageNum = 1;
-      //SCLoadingUtils.show();
+      SCLoadingUtils.show();
     }
-
-
-    loadDataSuccess = true;
+    List fields = [];
+    if (selectTypeId >= 0) {
+      var dic = {"map": {}, "method": 1, "name": "type", "value": selectTypeId};
+      fields.add(dic);
+    }
+    if (selectStatusId >= 0) {
+      var dic = {
+        "map": {},
+        "method": 1,
+        "name": "status",
+        "value": selectStatusId
+      };
+      fields.add(dic);
+    }
+    var params = {
+      "conditions": {"fields": fields, "specialMap": {}},
+      "count": false,
+      "last": false,
+      "orderBy": [
+        {"asc": sort, "field": "gmtModify"}
+      ],
+      "pageNum": pageNum,
+      "pageSize": 20
+    };
+    SCHttpManager.instance.post(
+        url: SCUrl.kPatrolListUrl,
+        params: params,
+        success: (value) {
+          loadDataSuccess = true;
+          SCLoadingUtils.hide();
+          if (value is Map) {
+            List list = value['records'];
+            if (isLoadMore == true) {
+              dataList.addAll(List<SCPatrolTaskModel>.from(list.map((e) => SCPatrolTaskModel.fromJson(e)).toList()));
+            } else {
+              dataList = List<SCPatrolTaskModel>.from(list.map((e) => SCPatrolTaskModel.fromJson(e)).toList());
+            }
+          } else {
+            if (isLoadMore == false) {
+              dataList = [];
+            }
+          }
+          update();
+          bool last = false;
+          if (isLoadMore) {
+            last = value['last'];
+          }
+          completeHandler?.call(true, last);
+        },
+        failure: (value) {
+          if (isLoadMore) {
+            pageNum--;
+          }
+          SCToast.showTip(value['message']);
+          completeHandler?.call(false, false);
+        });
   }
 }

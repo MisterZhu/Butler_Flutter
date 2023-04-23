@@ -51,11 +51,7 @@ class SCTaskLogView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          width: 0.5,
-          height: 8.0,
-          color: index == 0 ? SCColors.color_FFFFFF : SCColors.color_B0B1B8,
-        ),
+        const SizedBox( height: 8.0,),
         Container(
           width: 8.0,
           height: 8.0,
@@ -64,8 +60,9 @@ class SCTaskLogView extends StatelessWidget {
               borderRadius: BorderRadius.circular(4.0)
           ),
         ),
+        const SizedBox( height: 8.0,),
         Expanded(child: Container(
-          width: 0.5,
+          width: 1,
           color: index == state.dataList.length - 1 ? SCColors.color_FFFFFF : SCColors.color_B0B1B8,
           ),
         )
@@ -83,15 +80,31 @@ class SCTaskLogView extends StatelessWidget {
         children: [
           SizedBox(
             height: 24.0,
-            child: Text(
-              '处理中',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: SCFonts.f16,
-                fontWeight: FontWeight.w500,
-                color: index == 0 ? SCColors.color_4285F4 : SCColors.color_8D8E99,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(child: Text(
+                  '处理中',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: SCFonts.f16,
+                    fontWeight: FontWeight.w500,
+                    color: index == 0 ? SCColors.color_4285F4 : SCColors.color_8D8E99,
+                  ),
+                )),
+                const Text(
+                  '12-15 12:00:00',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: SCFonts.f12,
+                    fontWeight: FontWeight.w400,
+                    color: SCColors.color_8D8E99,
+                  ),
+                )
+              ],
             ),
           ),
           const SizedBox(height: 6.0,),
@@ -106,26 +119,16 @@ class SCTaskLogView extends StatelessWidget {
             ),
           ),
           contentItem(index),
-          const SizedBox(height: 4.0,),
-          const Text(
-            '12-11 12:00',
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: SCFonts.f12,
-              fontWeight: FontWeight.w400,
-              color: SCColors.color_8D8E99,
-            ),
-          ),
           const SizedBox(height: 20.0,),
         ],
       ),
     );
   }
 
+  /// contentItem
   Widget contentItem(int index) {
     return Offstage(
-      offstage: (index == 0 || index == 3) ? false : true,
+      offstage: (index == 0 || index == 3) ? false : true, //测试显示
       child: Padding(
         padding: const EdgeInsets.only(top: 4.0),
         child: Container(
@@ -135,8 +138,8 @@ class SCTaskLogView extends StatelessWidget {
               borderRadius: BorderRadius.circular(4.0)
           ),
           child: Column(
-            children: [
-              const Text(
+            children: const [
+              Text(
                 '添加日志：已处理完成已处理完成已处理完成已处理完成',
                 style: TextStyle(
                   fontSize: SCFonts.f14,
@@ -144,7 +147,7 @@ class SCTaskLogView extends StatelessWidget {
                   color: SCColors.color_5E5F66,
                 ),
               ),
-              const SizedBox(height: 10.0,),
+              SizedBox(height: 10.0,),
 
             ],
           ),

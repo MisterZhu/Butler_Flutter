@@ -379,4 +379,10 @@ class SCUrl {
 
   /// 预警-通过id获取空间类型
   static const String kWarningSpaceTypeUrl = "/api/space/space/type/getDetail";
+
+
+  /************************* 巡查 *************************/
+  /// 巡查任务列表
+  static const String kPatrolListUrl = "/api/quality-jfl/safetyProduction/task/frontPage";
+
 }

@@ -16,6 +16,8 @@ import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
 import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
 import '../../../WarningCenter/Other/sc_warning_utils.dart';
 import '../../Controller/sc_patrol_controller.dart';
+import '../../Model/sc_patrol_task_model.dart';
+import '../Alert/sc_deal_alert.dart';
 
 /// 巡查view
 
@@ -58,7 +60,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SCMaterialSearchItem(
-          name: '搜索预警编号',
+          name: '搜索任务',
           searchAction: () {
             SCRouterHelper.pathPage(SCRouterPath.searchWarningPage, {});
           },
@@ -196,22 +198,26 @@ class SCPatrolViewState extends State<SCPatrolView> {
 
   /// cell
   Widget cell(int index) {
-    //SCWarningCenterModel model = widget.state.dataList[index];
+    SCPatrolTaskModel model = widget.state.dataList[index];
+    String btnText = '处理';
+    if ((model.actionVo ?? []).isNotEmpty) {
+      btnText = model.actionVo!.first;
+    }
     return SCTaskCardCell(
       timeType: 0,
       remainingTime: 0,
       tagList: [],
-      time: '2023-4-12 10:12',
-      title: '标题',
-      titleIcon: SCAsset.iconWarningTypeOrange,
-      statusTitle: '处理中',
-      statusTitleColor: SCWarningCenterUtils.getStatusColor(1 ?? -1),
-      content: '家里大门的智能锁失灵，一时打开一时打不开，有时自动开，请专业人员来查看...',
+      time: model.endTime,
+      title: model.categoryName ?? '',
+      titleIcon: SCAsset.iconPatrolTask,
+      statusTitle: model.customStatus ?? '',
+      statusTitleColor: SCWarningCenterUtils.getStatusColor(model.customStatusInt ?? -1),
+      content: model.procInstName ?? '',
       contentMaxLines: 30,
       address: '地址',
-      btnText: '开始处理',
+      btnText: btnText,
       hideBtn: false,
-      hideAddressIcon: false,
+      hideAddressRow: true,
       hideCallIcon: true,
       detailTapAction: () {
 
@@ -306,9 +312,35 @@ class SCPatrolViewState extends State<SCPatrolView> {
 
   /// 处理
   dealAction() {
-
     /// 测试
+    //testAlert();
+
+
     SCRouterHelper.pathPage(SCRouterPath.taskLogPage, null);
+
+  }
+
+  /// 测试弹窗
+  testAlert() {
+    List list = [
+      {'name': '转派', 'icon': SCAsset.iconPatrolTransfer},
+      {'name': '延时', 'icon': SCAsset.iconPatrolDelay},
+      {'name': '加签', 'icon': SCAsset.iconPatrolSign},
+      {'name': '更换', 'icon': SCAsset.iconPatrolChange},
+      {'name': '回退', 'icon': SCAsset.iconPatrolBack},
+      {'name': '领料', 'icon': SCAsset.iconPatrolReceive},
+    ];
+    SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+      SCDialogUtils().showCustomBottomDialog(
+          isDismissible: true,
+          context: context,
+          widget: SCDealAlert(
+            list: list,
+            tapAction: (name) {
+
+            },
+          ));
+    });
 
   }
 

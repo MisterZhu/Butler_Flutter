@@ -346,4 +346,26 @@ class SCAsset {
   static const String iconWarningArrowRight = "images/warning/icon_warning_arrow_right.png";
 
 
+  /**************** 巡查 ****************/
+
+  /// 任务icon
+  static const String iconPatrolTask = "images/patrol/ic_patrol_task.png";
+
+  /// 转派icon
+  static const String iconPatrolTransfer = "images/patrol/ic_patrol_task_transfer.png";
+
+  /// 延时icon
+  static const String iconPatrolDelay = "images/patrol/ic_patrol_task_delay.png";
+
+  /// 加签icon
+  static const String iconPatrolSign = "images/patrol/ic_patrol_task_sign.png";
+
+  /// 更换icon
+  static const String iconPatrolChange = "images/patrol/ic_patrol_task_change.png";
+
+  /// 回退
+  static const String iconPatrolBack = "images/patrol/ic_patrol_task_back.png";
+
+  /// 领料
+  static const String iconPatrolReceive = "images/patrol/ic_patrol_task_receive.png";
 }
