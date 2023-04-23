@@ -19,16 +19,24 @@ class SCTaskLogView extends StatelessWidget {
 
   /// body
   Widget body() {
-    return ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          return cell(index);
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox();
-        },
-        itemCount: state.dataList.length);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+      child: Container(
+        decoration: BoxDecoration(
+            color: SCColors.color_FFFFFF,
+            borderRadius: BorderRadius.circular(4.0),),
+        child: ListView.separated(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            return cell(index);
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox();
+          },
+          itemCount: state.dataList.length)
+      ),
+    );
   }
 
   Widget cell(int index) {
@@ -134,7 +142,7 @@ class SCTaskLogView extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
           decoration: BoxDecoration(
-              color: SCColors.color_EDEDF0.withOpacity(0.8),
+              color: SCColors.color_F7F8FA,
               borderRadius: BorderRadius.circular(4.0)
           ),
           child: Column(

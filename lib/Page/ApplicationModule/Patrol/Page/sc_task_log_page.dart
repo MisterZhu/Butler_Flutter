@@ -47,7 +47,7 @@ class SCTaskLogPageState extends State<SCTaskLogPage> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: SCColors.color_FFFFFF,
+      color: SCColors.color_F2F3F5,
       child: GetBuilder<SCTaskLogController>(
           tag: controllerTag,
           init: controller,
