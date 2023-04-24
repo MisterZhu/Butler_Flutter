@@ -1,7 +1,11 @@
 
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_patrol_type_model.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../../WarningCenter/Model/sc_warning_dealresult_model.dart';
@@ -53,6 +57,7 @@ class SCPatrolController extends GetxController {
   onInit() {
     super.onInit();
     getTaskStatusData();
+    getTypeData();
   }
 
   /// 更新项目id
@@ -95,26 +100,23 @@ class SCPatrolController extends GetxController {
       SCWarningDealResultModel model1 = typeList[typeIndex1];
       if (typeIndex2 >= 0) {
         SCWarningDealResultModel model2 = model1.pdictionary![typeIndex2];
-        var dic1 = {
-          "map": {},
-          "method": 1,
-          "name": "b.alert_type",
-          "value": model1.code
-        };
-        var dic2 = {
-          "map": {},
-          "method": 1,
-          "name": "a.confirm_result",
-          "value": model2.code
-        };
-        fields.add(dic1);
-        fields.add(dic2);
-      } else {
         var dic = {
           "map": {},
           "method": 1,
-          "name": "b.alert_type",
-          "value": model1.code
+          "name": "childrenIdList",
+          "value": [model2.id]
+        };
+        fields.add(dic);
+      } else {
+        List idList = [];
+        for (SCWarningDealResultModel model3 in (model1.pdictionary ?? [])) {
+          idList.add(model3.id);
+        }
+        var dic = {
+          "map": {},
+          "method": 1,
+          "name": "childrenIdList",
+          "value": idList
         };
         fields.add(dic);
       }
@@ -196,7 +198,20 @@ class SCPatrolController extends GetxController {
 
   /// 获取分类
   getTypeData() {
-    SCHttpManager.instance.get(url: SCUrl.kPatrolTypeUrl,success: (value) {}, failure: (value) {});
+    SCHttpManager.instance.post(url: SCUrl.kPatrolTypeUrl, params: {"appCode": "POLICED_POINT"},success: (value) {
+      List<SCPatrolTypeModel> list = List<SCPatrolTypeModel>.from(value.map((e) => SCPatrolTypeModel.fromJson(e)).toList());
+      for (SCPatrolTypeModel model in list) {
+        List children = [];
+        for (SCPatrolTypeModel subModel in (model.children ?? [])) {
+          var subParams = {"id": subModel.id.toString(), "name": subModel.categoryName, };
+          children.add(subParams);
+        }
+        var params = {"id": model.id.toString(), "name": model.categoryName, "pdictionary": children};
+        SCWarningDealResultModel subModel = SCWarningDealResultModel.fromJson(params);
+        typeList.add(subModel);
+      }
+      log('分类===${jsonEncode(value)}');
+    }, failure: (value) {});
   }
 
   /// 更新类型的index
