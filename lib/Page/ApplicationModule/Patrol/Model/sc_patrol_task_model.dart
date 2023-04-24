@@ -44,7 +44,7 @@ class SCPatrolTaskModel {
   List<String>? customStatusList;
   String? endTime;
   String? instSource;
-  bool? isOverTime;
+  String? isOverTime;
   String? procInstId;
   String? procInstName;
   String? procName;

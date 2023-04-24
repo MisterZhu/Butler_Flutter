@@ -13,17 +13,8 @@ class SCPatrolController extends GetxController {
 
   int pageNum = 1;
 
-  /// 选中的状态，默认显示全部
-  int selectStatusId = -1;
-
   /// 选中的状态index
   int selectStatusIndex = 0;
-
-  /// 选中的类型，默认显示全部
-  int selectTypeId = -1;
-
-  /// 选中的类型index
-  int selectTypeIndex = 0;
 
   /// 排序，true操作时间正序，false操作时间倒序
   bool sort = false;
@@ -31,18 +22,18 @@ class SCPatrolController extends GetxController {
   /// 选中的排序index
   int selectSortIndex = 0;
 
+  /// 类型第一列的index
+  int typeIndex1 = -1;
+
+  /// 类型第二列的index
+  int typeIndex2 = -1;
+
+  /// 类型列表
+  List<SCWarningDealResultModel> typeList = [];
+
   List siftList = ['分类', '状态', '排序'];
 
-  List statusList = [
-    {'name': '全部', 'code': -1},
-    {'name': '待处理', 'code': 1},
-    {'name': '处理中', 'code': 2},
-    {'name': '已处理', 'code': 3},
-    {'name': '已完成', 'code': 4},
-    {'name': '已关闭', 'code': 5},
-  ];
-
-  List typeList = [];
+  List<SCWarningDealResultModel> statusList = [];
 
   /// 项目id
   String communityId = "";
@@ -61,7 +52,7 @@ class SCPatrolController extends GetxController {
   @override
   onInit() {
     super.onInit();
-
+    getTaskStatusData();
   }
 
   /// 更新项目id
@@ -73,17 +64,8 @@ class SCPatrolController extends GetxController {
   }
 
   /// 选择状态，刷新页面数据
-  updateStatus(int value) {
-    selectStatusId = value;
-    pageNum = 1;
-
-    /// 重新获取数据
-    loadData(isMore: false);
-  }
-
-  /// 选择类型，刷新页面数据
-  updateType(int value) {
-    selectTypeId = value;
+  updateStatusIndex(int value) {
+    selectStatusIndex = value;
     pageNum = 1;
 
     /// 重新获取数据
@@ -109,16 +91,41 @@ class SCPatrolController extends GetxController {
       SCLoadingUtils.show();
     }
     List fields = [];
-    if (selectTypeId >= 0) {
-      var dic = {"map": {}, "method": 1, "name": "type", "value": selectTypeId};
-      fields.add(dic);
+    if (typeIndex1 >= 0) {// 类型
+      SCWarningDealResultModel model1 = typeList[typeIndex1];
+      if (typeIndex2 >= 0) {
+        SCWarningDealResultModel model2 = model1.pdictionary![typeIndex2];
+        var dic1 = {
+          "map": {},
+          "method": 1,
+          "name": "b.alert_type",
+          "value": model1.code
+        };
+        var dic2 = {
+          "map": {},
+          "method": 1,
+          "name": "a.confirm_result",
+          "value": model2.code
+        };
+        fields.add(dic1);
+        fields.add(dic2);
+      } else {
+        var dic = {
+          "map": {},
+          "method": 1,
+          "name": "b.alert_type",
+          "value": model1.code
+        };
+        fields.add(dic);
+      }
     }
-    if (selectStatusId >= 0) {
+    if (selectStatusIndex > 0) {// 状态
+      SCWarningDealResultModel model = statusList[selectStatusIndex];
       var dic = {
         "map": {},
         "method": 1,
-        "name": "status",
-        "value": selectStatusId
+        "name": "a.status",
+        "value": model.code
       };
       fields.add(dic);
     }
@@ -166,24 +173,45 @@ class SCPatrolController extends GetxController {
         });
   }
 
+
   /// 任务状态
-  getTaskStatusData(Function(bool success, List list)? completeHandler) {
+  getTaskStatusData() {
     SCLoadingUtils.show();
     SCHttpManager.instance.get(
         url: SCUrl.kConfigDictionaryPidCodeUrl,
         params: {'dictionaryCode': 'CUSTOM_STATUS'},
         success: (value) {
-          print("任务状态===$value");
           SCLoadingUtils.hide();
-          List<SCWarningDealResultModel> list = List<SCWarningDealResultModel>.from(value.map((e) => SCWarningDealResultModel.fromJson(e)).toList());
-          //SCWarningDealResultModel model = SCWarningDealResultModel.fromJson({"name": "全部"});
-          //list.insert(0, model);
-          //statusList = list;
-          completeHandler?.call(true, list);
+          List<SCWarningDealResultModel> list = List<
+              SCWarningDealResultModel>.from(
+              value.map((e) => SCWarningDealResultModel.fromJson(e)).toList());
+          SCWarningDealResultModel model = SCWarningDealResultModel.fromJson({'name': '全部', 'code': -1});
+          list.insert(0, model);
+          statusList = list;
         },
         failure: (value) {
-          completeHandler?.call(false, []);
           SCToast.showTip(value['message']);
         });
+  }
+
+  /// 获取分类
+  getTypeData() {
+    SCHttpManager.instance.get(url: SCUrl.kPatrolTypeUrl,success: (value) {}, failure: (value) {});
+  }
+
+  /// 更新类型的index
+  updateTypeIndex(int value1, int value2) {
+    typeIndex1 = value1;
+    typeIndex2 = value2;
+    update();
+    loadData(isMore: false);
+  }
+
+  /// 重置预警类型
+  resetAction() {
+    typeIndex1 = -1;
+    typeIndex2 = -1;
+    update();
+    loadData(isMore: false);
   }
 }

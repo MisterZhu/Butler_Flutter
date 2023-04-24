@@ -6,7 +6,7 @@ class SCWarningDealResultModel {
   SCWarningDealResultModel.fromJson(dynamic json) {
     id = json['id'];
     name = json['name'];
-    code = json['code'];
+    code = (json['code'] is String) ? json['code'] : json['code'].toString();
     nameFull = json['nameFull'];
     if (json['pdictionary'] != null) {
       pdictionary = [];

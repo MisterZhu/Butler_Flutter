@@ -383,6 +383,10 @@ class SCUrl {
 
   /************************* 巡查 *************************/
   /// 巡查任务列表
-  static const String kPatrolListUrl = "/api/quality-jfl/safetyProduction/task/frontPage";
+  static const String kPatrolListUrl = "/api/quality/safetyProduction/task/frontPage";
+  /// 巡查分类
+  static const String kPatrolTypeUrl = "/api/quality/safetyProduction/task/fullTree";
+  /// 巡查详情
+  static const String kPatrolDetailUrl = "/api/quality/safetyProduction/task/getById";
 
 }

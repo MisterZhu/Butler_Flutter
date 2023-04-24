@@ -224,4 +224,10 @@ class SCRouterPath {
   /// 任务日志
   static String taskLogPage = "/lib/Page/Patrol/Page/sc_task_log_page";
 
+  /// 巡查详情
+  static String patrolDetailPage = "/lib/Page/Patrol/Page/sc_patrol_detail_page";
+
+  /// 搜索巡查
+  static String searchPatrolPage = "/lib/Page/Patrol/Page/sc_patrol_search_page";
+
 }

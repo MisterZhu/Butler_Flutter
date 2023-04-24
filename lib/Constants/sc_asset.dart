@@ -71,6 +71,10 @@ class SCAsset {
   static const String iconWhiteClose = "images/common/icon_close_white.png";
   /// 清除按钮
   static const String iconSearchClear =  "images/common/icon_search_clear.png";
+  /// 拷贝
+  static const String iconNewCopy =  "images/common/icon_new_copy.png";
+  /// 更多
+  static const String iconMoreBtn =  "images/common/icon_more_btn.png";
 
   /// 首页-占位图
   static const String iconWorkBenchEmpty = "images/common/icon_work_bench_empty.png";

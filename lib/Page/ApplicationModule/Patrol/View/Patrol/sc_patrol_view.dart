@@ -14,7 +14,9 @@ import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
 import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
+import '../../../WarningCenter/Model/sc_warning_dealresult_model.dart';
 import '../../../WarningCenter/Other/sc_warning_utils.dart';
+import '../../../WarningCenter/View/Alert/sc_warningtype_alert.dart';
 import '../../Controller/sc_patrol_controller.dart';
 import '../../Model/sc_patrol_task_model.dart';
 import '../Alert/sc_deal_alert.dart';
@@ -62,7 +64,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
         SCMaterialSearchItem(
           name: '搜索任务',
           searchAction: () {
-            SCRouterHelper.pathPage(SCRouterPath.searchWarningPage, {});
+            SCRouterHelper.pathPage(SCRouterPath.searchPatrolPage, {});
           },
         ),
         siftItem(),
@@ -220,7 +222,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
       hideAddressRow: true,
       hideCallIcon: true,
       detailTapAction: () {
-
+        detailAction(widget.state.dataList[index]);
       },
       btnTapAction: () {
         dealAction();
@@ -232,7 +234,8 @@ class SCPatrolViewState extends State<SCPatrolView> {
   Widget statusAlert() {
     List list = [];
     for (int i = 0; i < widget.state.statusList.length; i++) {
-      list.add(widget.state.statusList[i]['name']);
+      SCWarningDealResultModel statusModel = widget.state.statusList[i];
+      list.add(statusModel.name);
     }
     return Offstage(
       offstage: !showStatusAlert,
@@ -249,9 +252,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
           if (widget.state.selectStatusIndex != value) {
             setState(() {
               showStatusAlert = false;
-              widget.state.selectStatusIndex = value;
-              widget.state.siftList[0] = value == 0 ? '状态' : widget.state.statusList[value]['name'];
-              widget.state.updateStatus(widget.state.statusList[value]['code']);
+              widget.state.updateStatusIndex(value);
             });
           }
         },
@@ -261,26 +262,33 @@ class SCPatrolViewState extends State<SCPatrolView> {
 
   /// 分类弹窗
   Widget typeAlert() {
+    List list = [];
+    for (int i = 0; i < widget.state.typeList.length; i++) {
+      SCWarningDealResultModel model = widget.state.typeList[i];
+      list.add(model.name);
+    }
     return Offstage(
       offstage: !showTypeAlert,
-      child: SCSiftAlert(
-        title: '分类',
+      child: SCWarningTypeView(
         list: widget.state.typeList,
-        selectIndex: widget.state.selectTypeIndex,
-        closeAction: () {
+        index1: widget.state.typeIndex1,
+        index2: widget.state.typeIndex2,
+        resetAction: () {
+          widget.state.resetAction();
           setState(() {
             showTypeAlert = false;
           });
         },
-        tapAction: (value) {
-          if (widget.state.selectTypeIndex != value) {
-            setState(() {
-              showTypeAlert = false;
-              widget.state.selectTypeIndex = value;
-              widget.state.siftList[1] = value == 0 ? '分类' : widget.state.typeList[value];
-              widget.state.updateType(value == 0 ? -1 : widget.state.typeList[value - 1].code ?? -1);
-            });
-          }
+        sureAction: (int index1, int index2) {
+          widget.state.updateTypeIndex(index1, index2);
+          setState(() {
+            showTypeAlert = false;
+          });
+        },
+        closeAction: () {
+          setState(() {
+            showTypeAlert = false;
+          });
         },
       ),
     );
@@ -312,36 +320,12 @@ class SCPatrolViewState extends State<SCPatrolView> {
 
   /// 处理
   dealAction() {
-    /// 测试
-    //testAlert();
-
-
-    SCRouterHelper.pathPage(SCRouterPath.taskLogPage, null);
 
   }
 
-  /// 测试弹窗
-  testAlert() {
-    List list = [
-      {'name': '转派', 'icon': SCAsset.iconPatrolTransfer},
-      {'name': '延时', 'icon': SCAsset.iconPatrolDelay},
-      {'name': '加签', 'icon': SCAsset.iconPatrolSign},
-      {'name': '更换', 'icon': SCAsset.iconPatrolChange},
-      {'name': '回退', 'icon': SCAsset.iconPatrolBack},
-      {'name': '领料', 'icon': SCAsset.iconPatrolReceive},
-    ];
-    SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-      SCDialogUtils().showCustomBottomDialog(
-          isDismissible: true,
-          context: context,
-          widget: SCDealAlert(
-            list: list,
-            tapAction: (name) {
-
-            },
-          ));
-    });
-
+  /// 详情
+  detailAction(SCPatrolTaskModel model) {
+    SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "taskId": model.taskId ?? ''});
   }
 
   /// 打电话

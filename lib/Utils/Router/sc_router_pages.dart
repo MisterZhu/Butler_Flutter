@@ -8,6 +8,8 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_mate
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_purchase_search_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_purchase_selectmaterial_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialOutbound/Page/sc_add_outbound_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Page/sc_patrol_detail_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Page/sc_patrol_search_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/Page/sc_add_propertymaintenance_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/Page/sc_peroperty_record_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/Page/sc_propertymaintenance_detail_page.dart';
@@ -197,7 +199,10 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.patrolPage, page: () => SCPatrolPage()),
     /*任务日志*/
     GetPage(name: SCRouterPath.taskLogPage, page: () => SCTaskLogPage()),
-
+    /*巡查详情*/
+    GetPage(name: SCRouterPath.patrolDetailPage, page: () => SCPatrolDetailPage()),
+    /*搜索巡查*/
+    GetPage(name: SCRouterPath.searchPatrolPage, page: () => SCSearchPatrolPage()),
 
   ];
 
