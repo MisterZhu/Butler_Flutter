@@ -4,6 +4,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
+import '../../WarningCenter/Model/sc_warning_dealresult_model.dart';
 import '../Model/sc_patrol_task_model.dart';
 
 /// 巡查controller
@@ -30,6 +31,15 @@ class SCPatrolController extends GetxController {
   /// 选中的排序index
   int selectSortIndex = 0;
 
+  /// 类型第一列的index
+  int typeIndex1 = -1;
+
+  /// 类型第二列的index
+  int typeIndex2 = -1;
+
+  /// 类型列表
+  List<SCWarningDealResultModel> typeList = [];
+
   List siftList = ['分类', '状态', '排序'];
 
   List statusList = [
@@ -40,8 +50,6 @@ class SCPatrolController extends GetxController {
     {'name': '已完成', 'code': 3},
     {'name': '已关闭', 'code': 4},
   ];
-
-  List typeList = [];
 
   /// 项目id
   String communityId = "";
@@ -163,5 +171,26 @@ class SCPatrolController extends GetxController {
           SCToast.showTip(value['message']);
           completeHandler?.call(false, false);
         });
+  }
+
+  /// 获取分类
+  getTypeData() {
+    SCHttpManager.instance.get(url: SCUrl.kPatrolTypeUrl,success: (value) {}, failure: (value) {});
+  }
+
+  /// 更新类型的index
+  updateTypeIndex(int value1, int value2) {
+    typeIndex1 = value1;
+    typeIndex2 = value2;
+    update();
+    loadData(isMore: false);
+  }
+
+  /// 重置预警类型
+  resetAction() {
+    typeIndex1 = -1;
+    typeIndex2 = -1;
+    update();
+    loadData(isMore: false);
   }
 }

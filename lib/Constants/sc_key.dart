@@ -54,4 +54,6 @@ class SCKey {
   static const String kRefreshWarningCenterPage = "kRefreshWarningCenterPage";
   /// 巡查-刷新页面
   static const String kRefreshPatrolPage = "kRefreshPatrolPage";
+  /// 巡查详情
+  static const String kRefreshPatrolDetailPage = "kRefreshPatrolDetailPage";
 }

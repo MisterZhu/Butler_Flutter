@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
 
+import '../../../../../Constants/sc_asset.dart';
+
 /// 底部通用按钮
 
 /// 默认样式按钮，白色背景，边框蓝色按钮
@@ -16,6 +18,9 @@ const int scMaterialBottomViewType2 = 2;
 
 /// 自定义按钮
 const int scMaterialBottomViewTypeCustom = 3;
+
+/// 更多按钮
+const int scMaterialBottomViewTypeMore = 4;
 
 class SCMaterialDetailBottomView extends StatelessWidget {
 
@@ -58,6 +63,8 @@ class SCMaterialDetailBottomView extends StatelessWidget {
       } else if (type == scMaterialBottomViewTypeCustom) {
         Widget item = map['widget'];
         widgetList.add(item);
+      } else if (type == scMaterialBottomViewTypeMore) {
+        widgetList.add(moreView(text));
       } else {
         widgetList.add(button1(text));
       }
@@ -123,6 +130,32 @@ class SCMaterialDetailBottomView extends StatelessWidget {
             onTap?.call(text);
           }),),
     ));
+  }
+
+  /// 更多
+  Widget moreView(String text) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        onTap?.call(text);
+      },
+      child: SizedBox(
+        width: 48.0,
+        height: 40.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(SCAsset.iconMoreBtn, width: 22.0, height: 22.0,),
+            Text(text, maxLines: 1, overflow: TextOverflow.ellipsis, style:const  TextStyle(
+                fontSize: SCFonts.f12,
+                fontWeight: FontWeight.w400,
+                color: SCColors.color_8D8E99
+            ),)
+          ],
+        ),
+      ),
+    );
   }
 
   /// 间距view

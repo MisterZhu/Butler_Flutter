@@ -14,7 +14,9 @@ import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
 import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
+import '../../../WarningCenter/Model/sc_warning_dealresult_model.dart';
 import '../../../WarningCenter/Other/sc_warning_utils.dart';
+import '../../../WarningCenter/View/Alert/sc_warningtype_alert.dart';
 import '../../Controller/sc_patrol_controller.dart';
 import '../../Model/sc_patrol_task_model.dart';
 import '../Alert/sc_deal_alert.dart';
@@ -62,7 +64,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
         SCMaterialSearchItem(
           name: '搜索任务',
           searchAction: () {
-            SCRouterHelper.pathPage(SCRouterPath.searchWarningPage, {});
+            SCRouterHelper.pathPage(SCRouterPath.searchPatrolPage, {});
           },
         ),
         siftItem(),
@@ -220,7 +222,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
       hideAddressRow: true,
       hideCallIcon: true,
       detailTapAction: () {
-
+        detailAction(widget.state.dataList[index]);
       },
       btnTapAction: () {
         dealAction();
@@ -250,7 +252,6 @@ class SCPatrolViewState extends State<SCPatrolView> {
             setState(() {
               showStatusAlert = false;
               widget.state.selectStatusIndex = value;
-              widget.state.siftList[0] = value == 0 ? '状态' : widget.state.statusList[value]['name'];
               widget.state.updateStatus(widget.state.statusList[value]['code']);
             });
           }
@@ -261,26 +262,33 @@ class SCPatrolViewState extends State<SCPatrolView> {
 
   /// 分类弹窗
   Widget typeAlert() {
+    List list = [];
+    for (int i = 0; i < widget.state.typeList.length; i++) {
+      SCWarningDealResultModel model = widget.state.typeList[i];
+      list.add(model.name);
+    }
     return Offstage(
       offstage: !showTypeAlert,
-      child: SCSiftAlert(
-        title: '分类',
+      child: SCWarningTypeView(
         list: widget.state.typeList,
-        selectIndex: widget.state.selectTypeIndex,
-        closeAction: () {
+        index1: widget.state.typeIndex1,
+        index2: widget.state.typeIndex2,
+        resetAction: () {
+          widget.state.resetAction();
           setState(() {
             showTypeAlert = false;
           });
         },
-        tapAction: (value) {
-          if (widget.state.selectTypeIndex != value) {
-            setState(() {
-              showTypeAlert = false;
-              widget.state.selectTypeIndex = value;
-              widget.state.siftList[1] = value == 0 ? '分类' : widget.state.typeList[value];
-              widget.state.updateType(value == 0 ? -1 : widget.state.typeList[value - 1].code ?? -1);
-            });
-          }
+        sureAction: (int index1, int index2) {
+          widget.state.updateTypeIndex(index1, index2);
+          setState(() {
+            showTypeAlert = false;
+          });
+        },
+        closeAction: () {
+          setState(() {
+            showTypeAlert = false;
+          });
         },
       ),
     );
@@ -318,6 +326,11 @@ class SCPatrolViewState extends State<SCPatrolView> {
 
     SCRouterHelper.pathPage(SCRouterPath.taskLogPage, null);
 
+  }
+
+  /// 详情
+  detailAction(SCPatrolTaskModel model) {
+    SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "taskId": model.taskId ?? ''});
   }
 
   /// 测试弹窗
