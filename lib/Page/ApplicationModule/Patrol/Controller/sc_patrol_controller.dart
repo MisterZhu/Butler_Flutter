@@ -131,6 +131,15 @@ class SCPatrolController extends GetxController {
       };
       fields.add(dic);
     }
+    if (communityId.isNotEmpty) {
+      var dic = {
+        "map": {},
+        "method": 1,
+        "name": "a.community_id",
+        "value": communityId
+      };
+      fields.add(dic);
+    }
     var params = {
       "conditions": {"fields": fields, "specialMap": {}},
       "count": false,
