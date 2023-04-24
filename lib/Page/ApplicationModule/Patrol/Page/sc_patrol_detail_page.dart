@@ -51,7 +51,7 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: "任务处理", centerTitle: true, elevation: 0, body: body());
+        title: "详情", centerTitle: true, elevation: 0, body: body());
   }
 
   /// body
