@@ -51,7 +51,7 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: "任务处理", centerTitle: true, elevation: 0, body: body());
+        title: "详情", centerTitle: true, elevation: 0, body: body());
   }
 
   /// body
@@ -60,60 +60,75 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
       width: double.infinity,
       height: double.infinity,
       color: SCColors.color_F2F3F5,
-      child: Column(
-        children: [contentView(), bottomView()],
-      ),
+      child: GetBuilder<SCPatrolDetailController>(
+        tag: controllerTag,
+        init: controller,
+        builder: (state) {
+          if (controller.getDataSuccess) {
+            return Column(
+                children: [
+                  Expanded(child: SCPatrolDetailView(state: state,)),
+                  bottomView()
+                ]
+            );
+          } else {
+            return const SizedBox();
+          }
+        }),
     );
-  }
-
-  /// content
-  Widget contentView() {
-    return Expanded(
-        child: GetBuilder<SCPatrolDetailController>(
-            tag: controllerTag,
-            init: controller,
-            builder: (state) {
-              if (controller.getDataSuccess) {
-                return SCPatrolDetailView(
-                  state: state,
-                );
-              } else {
-                return const SizedBox();
-              }
-            }));
   }
 
   /// 底部按钮
   Widget bottomView() {
+    List btnList = [];
+    List moreList = [];
+    if ((controller.model.actionVo ?? []).isNotEmpty) {
+      List<String> list = controller.model.actionVo!;
+      if (list.length == 1) {
+        btnList = [
+          {
+          "type": scMaterialBottomViewType2,
+          "title": list.first,
+        }];
+      } else if (list.length > 1) {
+        btnList = [
+          {
+            "type": scMaterialBottomViewType1,
+            "title": list[1],
+          },
+          {
+            "type": scMaterialBottomViewType2,
+            "title": list.first,
+          }];
+      // } else {
+      //   btnList = [
+      //     {
+      //     "type": scMaterialBottomViewTypeMore,
+      //     "title": "更多",
+      //     },{
+      //     "type": scMaterialBottomViewType1,
+      //       "title": list[1],
+      //     }, {
+      //     "type": scMaterialBottomViewType2,
+      //       "title": list.first,
+      //   }];
+      //   for (int i = 2; i <list.length; i++) {
+      //     moreList.add({'name': list[i], 'icon': SCAsset.iconPatrolTransfer});
+      //   }
+      }
+    }
     return SCMaterialDetailBottomView(
-      list: [{
-        "type": scMaterialBottomViewTypeMore,
-        "title": "更多",
-      },{
-        "type": scMaterialBottomViewType1,
-        "title": "提交1",
-      }, {
-        "type": scMaterialBottomViewType2,
-        "title": "提交2",
-      },],
+      list: btnList,
       onTap: (value) {
         if (value == "更多") {
-          moreAction();
+          moreAction(moreList);
         }
       },
     );
   }
 
   /// 点击更多按钮
-  moreAction() {
-    List list = [
-      {'name': '转派', 'icon': SCAsset.iconPatrolTransfer},
-      {'name': '延时', 'icon': SCAsset.iconPatrolDelay},
-      {'name': '加签', 'icon': SCAsset.iconPatrolSign},
-      {'name': '更换', 'icon': SCAsset.iconPatrolChange},
-      {'name': '回退', 'icon': SCAsset.iconPatrolBack},
-      {'name': '领料', 'icon': SCAsset.iconPatrolReceive},
-    ];
+  moreAction(List list) {
     SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
       SCDialogUtils().showCustomBottomDialog(
           isDismissible: true,

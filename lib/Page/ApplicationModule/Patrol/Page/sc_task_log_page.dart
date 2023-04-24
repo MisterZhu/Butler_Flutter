@@ -27,6 +27,7 @@ class SCTaskLogPageState extends State<SCTaskLogPage> {
     super.initState();
     controllerTag = SCScaffoldManager.instance.getXControllerTag((SCTaskLogPage).toString());
     controller = Get.put(SCTaskLogController(), tag: controllerTag);
+    controller.initParams(Get.arguments);
   }
 
   @override
