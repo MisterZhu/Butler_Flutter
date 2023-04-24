@@ -58,8 +58,6 @@ class SCWarningCenterController extends GetxController {
 
   List<SCWarningCenterModel> dataList = [];
 
-  /// 出库类型数组
-  List<SCEntryTypeModel> outboundList = [];
 
   List siftList =  ['预警类型', '预警等级', '预警状态'];
 

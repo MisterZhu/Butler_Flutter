@@ -51,17 +51,18 @@ class SCMessageController extends GetxController {
   /// 全部消息数据
   loadAllData({bool? isMore, Function(bool success)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
-    var params = {};
+    // 是否需要传参数
+    bool needParams = false;
     if (isLoadMore == true) {
       if (indexId != null) {
-        params = {"indexId": indexId};
+        needParams = true;
       }
     } else {
       SCLoadingUtils.show();
     }
     SCHttpManager.instance.get(
         url: SCUrl.kMessageListUrl,
-        params: params.isNotEmpty ? params : null,
+        params: needParams == true ? {"indexId": indexId} : null,
         success: (value) {
           SCLoadingUtils.hide();
           loadCompleted1 = true;
@@ -74,6 +75,12 @@ class SCMessageController extends GetxController {
             } else {
               allDataList = List<SCMessageCardModel>.from(
                   list.map((e) => SCMessageCardModel.fromJson(e)).toList());
+            }
+          } else {
+            if (isLoadMore == true) {
+
+            } else {
+              allDataList = [];
             }
           }
           update();
@@ -112,6 +119,12 @@ class SCMessageController extends GetxController {
             } else {
               unreadDataList = List<SCMessageCardModel>.from(
                   list.map((e) => SCMessageCardModel.fromJson(e)).toList());
+            }
+          } else {
+            if (isLoadMore == true) {
+
+            } else {
+              unreadDataList = [];
             }
           }
           update();
@@ -154,7 +167,6 @@ class SCMessageController extends GetxController {
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
-          update();
           completeHandler?.call(true);
         },
         failure: (value) {

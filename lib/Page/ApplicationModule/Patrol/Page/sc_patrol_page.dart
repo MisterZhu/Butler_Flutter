@@ -47,7 +47,7 @@ class SCPatrolPageState extends State<SCPatrolPage> with AutomaticKeepAliveClien
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: "任务处理", centerTitle: true, elevation: 0, body: body());
+        title: "巡查任务", centerTitle: true, elevation: 0, body: body());
   }
 
   /// body

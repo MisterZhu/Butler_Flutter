@@ -50,10 +50,10 @@ class SCMessageListView extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           SCMessageCardModel model = data[index];
           List list = [];
-          int type = 0;  /// 类型,0-只显示一行内容,1-显示两行内容,2-显示图片+内容+内容描述
-          /// noticeCardType卡片类型 1:数据卡片形式; 2:文章消息卡片
+          int cardType = 0;  // 卡片类型,0-只显示一行内容,1-显示两行内容,2-显示图片+内容+内容描述
+          // noticeCardType卡片类型 1:数据卡片形式; 2:文章消息卡片
           if (model.noticeCardType == 2) { // 2:文章消息卡片
-            type = 2; // 2-显示图片+内容+内容描述
+            cardType = 2; // 2-显示图片+内容+内容描述
           }
           String head = '';
           String content = '';
@@ -62,7 +62,7 @@ class SCMessageListView extends StatelessWidget {
               List displayItems = model.displayItems!;
               DisplayItems firstItem = displayItems.first;
               if (firstItem.noticeConsumerMobileCardItemDisplayType == 1) {//1值换行+加粗
-                type == 1;
+                cardType == 1;
               }
               head = firstItem.head ?? '';
               content = firstItem.content ?? '';
@@ -75,10 +75,11 @@ class SCMessageListView extends StatelessWidget {
             }
           }
           return SCMessageCardCell(
-            type: type,
+            type: cardType,
             title: model.title,
             icon: model.icon?.fileKey != null ? SCConfig.getImageUrl(model.icon?.fileKey ?? '') : SCAsset.iconMessageType,
             time: SCDateUtils.relativeDateFormat(DateTime.parse(model.noticeTime ?? '')),
+            isUnread: type == 1 ? true : false,
             head: head,
             content: content,
             contentIcon: model.linkImage?.fileKey != null ? SCConfig.getImageUrl(model.linkImage?.fileKey ?? '') : SCAsset.iconMessageContentDefault,
@@ -89,7 +90,7 @@ class SCMessageListView extends StatelessWidget {
                 if (ext['jumpUrl'] != null) {
                   if (model.cardCode == 'CONTENT_MESSAGE') {
                     // 跳转到站内信详情h5
-                    String jumpUrl = SCConfig.getH5Url('/h5Manage/#${ext['jumpUrl']}');
+                    String jumpUrl = SCConfig.getH5Url(ext['jumpUrl']);
                     String url = SCUtils.getWebViewUrl(url: jumpUrl, title: '详情',  needJointParams: true);
                     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {'title' : '详情', 'url' : url});
                   }

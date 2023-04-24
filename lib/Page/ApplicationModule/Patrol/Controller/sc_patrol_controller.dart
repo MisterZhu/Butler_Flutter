@@ -4,6 +4,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
+import '../../WarningCenter/Model/sc_warning_dealresult_model.dart';
 import '../Model/sc_patrol_task_model.dart';
 
 /// 巡查controller
@@ -34,11 +35,11 @@ class SCPatrolController extends GetxController {
 
   List statusList = [
     {'name': '全部', 'code': -1},
-    {'name': '未开始', 'code': 0},
     {'name': '待处理', 'code': 1},
     {'name': '处理中', 'code': 2},
-    {'name': '已完成', 'code': 3},
-    {'name': '已关闭', 'code': 4},
+    {'name': '已处理', 'code': 3},
+    {'name': '已完成', 'code': 4},
+    {'name': '已关闭', 'code': 5},
   ];
 
   List typeList = [];
@@ -162,6 +163,27 @@ class SCPatrolController extends GetxController {
           }
           SCToast.showTip(value['message']);
           completeHandler?.call(false, false);
+        });
+  }
+
+  /// 任务状态
+  getTaskStatusData(Function(bool success, List list)? completeHandler) {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.get(
+        url: SCUrl.kConfigDictionaryPidCodeUrl,
+        params: {'dictionaryCode': 'CUSTOM_STATUS'},
+        success: (value) {
+          print("任务状态===$value");
+          SCLoadingUtils.hide();
+          List<SCWarningDealResultModel> list = List<SCWarningDealResultModel>.from(value.map((e) => SCWarningDealResultModel.fromJson(e)).toList());
+          //SCWarningDealResultModel model = SCWarningDealResultModel.fromJson({"name": "全部"});
+          //list.insert(0, model);
+          //statusList = list;
+          completeHandler?.call(true, list);
+        },
+        failure: (value) {
+          completeHandler?.call(false, []);
+          SCToast.showTip(value['message']);
         });
   }
 }
