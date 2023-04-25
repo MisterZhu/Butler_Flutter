@@ -62,7 +62,6 @@ class SCPatrolDetailController extends GetxController {
   /// title-数据源
   List list1() {
     List data = [
-      {"type": 1, "title": "剩余时间", "content": '处理中', "time": 35 * 60 * 60},
       {"type": 2, "title": '标题标题标题', "content": "状态状态状态"},
       {
         "type": 3,

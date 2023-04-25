@@ -2,6 +2,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../Network/sc_http_manager.dart';
 import '../../../Network/sc_url.dart';
+import '../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../Model/sc_message_card_model.dart';
 
 class SCMessageController extends GetxController {
@@ -34,6 +35,7 @@ class SCMessageController extends GetxController {
     super.onInit();
     loadAllData(isMore: false);
     loadUnreadData(isMore: false);
+    loadMessageCount();
   }
 
   /// 更新currentIndex
@@ -172,6 +174,20 @@ class SCMessageController extends GetxController {
         failure: (value) {
           SCToast.showTip(value['message']);
           completeHandler?.call(false);
+        });
+  }
+
+  /// 获取消息数量
+  loadMessageCount() {
+    SCHttpManager.instance.get(
+        url: SCUrl.kMessageCountUrl,
+        params: {'checked': false},
+        success: (value) {
+          if (value is int) {
+            SCScaffoldManager.instance.unreadMessageCount = value;
+          }
+        },
+        failure: (value) {
         });
   }
 }
