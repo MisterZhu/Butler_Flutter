@@ -311,19 +311,24 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
           isDismissible: true,
           context: context,
           widget: SCTaskSiftAlert(
-            myTaskList: workBenchController.myTaskList,
+            myTaskList: workBenchController.tabTitleList,
             taskTypeList: workBenchController.taskTypeList,
             selectTaskList: workBenchController.myTaskSelectList,
             selectTypeList: workBenchController.taskTypeSelectList,
             resetAction: () {
-              workBenchController.updateMyTaskSelectList([]);
-              workBenchController.updateTaskTypeSelectList([]);
+              workBenchController.initFilterData();
               Navigator.of(context).pop();
+              tabController.animateTo(0);
+              workBenchController.loadData();
             },
             sureAction: (list1, list2) {
-              workBenchController.updateMyTaskSelectList(list1);
+              int index = workBenchController.updateMyTaskSelectList(list1);
               workBenchController.updateTaskTypeSelectList(list2);
               Navigator.of(context).pop();
+              if (index >= 0) {
+                tabController.animateTo(index);
+              }
+              workBenchController.loadData();
             },
           ));
     });

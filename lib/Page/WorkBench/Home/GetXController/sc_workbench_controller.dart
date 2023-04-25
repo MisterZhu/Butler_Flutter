@@ -93,11 +93,17 @@ class SCWorkBenchController extends GetxController {
   /// 当前板块index,0-工单处理，1-实地核验，2-订单处理
   int currentPlateIndex = 0;
 
-  /// 我的任务数组
-  List myTaskList = [];
+  /// 任务类型
+  List taskTypeDataList = [];
 
   /// 任务类型数组
   List taskTypeList = [];
+
+  /// 任务类型key
+  List taskTypeKeyList = [];
+
+  /// 任务类型value
+  List taskTypeValueList = [];
 
   /// 我的任务选中的数组
   List myTaskSelectList = [];
@@ -123,25 +129,18 @@ class SCWorkBenchController extends GetxController {
   /// 待办——key
   List todoKeyList = [];
 
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   onInit() {
     super.onInit();
     initTabData();
-    myTaskList = [
-      '全部',
-      '我执行的',
-      '我创建的',
-      '我经办的',
-      '我关注的',
-      '任务大厅',
-    ];
-    taskTypeList = ['全部', '工单服务', '审批中心', '巡查任务', '收费账单'];
+    // taskTypeList = ['全部', '工单服务', '审批中心', '巡查任务', '收费账单'];
     initToDoController();
+    initFilterData();
     location();
     loadData();
-    // getTaskData(isMore: false);
   }
 
   /// 初始化tabData
@@ -172,6 +171,29 @@ class SCWorkBenchController extends GetxController {
       tabTitleList.add(params['title']);
       todoKeyList.add(params['key']);
     }
+
+    taskTypeDataList = [
+      {
+        "title": "全部",
+        "key": "",
+        "value": ""
+      },
+      {
+        "title": "工单服务",
+        "key": "WORK_ORDER",
+        "value": ""
+      },
+      {
+        "title": "巡查任务",
+        "key": "TASK",
+        "value": "2"
+      },
+    ];
+    for (var params in taskTypeDataList) {
+      taskTypeList.add(params['title']);
+      taskTypeKeyList.add(params['key']);
+      taskTypeValueList.add(params['value']);
+    }
   }
 
   /// 初始化todoController
@@ -186,11 +208,12 @@ class SCWorkBenchController extends GetxController {
           init: todoController,
           builder: (value) {
             return SCWorkBenchToDoListView(
-                data: todoController.data,
-                refreshController: todoController.refreshController,
-            loadMoreAction: () {
-                  todoController.getData(isMore: true);
-            },);
+              data: todoController.data,
+              refreshController: todoController.refreshController,
+              loadMoreAction: () {
+                todoController.getData(isMore: true);
+              },
+            );
           });
       todoControllerList.add(todoController);
       todoControllerTagList.add(controllerTag);
@@ -200,14 +223,36 @@ class SCWorkBenchController extends GetxController {
   }
 
   /// 更新选中的我的任务
-  updateMyTaskSelectList(List list) {
+  int updateMyTaskSelectList(List list) {
     myTaskSelectList = list;
+    int index = -1;
+    String value = list.first;
+    for (int i = 0; i < tabTitleList.length; i++) {
+      String subValue = tabTitleList[i];
+      if (value == subValue) {
+        index = i;
+        break;
+      }
+    }
     update();
+    return index;
   }
 
   /// 更新选中的任务类型
   updateTaskTypeSelectList(List list) {
     taskTypeSelectList = list;
+    String value = list.first;
+    for (int i = 0; i < taskTypeDataList.length;i++) {
+      var params = taskTypeDataList[i];
+      String subValue = params['title'];
+      if (value == subValue) {
+        for (SCWorkBenchToDoController toDoController in todoControllerList) {
+          toDoController.subKey = params['key'];
+          toDoController.subValue = params['value'];
+        }
+        break;
+      }
+    }
     update();
   }
 
@@ -383,7 +428,7 @@ class SCWorkBenchController extends GetxController {
 
   /// 待办
   getToDoData() {
-    for (int i = 0; i<todoControllerList.length; i++) {
+    for (int i = 0; i < todoControllerList.length; i++) {
       SCWorkBenchToDoController toDoController = todoControllerList[i];
       toDoController.getData(isMore: false);
     }
@@ -1186,48 +1231,14 @@ class SCWorkBenchController extends GetxController {
     }
   }
 
-  /// 我执行的
-  getTaskData({bool? isMore}) {
-    bool isLoadMore = isMore ?? false;
-    if (isLoadMore == true) {
-      iExecutedPageNum++;
-    } else {
-      SCLoadingUtils.show();
+  /// 初始化筛选条件
+  initFilterData() {
+    myTaskSelectList = [tabTitleList.first];
+    taskTypeSelectList = [taskTypeList.first];
+    for (SCWorkBenchToDoController toDoController in todoControllerList) {
+      toDoController.subKey = "";
+      toDoController.subValue = "";
     }
-    var params = {
-      "conditions": {
-        // "fields": [
-        //   {"map": {}}
-        // ]
-      },
-      // "count": true,
-      // "last": true,
-      "pageNum": iExecutedPageNum,
-      "pageSize": 10
-    };
-    return SCHttpManager.instance.post(
-        url: SCUrl.kSearchTaskUrl,
-        params: params,
-        success: (value) {
-          log('数据===$value');
-          SCLoadingUtils.hide();
-          if (value is Map) {
-          } else {
-            if (isLoadMore == false) {
-              // waitDataList = [];
-            }
-          }
-          // update();
-          // waitController.dataList = waitDataList;
-          // waitController.update();
-        },
-        failure: (value) {
-          SCLoadingUtils.hide();
-          log('失败===$value');
-          if (currentPlateIndex == 0 && isLoadMore == true) {
-            iExecutedPageNum--;
-          }
-        });
   }
 
   @override

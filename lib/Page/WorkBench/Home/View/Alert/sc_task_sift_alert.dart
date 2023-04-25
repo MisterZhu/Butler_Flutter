@@ -189,17 +189,19 @@ class SCTaskSiftAlertState extends State<SCTaskSiftAlert> {
       onTap: () {
         setState(() {
           if (type == 0) {
-            if (selectList1.contains(name)) {
-              selectList1.remove(name);
-            } else {
-              selectList1.add(name);
-            }
+            // if (selectList1.contains(name)) {
+            //   selectList1.remove(name);
+            // } else {
+            //   selectList1.add(name);
+            // }
+            selectList1 = [name];
           } else if (type == 1) {
-            if (selectList2.contains(name)) {
-              selectList2.remove(name);
-            } else {
-              selectList2.add(name);
-            }
+            // if (selectList2.contains(name)) {
+            //   selectList2.remove(name);
+            // } else {
+            //   selectList2.add(name);
+            // }
+            selectList2 = [name];
           }
         });
       },
