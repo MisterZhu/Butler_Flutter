@@ -1,18 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Network/sc_url.dart';
 import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_todo_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_listview_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_hotel_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_default_config_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_model.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/View/WorkBench/sc_workbench_todo_listview.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Permission/sc_permission_utils.dart';
 
@@ -26,7 +30,6 @@ import '../Model/sc_work_order_model.dart';
 /// 工作台Controller
 
 class SCWorkBenchController extends GetxController {
-
   String pageName = '';
 
   String tag = '';
@@ -102,14 +105,98 @@ class SCWorkBenchController extends GetxController {
   /// 任务类型选中的数组
   List taskTypeSelectList = [];
 
+  /// tab-data
+  List tabDataList = [];
+
+  /// tab-title
+  List<String> tabTitleList = [];
+
+  /// tabBarView-list
+  List<Widget> tabBarViewList = [];
+
+  /// tab-GetXController
+  List<SCWorkBenchToDoController> todoControllerList = [];
+
+  /// tab-GetXController
+  List todoControllerTagList = [];
+
+  /// 待办——key
+  List todoKeyList = [];
+
+  RefreshController refreshController = RefreshController(initialRefresh: false);
+
   @override
   onInit() {
     super.onInit();
-    myTaskList = ['全部', '我执行的', '抢单大厅', '我关注的', '我创建的', '我经办的',];
-    taskTypeList = ['全部', '工单服务', '增值服务', '审批中心', '巡查任务', '收费账单', '业主拜访'];
+    initTabData();
+    myTaskList = [
+      '全部',
+      '我执行的',
+      '我创建的',
+      '我经办的',
+      '我关注的',
+      '任务大厅',
+    ];
+    taskTypeList = ['全部', '工单服务', '审批中心', '巡查任务', '收费账单'];
+    initToDoController();
     location();
     loadData();
-    getTaskData(isMore: false);
+    // getTaskData(isMore: false);
+  }
+
+  /// 初始化tabData
+  initTabData() {
+    tabDataList = [
+      {
+        "title": "我执行的",
+        "key": "handleUserIds",
+      },
+      {
+        "title": "我创建的",
+        "key": "creator",
+      },
+      {
+        "title": "我经办的",
+        "key": "handledUserIds",
+      },
+      {
+        "title": "我关注的",
+        "key": "followUserIds",
+      },
+      {
+        "title": "任务大厅",
+        "key": "hallUserIds",
+      },
+    ];
+    for (var params in tabDataList) {
+      tabTitleList.add(params['title']);
+      todoKeyList.add(params['key']);
+    }
+  }
+
+  /// 初始化todoController
+  initToDoController() {
+    for (int i = 0; i < tabTitleList.length; i++) {
+      String controllerTag = "SCWorkBenchToDoController_$i";
+      SCWorkBenchToDoController todoController =
+          Get.put(SCWorkBenchToDoController(), tag: controllerTag);
+      todoController.key = todoKeyList[i];
+      Widget view = GetBuilder<SCWorkBenchToDoController>(
+          tag: controllerTag,
+          init: todoController,
+          builder: (value) {
+            return SCWorkBenchToDoListView(
+                data: todoController.data,
+                refreshController: todoController.refreshController,
+            loadMoreAction: () {
+                  todoController.getData(isMore: true);
+            },);
+          });
+      todoControllerList.add(todoController);
+      todoControllerTagList.add(controllerTag);
+      tabBarViewList.add(view);
+      todoController.getData(isMore: false);
+    }
   }
 
   /// 更新选中的我的任务
@@ -149,53 +236,67 @@ class SCWorkBenchController extends GetxController {
       realVerificationAPI();
     } else if (currentPlateIndex == 2) {
       orderFormAPI();
-    } else if (currentPlateIndex == 3) {// 物资入库
+    } else if (currentPlateIndex == 3) {
+      // 物资入库
       if (currentWorkOrderIndex == 0) {
         materialEntryAPI();
       }
-    } else if (currentPlateIndex == 4) {// 物资出库
+    } else if (currentPlateIndex == 4) {
+      // 物资出库
       if (currentWorkOrderIndex == 0) {
         materialOutAPI();
       }
-    } else if (currentPlateIndex == 5) {// 物资报损
+    } else if (currentPlateIndex == 5) {
+      // 物资报损
       if (currentWorkOrderIndex == 0) {
         materialFrmLossAPI();
       }
-    } else if (currentPlateIndex == 6) {// 物资调拨
+    } else if (currentPlateIndex == 6) {
+      // 物资调拨
       if (currentWorkOrderIndex == 0) {
         materialTransferAPI();
       }
     }
 
-    getTaskData(isMore: false);
+    // getTaskData(isMore: false);
   }
 
   /// 加载更多
   Future loadMore() async {
     if (currentWorkOrderIndex == 0) {
       /// 待处理
-      if (currentPlateIndex == 0) {// 工单处理
+      if (currentPlateIndex == 0) {
+        // 工单处理
         return getWorkOrderList(isMore: true);
-      } else if (currentPlateIndex == 1) {// 实地核验
+      } else if (currentPlateIndex == 1) {
+        // 实地核验
         return getRealVerificationWaitList(isMore: true);
-      } else if (currentPlateIndex == 2) {// 订单处理
+      } else if (currentPlateIndex == 2) {
+        // 订单处理
         return getOrderFormWaitList(isMore: true);
-      } else if (currentPlateIndex == 3) {// 物资入库
+      } else if (currentPlateIndex == 3) {
+        // 物资入库
         return getMaterialEntryWaitList(isMore: true);
-      } else if (currentPlateIndex == 4) {// 物资出库
+      } else if (currentPlateIndex == 4) {
+        // 物资出库
         return getMaterialOutWaitList(isMore: true);
-      } else if (currentPlateIndex == 5) {// 物资报损
+      } else if (currentPlateIndex == 5) {
+        // 物资报损
         return getMaterialFrmLossWaitList(isMore: true);
-      } else if (currentPlateIndex == 6) {// 物资调拨
+      } else if (currentPlateIndex == 6) {
+        // 物资调拨
         return getMaterialTransferWaitList(isMore: true);
       }
     } else {
       /// 处理中
-      if (currentPlateIndex == 0) {// 工单处理
+      if (currentPlateIndex == 0) {
+        // 工单处理
         return getProcessingWorkOrderList(isMore: true);
-      } else if (currentPlateIndex == 1) {// 实地核验
+      } else if (currentPlateIndex == 1) {
+        // 实地核验
         return getRealVerificationProcessingList(isMore: true);
-      } else if (currentPlateIndex == 2) {// 订单处理
+      } else if (currentPlateIndex == 2) {
+        // 订单处理
         return getOrderFormProcessingList(isMore: true);
       }
     }
@@ -265,6 +366,7 @@ class SCWorkBenchController extends GetxController {
   /// 加载数据
   loadData() {
     getDefaultConfig().then((value) {
+      refreshController.refreshCompleted();
       if (value == true) {
         getUserInfo().then((subValue) {
           if (subValue == true) {
@@ -272,10 +374,19 @@ class SCWorkBenchController extends GetxController {
             waitPageNum = 1;
             processingPageNum = 1;
             updatePlateIndex(currentPlateIndex);
+            getToDoData();
           }
         });
       }
     });
+  }
+
+  /// 待办
+  getToDoData() {
+    for (int i = 0; i<todoControllerList.length; i++) {
+      SCWorkBenchToDoController toDoController = todoControllerList[i];
+      toDoController.getData(isMore: false);
+    }
   }
 
   /// 获取用户信息
@@ -699,12 +810,7 @@ class SCWorkBenchController extends GetxController {
       SCLoadingUtils.show();
     }
     List fields = [];
-    var dic = {
-      "map": {},
-      "method": 1,
-      "name": "status",
-      "value": 1
-    };
+    var dic = {"map": {}, "method": 1, "name": "status", "value": 1};
     fields.add(dic);
     var params = {
       "conditions": {"fields": fields, "specialMap": {}},
@@ -724,11 +830,15 @@ class SCWorkBenchController extends GetxController {
           if (value is Map) {
             List list = value['records'];
             if (isLoadMore == true) {
-              waitController.materialEntryList.addAll(List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+              waitController.materialEntryList.addAll(
+                  List<SCMaterialEntryModel>.from(list
+                      .map((e) => SCMaterialEntryModel.fromJson(e))
+                      .toList()));
             } else {
-              waitController.materialEntryList = List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+              waitController.materialEntryList =
+                  List<SCMaterialEntryModel>.from(list
+                      .map((e) => SCMaterialEntryModel.fromJson(e))
+                      .toList());
             }
           } else {
             if (isLoadMore == false) {
@@ -758,12 +868,7 @@ class SCWorkBenchController extends GetxController {
       SCLoadingUtils.show();
     }
     List fields = [];
-    var dic = {
-      "map": {},
-      "method": 1,
-      "name": "status",
-      "value": 1
-    };
+    var dic = {"map": {}, "method": 1, "name": "status", "value": 1};
     fields.add(dic);
     var params = {
       "conditions": {"fields": fields, "specialMap": {}},
@@ -783,8 +888,10 @@ class SCWorkBenchController extends GetxController {
           if (value is Map) {
             List list = value['records'];
             if (isLoadMore == true) {
-              waitController.materialOutList.addAll(List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+              waitController.materialOutList.addAll(
+                  List<SCMaterialEntryModel>.from(list
+                      .map((e) => SCMaterialEntryModel.fromJson(e))
+                      .toList()));
             } else {
               waitController.materialOutList = List<SCMaterialEntryModel>.from(
                   list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
@@ -814,12 +921,7 @@ class SCWorkBenchController extends GetxController {
       SCLoadingUtils.show();
     }
     List fields = [];
-    var dic = {
-      "map": {},
-      "method": 1,
-      "name": "status",
-      "value": 1
-    };
+    var dic = {"map": {}, "method": 1, "name": "status", "value": 1};
     fields.add(dic);
     var params = {
       "conditions": {"fields": fields, "specialMap": {}},
@@ -839,11 +941,15 @@ class SCWorkBenchController extends GetxController {
           if (value is Map) {
             List list = value['records'];
             if (isLoadMore == true) {
-              waitController.materialReportList.addAll(List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+              waitController.materialReportList.addAll(
+                  List<SCMaterialEntryModel>.from(list
+                      .map((e) => SCMaterialEntryModel.fromJson(e))
+                      .toList()));
             } else {
-              waitController.materialReportList = List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+              waitController.materialReportList =
+                  List<SCMaterialEntryModel>.from(list
+                      .map((e) => SCMaterialEntryModel.fromJson(e))
+                      .toList());
             }
           } else {
             if (isLoadMore == false) {
@@ -870,12 +976,7 @@ class SCWorkBenchController extends GetxController {
       SCLoadingUtils.show();
     }
     List fields = [];
-    var dic = {
-      "map": {},
-      "method": 1,
-      "name": "status",
-      "value": 1
-    };
+    var dic = {"map": {}, "method": 1, "name": "status", "value": 1};
     fields.add(dic);
     var params = {
       "conditions": {"fields": fields, "specialMap": {}},
@@ -895,11 +996,15 @@ class SCWorkBenchController extends GetxController {
           if (value is Map) {
             List list = value['records'];
             if (isLoadMore == true) {
-              waitController.materialTransferList.addAll(List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList()));
+              waitController.materialTransferList.addAll(
+                  List<SCMaterialEntryModel>.from(list
+                      .map((e) => SCMaterialEntryModel.fromJson(e))
+                      .toList()));
             } else {
-              waitController.materialTransferList = List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
+              waitController.materialTransferList =
+                  List<SCMaterialEntryModel>.from(list
+                      .map((e) => SCMaterialEntryModel.fromJson(e))
+                      .toList());
             }
           } else {
             if (isLoadMore == false) {
@@ -918,7 +1023,8 @@ class SCWorkBenchController extends GetxController {
   }
 
   /// 提交入库
-  materialEntrySubmit({required String id, Function(bool success)? completeHandler}) async {
+  materialEntrySubmit(
+      {required String id, Function(bool success)? completeHandler}) async {
     var params = {
       "wareHouseInId": id,
     };
@@ -938,7 +1044,8 @@ class SCWorkBenchController extends GetxController {
   }
 
   /// 提交出库
-  materialOutSubmit({required String id, Function(bool success)? completeHandler}) async{
+  materialOutSubmit(
+      {required String id, Function(bool success)? completeHandler}) async {
     var params = {
       "wareHouseOutId": id,
     };
@@ -958,7 +1065,8 @@ class SCWorkBenchController extends GetxController {
   }
 
   /// 提交报损
-  materialFrmLossSubmit({required String id, Function(bool success)? completeHandler}) async{
+  materialFrmLossSubmit(
+      {required String id, Function(bool success)? completeHandler}) async {
     var params = {
       "wareHouseReportId": id,
     };
@@ -978,7 +1086,8 @@ class SCWorkBenchController extends GetxController {
   }
 
   /// 提交调拨
-  materialTransferSubmit({required String id, Function(bool success)? completeHandler}) async{
+  materialTransferSubmit(
+      {required String id, Function(bool success)? completeHandler}) async {
     var params = {
       "wareHouseChangeId": id,
     };
@@ -1043,12 +1152,13 @@ class SCWorkBenchController extends GetxController {
   }
 
   /// 获取定位
-  location() async{
+  location() async {
     bool isShowAlert = SCSpUtil.getBool(SCKey.kIsShowSetNotificationAlert);
     PermissionStatus permissionStatus = await SCPermissionUtils.notification();
     if (permissionStatus != PermissionStatus.granted && !isShowAlert) {
       SCPermissionUtils.notificationAlert(completionHandler: (success) {
-        SCPermissionUtils.startLocationWithPrivacyAlert(completionHandler: (dynamic result, SCLocationModel? model) {
+        SCPermissionUtils.startLocationWithPrivacyAlert(
+            completionHandler: (dynamic result, SCLocationModel? model) {
           print("定位结果:$result");
           print("定位结果模型:${model?.toJson()}");
           int status = result['status'];
@@ -1061,7 +1171,8 @@ class SCWorkBenchController extends GetxController {
         });
       });
     } else {
-      SCPermissionUtils.startLocationWithPrivacyAlert(completionHandler: (dynamic result, SCLocationModel? model) {
+      SCPermissionUtils.startLocationWithPrivacyAlert(
+          completionHandler: (dynamic result, SCLocationModel? model) {
         print("定位结果:$result");
         print("定位结果模型:${model?.toJson()}");
         int status = result['status'];
@@ -1101,7 +1212,6 @@ class SCWorkBenchController extends GetxController {
           log('数据===$value');
           SCLoadingUtils.hide();
           if (value is Map) {
-
           } else {
             if (isLoadMore == false) {
               // waitDataList = [];

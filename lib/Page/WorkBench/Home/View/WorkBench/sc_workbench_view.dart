@@ -105,16 +105,12 @@ class SCWorkBenchView extends StatelessWidget {
   /// 点击筛选
   final Function? siftAction;
 
-
-  RefreshController refreshController =
-      RefreshController(initialRefresh: false);
-
   @override
   Widget build(BuildContext context) {
     return RefreshConfiguration(
         enableScrollWhenRefreshCompleted: true,
         child: SmartRefresher(
-          controller: refreshController,
+          controller: state.refreshController,
           enablePullUp: false,
           enablePullDown: true,
           header: const SCCustomHeader(
@@ -180,32 +176,20 @@ class SCWorkBenchView extends StatelessWidget {
   Widget pageView(double height) {
     Widget tabBarView = SizedBox(
       height: height,
-      child: GetBuilder<SCWorkBenchListViewController>(
-          tag: waitController.tag,
-          init: waitController,
-          builder: (value) {
-            // 工单处理
-            return SCWorkBenchListView(
-              state: state,
-              dataList: waitController.dataList,
-              detailAction: (SCWorkOrderModel model) {
-                detail(model);
-              },
-              callAction: (String phone) {
-                SCUtils.call(phone);
-              },
-            );
-          }),
+      child: TabBarView(
+        controller: tabController,
+          children: state.tabBarViewList
+      ),
     );
     return tabBarView;
   }
 
   /// 下拉刷新
   Future onRefresh() async {
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      refreshController.refreshCompleted();
-      onRefreshAction?.call();
-    });
+    onRefreshAction?.call();
+    // Future.delayed(const Duration(milliseconds: 1500), () {
+    //   refreshController.refreshCompleted();
+    // });
   }
 
   /// 切换空间

@@ -44,9 +44,6 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   /// 处理中controller
   late SCWorkBenchListViewController processingController;
 
-  /// tab-title
-  List<String> tabTitleList = ['我执行的(0)', '我关注的(0)', '我创建的(0)', '抢单大厅(0)'];
-
   /// tabController
   late TabController tabController;
 
@@ -81,7 +78,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
         Get.put(SCWorkBenchController(), tag: workBenchControllerTag);
     workBenchController.tag = workBenchControllerTag;
     workBenchController.pageName = pageName;
-    tabController = TabController(length: tabTitleList.length, vsync: this);
+    tabController = TabController(length: workBenchController.tabTitleList.length, vsync: this);
     waitController =
         Get.put(SCWorkBenchListViewController(), tag: waitControllerTag);
     workBenchController.tag = waitControllerTag;
@@ -142,7 +139,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
                 waitController: waitController,
                 doingController: processingController,
                 height: constraints.maxHeight,
-                tabTitleList: tabTitleList,
+                tabTitleList: workBenchController.tabTitleList,
                 tabController: tabController,
                 onRefreshAction: () {
                   workBenchController.loadData();
@@ -336,7 +333,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   addNotification() {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
-      if (key == SCKey.kSwitchEnterprise) {
+      if (key == SCKey.kSwitchEnterprise || key == SCKey.kRefreshWorkBenchPage) {
         workBenchController.loadData();
       }
     });
