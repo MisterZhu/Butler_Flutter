@@ -90,7 +90,7 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
           "type": scMaterialBottomViewType2,
           "title": list.first,
         }];
-      } else if (list.length > 1) {
+      } else if (list.length == 2) {
         btnList = [
           {
             "type": scMaterialBottomViewType1,
@@ -100,21 +100,21 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
             "type": scMaterialBottomViewType2,
             "title": list.first,
           }];
-      // } else {
-      //   btnList = [
-      //     {
-      //     "type": scMaterialBottomViewTypeMore,
-      //     "title": "更多",
-      //     },{
-      //     "type": scMaterialBottomViewType1,
-      //       "title": list[1],
-      //     }, {
-      //     "type": scMaterialBottomViewType2,
-      //       "title": list.first,
-      //   }];
-      //   for (int i = 2; i <list.length; i++) {
-      //     moreList.add({'name': list[i], 'icon': SCAsset.iconPatrolTransfer});
-      //   }
+      } else {
+        btnList = [
+          {
+          "type": scMaterialBottomViewTypeMore,
+          "title": "更多",
+          },{
+          "type": scMaterialBottomViewType1,
+            "title": list[1],
+          }, {
+          "type": scMaterialBottomViewType2,
+            "title": list.first,
+        }];
+        for (int i = 2; i <list.length; i++) {
+          moreList.add({'name': list[i], 'icon': SCAsset.iconPatrolTransfer});
+        }
       }
     }
     return SCMaterialDetailBottomView(
@@ -122,6 +122,8 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
       onTap: (value) {
         if (value == "更多") {
           moreAction(moreList);
+        } else if (value == "处理") {
+
         }
       },
     );
@@ -136,7 +138,17 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
           widget: SCDealAlert(
             list: list,
             tapAction: (name) {
+              if (name == '添加日志') {
 
+              } else if (name == '回退') {
+
+              } else if (name == '关闭') {
+
+              } else if (name == '处理') {
+
+              } else if (name == '转派') {
+
+              }
             },
           ));
     });

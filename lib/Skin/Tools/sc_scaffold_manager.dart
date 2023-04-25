@@ -57,6 +57,9 @@ class SCScaffoldManager {
   /// 纬度
   static late double _longitude;
 
+  /// 未读消息数量
+  static late int _unreadMessageCount;
+
   /// flutter调用原生的channel
   static MethodChannel flutterToNative = const MethodChannel(SCFlutterKey.kFlutterToNative);
 
@@ -97,12 +100,15 @@ class SCScaffoldManager {
 
   double get longitude => _longitude;
 
+  int get unreadMessageCount => _unreadMessageCount;
+
   JPush get jPush => _jPush;
 
   /// 初始化
   Future initBase() {
     _longitude = 120.2155118;
     _latitude = 30.25308298;
+    _unreadMessageCount = 0;
     listenNativeToFlutterChannel();
     Get.put(SCCustomScaffoldController());
     return SCScaffoldManager.instance.initScaffold();
@@ -144,6 +150,11 @@ class SCScaffoldManager {
   set longitude(double longitude) {
     // TODO: implement longitude=
     _longitude = longitude;
+  }
+
+  /// set unreadMessageCount
+  set unreadMessageCount(int unreadMessageCount) {
+    _unreadMessageCount = unreadMessageCount;
   }
 
   /// set jPush

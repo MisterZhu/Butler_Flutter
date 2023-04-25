@@ -340,6 +340,9 @@ class SCUrl {
   /// 获取详情并更新为已读
   static const String kMessageDetailUrl = "/api/msg/noticeBusiness";
 
+  /// 消息数量url
+  static const String kMessageCountUrl = '/api/msg/noticeConsumer/count';
+
 
   /************************* 在线监控 *************************/
 
@@ -351,9 +354,6 @@ class SCUrl {
 
   /// 查询视频监控设备列表
   static const String kMonitorListUrl = "/api/device-chentian/camera/search";
-
-/// 分页查询视频设备
-//static const String kMonitorListUrl = "/api/device-chentian/camera/searchCamera";
 
   /// 查询空间列表
   static const String kSpaceListUrl = "/api/space/component/space/select";
@@ -383,12 +383,12 @@ class SCUrl {
 
   /************************* 巡查 *************************/
   /// 巡查任务列表
-  static const String kPatrolListUrl = "/api/quality-jfl/safetyProduction/task/frontPage";
+  static const String kPatrolListUrl = "/api/quality/safetyProduction/task/frontPage";
   /// 巡查分类
-  static const String kPatrolTypeUrl = "/api/quality-jfl/safetyProduction/task/fullTree";
+  static const String kPatrolTypeUrl = "/api/quality/safetyProduction/task/fullTree";
   /// 巡查详情
-  static const String kPatrolDetailUrl = "/api/quality-jfl/safetyProduction/task/getById";
+  static const String kPatrolDetailUrl = "/api/quality/safetyProduction/task/getById";
   ///任务日志
-  static const String kPatrolTaskLogUrl = "/api/bpm/process/model/";
+  static const String kPatrolTaskLogUrl = "/api/bpm/log/list";
 
 }

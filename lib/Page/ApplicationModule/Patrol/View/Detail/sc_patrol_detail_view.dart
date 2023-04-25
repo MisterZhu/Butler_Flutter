@@ -69,7 +69,7 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
       detailAction: (int subIndex) {
         print("点击了第几个：${subIndex}");
         // 任务日志
-        SCRouterHelper.pathPage(SCRouterPath.taskLogPage, {'code': 'Flowable20230423145207700019'});
+        SCRouterHelper.pathPage(SCRouterPath.taskLogPage, {'bizId': widget.state.procInstId});
       },
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../Controller/sc_task_log_controller.dart';
+import '../../Model/sc_task_log_model.dart';
 
 /// 任务日志view
 
@@ -19,24 +20,37 @@ class SCTaskLogView extends StatelessWidget {
 
   /// body
   Widget body() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-      child: Container(
-        decoration: BoxDecoration(
-            color: SCColors.color_FFFFFF,
-            borderRadius: BorderRadius.circular(4.0),),
-        child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            return cell(index);
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return const SizedBox();
-          },
-          itemCount: state.dataList.length)
-      ),
+    return Column(
+      children: [
+        listview(),
+        const Expanded(child: SizedBox())
+      ],
     );
+  }
+
+  Widget listview() {
+    if (state.dataList.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+        child: Container(
+            decoration: BoxDecoration(
+              color: SCColors.color_FFFFFF,
+              borderRadius: BorderRadius.circular(4.0),),
+            child: ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return cell(index);
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const SizedBox();
+                },
+                itemCount: state.dataList.length)
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   Widget cell(int index) {
@@ -53,6 +67,7 @@ class SCTaskLogView extends StatelessWidget {
     );
   }
 
+  /// leftItem
   Widget leftItem(int index) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -78,7 +93,9 @@ class SCTaskLogView extends StatelessWidget {
     );
   }
 
+  /// rightItem
   Widget rightItem(int index) {
+    SCTaskLogModel model = state.dataList[index];
     return Padding(
       padding: const EdgeInsets.only(left: 26.0),
       child: Column(
@@ -93,7 +110,7 @@ class SCTaskLogView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(child: Text(
-                  '处理中',
+                  model.action?.value ?? '',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -102,11 +119,11 @@ class SCTaskLogView extends StatelessWidget {
                     color: index == 0 ? SCColors.color_4285F4 : SCColors.color_8D8E99,
                   ),
                 )),
-                const Text(
-                  '12-15 12:00:00',
+                Text(
+                  model.operateTime ?? '',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: SCFonts.f12,
                     fontWeight: FontWeight.w400,
                     color: SCColors.color_8D8E99,
@@ -115,17 +132,9 @@ class SCTaskLogView extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 6.0,),
-          Text(
-            '处理人：李四',
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: SCFonts.f14,
-              fontWeight: FontWeight.w400,
-              color: index == 0 ? SCColors.color_1B1D33 : SCColors.color_8D8E99,
-            ),
-          ),
+          const SizedBox(height: 4.0,),
+          textItem(model.title ?? '', (index == 0) ? true : false),
+          const SizedBox(height: 4.0,),
           contentItem(index),
           const SizedBox(height: 20.0,),
         ],
@@ -133,11 +142,40 @@ class SCTaskLogView extends StatelessWidget {
     );
   }
 
+  /// optionsItem
+  Widget optionsItem(int section) {
+    SCTaskLogModel model = state.dataList[section];
+    return ListView.separated(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          Options? option = model.content?.options![index];
+          return textItem(option?.data?.text ?? '', false);
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return const SizedBox(height: 20.0,);
+        },
+        itemCount: model.content?.options!.length ?? 0);
+  }
+
+  /// textItem
+  Widget textItem(String text, bool isLast) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: SCFonts.f14,
+        fontWeight: FontWeight.w400,
+        color: isLast == true ? SCColors.color_1B1D33 : SCColors.color_8D8E99,
+      ),
+    );
+  }
+
   /// contentItem
-  Widget contentItem(int index) {
-    return Offstage(
-      offstage: (index == 0 || index == 3) ? false : true, //测试显示
-      child: Padding(
+  Widget contentItem(int section) {
+    SCTaskLogModel model = state.dataList[section];
+    if ((model.content?.options ?? []).isNotEmpty) {
+      return Padding(
         padding: const EdgeInsets.only(top: 4.0),
         child: Container(
           padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
@@ -146,21 +184,16 @@ class SCTaskLogView extends StatelessWidget {
               borderRadius: BorderRadius.circular(4.0)
           ),
           child: Column(
-            children: const [
-              Text(
-                '添加日志：已处理完成已处理完成已处理完成已处理完成',
-                style: TextStyle(
-                  fontSize: SCFonts.f14,
-                  fontWeight: FontWeight.w400,
-                  color: SCColors.color_5E5F66,
-                ),
-              ),
-              SizedBox(height: 10.0,),
+            children: [
+              optionsItem(section),
+              const SizedBox(height: 10.0,),
 
             ],
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 }
