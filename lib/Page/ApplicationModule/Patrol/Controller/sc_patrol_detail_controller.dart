@@ -5,13 +5,13 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Network/sc_url.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_patrol_detail_model.dart';
+import 'package:smartcommunity/Utils/Date/sc_date_utils.dart';
 import '../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import '../../WarningCenter/Other/sc_warning_utils.dart';
 
 /// 巡查详情controller
 
 class SCPatrolDetailController extends GetxController {
-
   /// 编号
   String procInstId = "";
 
@@ -59,21 +59,22 @@ class SCPatrolDetailController extends GetxController {
 
   /// 巡查详情
   getDetailData() {
-    var params = {
-      "procInstId" : procInstId,
-      "taskId": taskId
-    };
+    var params = {"procInstId": procInstId, "taskId": taskId};
     SCLoadingUtils.show();
-    SCHttpManager.instance.get(url: SCUrl.kPatrolDetailUrl, params: params, success: (value){
-      log('巡查详情===$value');
-      SCLoadingUtils.hide();
-      getDataSuccess = true;
-      model = SCPatrolDetailModel.fromJson(value);
-      updateBottomButtonList();
-      update();
-    }, failure: (value){
-      SCToast.showTip(value['message']);
-    });
+    SCHttpManager.instance.get(
+        url: SCUrl.kPatrolDetailUrl,
+        params: params,
+        success: (value) {
+          log('巡查详情===$value');
+          SCLoadingUtils.hide();
+          getDataSuccess = true;
+          model = SCPatrolDetailModel.fromJson(value);
+          updateBottomButtonList();
+          update();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
   }
 
   updateBottomButtonList() {
@@ -84,7 +85,8 @@ class SCPatrolDetailController extends GetxController {
           {
             "type": scMaterialBottomViewType2,
             "title": list.first,
-          }];
+          }
+        ];
       } else if (list.length == 2) {
         bottomButtonList = [
           {
@@ -94,20 +96,24 @@ class SCPatrolDetailController extends GetxController {
           {
             "type": scMaterialBottomViewType2,
             "title": list.first,
-          }];
+          }
+        ];
       } else {
         bottomButtonList = [
           {
             "type": scMaterialBottomViewTypeMore,
             "title": "更多",
-          },{
+          },
+          {
             "type": scMaterialBottomViewType1,
             "title": list[1],
-          }, {
+          },
+          {
             "type": scMaterialBottomViewType2,
             "title": list.first,
-          }];
-        for (int i = 2; i <list.length; i++) {
+          }
+        ];
+        for (int i = 2; i < list.length; i++) {
           moreButtonList.add(list[i]);
         }
       }
@@ -117,12 +123,15 @@ class SCPatrolDetailController extends GetxController {
   /// title-数据源
   List list1() {
     List data = [
-      {"leftIcon":SCAsset.iconPatrolTask, "type": 2, "title": model.categoryName, "content": model.customStatus, 'contentColor': SCWarningCenterUtils.getStatusColor(model.customStatusInt ?? -1)},
       {
-        "type": 5,
-        "content": model.procInstName,
-        "maxLength": 10
+        "leftIcon": SCAsset.iconPatrolTask,
+        "type": 2,
+        "title": model.categoryName,
+        "content": model.customStatus,
+        'contentColor':
+            SCWarningCenterUtils.getStatusColor(model.customStatusInt ?? -1)
       },
+      {"type": 5, "content": model.procInstName, "maxLength": 10},
     ];
     return List.from(data.map((e) {
       return SCUIDetailCellModel.fromJson(e);
@@ -159,32 +168,86 @@ class SCPatrolDetailController extends GetxController {
   }
 
   /// 处理任务
-  dealTask(String action) {
+  /// action:操作类型
+  /// dealChannel：处理来源，1-判断是否需要扫码,2-处理操作
+  /// mode：选择的节点
+  /// content：内容
+  /// imageList：图片
+  /// code：二维码
+  dealTask(
+      {required String action,
+      int? dealChannel,
+      String? node,
+      String? content,
+      List? imageList,
+      String? code}) {
+    var comment = {};
+    if (action == "handle") {
+      // 处理
+      if (dealChannel == 2) {
+        comment = {
+          "attachments": transferImage(imageList ?? []),
+          "text": content
+        };
+      } else {}
+    } else if (action == "transfer") {
+      // 转派
+      comment = {
+        "attachments": transferImage(imageList ?? []),
+        "text": content
+      };
+    } else if (action == "close") {
+      // 关闭
+      comment = {
+        "attachments": transferImage(imageList ?? []),
+        "text": content
+      };
+    } else if (action == "comment") {
+      // 添加日志
+      comment = {
+        "attachments": transferImage(imageList ?? []),
+        "text": content
+      };
+    } else if (action == "recall") {
+      // 回退
+      comment = {
+        "attachments": transferImage(imageList ?? []),
+        "text": content
+      };
+    }
     var params = {
       "action": action,
-      "comment": {
-        "attachments": [
-          {
-            "id": "",
-            "isImage": true,
-            "name": "",
-            "suffix": "",
-            "url": ""
-          }
-        ],
-        "text": ""
-      },
+      "comment": comment,
+      "formData": {"code": code},
       "instanceId": procInstId,
       "taskId": taskId
     };
-    SCHttpManager.instance.post(url: SCUrl.kDealTaskUrl, params: params, success: (value){
-      log('处理任务===$value');
-      SCLoadingUtils.hide();
+    SCHttpManager.instance.post(
+        url: SCUrl.kDealTaskUrl,
+        params: params,
+        success: (value) {
+          log('处理任务===$value');
+          SCLoadingUtils.hide();
 
-      update();
-    }, failure: (value){
-      SCToast.showTip(value['message']);
-    });
+          update();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
   }
 
+  /// 图片转换
+  List transferImage(List imageList) {
+    List list = [];
+    for (var params in imageList) {
+      var newParams = {
+        "id": SCDateUtils.timestamp(),
+        "isImage": true,
+        "name": params['name'],
+        "url": params['fileKey']
+      };
+      list.add(newParams);
+    }
+    return list;
+  }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/View/Detail/sc_patrol_detail_view.dart';
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Other/sc_patrol_utils.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Constants/sc_asset.dart';
 import '../../../../Constants/sc_key.dart';
@@ -10,6 +11,7 @@ import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../../Utils/Router/sc_router_path.dart';
 import '../../../../Utils/sc_utils.dart';
+import '../../MaterialEntry/View/Alert/sc_reject_alert.dart';
 import '../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import '../Controller/sc_patrol_detail_controller.dart';
 import '../View/Alert/sc_deal_alert.dart';
@@ -116,13 +118,13 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
   taskAction(String name) {
     print('任务操作========$name');
     if (name == '添加日志') {
-
+      addLog();
     } else if (name == '回退') {
-
+      rollBack();
     } else if (name == '关闭') {
 
     } else if (name == '处理') {
-
+      deal();
     } else if (name == '转派') {
       transfer();
     }
@@ -131,6 +133,22 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
   /// 转派
   transfer() {
     SCRouterHelper.pathPage(SCRouterPath.patrolTransferPage, null);
+  }
+
+  /// 回退
+  rollBack() {
+    SCPatrolUtils().rollBack();
+  }
+
+  /// 处理
+  deal() {
+    controller.dealTask(action: "handle", dealChannel: 1);
+    // SCPatrolUtils().deal('', 0, 0);
+  }
+
+  /// 添加日志
+  addLog() {
+    SCPatrolUtils().addLog();
   }
 
   /// pageName

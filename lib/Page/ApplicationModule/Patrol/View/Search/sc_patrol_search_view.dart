@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Other/sc_patrol_utils.dart';
 import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Controller/sc_warning_search_controller.dart';
 import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Model/sc_warningcenter_model.dart';
 import '../../../../../Constants/sc_asset.dart';
@@ -299,33 +300,6 @@ class SCSearchPatrolViewState extends State<SCSearchPatrolView> {
 
   /// 处理
   dealAction(SCWarningCenterModel centerModel) {
-    widget.state.loadDictionaryCode(centerModel.alertType ?? '',
-        (success, list) {
-      if (success) {
-        List<String> tagList = [];
-        for (SCWarningDealResultModel model in list) {
-          tagList.add(model.name ?? '');
-        }
-        SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-          SCDialogUtils().showCustomBottomDialog(
-              isDismissible: true,
-              context: context,
-              widget: SCRejectAlert(
-                title: '处理',
-                resultDes: '处理结果',
-                reasonDes: '处理说明',
-                isRequired: true,
-                tagList: tagList,
-                hiddenTags: true,
-                showNode: true,
-                sureAction: (int index, String value, List imageList) {
-                  SCWarningDealResultModel model = list[index];
-                  widget.state.deal(value, int.parse(model.code ?? '0'),
-                      centerModel.id ?? 0, imageList, centerModel.status ?? 0);
-                },
-              ));
-        });
-      }
-    });
+    SCPatrolUtils().deal('', 0, 0);
   }
 }

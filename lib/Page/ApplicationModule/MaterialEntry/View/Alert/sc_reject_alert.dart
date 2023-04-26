@@ -344,7 +344,7 @@ class SCRejectAlertState extends State<SCRejectAlert> {
   /// 确定
   sureAction() {
     bool needInput = widget.isRequired ?? false;
-    if (resultIndex < 0) {
+    if (resultIndex < 0 && widget.showNode) {
       SCToast.showTip('请选择${widget.resultDes}');
       return;
     }
