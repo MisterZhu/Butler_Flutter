@@ -218,7 +218,7 @@ class SCPatrolDetailController extends GetxController {
     var params = {
       "action": action,
       "comment": comment,
-      "formData": {"code": code},
+      "formData": {"code": code ?? ''},
       "instanceId": procInstId,
       "taskId": taskId
     };
