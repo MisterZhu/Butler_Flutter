@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../../Constants/sc_asset.dart';
@@ -32,8 +33,8 @@ class SCMoreButtonDialog extends StatelessWidget{
   /// 三角形高度6.0
   double triangleHeight = 6.0;
 
-  /// 上下阴影8.0
-  double shadowOffSet = 8.0;
+  /// 上下阴影6.0
+  double shadowOffSet = 6.0;
 
   /// 最多数量
   int maxCount = 6;
@@ -91,7 +92,7 @@ class SCMoreButtonDialog extends StatelessWidget{
     return Container(
         width: cellWidth,
         height: height,
-        padding: EdgeInsets.only(bottom: shadowOffSet),
+        padding: EdgeInsets.only(top: shadowOffSet),
         child: ListView.separated(
             padding: const EdgeInsets.only(left: 12.0),
             shrinkWrap: true,
@@ -106,12 +107,10 @@ class SCMoreButtonDialog extends StatelessWidget{
   }
 
   Widget cell(int index) {
-    return GestureDetector(
-      onTap: () {
-        tapAction?.call(index);
-      },
-      behavior: HitTestBehavior.opaque,
+    return CupertinoButton(
+      padding: EdgeInsets.zero,
       child: Container(
+        color: Colors.tealAccent,
         height: cellHeight,
         alignment: Alignment.centerLeft,
         child: Text(
@@ -119,11 +118,12 @@ class SCMoreButtonDialog extends StatelessWidget{
           textAlign: TextAlign.left,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
-            fontSize: SCFonts.f14,
-            color: SCColors.color_1B1D33,
-            fontWeight: FontWeight.w400,
-          ),),
-      ),
-    );
+          fontSize: SCFonts.f14,
+          color: SCColors.color_1B1D33,
+          fontWeight: FontWeight.w400,
+        ),),
+    ), onPressed: () {
+      tapAction?.call(index);
+    });
   }
 }

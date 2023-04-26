@@ -230,4 +230,7 @@ class SCRouterPath {
   /// 搜索巡查
   static String searchPatrolPage = "/lib/Page/Patrol/Page/sc_patrol_search_page";
 
+  /// 巡查转派
+  static String patrolTransferPage = "/lib/Page/Patrol/Page/sc_patrol_transfer_page";
+
 }

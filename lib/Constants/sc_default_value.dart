@@ -257,6 +257,12 @@ class SCDefaultValue {
   /// 统一维保内容tip
   static const String unifyMaintenanceContentTip = "选择“是”，\n提交或暂存将统一维保内容";
 
+  /// 巡查-请选择部门
+  static const String selectPatrolDepartment = "请选择部门";
+
+  /// 巡查-请选择人员
+  static const String selectPatrolUser = "请选择转派人";
+
   /// 图片路径
   static const files = "/files/";
 }
