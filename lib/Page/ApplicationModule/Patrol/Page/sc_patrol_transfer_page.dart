@@ -32,9 +32,6 @@ class SCPatrolTransferPageState extends State<SCPatrolTransferPage>
   /// SCSelectDepartmentController - tag
   String selectDepartmentControllerTag = '';
 
-  /// notify
-  late StreamSubscription subscription;
-
   @override
   initState() {
     super.initState();
@@ -50,7 +47,6 @@ class SCPatrolTransferPageState extends State<SCPatrolTransferPage>
 
   @override
   dispose() {
-    subscription.cancel();
     SCScaffoldManager.instance
         .deleteGetXControllerTag(pageName(), controllerTag);
     SCScaffoldManager.instance
