@@ -76,7 +76,7 @@ class SCMessageListView extends StatelessWidget {
           }
           return SCMessageCardCell(
             type: cardType,
-            title: model.title,
+            title: model.category,
             icon: model.icon?.fileKey != null ? SCConfig.getImageUrl(model.icon?.fileKey ?? '') : SCAsset.iconMessageType,
             time: SCDateUtils.relativeDateFormat(DateTime.parse(model.noticeTime ?? '')),
             isUnread: type == 1 ? true : false,
@@ -90,7 +90,7 @@ class SCMessageListView extends StatelessWidget {
                 if (ext['jumpUrl'] != null) {
                   if (model.cardCode == 'CONTENT_MESSAGE') {
                     // 跳转到站内信详情h5
-                    String jumpUrl = SCConfig.getH5Url(ext['jumpUrl']);
+                    String jumpUrl = SCConfig.getH5Url('/h5Manage/#${ext['jumpUrl']}');
                     String url = SCUtils.getWebViewUrl(url: jumpUrl, title: '通知公告',  needJointParams: true);
                     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {'title' : '通知公告', 'url' : url});
                   }
