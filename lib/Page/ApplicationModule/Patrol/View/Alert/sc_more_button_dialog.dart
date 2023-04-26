@@ -110,7 +110,6 @@ class SCMoreButtonDialog extends StatelessWidget{
     return CupertinoButton(
       padding: EdgeInsets.zero,
       child: Container(
-        color: Colors.tealAccent,
         height: cellHeight,
         alignment: Alignment.centerLeft,
         child: Text(
