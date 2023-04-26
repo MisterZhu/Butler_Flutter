@@ -11,6 +11,7 @@ import '../../../../Utils/sc_utils.dart';
 import '../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import '../Controller/sc_patrol_detail_controller.dart';
 import '../View/Alert/sc_deal_alert.dart';
+import '../View/Alert/sc_more_button_dialog.dart';
 
 /// 巡查详情page
 
@@ -65,11 +66,28 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
         init: controller,
         builder: (state) {
           if (controller.getDataSuccess) {
-            return Column(
-                children: [
-                  Expanded(child: SCPatrolDetailView(state: state,)),
-                  bottomView()
-                ]
+            return Stack(
+              alignment: Alignment.bottomLeft,
+              children: [
+                Column(
+                  children: [
+                    Expanded(child: SCPatrolDetailView(state: state,)),
+                    bottomView()
+                  ]
+                ),
+                Offstage(
+                  offstage: !state.showMoreDialog,
+                  child: SCMoreButtonDialog(
+                    list: state.moreButtonList,
+                    closeAction: () {
+                      controller.updateMoreDialogStatus();
+                    },
+                    tapAction: (index) {
+                      taskAction(state.moreButtonList[index]);
+                      controller.updateMoreDialogStatus();
+                    },),
+                ),
+              ],
             );
           } else {
             return const SizedBox();
@@ -80,79 +98,32 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
 
   /// 底部按钮
   Widget bottomView() {
-    List btnList = [];
-    List moreList = [];
-    if ((controller.model.actionVo ?? []).isNotEmpty) {
-      List<String> list = controller.model.actionVo!;
-      if (list.length == 1) {
-        btnList = [
-          {
-          "type": scMaterialBottomViewType2,
-          "title": list.first,
-        }];
-      } else if (list.length == 2) {
-        btnList = [
-          {
-            "type": scMaterialBottomViewType1,
-            "title": list[1],
-          },
-          {
-            "type": scMaterialBottomViewType2,
-            "title": list.first,
-          }];
-      } else {
-        btnList = [
-          {
-          "type": scMaterialBottomViewTypeMore,
-          "title": "更多",
-          },{
-          "type": scMaterialBottomViewType1,
-            "title": list[1],
-          }, {
-          "type": scMaterialBottomViewType2,
-            "title": list.first,
-        }];
-        for (int i = 2; i <list.length; i++) {
-          moreList.add({'name': list[i], 'icon': SCAsset.iconPatrolTransfer});
-        }
-      }
-    }
     return SCMaterialDetailBottomView(
-      list: btnList,
+      list: controller.bottomButtonList,
       onTap: (value) {
         if (value == "更多") {
-          moreAction(moreList);
-        } else if (value == "处理") {
-
+          controller.updateMoreDialogStatus();
+        } else {
+          taskAction(value);
         }
       },
     );
   }
 
-  /// 点击更多按钮
-  moreAction(List list) {
-    SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
-      SCDialogUtils().showCustomBottomDialog(
-          isDismissible: true,
-          context: context,
-          widget: SCDealAlert(
-            list: list,
-            tapAction: (name) {
-              if (name == '添加日志') {
+  /// 任务操作
+  taskAction(String name) {
+    print('任务操作========$name');
+    if (name == '添加日志') {
 
-              } else if (name == '回退') {
+    } else if (name == '回退') {
 
-              } else if (name == '关闭') {
+    } else if (name == '关闭') {
 
-              } else if (name == '处理') {
+    } else if (name == '处理') {
 
-              } else if (name == '转派') {
+    } else if (name == '转派') {
 
-              }
-            },
-          ));
-    });
-
+    }
   }
 
   /// pageName

@@ -5,6 +5,7 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Network/sc_url.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_patrol_detail_model.dart';
+import '../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import '../../WarningCenter/Other/sc_warning_utils.dart';
 
 /// 巡查详情controller
@@ -23,9 +24,24 @@ class SCPatrolDetailController extends GetxController {
   /// 详情model
   SCPatrolDetailModel model = SCPatrolDetailModel();
 
+  /// 是否显示更多弹窗，默认不显示
+  bool showMoreDialog = false;
+
+  /// 更多按钮list
+  List moreButtonList = [];
+
+  /// 底部按钮list
+  List bottomButtonList = [];
+
   @override
   onInit() {
     super.onInit();
+  }
+
+  /// 更新弹窗显示状态
+  updateMoreDialogStatus() {
+    showMoreDialog = !showMoreDialog;
+    update();
   }
 
   /// 初始化
@@ -53,10 +69,49 @@ class SCPatrolDetailController extends GetxController {
       SCLoadingUtils.hide();
       getDataSuccess = true;
       model = SCPatrolDetailModel.fromJson(value);
+      updateBottomButtonList();
       update();
     }, failure: (value){
       SCToast.showTip(value['message']);
     });
+  }
+
+  updateBottomButtonList() {
+    if ((model.actionVo ?? []).isNotEmpty) {
+      List<String> list = model.actionVo!;
+      if (list.length == 1) {
+        bottomButtonList = [
+          {
+            "type": scMaterialBottomViewType2,
+            "title": list.first,
+          }];
+      } else if (list.length == 2) {
+        bottomButtonList = [
+          {
+            "type": scMaterialBottomViewType1,
+            "title": list[1],
+          },
+          {
+            "type": scMaterialBottomViewType2,
+            "title": list.first,
+          }];
+      } else {
+        bottomButtonList = [
+          {
+            "type": scMaterialBottomViewTypeMore,
+            "title": "更多",
+          },{
+            "type": scMaterialBottomViewType1,
+            "title": list[1],
+          }, {
+            "type": scMaterialBottomViewType2,
+            "title": list.first,
+          }];
+        for (int i = 2; i <list.length; i++) {
+          moreButtonList.add(list[i]);
+        }
+      }
+    }
   }
 
   /// title-数据源
