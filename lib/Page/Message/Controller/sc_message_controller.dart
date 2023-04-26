@@ -35,7 +35,7 @@ class SCMessageController extends GetxController {
     super.onInit();
     loadAllData(isMore: false);
     loadUnreadData(isMore: false);
-    loadMessageCount();
+    loadUnreadMessageCount();
   }
 
   /// 更新currentIndex
@@ -145,16 +145,14 @@ class SCMessageController extends GetxController {
         url: SCUrl.kMessageDetailUrl,
         params: {"noticeArriveId": noticeArriveId},
         success: (value) {
-          loadAllData(isMore: false);
-          loadUnreadData(isMore: false);
-          loadMessageCount();
+          reloadData();
         },
         failure: (value) {
         });
   }
 
   /// 全部清空/全部已读接口
-  deleteMessage({bool? allClear, bool? allRead, String? noticeId, Function(bool success)? completeHandler}) {
+  deleteMessage({bool? allClear, bool? allRead, String? noticeId}) {
     Map<String, dynamic> params = {};
 
     if (allClear != null) {
@@ -166,21 +164,21 @@ class SCMessageController extends GetxController {
     if (noticeId != null) {
       params.addAll({"noticeId": noticeId});
     }
+    SCLoadingUtils.show();
     SCHttpManager.instance.delete(
         url: SCUrl.kMessageDetailUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
-          completeHandler?.call(true);
+          reloadData();
         },
         failure: (value) {
           SCToast.showTip(value['message']);
-          completeHandler?.call(false);
         });
   }
 
   /// 获取消息数量
-  loadMessageCount() {
+  loadUnreadMessageCount() {
     SCHttpManager.instance.get(
         url: SCUrl.kMessageCountUrl,
         params: {'checked': false},
@@ -192,5 +190,12 @@ class SCMessageController extends GetxController {
         },
         failure: (value) {
         });
+  }
+
+  /// 重新加载数据
+  reloadData() {
+    loadAllData(isMore: false);
+    loadUnreadData(isMore: false);
+    loadUnreadMessageCount();
   }
 }

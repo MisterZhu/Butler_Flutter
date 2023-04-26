@@ -288,7 +288,9 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
 
   /// 消息
   messageAction() {
-    SCRouterHelper.pathPage(SCRouterPath.messagePage, null);
+    SCRouterHelper.pathPage(SCRouterPath.messagePage, null)?.then((value) {
+      workBenchController.loadUnreadMessageCount();
+    });
   }
 
   /// 卡片详情
@@ -340,6 +342,8 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
       String key = event['key'];
       if (key == SCKey.kSwitchEnterprise || key == SCKey.kRefreshWorkBenchPage) {
         workBenchController.loadData();
+      } else if (key == SCKey.kReloadUnreadMessageCount) {
+        workBenchController.update();
       }
     });
   }
