@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/View/Detail/sc_patrol_detail_view.dart';
+import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Constants/sc_asset.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
+import '../../../../Utils/Router/sc_router_path.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import '../Controller/sc_patrol_detail_controller.dart';
@@ -124,6 +126,8 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
           moreAction(moreList);
         } else if (value == "处理") {
 
+        } else if (value == "转派") {
+          transfer();
         }
       },
     );
@@ -147,12 +151,17 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
               } else if (name == '处理') {
 
               } else if (name == '转派') {
-
+                  transfer();
               }
             },
           ));
     });
 
+  }
+
+  /// 转派
+  transfer() {
+    SCRouterHelper.pathPage(SCRouterPath.patrolTransferPage, null);
   }
 
   /// pageName
