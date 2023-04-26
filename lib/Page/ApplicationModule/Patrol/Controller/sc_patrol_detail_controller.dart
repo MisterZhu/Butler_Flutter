@@ -93,15 +93,43 @@ class SCPatrolDetailController extends GetxController {
   /// content-数据源
   List list3() {
     List data = [
-      {"type": 7, "title": '编号', "content": model.procInstId},
+      {"type": 7, "title": '任务编号', "content": model.procInstId},
+      {"type": 7, "title": '任务来源', "content": model.instSource},
+      {"type": 7, "title": '发起时间', "content": model.startTime},
+      {"type": 7, "title": '实际完成时间', "content": model.endTime}
     ];
-    if (model.assignee != '' && model.assignee != null) {
-      data.add({"type": 7, "title": '执行人', "content": model.assignee});
-    }
-    data.add({"type": 7, "title": '时间', "content": model.startTime});
     return List.from(data.map((e) {
       return SCUIDetailCellModel.fromJson(e);
     }));
+  }
+
+  /// 处理任务
+  dealTask(String action) {
+    var params = {
+      "action": action,
+      "comment": {
+        "attachments": [
+          {
+            "id": "",
+            "isImage": true,
+            "name": "",
+            "suffix": "",
+            "url": ""
+          }
+        ],
+        "text": ""
+      },
+      "instanceId": procInstId,
+      "taskId": taskId
+    };
+    SCHttpManager.instance.post(url: SCUrl.kDealTaskUrl, params: params, success: (value){
+      log('处理任务===$value');
+      SCLoadingUtils.hide();
+
+      update();
+    }, failure: (value){
+      SCToast.showTip(value['message']);
+    });
   }
 
 }

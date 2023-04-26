@@ -145,7 +145,9 @@ class SCMessageController extends GetxController {
         url: SCUrl.kMessageDetailUrl,
         params: {"noticeArriveId": noticeArriveId},
         success: (value) {
-          update();
+          loadAllData(isMore: false);
+          loadUnreadData(isMore: false);
+          loadMessageCount();
         },
         failure: (value) {
         });
@@ -185,6 +187,7 @@ class SCMessageController extends GetxController {
         success: (value) {
           if (value is int) {
             SCScaffoldManager.instance.unreadMessageCount = value;
+            update();
           }
         },
         failure: (value) {

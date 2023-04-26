@@ -341,7 +341,7 @@ class SCUrl {
   static const String kMessageDetailUrl = "/api/msg/noticeBusiness";
 
   /// 消息数量url
-  static const String kMessageCountUrl = '/api/msg/noticeConsumer/count';
+  static const String kMessageCountUrl = '/api/msg/noticeBusiness/count';
 
 
   /************************* 在线监控 *************************/
@@ -388,7 +388,9 @@ class SCUrl {
   static const String kPatrolTypeUrl = "/api/quality/safetyProduction/task/fullTree";
   /// 巡查详情
   static const String kPatrolDetailUrl = "/api/quality/safetyProduction/task/getById";
-  ///任务日志
+  /// 任务日志
   static const String kPatrolTaskLogUrl = "/api/bpm/log/list";
+  /// 处理任务
+  static const String kDealTaskUrl = "/api/quality/process/task/handler";
 
 }
