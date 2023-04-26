@@ -352,6 +352,9 @@ class SCAsset {
 
   /**************** 巡查 ****************/
 
+  /// 更多按钮弹窗背景图
+  static const String iconMoreButtonBg = "images/patrol/icon_more_button_dialog_bg.png";
+
   /// 任务icon
   static const String iconPatrolTask = "images/patrol/ic_patrol_task.png";
 
