@@ -19,8 +19,6 @@ import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_m
 import 'package:smartcommunity/Page/WorkBench/Home/View/WorkBench/sc_workbench_todo_listview.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Permission/sc_permission_utils.dart';
-
-import '../../../../Constants/sc_asset.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Utils/Location/sc_location_model.dart';
 import '../../../ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
@@ -141,6 +139,7 @@ class SCWorkBenchController extends GetxController {
     initFilterData();
     location();
     loadData();
+    loadUnreadMessageCount();
   }
 
   /// 初始化tabData
@@ -1235,6 +1234,22 @@ class SCWorkBenchController extends GetxController {
       toDoController.subKey = "";
       toDoController.subValue = "";
     }
+  }
+
+  /// 获取未读消息数量
+  loadUnreadMessageCount() {
+    SCHttpManager.instance.get(
+        url: SCUrl.kMessageCountUrl,
+        params: {'checked': false},
+        success: (value) {
+          if (value is int) {
+            SCScaffoldManager.instance.unreadMessageCount = value;
+            var params = {"key" : SCKey.kReloadUnreadMessageCount};
+            SCScaffoldManager.instance.eventBus.fire(params);
+          }
+        },
+        failure: (value) {
+        });
   }
 
   @override

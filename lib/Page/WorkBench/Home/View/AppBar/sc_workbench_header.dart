@@ -105,7 +105,7 @@ class SCWorkBenchHeader extends StatelessWidget {
             height: 7.0,
           ),
           SCWorkBenchSearch(
-            unreadNum: 10,
+            unreadNum: SCScaffoldManager.instance.unreadMessageCount,
             searchAction: () {
               searchAction?.call();
             },
