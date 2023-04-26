@@ -1,18 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Network/sc_url.dart';
 import 'package:smartcommunity/Page/Login/Home/Model/sc_user_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_todo_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_listview_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_hotel_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_default_config_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_model.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/View/WorkBench/sc_workbench_todo_listview.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Permission/sc_permission_utils.dart';
 
@@ -39,17 +43,35 @@ class SCWorkBenchController extends GetxController {
   /// 处理中pageNum
   int processingPageNum = 1;
 
+  /// 我执行的pageNum
+  int iExecutedPageNum = 1;
+
+  /// 我创建的
+  int iCreatedPageNum = 1;
+
+  /// 我经办的
+  int iDoPageNum = 1;
+
+  /// 我关注的
+  int iLikedPageNum = 1;
+
+  /// 抢单大厅
+  int grabHallPageNum = 1;
+
   /// 处理中工单 数据
   List processingDataList = [];
 
-  /// 进行中数量
-  int processOrder = 0;
+  /// 抢单大厅数量
+  int orderNum = 10;
 
-  /// 新增数量
-  int newOrder = 0;
+  /// 今日任务数量
+  int taskNum = 20;
 
-  /// 我的关注数量
-  int myAttention = 0;
+  /// 收缴率
+  num collectionRate = 88.8;
+
+  /// 今日服务业主数量
+  int serviceNum = 2;
 
   List numDataList = [];
 
@@ -71,22 +93,167 @@ class SCWorkBenchController extends GetxController {
   /// 当前板块index,0-工单处理，1-实地核验，2-订单处理
   int currentPlateIndex = 0;
 
-  /// 板块数据源
-  List plateList = [
-    {"type": 0, "title": "工单处理"},
-    {"type": 1, "title": "实地核验"},
-    {"type": 2, "title": "订单处理"},
-    {"type": 3, "title": "物资入库"},
-    {"type": 4, "title": "物资出库"},
-    {"type": 5, "title": "物资报损"},
-    {"type": 6, "title": "物资调拨"},
-  ];
+  /// 任务类型
+  List taskTypeDataList = [];
+
+  /// 任务类型数组
+  List taskTypeList = [];
+
+  /// 任务类型key
+  List taskTypeKeyList = [];
+
+  /// 任务类型value
+  List taskTypeValueList = [];
+
+  /// 我的任务选中的数组
+  List myTaskSelectList = [];
+
+  /// 任务类型选中的数组
+  List taskTypeSelectList = [];
+
+  /// tab-data
+  List tabDataList = [];
+
+  /// tab-title
+  List<String> tabTitleList = [];
+
+  /// tabBarView-list
+  List<Widget> tabBarViewList = [];
+
+  /// tab-GetXController
+  List<SCWorkBenchToDoController> todoControllerList = [];
+
+  /// tab-GetXController
+  List todoControllerTagList = [];
+
+  /// 待办——key
+  List todoKeyList = [];
+
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   onInit() {
     super.onInit();
+    initTabData();
+    // taskTypeList = ['全部', '工单服务', '审批中心', '巡查任务', '收费账单'];
+    initToDoController();
+    initFilterData();
     location();
     loadData();
+  }
+
+  /// 初始化tabData
+  initTabData() {
+    tabDataList = [
+      {
+        "title": "我执行的",
+        "key": "handleUserIds",
+      },
+      {
+        "title": "我创建的",
+        "key": "creator",
+      },
+      {
+        "title": "我经办的",
+        "key": "handledUserIds",
+      },
+      {
+        "title": "我关注的",
+        "key": "followUserIds",
+      },
+      {
+        "title": "任务大厅",
+        "key": "hallUserIds",
+      },
+    ];
+    for (var params in tabDataList) {
+      tabTitleList.add(params['title']);
+      todoKeyList.add(params['key']);
+    }
+
+    taskTypeDataList = [
+      {
+        "title": "全部",
+        "key": "",
+        "value": ""
+      },
+      {
+        "title": "工单服务",
+        "key": "WORK_ORDER",
+        "value": ""
+      },
+      {
+        "title": "巡查任务",
+        "key": "TASK",
+        "value": "2"
+      },
+    ];
+    for (var params in taskTypeDataList) {
+      taskTypeList.add(params['title']);
+      taskTypeKeyList.add(params['key']);
+      taskTypeValueList.add(params['value']);
+    }
+  }
+
+  /// 初始化todoController
+  initToDoController() {
+    for (int i = 0; i < tabTitleList.length; i++) {
+      String controllerTag = "SCWorkBenchToDoController_$i";
+      SCWorkBenchToDoController todoController =
+          Get.put(SCWorkBenchToDoController(), tag: controllerTag);
+      todoController.key = todoKeyList[i];
+      Widget view = GetBuilder<SCWorkBenchToDoController>(
+          tag: controllerTag,
+          init: todoController,
+          builder: (value) {
+            return SCWorkBenchToDoListView(
+              data: todoController.data,
+              refreshController: todoController.refreshController,
+              loadMoreAction: () {
+                todoController.getData(isMore: true);
+              },
+            );
+          });
+      todoControllerList.add(todoController);
+      todoControllerTagList.add(controllerTag);
+      tabBarViewList.add(view);
+      todoController.getData(isMore: false);
+    }
+  }
+
+  /// 更新选中的我的任务
+  int updateMyTaskSelectList(List list) {
+    myTaskSelectList = list;
+    int index = -1;
+    String value = list.first;
+    for (int i = 0; i < tabTitleList.length; i++) {
+      String subValue = tabTitleList[i];
+      if (value == subValue) {
+        index = i;
+        break;
+      }
+    }
+    update();
+    return index;
+  }
+
+  /// 更新选中的任务类型
+  updateTaskTypeSelectList(List list) {
+    taskTypeSelectList = list;
+    String value = list.first;
+    for (int i = 0; i < taskTypeDataList.length;i++) {
+      var params = taskTypeDataList[i];
+      String subValue = params['title'];
+      if (value == subValue) {
+        for (SCWorkBenchToDoController toDoController in todoControllerList) {
+          toDoController.subKey = params['key'];
+          toDoController.subValue = params['value'];
+        }
+        break;
+      }
+    }
+    update();
   }
 
   /// 更新当前工单index
@@ -135,6 +302,8 @@ class SCWorkBenchController extends GetxController {
         materialTransferAPI();
       }
     }
+
+    // getTaskData(isMore: false);
   }
 
   /// 加载更多
@@ -220,19 +389,20 @@ class SCWorkBenchController extends GetxController {
   updateNumData() {
     numDataList = [
       {
-        'number': newOrder,
-        'description': '今日新增',
-        'iconUrl': SCAsset.iconTodayAdd
+        'number': orderNum,
+        'description': '抢单大厅',
       },
       {
-        'number': processOrder,
-        'description': '进行中',
-        'iconUrl': SCAsset.iconDoing
+        'number': taskNum,
+        'description': '今日任务',
       },
       {
-        'number': myAttention,
-        'description': '我的关注',
-        'iconUrl': SCAsset.iconLike
+        'number': collectionRate,
+        'description': '收缴率',
+      },
+      {
+        'number': serviceNum,
+        'description': '今日服务业主',
       }
     ];
     update();
@@ -241,6 +411,7 @@ class SCWorkBenchController extends GetxController {
   /// 加载数据
   loadData() {
     getDefaultConfig().then((value) {
+      refreshController.refreshCompleted();
       if (value == true) {
         getUserInfo().then((subValue) {
           if (subValue == true) {
@@ -248,10 +419,19 @@ class SCWorkBenchController extends GetxController {
             waitPageNum = 1;
             processingPageNum = 1;
             updatePlateIndex(currentPlateIndex);
+            getToDoData();
           }
         });
       }
     });
+  }
+
+  /// 待办
+  getToDoData() {
+    for (int i = 0; i < todoControllerList.length; i++) {
+      SCWorkBenchToDoController toDoController = todoControllerList[i];
+      toDoController.getData(isMore: false);
+    }
   }
 
   /// 获取用户信息
@@ -333,8 +513,8 @@ class SCWorkBenchController extends GetxController {
         url: SCUrl.kWorkOrderNumberUrl,
         params: null,
         success: (value) {
-          processOrder = value['processOrder'] ?? 0;
-          newOrder = value['newOrder'] ?? 0;
+          // processOrder = value['processOrder'] ?? 0;
+          // newOrder = value['newOrder'] ?? 0;
           updateNumData();
         });
   }
@@ -1021,37 +1201,39 @@ class SCWorkBenchController extends GetxController {
     bool isShowAlert = SCSpUtil.getBool(SCKey.kIsShowSetNotificationAlert);
     PermissionStatus permissionStatus = await SCPermissionUtils.notification();
     if (permissionStatus != PermissionStatus.granted && !isShowAlert) {
-      Future.delayed(const Duration(milliseconds: 1500), () {
-        SCPermissionUtils.notificationAlert(completionHandler: (success) {
-          SCPermissionUtils.startLocationWithPrivacyAlert(
-              completionHandler: (dynamic result, SCLocationModel? model) {
-            print("定位结果:$result");
-            print("定位结果模型:${model?.toJson()}");
+      SCPermissionUtils.notificationAlert(completionHandler: (success) {
+        SCPermissionUtils.startLocationWithPrivacyAlert(
+            completionHandler: (dynamic result, SCLocationModel? model) {
+              int status = result['status'];
+              if (status == 1) {
+                double longitude = result['longitude'];
+                double latitude = result['latitude'];
+                SCScaffoldManager.instance.longitude = longitude;
+                SCScaffoldManager.instance.latitude = latitude;
+              }
+            });
+      });
+    } else {
+      SCPermissionUtils.startLocationWithPrivacyAlert(
+          completionHandler: (dynamic result, SCLocationModel? model) {
             int status = result['status'];
             if (status == 1) {
-              double longitude = result['longitude'];
-              double latitude = result['latitude'];
+              double longitude = result['longitude'] ?? 0.0;
+              double latitude = result['latitude'] ?? 0.0;
               SCScaffoldManager.instance.longitude = longitude;
               SCScaffoldManager.instance.latitude = latitude;
             }
           });
-        });
-      });
-    } else {
-      Future.delayed(const Duration(milliseconds: 1500), () {
-        SCPermissionUtils.startLocationWithPrivacyAlert(
-            completionHandler: (dynamic result, SCLocationModel? model) {
-          print("定位结果:$result");
-          print("定位结果模型:${model?.toJson()}");
-          int status = result['status'];
-          if (status == 1) {
-            double longitude = result['longitude'] ?? 0.0;
-            double latitude = result['latitude'] ?? 0.0;
-            SCScaffoldManager.instance.longitude = longitude;
-            SCScaffoldManager.instance.latitude = latitude;
-          }
-        });
-      });
+    }
+  }
+
+  /// 初始化筛选条件
+  initFilterData() {
+    myTaskSelectList = [tabTitleList.first];
+    taskTypeSelectList = [taskTypeList.first];
+    for (SCWorkBenchToDoController toDoController in todoControllerList) {
+      toDoController.subKey = "";
+      toDoController.subValue = "";
     }
   }
 

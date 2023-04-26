@@ -32,7 +32,6 @@ class SCWorkBenchView extends StatelessWidget {
       required this.height,
       required this.tabController,
       required this.tabTitleList,
-      required this.classificationList,
       this.tagAction,
       this.menuTap,
       this.onRefreshAction,
@@ -43,7 +42,10 @@ class SCWorkBenchView extends StatelessWidget {
       this.scanAction,
       this.messageAction,
       this.cardDetailAction,
-      this.headerAction})
+      this.headerAction,
+      this.searchAction,
+      this.siftAction,
+      })
       : super(key: key);
 
   /// 工作台controller
@@ -63,9 +65,6 @@ class SCWorkBenchView extends StatelessWidget {
 
   /// tab标题list
   final List tabTitleList;
-
-  /// 分类list
-  final List classificationList;
 
   /// 点击菜单
   final Function? menuTap;
@@ -100,15 +99,18 @@ class SCWorkBenchView extends StatelessWidget {
   /// 点击头像
   final Function? headerAction;
 
-  RefreshController refreshController =
-      RefreshController(initialRefresh: false);
+  /// 点击搜索
+  final Function? searchAction;
+
+  /// 点击筛选
+  final Function? siftAction;
 
   @override
   Widget build(BuildContext context) {
     return RefreshConfiguration(
         enableScrollWhenRefreshCompleted: true,
         child: SmartRefresher(
-          controller: refreshController,
+          controller: state.refreshController,
           enablePullUp: false,
           enablePullDown: true,
           header: const SCCustomHeader(
@@ -121,8 +123,8 @@ class SCWorkBenchView extends StatelessWidget {
 
   /// listView
   Widget listView() {
-    // double headerHeight = 305.0 + SCUtils().getTopSafeArea();
-    double headerHeight = 255.0 + SCUtils().getTopSafeArea();
+    //double headerHeight = 305.0 + SCUtils().getTopSafeArea();
+    double headerHeight = 235.0 + SCUtils().getTopSafeArea();
     double contentHeight = height - headerHeight;
     return ListView.separated(
         shrinkWrap: true,
@@ -144,16 +146,8 @@ class SCWorkBenchView extends StatelessWidget {
       state: state,
       height: height,
       tabTitleList: tabTitleList,
-      classificationList: classificationList,
       tabController: tabController,
       currentTabIndex: state.currentWorkOrderIndex,
-      currentTagIndex: state.currentPlateIndex,
-      tagAction: (index) {
-        tagAction?.call(index);
-      },
-      tagMenuAction: () {
-        menuTap?.call();
-      },
       switchSpaceAction: () {
         switchAction(context);
       },
@@ -169,6 +163,12 @@ class SCWorkBenchView extends StatelessWidget {
       headerAction: () {
         headerAction?.call();
       },
+      searchAction: () {
+        searchAction?.call();
+      },
+      siftAction: () {
+        siftAction?.call();
+      },
     );
   }
 
@@ -176,154 +176,20 @@ class SCWorkBenchView extends StatelessWidget {
   Widget pageView(double height) {
     Widget tabBarView = SizedBox(
       height: height,
-      child: TabBarView(controller: tabController, children: [
-        GetBuilder<SCWorkBenchListViewController>(
-            tag: waitController.tag,
-            init: waitController,
-            builder: (value) {
-              if (state.currentPlateIndex == 0) {
-                // 工单处理
-                return SCWorkBenchListView(
-                  state: state,
-                  dataList: waitController.dataList,
-                  detailAction: (SCWorkOrderModel model) {
-                    detail(model);
-                  },
-                  callAction: (String phone) {
-                    SCUtils.call(phone);
-                  },
-                );
-              } else if (state.currentPlateIndex == 1) {
-                // 实地核验
-                return SCRealVerificationListView(
-                  state: state,
-                  dataList: waitController.dataList,
-                  callAction: (phone) {
-                    callAction(phone);
-                  },
-                  doneAction: (SCVerificationOrderModel model) {
-                    verificationDoneAction(model);
-                  },
-                );
-              } else if (state.currentPlateIndex == 2) {
-                // 订单处理
-                return SCHotelListView(
-                  state: state,
-                  dataList: waitController.dataList,
-                  callAction: (phone) {
-                    callAction(phone);
-                  },
-                  doneAction: (SCHotelOrderModel model) {
-                    hotelOrderDoneAction(model);
-                  },
-                );
-              } else if (state.currentPlateIndex >= 3 &&
-                  state.currentPlateIndex <= 6) {
-                // 物资入库、物资出库、物资报损、物资调拨
-                List<SCMaterialEntryModel> list = [];
-                SCWarehouseManageType type = SCWarehouseManageType.entry;
-                bool isLast = false;
-                if (state.currentPlateIndex == 3) {
-                  // 物资入库
-                  list = waitController.materialEntryList;
-                  type = SCWarehouseManageType.entry;
-                  isLast = waitController.isEntryListLast;
-                } else if (state.currentPlateIndex == 4) {
-                  // 物资出库
-                  list = waitController.materialOutList;
-                  type = SCWarehouseManageType.outbound;
-                } else if (state.currentPlateIndex == 5) {
-                  // 物资报损
-                  list = waitController.materialReportList;
-                  type = SCWarehouseManageType.frmLoss;
-                } else if (state.currentPlateIndex == 6) {
-                  // 物资调拨
-                  list = waitController.materialTransferList;
-                  type = SCWarehouseManageType.transfer;
-                } else {
-                  // 其他
-                  list = [];
-                  type = SCWarehouseManageType.entry;
-                }
-                return SCWorkBenchMaterialListView(
-                  dataList: list,
-                  state: state,
-                  isLast: isLast,
-                  type: type,
-                  callAction: (phone) {
-                    callAction(phone);
-                  },
-                  detailAction: (subModel) {
-                    wareHouseDetail(subModel, type);
-                  },
-                  submitAction: (subModel) {
-                    materialSubmit(subModel, type);
-                  },
-                );
-              } else {
-                return const SizedBox();
-              }
-            }),
-        GetBuilder<SCWorkBenchListViewController>(
-            tag: doingController.tag,
-            init: doingController,
-            builder: (value) {
-              if (state.currentPlateIndex == 0) {
-                // 工单处理
-                return SCWorkBenchListView(
-                  state: state,
-                  dataList: doingController.dataList,
-                  isDealing: true,
-                  detailAction: (SCWorkOrderModel model) {
-                    detail(model);
-                  },
-                  callAction: (String phone) {
-                    callAction(phone);
-                  },
-                );
-              } else if (state.currentPlateIndex == 1) {
-                // 实地核验
-                return SCRealVerificationListView(
-                  state: state,
-                  dataList: doingController.dataList,
-                  callAction: (phone) {
-                    callAction(phone);
-                  },
-                  doneAction: (SCVerificationOrderModel model) {
-                    verificationDoneAction(model);
-                  },
-                );
-              } else if (state.currentPlateIndex == 2) {
-                // 订单处理
-                return SCHotelListView(
-                  state: state,
-                  dataList: doingController.dataList,
-                  callAction: (phone) {
-                    callAction(phone);
-                  },
-                  doneAction: (SCHotelOrderModel model) {
-                    hotelOrderDoneAction(model);
-                  },
-                );
-              } else if (state.currentPlateIndex >= 3 &&
-                  state.currentPlateIndex <= 6) {
-                // 物资入库、物资出库、物资报损、物资调拨
-                return SCWorkBenchEmptyView();
-              } else {
-                return const SizedBox();
-              }
-            }),
-      ]),
+      child: TabBarView(
+        controller: tabController,
+          children: state.tabBarViewList
+      ),
     );
     return tabBarView;
   }
 
   /// 下拉刷新
   Future onRefresh() async {
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      refreshController.refreshCompleted();
-      onRefreshAction?.call();
-    });
+    onRefreshAction?.call();
+    // Future.delayed(const Duration(milliseconds: 1500), () {
+    //   refreshController.refreshCompleted();
+    // });
   }
 
   /// 切换空间

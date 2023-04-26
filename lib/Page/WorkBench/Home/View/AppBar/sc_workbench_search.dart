@@ -5,10 +5,11 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 /// 搜索框
 
 class SCWorkBenchSearch extends StatelessWidget {
-  const SCWorkBenchSearch(
-      {Key? key, this.searchAction, this.scanAction, this.messageAction})
+  SCWorkBenchSearch(
+      {Key? key,  required this.unreadNum, this.searchAction, this.scanAction, this.messageAction})
       : super(key: key);
 
+  final int unreadNum;
   /// 搜索
   final Function? searchAction;
 
@@ -18,6 +19,9 @@ class SCWorkBenchSearch extends StatelessWidget {
   /// 消息详情
   final Function? messageAction;
 
+  /// 未读组件高出消息icon8.0
+  double topOffset = 8.0;
+
   @override
   Widget build(BuildContext context) {
     return body();
@@ -25,9 +29,12 @@ class SCWorkBenchSearch extends StatelessWidget {
 
   /// body
   Widget body() {
-    return Padding(
+    return Container(
+      height: 36.0 + topOffset,
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           searchItem(),
           const SizedBox(
@@ -37,7 +44,7 @@ class SCWorkBenchSearch extends StatelessWidget {
           const SizedBox(
             width: 12.0,
           ),
-          bellIcon()
+          messageItem()
         ],
       ),
     );
@@ -46,7 +53,7 @@ class SCWorkBenchSearch extends StatelessWidget {
   /// 搜索框
   Widget searchItem() {
     return Expanded(
-        child: GestureDetector(
+      child: GestureDetector(
       onTap: () {
         searchAction?.call();
       },
@@ -54,7 +61,7 @@ class SCWorkBenchSearch extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         height: 36.0,
         decoration: BoxDecoration(
-            color: SCColors.color_E3E3E6,
+            color: SCColors.color_E3E3E5,
             borderRadius: BorderRadius.circular(18.0)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -105,6 +112,31 @@ class SCWorkBenchSearch extends StatelessWidget {
     );
   }
 
+  Widget messageItem() {
+    if (unreadNum > 0) {
+      return SizedBox(
+        width: 36.0,
+        height: 36.0 + topOffset,
+        child: Stack(
+          alignment: Alignment.topRight,
+          children: [
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: bellIcon(),),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: unreadItem(),)
+          ],
+        ),
+      );
+    } else {
+      return bellIcon();
+    }
+  }
+
   /// 铃铛
   Widget bellIcon() {
     return GestureDetector(
@@ -122,6 +154,31 @@ class SCWorkBenchSearch extends StatelessWidget {
           SCAsset.iconGreyBell,
           width: 24.0,
           height: 24.0,
+        ),
+      ),
+    );
+  }
+
+  /// 未读数量
+  Widget unreadItem() {
+    String text = unreadNum > 99 ? '99+' : '$unreadNum';
+    return Offstage(
+      offstage: unreadNum == 0,
+      child: Container(
+        height: 14.0,
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: SCColors.color_FF4040,
+            borderRadius: BorderRadius.circular(7.0)),
+        child: Text(
+          text,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+              fontSize: SCFonts.f10,
+              fontWeight: FontWeight.w400,
+              color: SCColors.color_FFFFFF),
         ),
       ),
     );

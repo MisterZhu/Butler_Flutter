@@ -95,8 +95,7 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
   Widget listView() {
     return ListView.separated(
         physics: const ClampingScrollPhysics(),
-        padding:
-            const EdgeInsets.only(left: 16.0, right: 16.0, top: 0, bottom: 0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           SCWorkOrderModel model = widget.dataList[index];

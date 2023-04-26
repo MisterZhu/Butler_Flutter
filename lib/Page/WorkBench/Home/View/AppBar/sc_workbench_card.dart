@@ -19,54 +19,54 @@ class SCWorkBenchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 86.0,
-      child: StaggeredGridView.countBuilder(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-          ),
-          mainAxisSpacing: 0.0,
-          crossAxisSpacing: 11.0,
-          crossAxisCount: 3,
-          shrinkWrap: true,
-          itemCount: data.length,
-          scrollDirection: Axis.vertical,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return card(index);
-          },
-          staggeredTileBuilder: (int index) {
-            return const StaggeredTile.fit(1);
-          }),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: Container(
+        height: 74.0,
+        decoration: BoxDecoration(
+            color: SCColors.color_FFFFFF,
+            borderRadius: BorderRadius.circular(4.0)),
+        child: StaggeredGridView.countBuilder(
+            padding: EdgeInsets.zero,
+            mainAxisSpacing: 0.0,
+            crossAxisSpacing: 10.0,
+            crossAxisCount: 4,
+            shrinkWrap: true,
+            itemCount: data.length,
+            scrollDirection: Axis.vertical,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return card(index);
+            },
+            staggeredTileBuilder: (int index) {
+              return const StaggeredTile.fit(1);
+            }),
+      ),
     );
   }
 
   /// 卡片
   Widget card(int index) {
     var map = data[index];
-    int num = map['number'];
-    String iconUrl = map['iconUrl'];
+    num number = map['number'];
     String description = map['description'];
     return GestureDetector(
       onTap: () {
         onTap?.call(index);
       },
       child: Container(
-        height: 84.0,
-        padding: const EdgeInsets.only(left: 12.0),
+        height: 74.0,
+        //padding: const EdgeInsets.only(left: 12.0),
         alignment: Alignment.center,
-        decoration: BoxDecoration(
-            color: SCColors.color_FFFFFF,
-            borderRadius: BorderRadius.circular(4.0)),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            numberItem(num),
+            numberItem(number, index == 2 ? '%': ''),
             const SizedBox(
-              height: 8.0,
+              height: 4.0,
             ),
-            descriptionItem(description, iconUrl),
+            descriptionItem(description),
           ],
         ),
       ),
@@ -74,40 +74,38 @@ class SCWorkBenchCard extends StatelessWidget {
   }
 
   /// 数量item
-  Widget numberItem(int num) {
+  Widget numberItem(num number, String rightText) {
+    return RichText(
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        textAlign: TextAlign.center,
+        text: TextSpan(
+            text: '$number',
+            style: const TextStyle(
+                fontSize: SCFonts.f22,
+                color: SCColors.color_1B1D33,
+                fontWeight: FontWeight.w700),
+            children: [
+              TextSpan(
+                  text: rightText,
+                  style: const TextStyle(
+                      fontSize: SCFonts.f15,
+                      color: SCColors.color_1B1D33,
+                      fontWeight: FontWeight.w400))
+            ]));
+  }
+
+
+  /// 描述
+  Widget descriptionItem(String value) {
     return Text(
-      '$num',
+      value,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: const TextStyle(
-          fontSize: SCFonts.f22,
-          fontWeight: FontWeight.w700,
-          color: SCColors.color_1B1D33),
-    );
-  }
-
-  /// 描述
-  Widget descriptionItem(String value, String url) {
-    return Row(
-      children: [
-        Image.asset(
-          url,
-          width: 20.0,
-          height: 20.0,
-        ),
-        const SizedBox(
-          width: 6.0,
-        ),
-        Expanded(child: Text(
-          value,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-              fontSize: SCFonts.f14,
-              fontWeight: FontWeight.w400,
-              color: SCColors.color_5E5F66),
-        ))
-      ],
+          fontSize: SCFonts.f12,
+          fontWeight: FontWeight.w400,
+          color: SCColors.color_5E5F66),
     );
   }
 }

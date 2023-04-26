@@ -1,7 +1,10 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../Skin/Tools/sc_scaffold_manager.dart';
@@ -18,12 +21,14 @@ class SCTaskPage extends StatefulWidget {
 
 class SCTaskPageState extends State<SCTaskPage> {
 
-
   /// SCTaskController
   late SCTaskController controller;
 
   /// SCMessageController - tag
   String controllerTag = '';
+
+  /// RefreshController
+  RefreshController refreshController = RefreshController(initialRefresh: false);
 
   @override
   initState() {
@@ -37,6 +42,7 @@ class SCTaskPageState extends State<SCTaskPage> {
   dispose() {
     SCScaffoldManager.instance.deleteGetXControllerTag((SCTaskPage).toString(), controllerTag);
     controller.dispose();
+    refreshController.dispose();
     super.dispose();
   }
 
@@ -60,7 +66,7 @@ class SCTaskPageState extends State<SCTaskPage> {
           tag: controllerTag,
           init: controller,
           builder: (state) {
-            return SCTaskListView(state: state);
+            return SCTaskListView(state: state, refreshController: refreshController,);
           }),
     );
   }

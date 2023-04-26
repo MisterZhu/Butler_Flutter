@@ -80,6 +80,12 @@ class SCAsset {
   static const String iconWorkBenchEmpty = "images/common/icon_work_bench_empty.png";
 
   /*********************** 首页 ************************/
+  /// 首页-任务筛选
+  static const String iconWorkBenchTaskSift = "images/common/icon_task_sift.png";
+
+  /// 工作台-搜索-历史记录-清空icon
+  static const String iconSearchHistoryClear = "images/common/icon_search_history_clear.png";
+
   /// 首页弹窗-关闭icon
   static const String iconHomeAlertClose = "images/home/icon_alert_close.png";
 

@@ -28,6 +28,9 @@ class SCKey {
   static const String kH5Channel = "SCCHANNEL";
   /// 抓包key
   static const String kProxyMap = "kProxyMap";
+  /// 工作台-搜索历史记录key
+  static const String kWorkBenchSearchHistory = "kWorkBenchSearchHistory";
+
   /// 仓储-刷新物资入库页面
   static const String kRefreshMaterialEntryPage = "kRefreshMaterialEntryPage";
   /// 仓储-刷新物资出库页面
@@ -56,4 +59,6 @@ class SCKey {
   static const String kRefreshPatrolPage = "kRefreshPatrolPage";
   /// 巡查详情
   static const String kRefreshPatrolDetailPage = "kRefreshPatrolDetailPage";
+  /// 刷新工作台
+  static const String kRefreshWorkBenchPage = "kRefreshWorkBenchPage";
 }
