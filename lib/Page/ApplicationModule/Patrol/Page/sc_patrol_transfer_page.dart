@@ -9,6 +9,7 @@ import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../HouseInspect/View/sc_bottom_button_item.dart';
 import '../../MaterialOutbound/Controller/sc_select_department_controller.dart';
 import '../Controller/sc_patrol_transfer_controller.dart';
+import '../Other/sc_patrol_utils.dart';
 import '../View/Transfer/sc_patrol_transfer_view.dart';
 
 /// 巡查-转派page
@@ -26,11 +27,6 @@ class SCPatrolTransferPageState extends State<SCPatrolTransferPage>
   /// SCPatrolTransferController - tag
   String controllerTag = '';
 
-  /// SCSelectDepartmentController
-  late SCSelectDepartmentController selectDepartmentController;
-
-  /// SCSelectDepartmentController - tag
-  String selectDepartmentControllerTag = '';
 
   @override
   initState() {
@@ -38,21 +34,13 @@ class SCPatrolTransferPageState extends State<SCPatrolTransferPage>
     controllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCPatrolTransferPage).toString());
     controller = Get.put(SCPatrolTransferController(), tag: controllerTag);
-    selectDepartmentControllerTag = SCScaffoldManager.instance
-        .getXControllerTag((SCPatrolTransferPage).toString());
-    selectDepartmentController = Get.put(SCSelectDepartmentController(),
-        tag: selectDepartmentControllerTag);
-    selectDepartmentController.tag = selectDepartmentControllerTag;
   }
 
   @override
   dispose() {
     SCScaffoldManager.instance
         .deleteGetXControllerTag(pageName(), controllerTag);
-    SCScaffoldManager.instance
-        .deleteGetXControllerTag(pageName(), selectDepartmentControllerTag);
     controller.dispose();
-    selectDepartmentController.dispose();
     super.dispose();
   }
 
@@ -81,10 +69,7 @@ class SCPatrolTransferPageState extends State<SCPatrolTransferPage>
             tag: controllerTag,
             init: controller,
             builder: (state) {
-              return SCPatrolTransferView(
-                controller: controller,
-                selectDepartmentController: selectDepartmentController,
-              );
+              return SCPatrolTransferView(state: state,);
             }));
   }
 
@@ -96,7 +81,6 @@ class SCPatrolTransferPageState extends State<SCPatrolTransferPage>
       tapAction: () {
         if (checkForm()) {
           SCRouterHelper.back({
-            "departmentId": controller.departmentId,
             "userId": controller.userId
           });
         }
@@ -106,10 +90,6 @@ class SCPatrolTransferPageState extends State<SCPatrolTransferPage>
 
   /// 检查表单
   bool checkForm() {
-    if (controller.departmentId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectPatrolDepartment);
-      return false;
-    }
     if (controller.userId.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectPatrolUser);
       return false;

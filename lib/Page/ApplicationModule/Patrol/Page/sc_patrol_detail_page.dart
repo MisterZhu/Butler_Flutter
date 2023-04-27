@@ -142,19 +142,24 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
       print("转派人===$data");
       if (data.containsKey("userId")) {
         String userId = data['userId'];
-        patrolUtils.transfer(userId);
+        patrolUtils.transfer(userId: userId, isDetailPage: true);
       }
     }
   }
 
   /// 回退
   rollBack() {
-    patrolUtils.rollBack();
+    // 先请求回退节点接口
+    patrolUtils.getNodeData(result: (value) {
+      if (value == true) {
+        patrolUtils.rollBack(isDetailPage: true);
+      }
+    });
   }
 
   /// 处理
   deal() {
-    patrolUtils.deal();
+    patrolUtils.deal(isDetailPage: true);
   }
 
   /// 添加日志
@@ -164,7 +169,7 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
 
   /// 关闭
   close() {
-    patrolUtils.close();
+    patrolUtils.close(isDetailPage: true);
   }
 
   /// pageName

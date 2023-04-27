@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import '../../../../../Constants/sc_default_value.dart';
@@ -11,236 +12,135 @@ import '../../../MaterialEntry/View/SelectCategoryAlert/sc_add_material_selectca
 import '../../../MaterialOutbound/Controller/sc_select_department_controller.dart';
 import '../../../MaterialOutbound/Model/sc_receiver_model.dart';
 import '../../Controller/sc_patrol_transfer_controller.dart';
+import '../../Model/sc_tenant_user_model.dart';
 
 /// 转派view
 
 class SCPatrolTransferView extends StatefulWidget {
   /// SCPatrolTransferController
-  final SCPatrolTransferController controller;
-
-  /// SCSelectDepartmentController
-  final SCSelectDepartmentController selectDepartmentController;
+  final SCPatrolTransferController state;
 
   const SCPatrolTransferView(
       {Key? key,
-      required this.controller,
-      required this.selectDepartmentController})
-      : super(key: key);
+      required this.state,}) : super(key: key);
 
   @override
   SCPatrolTransferViewState createState() => SCPatrolTransferViewState();
 }
 
 class SCPatrolTransferViewState extends State<SCPatrolTransferView> {
+
+  /// RefreshController
+  RefreshController refreshController = RefreshController(initialRefresh: false);
+
   @override
   Widget build(BuildContext context) {
-    return body();
+    return listView();
   }
 
-  /// body
-  Widget body() {
-    return ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == 0) {
-            return cell1();
+  /// listView
+  Widget listView() {
+    return SmartRefresher(
+        controller: refreshController,
+        enablePullUp: true,
+        enablePullDown: true,
+        header: const SCCustomHeader(
+          style: SCCustomHeaderStyle.noNavigation,
+        ),
+        onRefresh: onRefresh,
+        onLoading: loadMore,
+        child: ListView.separated(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            return cell(index);
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox(height: 10.0,);
+          },
+          itemCount: widget.state.dataList.length));
+  }
+
+  /// cell
+  Widget cell(int index) {
+    SCTenantUserModel model = widget.state.dataList[index];
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          if (model.id == widget.state.userId) {
+            widget.state.userId = '';
           } else {
-            return cell2();
+            widget.state.userId = model.id ?? '';
           }
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(
-            height: 10.0,
-          );
-        },
-        itemCount: 2);
-  }
-
-  /// cell1
-  Widget cell1() {
-    SCUIDetailCellModel model = SCUIDetailCellModel.fromJson({
-      "type": 7,
-      "title": '选择部门',
-      "subTitle": '',
-      "content": widget.controller.department,
-      "subContent": '',
-      "rightIcon": SCAsset.iconArrowRight
-    });
-    return SCDetailCell(
-      list: [model],
-      detailAction: (int index) {
-        selectCompany();
+        });
       },
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        height: 70.0,
+        padding: const EdgeInsets.only(left: 12.0, right: 13.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4.0),
+          color: SCColors.color_FFFFFF,),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(model.id == widget.state.userId ? SCAsset.iconMaterialSelected : SCAsset.iconMaterialUnselect, width: 22.0, height: 22.0),
+            const SizedBox(width: 12.0,),
+            Expanded(child: middleItem(name: model.userName ?? '', mobile: model.mobileNum ?? '')),
+          ],
+        ),
+      ),
     );
   }
 
-  /// cell2
-  Widget cell2() {
-    SCUIDetailCellModel model = SCUIDetailCellModel.fromJson({
-      "type": 7,
-      "title": '选择人员',
-      "subTitle": '',
-      "content": widget.controller.user,
-      "subContent": '',
-      "rightIcon": SCAsset.iconArrowRight
-    });
-    return SCDetailCell(
-      list: [model],
-      detailAction: (int index) {
-        selectUser();
-      },
+  /// 姓名、手机号
+  Widget middleItem({required String name, String? mobile}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          name,
+          textAlign: TextAlign.left,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            fontSize: SCFonts.f16,
+            color: SCColors.color_1B1D33,
+            fontWeight: FontWeight.w400,
+          ),),
+        const SizedBox(height: 2.0,),
+        Text(
+          mobile ?? '',
+          textAlign: TextAlign.left,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            fontSize: SCFonts.f14,
+            color: SCColors.color_4285F4,
+            fontWeight: FontWeight.w400,
+          ),)
+      ],
     );
   }
 
-  /// 选择部门
-  selectCompany() {
-    widget.selectDepartmentController.loadDataList(
-        completeHandler: (success, list) {
-      widget.selectDepartmentController.initHeaderData();
-      widget.selectDepartmentController.footerList = list;
-      if (success) {
-        SCDialogUtils().showCustomBottomDialog(
-            context: context,
-            isDismissible: true,
-            widget: GetBuilder<SCSelectDepartmentController>(
-                tag: widget.selectDepartmentController.tag,
-                init: widget.selectDepartmentController,
-                builder: (value) {
-                  return SCSelectCategoryAlert(
-                    title: '选择部门',
-                    headerList: widget.selectDepartmentController.headerList,
-                    footerList: widget.selectDepartmentController.footerList,
-                    headerTap: (int index, SCSelectCategoryModel model) {
-                      headerAction(index, model);
-                    },
-                    footerTap: (int index, SCSelectCategoryModel model) {
-                      footerAction(index, model);
-                    },
-                    onSure: () {
-                      sureSelectDepartment();
-                    },
-                  );
-                }));
+
+  /// 下拉刷新
+  Future onRefresh() async {
+    widget.state.loadDataList(isMore: false, completeHandler: (bool success, bool last){
+      refreshController.refreshCompleted();
+      refreshController.loadComplete();
+    });
+  }
+
+  /// 上拉加载
+  void loadMore() async{
+    widget.state.loadDataList(isMore: true, completeHandler: (bool success, bool last){
+      if (last) {
+        refreshController.loadNoData();
+      } else {
+        refreshController.loadComplete();
       }
     });
   }
 
-  /// 点击header
-  headerAction(int index, SCSelectCategoryModel model) {
-    if (index == 0) {
-      widget.selectDepartmentController.initHeaderData();
-      widget.selectDepartmentController.childrenList =
-          widget.selectDepartmentController.treeList;
-      List<SCSelectCategoryModel> list = [];
-      for (SCSelectCategoryTreeModel subModel
-          in widget.selectDepartmentController.treeList) {
-        String orgName = subModel.orgName ?? '';
-        String subId = subModel.id ?? '';
-        var subParams = {
-          "enable": true,
-          "title": orgName,
-          "id": subId,
-          "parentList": [],
-          "childList": subModel.children
-        };
-        SCSelectCategoryModel selectCategoryModel =
-            SCSelectCategoryModel.fromJson(subParams);
-        list.add(selectCategoryModel);
-      }
-      widget.selectDepartmentController.footerList = list;
-      widget.selectDepartmentController.update();
-    } else {
-      SCSelectCategoryModel subModel =
-          widget.selectDepartmentController.headerList[index - 1];
-      List list = subModel.childList ?? [];
-      List<SCSelectCategoryModel> newList = [];
-      for (SCSelectCategoryTreeModel childModel in list) {
-        String orgName = childModel.orgName ?? '';
-        String subId = childModel.id ?? '';
-        var subParams = {
-          "enable": true,
-          "title": orgName,
-          "id": subId,
-          "parentList": [],
-          "childList": childModel.children
-        };
-        SCSelectCategoryModel selectCategoryModel =
-            SCSelectCategoryModel.fromJson(subParams);
-        newList.add(selectCategoryModel);
-      }
-
-      List treeList = subModel.childList ?? [];
-      List<SCSelectCategoryTreeModel> newTreeList = [];
-      for (SCSelectCategoryTreeModel treeModel in treeList) {
-        newTreeList.add(treeModel);
-      }
-
-      widget.selectDepartmentController.childrenList = newTreeList;
-      widget.selectDepartmentController.footerList = newList;
-      widget.selectDepartmentController.headerList =
-          widget.selectDepartmentController.headerList.sublist(0, index);
-      SCSelectCategoryModel model = SCSelectCategoryModel.fromJson(
-          {"enable": false, "title": "请选择", "id": ""});
-      widget.selectDepartmentController.headerList.add(model);
-      widget.selectDepartmentController.update();
-    }
-  }
-
-  /// 点击footer
-  footerAction(int index, SCSelectCategoryModel model) {
-    SCSelectCategoryTreeModel treeModel =
-        widget.selectDepartmentController.childrenList[index];
-    List<SCSelectCategoryTreeModel> childrenList = treeModel.children ?? [];
-    List<SCSelectCategoryModel> subList = [];
-
-    for (SCSelectCategoryTreeModel subChildrenModel in childrenList) {
-      String orgName = subChildrenModel.orgName ?? '';
-      String subId = subChildrenModel.id ?? '';
-      var subParams = {
-        "enable": true,
-        "title": orgName,
-        "id": subId,
-        "parentList": widget.selectDepartmentController.childrenList,
-        "childList": subChildrenModel.children
-      };
-
-      SCSelectCategoryModel selectCategoryModel =
-          SCSelectCategoryModel.fromJson(subParams);
-      subList.add(selectCategoryModel);
-    }
-
-    model.parentList = widget.selectDepartmentController.childrenList;
-    widget.selectDepartmentController.childrenList = childrenList;
-    widget.selectDepartmentController.updateHeaderData(model);
-    widget.selectDepartmentController.updateFooterData(subList);
-  }
-
-  /// 确定选择报损部门
-  sureSelectDepartment() {
-    widget.controller.updateDepartmentInfo(widget.selectDepartmentController.currentDepartmentModel);
-  }
-
-  /// 选择人
-  selectUser() async {
-    if (widget.controller.departmentId.isEmpty) {
-      SCToast.showTip(SCDefaultValue.selectPatrolDepartment);
-    } else {
-      /// 转派人
-      SCReceiverModel receiverModel = SCReceiverModel.fromJson({
-        "personId": widget.controller.userId,
-        "personName": widget.controller.user
-      });
-      var params = {
-        'receiverModel': receiverModel,
-        'orgId': widget.controller.departmentId,
-        'title': '选择转派人员',
-      };
-      var backParams = await SCRouterHelper.pathPage(
-          SCRouterPath.selectReceiverPage, params);
-      if (backParams != null) {
-        widget.controller.updateUserInfo(backParams['receiverModel']);
-      }
-    }
-  }
 }

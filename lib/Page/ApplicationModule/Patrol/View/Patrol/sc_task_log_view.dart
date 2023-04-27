@@ -2,6 +2,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import '../../../../../Network/sc_config.dart';
+import '../../../../../Utils/Preview/sc_image_preview_utils.dart';
 import '../../Controller/sc_task_log_controller.dart';
 import '../../Model/sc_task_log_model.dart';
 
@@ -149,8 +151,7 @@ class SCTaskLogView extends StatelessWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          Data data = list[index];
-          return textItem(data.text ?? '', false);
+          return textItem(list[index] ?? '', false);
         },
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 20.0,);
@@ -179,9 +180,12 @@ class SCTaskLogView extends StatelessWidget {
       for (int i = 0; i < (model.content?.options ?? []).length; i++) {
         Options? option = model.content?.options![i];
         if (option?.data?.type == 'TEXT') {
-          textList.add(option?.data);
+          textList.add(option?.data?.text);
         } else if (option?.data?.type == 'FILE') {
-          imageList.add(option?.data);
+          if (option?.data?.fileUrl != '') {
+            String url = SCConfig.getImageUrl(option?.data?.fileUrl ?? '');
+            imageList.add(url);
+          }
         }
       }
       return Padding(
@@ -206,12 +210,18 @@ class SCTaskLogView extends StatelessWidget {
     }
   }
 
+  /// 图片item
   Widget imagesItem(List list) {
     if (list.isNotEmpty) {
-      return SizedBox();
-
+      return SCImagesCell(
+        list: list,
+        contentPadding: EdgeInsets.zero,
+        onTap: (int imageIndex, List imageList) {
+          SCImagePreviewUtils.previewImage(imageList: [imageList[imageIndex]]);
+        },
+      );
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
 }

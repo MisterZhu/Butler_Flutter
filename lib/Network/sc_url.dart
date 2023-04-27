@@ -395,5 +395,10 @@ class SCUrl {
   static const String kPatrolTaskLogUrl = "/api/bpm/log/list";
   /// 处理任务
   static const String kDealTaskUrl = "/api/quality/process/task/handler";
-
+  /// 是否需要扫码
+  static const String kNeedScanUrl = "/api/quality/process/task/handlerScanCode";
+  /// 转派人列表
+  static const String kTransferUserListUrl = "/api/user/info/pageByTenantIdAndOrgIdCommonTenant";
+  /// 所有可回退的审批任务节点
+  static const String kTaskRecallNodeUrl = "/api/task/process/task/recall/nodes";
 }

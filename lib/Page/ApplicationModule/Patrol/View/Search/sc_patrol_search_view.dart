@@ -242,7 +242,7 @@ class SCSearchPatrolViewState extends State<SCSearchPatrolView> {
         // detailAction();
       },
       btnTapAction: () {
-        // dealAction();
+        dealAction(model.taskId ?? '', model.procInstId ?? '');
       },
     );
   }
@@ -299,7 +299,10 @@ class SCSearchPatrolViewState extends State<SCSearchPatrolView> {
   }
 
   /// 处理
-  dealAction(SCWarningCenterModel centerModel) {
-    SCPatrolUtils().deal();
+  dealAction(String taskId, String procInstId) {
+    SCPatrolUtils patrolUtils = SCPatrolUtils();
+    patrolUtils.taskId = taskId;
+    patrolUtils.procInstId = procInstId;
+    patrolUtils.deal();
   }
 }

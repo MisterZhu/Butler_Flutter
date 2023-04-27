@@ -19,6 +19,7 @@ import '../../../WarningCenter/Other/sc_warning_utils.dart';
 import '../../../WarningCenter/View/Alert/sc_warningtype_alert.dart';
 import '../../Controller/sc_patrol_controller.dart';
 import '../../Model/sc_patrol_task_model.dart';
+import '../../Other/sc_patrol_utils.dart';
 import '../Alert/sc_deal_alert.dart';
 
 /// 巡查view
@@ -225,7 +226,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
         detailAction(widget.state.dataList[index]);
       },
       btnTapAction: () {
-        dealAction();
+        dealAction(model.taskId ?? '', model.procInstId ?? '');
       },
     );
   }
@@ -319,8 +320,11 @@ class SCPatrolViewState extends State<SCPatrolView> {
   }
 
   /// 处理
-  dealAction() {
-
+  dealAction(String taskId, String procInstId) {
+    SCPatrolUtils patrolUtils = SCPatrolUtils();
+    patrolUtils.taskId = taskId;
+    patrolUtils.procInstId = procInstId;
+    patrolUtils.deal();
   }
 
   /// 详情

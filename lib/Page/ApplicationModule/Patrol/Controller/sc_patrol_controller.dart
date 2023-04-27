@@ -187,12 +187,10 @@ class SCPatrolController extends GetxController {
 
   /// 任务状态
   getTaskStatusData() {
-    SCLoadingUtils.show();
     SCHttpManager.instance.get(
         url: SCUrl.kConfigDictionaryPidCodeUrl,
         params: {'dictionaryCode': 'CUSTOM_STATUS'},
         success: (value) {
-          SCLoadingUtils.hide();
           List<SCWarningDealResultModel> list = List<
               SCWarningDealResultModel>.from(
               value.map((e) => SCWarningDealResultModel.fromJson(e)).toList());
