@@ -34,6 +34,8 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
   /// notify
   late StreamSubscription subscription;
 
+  late SCPatrolUtils patrolUtils;
+
   @override
   initState() {
     super.initState();
@@ -41,6 +43,9 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
         .getXControllerTag((SCPatrolDetailPage).toString());
     controller = Get.put(SCPatrolDetailController(), tag: controllerTag);
     controller.initParams(Get.arguments);
+    patrolUtils = SCPatrolUtils();
+    patrolUtils.taskId = controller.taskId;
+    patrolUtils.procInstId = controller.procInstId;
     addNotification();
   }
 
@@ -122,7 +127,7 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
     } else if (name == '回退') {
       rollBack();
     } else if (name == '关闭') {
-
+      close();
     } else if (name == '处理') {
       deal();
     } else if (name == '转派') {
@@ -131,24 +136,35 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
   }
 
   /// 转派
-  transfer() {
-    SCRouterHelper.pathPage(SCRouterPath.patrolTransferPage, null);
+  transfer() async {
+    var data = await SCRouterHelper.pathPage(SCRouterPath.patrolTransferPage, null);
+    if (data != null) {
+      print("转派人===$data");
+      if (data.containsKey("userId")) {
+        String userId = data['userId'];
+        patrolUtils.transfer(userId);
+      }
+    }
   }
 
   /// 回退
   rollBack() {
-    SCPatrolUtils().rollBack();
+    patrolUtils.rollBack();
   }
 
   /// 处理
   deal() {
-    controller.dealTask(action: "handle", dealChannel: 1);
-    // SCPatrolUtils().deal('', 0, 0);
+    patrolUtils.deal();
   }
 
   /// 添加日志
   addLog() {
-    SCPatrolUtils().addLog();
+    patrolUtils.addLog();
+  }
+
+  /// 关闭
+  close() {
+    patrolUtils.close();
   }
 
   /// pageName

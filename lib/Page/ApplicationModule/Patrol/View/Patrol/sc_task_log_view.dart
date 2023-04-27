@@ -142,21 +142,20 @@ class SCTaskLogView extends StatelessWidget {
     );
   }
 
-  /// optionsItem
-  Widget optionsItem(int section) {
-    SCTaskLogModel model = state.dataList[section];
+  /// textListView
+  Widget textListView(List list) {
     return ListView.separated(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          Options? option = model.content?.options![index];
-          return textItem(option?.data?.text ?? '', false);
+          Data data = list[index];
+          return textItem(data.text ?? '', false);
         },
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 20.0,);
         },
-        itemCount: model.content?.options!.length ?? 0);
+        itemCount: list.length);
   }
 
   /// textItem
@@ -174,7 +173,17 @@ class SCTaskLogView extends StatelessWidget {
   /// contentItem
   Widget contentItem(int section) {
     SCTaskLogModel model = state.dataList[section];
+    List textList = [];
+    List imageList = [];
     if ((model.content?.options ?? []).isNotEmpty) {
+      for (int i = 0; i < (model.content?.options ?? []).length; i++) {
+        Options? option = model.content?.options![i];
+        if (option?.data?.type == 'TEXT') {
+          textList.add(option?.data);
+        } else if (option?.data?.type == 'FILE') {
+          imageList.add(option?.data);
+        }
+      }
       return Padding(
         padding: const EdgeInsets.only(top: 4.0),
         child: Container(
@@ -185,15 +194,24 @@ class SCTaskLogView extends StatelessWidget {
           ),
           child: Column(
             children: [
-              optionsItem(section),
+              textListView(textList),
               const SizedBox(height: 10.0,),
-
+              imagesItem(imageList),
             ],
           ),
         ),
       );
     } else {
       return const SizedBox();
+    }
+  }
+
+  Widget imagesItem(List list) {
+    if (list.isNotEmpty) {
+      return SizedBox();
+
+    } else {
+      return SizedBox();
     }
   }
 }

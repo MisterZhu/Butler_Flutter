@@ -132,22 +132,39 @@ class Data {
   Data({
     this.text,
     this.type,
-    this.wrap,});
+    this.wrap,
+    this.fileKey,
+    this.fileUrl,
+    this.fileName,
+    this.suffix,
+  });
 
   Data.fromJson(dynamic json) {
     text = json['text'];
     type = json['type'];
     wrap = json['wrap'];
+    fileKey = json['fileKey'];
+    fileUrl = json['fileUrl'];
+    fileName = json['fileName'];
+    suffix = json['suffix'];
   }
   String? text;
   String? type;
   bool? wrap;
+  String? fileKey;
+  String? fileUrl;
+  String? fileName;
+  String? suffix;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['text'] = text;
     map['type'] = type;
     map['wrap'] = wrap;
+    map['fileKey'] = fileKey;
+    map['fileUrl'] = fileUrl;
+    map['fileName'] = fileName;
+    map['suffix'] = suffix;
     return map;
   }
 

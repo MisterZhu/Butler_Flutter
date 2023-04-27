@@ -300,6 +300,6 @@ class SCSearchPatrolViewState extends State<SCSearchPatrolView> {
 
   /// 处理
   dealAction(SCWarningCenterModel centerModel) {
-    SCPatrolUtils().deal('', 0, 0);
+    SCPatrolUtils().deal();
   }
 }
