@@ -146,7 +146,11 @@ class SCWorkBenchController extends GetxController {
   initTabData() {
     tabDataList = [
       {
-        "title": "我执行的",
+        "title": "任务大厅",
+        "key": "hallUserIds",
+      },
+      {
+        "title": "我待办的",
         "key": "handleUserIds",
       },
       {
@@ -160,10 +164,6 @@ class SCWorkBenchController extends GetxController {
       {
         "title": "我关注的",
         "key": "followUserIds",
-      },
-      {
-        "title": "任务大厅",
-        "key": "hallUserIds",
       },
     ];
     for (var params in tabDataList) {
