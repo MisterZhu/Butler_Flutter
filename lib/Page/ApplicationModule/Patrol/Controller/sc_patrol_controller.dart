@@ -96,14 +96,14 @@ class SCPatrolController extends GetxController {
       SCLoadingUtils.show();
     }
     List fields = [];
-    if (typeIndex1 >= 0) {// 类型
+    if (typeIndex1 >= 0) {// 分类
       SCWarningDealResultModel model1 = typeList[typeIndex1];
       if (typeIndex2 >= 0) {
         SCWarningDealResultModel model2 = model1.pdictionary![typeIndex2];
         var dic = {
           "map": {},
           "method": 1,
-          "name": "childrenIdList",
+          "name": "wt.categoryId",
           "value": [model2.id]
         };
         fields.add(dic);
@@ -115,7 +115,7 @@ class SCPatrolController extends GetxController {
         var dic = {
           "map": {},
           "method": 1,
-          "name": "childrenIdList",
+          "name": "wt.categoryId",
           "value": idList
         };
         fields.add(dic);
@@ -126,8 +126,8 @@ class SCPatrolController extends GetxController {
       var dic = {
         "map": {},
         "method": 1,
-        "name": "a.status",
-        "value": model.code
+        "name": "wf.name",
+        "value": model.name
       };
       fields.add(dic);
     }
@@ -135,7 +135,7 @@ class SCPatrolController extends GetxController {
       var dic = {
         "map": {},
         "method": 1,
-        "name": "a.community_id",
+        "name": "wt.suitableTargetId",
         "value": communityId
       };
       fields.add(dic);

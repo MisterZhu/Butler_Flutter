@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_todo_model.dart';
+import 'package:smartcommunity/Page/WorkBench/Other/sc_todo_utils.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 
 import '../../../../../Constants/sc_h5.dart';
@@ -67,6 +68,8 @@ class SCWorkBenchToDoListView extends StatelessWidget {
   /// cell
   Widget getCell(int index) {
     SCToDoModel model = data[index];
+    // todo 暂时固定
+    model.statusValue = '2';
     String status = model.statusValue ?? '0';
     return SCTaskCardCell(
       timeType: index,
@@ -82,7 +85,7 @@ class SCWorkBenchToDoListView extends StatelessWidget {
       btnText: SCUtils.getWorkOrderButtonText(int.parse(status.isEmpty ? '0' : status)),
       hideBtn: false,
       btnTapAction: () {
-        detailAction(model);
+        SCToDoUtils().deal(model);
       },
     );
   }
@@ -102,20 +105,20 @@ class SCWorkBenchToDoListView extends StatelessWidget {
     // });
   }
 
-  /// 详情
-  detailAction(SCToDoModel model) async{
-    String statusValue = model.statusValue ?? '0';
-    int status = int.parse(statusValue.isEmpty ? '0' : statusValue);
-    String title = SCUtils.getWorkOrderButtonText(status);
-    String url =
-        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=$status&orderId=${model.id}";
-    String realUrl = SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
-    SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
-      "title": model.title ?? '',
-      "url": realUrl,
-      "needJointParams": false
-    })?.then((value) {
-      SCScaffoldManager.instance.eventBus.fire({"key" : SCKey.kRefreshWorkBenchPage});
-    });
-  }
+  // /// 详情
+  // detailAction(SCToDoModel model) async{
+  //   String statusValue = model.statusValue ?? '0';
+  //   int status = int.parse(statusValue.isEmpty ? '0' : statusValue);
+  //   String title = SCUtils.getWorkOrderButtonText(status);
+  //   String url =
+  //       "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=$status&orderId=${model.id}";
+  //   String realUrl = SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
+  //   SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+  //     "title": model.title ?? '',
+  //     "url": realUrl,
+  //     "needJointParams": false
+  //   })?.then((value) {
+  //     SCScaffoldManager.instance.eventBus.fire({"key" : SCKey.kRefreshWorkBenchPage});
+  //   });
+  // }
 }

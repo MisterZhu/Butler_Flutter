@@ -42,15 +42,13 @@ class SCSearchPatrolController extends GetxController {
     var params = {
       "conditions": {
         "fields": [
-          {"map": {}, "method": 7, "name": "POLICED_POINT", "value": searchString}
+          {"map": {}, "method": 1, "name": "ak.ID_", "value": searchString}
         ],
         "specialMap": {}
       },
       "count": false,
       "last": false,
-      "orderBy": [
-        {"asc": true, "field": "gmtModify"}
-      ],
+      "orderBy": [],
       "pageNum": pageNum,
       "pageSize": 20
     };
@@ -73,6 +71,11 @@ class SCSearchPatrolController extends GetxController {
             if (isLoadMore == false) {
               dataList = [];
             }
+          }
+          if (dataList.isNotEmpty) {
+            tips = '';
+          } else {
+            tips = '暂无搜索结果';
           }
           update();
           bool last = false;
