@@ -219,14 +219,14 @@ class SCPatrolViewState extends State<SCPatrolView> {
       contentMaxLines: 30,
       address: '地址',
       btnText: btnText,
-      hideBtn: false,
+      hideBtn: (model.actionVo ?? []).isEmpty,
       hideAddressRow: true,
       hideCallIcon: true,
       detailTapAction: () {
         detailAction(widget.state.dataList[index]);
       },
       btnTapAction: () {
-        dealAction(model.taskId ?? '', model.procInstId ?? '');
+        dealAction(btnText, model.taskId ?? '', model.procInstId ?? '');
       },
     );
   }
@@ -320,11 +320,11 @@ class SCPatrolViewState extends State<SCPatrolView> {
   }
 
   /// 处理
-  dealAction(String taskId, String procInstId) {
+  dealAction(String name, String taskId, String procInstId) {
     SCPatrolUtils patrolUtils = SCPatrolUtils();
     patrolUtils.taskId = taskId;
     patrolUtils.procInstId = procInstId;
-    patrolUtils.deal();
+    patrolUtils.taskAction(name: name);
   }
 
   /// 详情

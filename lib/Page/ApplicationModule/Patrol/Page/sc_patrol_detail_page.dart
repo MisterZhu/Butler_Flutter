@@ -107,69 +107,27 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
 
   /// 底部按钮
   Widget bottomView() {
-    return SCMaterialDetailBottomView(
-      list: controller.bottomButtonList,
-      onTap: (value) {
-        if (value == "更多") {
-          controller.updateMoreDialogStatus();
-        } else {
-          taskAction(value);
-        }
-      },
+    return Offstage(
+      offstage: (controller.model.actionVo ?? []).isEmpty,
+      child: SCMaterialDetailBottomView(
+        list: controller.bottomButtonList,
+        onTap: (value) {
+          if (value == "更多") {
+            controller.updateMoreDialogStatus();
+          } else {
+            taskAction(value);
+          }
+        },
+      ),
     );
   }
 
-  /// 任务操作
+  /// 任务处理
   taskAction(String name) {
-    print('任务操作========$name');
-    if (name == '添加日志') {
-      addLog();
-    } else if (name == '回退') {
-      rollBack();
-    } else if (name == '关闭') {
-      close();
-    } else if (name == '处理') {
-      deal();
-    } else if (name == '转派') {
-      transfer();
-    }
-  }
-
-  /// 转派
-  transfer() async {
-    var data = await SCRouterHelper.pathPage(SCRouterPath.patrolTransferPage, null);
-    if (data != null) {
-      print("转派人===$data");
-      if (data.containsKey("userId")) {
-        String userId = data['userId'];
-        patrolUtils.transfer(userId: userId, isDetailPage: true);
-      }
-    }
-  }
-
-  /// 回退
-  rollBack() {
-    // 先请求回退节点接口
-    patrolUtils.getNodeData(result: (value) {
-      if (value == true) {
-        patrolUtils.rollBack(isDetailPage: true);
-      }
-    });
-  }
-
-  /// 处理
-  deal() {
-    patrolUtils.deal(isDetailPage: true);
-  }
-
-  /// 添加日志
-  addLog() {
-    patrolUtils.addLog();
-  }
-
-  /// 关闭
-  close() {
-    patrolUtils.close(isDetailPage: true);
+    SCPatrolUtils patrolUtils = SCPatrolUtils();
+    patrolUtils.taskId = controller.taskId;
+    patrolUtils.procInstId = controller.procInstId;
+    patrolUtils.taskAction(name: name, isDetailPage: true);
   }
 
   /// pageName

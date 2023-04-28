@@ -6,6 +6,7 @@ import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Network/sc_url.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_patrol_detail_model.dart';
 import 'package:smartcommunity/Utils/Date/sc_date_utils.dart';
+import '../../../../Constants/sc_type_define.dart';
 import '../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import '../../WarningCenter/Other/sc_warning_utils.dart';
 
@@ -33,6 +34,10 @@ class SCPatrolDetailController extends GetxController {
   /// 底部按钮list
   List bottomButtonList = [];
 
+  /// 检查项list
+  List checkList = [];
+
+  List dataList = [];
   @override
   onInit() {
     super.onInit();
@@ -69,6 +74,10 @@ class SCPatrolDetailController extends GetxController {
           SCLoadingUtils.hide();
           getDataSuccess = true;
           model = SCPatrolDetailModel.fromJson(value);
+          updateDataList();
+          if ((model.formData?.checkObject?.checkList ?? []).isNotEmpty) {
+            updateCheckList();
+          }
           updateBottomButtonList();
           update();
         },
@@ -77,6 +86,7 @@ class SCPatrolDetailController extends GetxController {
         });
   }
 
+  /// 更新底部按钮
   updateBottomButtonList() {
     if ((model.actionVo ?? []).isNotEmpty) {
       List<String> list = model.actionVo!;
@@ -120,8 +130,34 @@ class SCPatrolDetailController extends GetxController {
     }
   }
 
+  /// 更新检查项
+  updateCheckList() {
+    for (int i = 0; i < (model.formData?.checkObject?.checkList ?? []).length; i++) {
+      CheckList? check = model.formData?.checkObject?.checkList?[i];
+      var dic = {
+        "type": 7,
+        "title": check?.checkContent ?? '',
+        "subTitle": '',
+        "content": "",
+        "subContent": '',
+        "rightIcon": "images/common/icon_arrow_right.png"
+      };
+      checkList.add(SCUIDetailCellModel.fromJson(dic));
+    }
+    dataList.insert(1, {'type': SCTypeDefine.SC_PATROL_TYPE_CHECK, 'data': checkList});
+  }
+
+  /// 更新dataList
+  updateDataList() {
+    dataList = [
+      {'type': SCTypeDefine.SC_PATROL_TYPE_TITLE, 'data': titleList()},
+      {'type': SCTypeDefine.SC_PATROL_TYPE_LOG, 'data': logList()},
+      {'type': SCTypeDefine.SC_PATROL_TYPE_INFO, 'data': infoList()}
+    ];
+  }
+
   /// title-数据源
-  List list1() {
+  List titleList() {
     List data = [
       {
         "leftIcon": SCAsset.iconPatrolTask,
@@ -138,7 +174,8 @@ class SCPatrolDetailController extends GetxController {
     }));
   }
 
-  List list2() {
+  /// 任务日志
+  List logList() {
     List data = [
       {
         "type": 7,
@@ -154,8 +191,8 @@ class SCPatrolDetailController extends GetxController {
     }));
   }
 
-  /// content-数据源
-  List list3() {
+  /// 任务信息-数据源
+  List infoList() {
     List data = [
       {"type": 7, "title": '任务编号', "content": model.procInstId},
       {"type": 7, "title": '任务来源', "content": model.instSource},

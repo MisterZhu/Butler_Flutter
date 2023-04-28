@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 
+import '../../../../../Constants/sc_type_define.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../Controller/sc_patrol_detail_controller.dart';
@@ -30,25 +31,37 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
-          if (index == 0) {
-            return cell1();
-          } else if (index == 1) {
-           return cell2();
-          }
-          return cell3();
+          return getCell(index: index);
         },
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(
             height: 10.0,
           );
         },
-        itemCount: 3);
+        itemCount: widget.state.dataList.length);
+  }
+
+  /// cell
+  Widget getCell({required int index}) {
+    int type = widget.state.dataList[index]['type'];
+    List list = widget.state.dataList[index]['data'];
+    if (type == SCTypeDefine.SC_PATROL_TYPE_TITLE) {
+      return cell1(list);
+    } else if (type == SCTypeDefine.SC_PATROL_TYPE_LOG) {
+      return logCell(list);
+    } else if (type == SCTypeDefine.SC_PATROL_TYPE_CHECK) {
+      return checkCell(list);
+    } else if (type == SCTypeDefine.SC_PATROL_TYPE_INFO) {
+      return cell1(list);
+    } else {
+      return const SizedBox();
+    }
   }
 
   /// cell1
-  Widget cell1() {
+  Widget cell1(List list) {
     return SCDetailCell(
-      list: widget.state.list1(),
+      list: list,
       leftAction: (String value, int index) {},
       rightAction: (String value, int index) {},
       imageTap: (int imageIndex, List imageList, int index) {
@@ -57,10 +70,10 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
     );
   }
 
-  /// cell2
-  Widget cell2() {
+  /// 任务日志cell
+  Widget logCell(List list) {
     return SCDetailCell(
-      list: widget.state.list2(),
+      list: list,
       leftAction: (String value, int index) {},
       rightAction: (String value, int index) {},
       imageTap: (int imageIndex, List imageList, int index) {
@@ -74,14 +87,18 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
     );
   }
 
-  /// cell3
-  Widget cell3() {
+  /// 检查项cell
+  Widget checkCell(List list) {
     return SCDetailCell(
-      list: widget.state.list3(),
+      list: list,
       leftAction: (String value, int index) {},
       rightAction: (String value, int index) {},
       imageTap: (int imageIndex, List imageList, int index) {
         // SCImagePreviewUtils.previewImage(imageList: [imageList[index]]);
+      },
+      detailAction: (int subIndex) {
+        print("点击了检查项第几个：${subIndex}");
+
       },
     );
   }

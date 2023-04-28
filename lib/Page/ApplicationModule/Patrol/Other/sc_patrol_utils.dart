@@ -28,6 +28,34 @@ class SCPatrolUtils {
   /// 节点名称数组
   List nodeNameList = [];
 
+  /// 任务操作
+  taskAction({required String name, bool? isDetailPage}) async {
+    print('任务操作========$name');
+    if (name == '添加日志') {
+      addLog();
+    } else if (name == '回退') {
+      // 先请求回退节点接口
+      getNodeData(result: (value) {
+        if (value == true) {
+          rollBack(isDetailPage: isDetailPage);
+        }
+      });
+    } else if (name == '关闭') {
+      close(isDetailPage: isDetailPage);
+    } else if (name == '处理') {
+      deal(isDetailPage: isDetailPage);
+    } else if (name == '转派') {
+      var data = await SCRouterHelper.pathPage(SCRouterPath.patrolTransferPage, null);
+      if (data != null) {
+        print("转派人===$data");
+        if (data.containsKey("userId")) {
+          String userId = data['userId'];
+          transfer(userId: userId, isDetailPage: isDetailPage);
+        }
+      }
+    }
+  }
+
   /// 任务关闭
   close({bool? isDetailPage}) {
     dealTask(action: "close", result: (result) {

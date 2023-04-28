@@ -107,4 +107,14 @@ class SCTypeDefine {
   /// 3-未通过
   static const int realNameVerifyStatusFailed = 3;
 
+  /************************* 巡查任务详情页面-cellType *************************/
+  /// 0-标题
+  static const int SC_PATROL_TYPE_TITLE = 0;
+  /// 1-检查项
+  static const int SC_PATROL_TYPE_CHECK = 1;
+  /// 1-任务日志
+  static const int SC_PATROL_TYPE_LOG = 2;
+  /// 编号、时间等信息
+  static const int SC_PATROL_TYPE_INFO = 3;
+
 }
