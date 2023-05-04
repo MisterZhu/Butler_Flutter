@@ -1,5 +1,5 @@
 import 'package:date_format/date_format.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
@@ -386,16 +386,16 @@ class SCAddPropertyMaintenanceController extends GetxController {
   }
 
   /// 更新选择的附件
-  updateAttachment(List<PlatformFile> localFiles) {
-    attachmentsList = List.from(localFiles.map((e) {
-      return SCAttachmentModel.fromJson({
-        'path': e.path,
-        'name': e.name,
-        'size': e.size
-      });
-    }));
-    update();
-  }
+  // updateAttachment(List<PlatformFile> localFiles) {
+  //   attachmentsList = List.from(localFiles.map((e) {
+  //     return SCAttachmentModel.fromJson({
+  //       'path': e.path,
+  //       'name': e.name,
+  //       'size': e.size
+  //     });
+  //   }));
+  //   update();
+  // }
 
   /// 删除附件
   deleteAttachment(int index) {

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:date_format/date_format.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -769,12 +769,12 @@ class SCAddPropertyMaintenanceViewState
 
   /// 上传文件
   uploadFileAction() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
-    );
-
-    if (result != null) {
-      widget.state.updateAttachment(result.files);
-    }
+    // FilePickerResult? result = await FilePicker.platform.pickFiles(
+    //   allowMultiple: true,
+    // );
+    //
+    // if (result != null) {
+    //   widget.state.updateAttachment(result.files);
+    // }
   }
 }
