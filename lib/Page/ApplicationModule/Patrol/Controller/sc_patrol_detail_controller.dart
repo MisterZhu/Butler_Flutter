@@ -135,7 +135,7 @@ class SCPatrolDetailController extends GetxController {
     for (int i = 0; i < (model.formData?.checkObject?.checkList ?? []).length; i++) {
       CheckList? check = model.formData?.checkObject?.checkList?[i];
       var dic = {
-        "type": 7,
+        "type": 10,
         "title": check?.checkContent ?? '',
         "subTitle": '',
         "content": "",
