@@ -184,7 +184,7 @@ class Place {
     bizTag = json['bizTag'];
   }
   String? id;
-  String? policedClassId;
+  int? policedClassId;
   String? policedClassName;
   bool? disable;
   String? execWay;
@@ -201,7 +201,7 @@ class Place {
   String? projectName;
   String? orgId;
   String? orgName;
-  String? spaceId;
+  int? spaceId;
   String? bizTag;
 
   Map<String, dynamic> toJson() {
@@ -266,7 +266,7 @@ class CheckList {
     gmtCreate = json['gmtCreate'];
     gmtModify = json['gmtModify'];
   }
-  String? id;
+  int? id;
   String? tenantId;
   String? checkName;
   String? checkContent;

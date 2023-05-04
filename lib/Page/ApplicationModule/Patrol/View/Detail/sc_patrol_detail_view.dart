@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-
+import '../../../../../Constants/sc_h5.dart';
 import '../../../../../Constants/sc_type_define.dart';
+import '../../../../../Network/sc_config.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
+import '../../../../../Utils/sc_utils.dart';
 import '../../Controller/sc_patrol_detail_controller.dart';
 
 /// 巡查详情view
@@ -97,8 +99,13 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
         // SCImagePreviewUtils.previewImage(imageList: [imageList[index]]);
       },
       detailAction: (int subIndex) {
-        print("点击了检查项第几个：${subIndex}");
-
+        SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+          "title": '快捷报事',
+          "url": SCUtils.getWebViewUrl(
+              url: SCConfig.getH5Url(SCH5.quickReportUrl),
+              title: '快捷报事',
+              needJointParams: true)
+        });
       },
     );
   }

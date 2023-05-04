@@ -140,13 +140,18 @@ class SCPatrolController extends GetxController {
       };
       fields.add(dic);
     }
+    var dic1 = {
+      "map": {},
+      "method": 1,
+      "name": "wt.appCode",
+      "value": "POLICED_POINT"
+    };
+    fields.add(dic1);
     var params = {
-      "conditions": {"fields": fields, "specialMap": {}},
+      "conditions": {"fields": fields},
       "count": false,
       "last": false,
-      "orderBy": [
-        {"asc": sort, "field": "gmtModify"}
-      ],
+      "orderBy": [],
       "pageNum": pageNum,
       "pageSize": 20
     };
