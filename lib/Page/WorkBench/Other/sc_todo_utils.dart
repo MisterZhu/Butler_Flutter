@@ -61,6 +61,8 @@ class SCToDoUtils {
         }
       }
     }
-    SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": procInstId, "taskId": taskId});
+    SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": procInstId, "taskId": taskId})?.then((value) {
+      SCScaffoldManager.instance.eventBus.fire({"key" : SCKey.kRefreshWorkBenchPage});
+    });
   }
 }
