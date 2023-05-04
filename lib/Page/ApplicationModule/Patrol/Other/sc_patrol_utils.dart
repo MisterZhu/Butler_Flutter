@@ -60,11 +60,12 @@ class SCPatrolUtils {
   close({bool? isDetailPage}) {
     dealTask(action: "close", result: (result) {
       if (result == true) {
-        SCToast.showTip('关闭成功');
-        SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
-        if (isDetailPage == true) {
-          SCRouterHelper.back(null);
-        }
+        SCToast.showTip('关闭成功').then((status) {
+          SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
+          if (isDetailPage == true) {
+            SCRouterHelper.back(null);
+          }
+        });
       }
     });
   }
@@ -73,11 +74,12 @@ class SCPatrolUtils {
   transfer({required String userId, bool? isDetailPage}) {
     dealTask(action: "transfer", targetUser: userId, result: (result) {
       if (result == true) {
-        SCToast.showTip('转派成功');
-        SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
-        if (isDetailPage == true) {
-          SCRouterHelper.back(null);
-        }
+        SCToast.showTip('转派成功').then((status) {
+          SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
+          if (isDetailPage == true) {
+            SCRouterHelper.back(null);
+          }
+        });
       }
     });
   }
@@ -100,11 +102,12 @@ class SCPatrolUtils {
                 SCTaskNodeModel nodeModel = nodeList[index];
                 dealTask(action: "recall", targetNode: nodeModel.nodeId, content: value, imageList: imageList, result: (result) {
                   if (result == true) {
-                    SCToast.showTip('任务退回成功');
-                    SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
-                    if (isDetailPage == true) {
-                      SCRouterHelper.back(null);
-                    }
+                    SCToast.showTip('任务退回成功').then((status) {
+                      SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
+                      if (isDetailPage == true) {
+                        SCRouterHelper.back(null);
+                      }
+                    });
                   }
                 });
               }));
@@ -145,7 +148,6 @@ class SCPatrolUtils {
               showNode: false,
               sureAction: (int index, String value, List imageList) {
                 dealTask(action: "comment", content: value, imageList: imageList, result: (result) {
-                  print('添加日志======$result');
                   if (result == true) {
                     SCToast.showTip('添加日志成功');
                   }
@@ -162,7 +164,7 @@ class SCPatrolUtils {
         // 扫码
         var data = await SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
         print("扫码结果===$data");
-        showDealAlert(code: '', isDetailPage: isDetailPage);
+        showDealAlert(code: data, isDetailPage: isDetailPage);
       } else {
         showDealAlert(isDetailPage: isDetailPage);
       }
@@ -202,12 +204,13 @@ class SCPatrolUtils {
             hiddenTags: true,
             showNode: false,
             sureAction: (int index, String value, List imageList) {
-              dealTask(action: "handle", dealChannel: 2, result: (result) {
-                SCToast.showTip('处理成功');
-                SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
-                if (isDetailPage == true) {
-                  SCRouterHelper.back(null);
-                }
+              dealTask(action: "handle", code: code, content: value, imageList: imageList, result: (result) {
+                SCToast.showTip('处理成功').then((status) {
+                  SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
+                  if (isDetailPage == true) {
+                    SCRouterHelper.back(null);
+                  }
+                });
               });
             },
           ));
@@ -243,7 +246,6 @@ class SCPatrolUtils {
 
   /// 处理任务
   /// action:操作类型
-  /// dealChannel：处理来源，1-判断是否需要扫码,2-处理操作
   /// mode：选择的节点
   /// content：内容
   /// imageList：图片
@@ -252,7 +254,6 @@ class SCPatrolUtils {
   /// targetNode退回节点
   dealTask(
       {required String action,
-        int? dealChannel,
         String? node,
         String? content,
         List? imageList,
@@ -263,14 +264,6 @@ class SCPatrolUtils {
     var comment = {};
     if (action == "handle") {
       // 处理
-      if (dealChannel == 2) {
-        comment = {
-          "attachments": transferImage(imageList ?? []),
-          "text": content
-        };
-      } else {}
-    } else if (action == "transfer") {
-      // 转派
       comment = {
         "attachments": transferImage(imageList ?? []),
         "text": content
@@ -303,6 +296,7 @@ class SCPatrolUtils {
       "targetUser": targetUser,
       "targetNode": targetNode
     };
+    SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kDealTaskUrl,
         params: params,

@@ -42,9 +42,8 @@ class SCSearchPatrolController extends GetxController {
     var params = {
       "conditions": {
         "fields": [
-          {"map": {}, "method": 1, "name": "ak.ID_", "value": searchString}
+          {"map": {}, "method": 7, "name": "ak.ID_", "value": searchString}
         ],
-        "specialMap": {}
       },
       "count": false,
       "last": false,

@@ -233,13 +233,13 @@ class SCSearchPatrolViewState extends State<SCSearchPatrolView> {
       statusTitleColor: SCWarningCenterUtils.getStatusColor(model.customStatusInt ?? -1),
       content: model.procInstName ?? '',
       contentMaxLines: 30,
-      address: '地址',
+      address: '',
       btnText: btnText,
       hideBtn: false,
       hideAddressRow: true,
       hideCallIcon: true,
       detailTapAction: () {
-        // detailAction();
+        SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "taskId": model.taskId ?? ''});
       },
       btnTapAction: () {
         dealAction(btnText, model.taskId ?? '', model.procInstId ?? '');

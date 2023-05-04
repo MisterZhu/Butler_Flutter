@@ -135,7 +135,7 @@ class SCPatrolDetailController extends GetxController {
     for (int i = 0; i < (model.formData?.checkObject?.checkList ?? []).length; i++) {
       CheckList? check = model.formData?.checkObject?.checkList?[i];
       var dic = {
-        "type": 10,
+        "type": 7,
         "title": check?.checkContent ?? '',
         "subTitle": '',
         "content": "",
@@ -168,6 +168,7 @@ class SCPatrolDetailController extends GetxController {
             SCWarningCenterUtils.getStatusColor(model.customStatusInt ?? -1)
       },
       {"type": 5, "content": model.procInstName, "maxLength": 10},
+      {"type": 7, "title": '任务地点', "content": model.formData?.checkObject?.place?.placeName ?? ''},
     ];
     return List.from(data.map((e) {
       return SCUIDetailCellModel.fromJson(e);
