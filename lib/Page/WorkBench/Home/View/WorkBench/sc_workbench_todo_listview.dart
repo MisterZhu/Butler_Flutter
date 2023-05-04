@@ -85,6 +85,7 @@ class SCWorkBenchToDoListView extends StatelessWidget {
       btnText: SCUtils.getWorkOrderButtonText(int.parse(status.isEmpty ? '0' : status)),
       hideBtn: false,
       btnTapAction: () {
+        model.statusValue = '2';
         SCToDoUtils().deal(model);
       },
     );
