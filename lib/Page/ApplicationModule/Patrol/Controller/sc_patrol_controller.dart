@@ -151,7 +151,7 @@ class SCPatrolController extends GetxController {
       "conditions": {"fields": fields},
       "count": false,
       "last": false,
-      "orderBy": [{"asc": sort, "field": "ct.START_TIME_"}],// 排序，正序是 true，倒序是 false
+      "orderBy": [{"asc": sort, "field": "wt.gmtModify"}],// 排序，正序是 true，倒序是 false
       "pageNum": pageNum,
       "pageSize": 20
     };
@@ -188,7 +188,6 @@ class SCPatrolController extends GetxController {
           completeHandler?.call(false, false);
         });
   }
-
 
   /// 任务状态
   getTaskStatusData() {
