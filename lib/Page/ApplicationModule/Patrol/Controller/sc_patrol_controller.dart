@@ -23,8 +23,8 @@ class SCPatrolController extends GetxController {
   /// 排序，true操作时间正序，false操作时间倒序
   bool sort = false;
 
-  /// 选中的排序index
-  int selectSortIndex = 0;
+  /// 选中的排序index，默认倒序
+  int selectSortIndex = 1;
 
   /// 类型第一列的index
   int typeIndex1 = -1;
@@ -102,8 +102,8 @@ class SCPatrolController extends GetxController {
         SCWarningDealResultModel model2 = model1.pdictionary![typeIndex2];
         var dic = {
           "map": {},
-          "method": 1,
-          "name": "wt.categoryId",
+          "method": 7,
+          "name": "childrenIdList",
           "value": [model2.id]
         };
         fields.add(dic);
@@ -114,8 +114,8 @@ class SCPatrolController extends GetxController {
         }
         var dic = {
           "map": {},
-          "method": 1,
-          "name": "wt.categoryId",
+          "method": 7,
+          "name": "childrenIdList",
           "value": idList
         };
         fields.add(dic);
@@ -151,7 +151,7 @@ class SCPatrolController extends GetxController {
       "conditions": {"fields": fields},
       "count": false,
       "last": false,
-      "orderBy": [],
+      "orderBy": [{"asc": sort, "field": "ct.START_TIME_"}],// 排序，正序是 true，倒序是 false
       "pageNum": pageNum,
       "pageSize": 20
     };
