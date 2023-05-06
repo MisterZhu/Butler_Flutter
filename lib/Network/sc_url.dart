@@ -243,7 +243,7 @@ class SCUrl {
   static const String kOtherMaterialListUrl = "/api/warehouse/manage/warehouseAccount/chooseWareHouseAccountList";
 
   /// 出库、报损、调拨、盘点物资列表-不分页
-  static const String kAllOtherMaterialListUrl = "/api/retailmall/mallClassify/manager/AppClassify/getAllLevelOne";
+  static const String kAllOtherMaterialListUrl = "/api/warehouse/manage/warehouseAccount/chooseWareHouseAccountListNoPage";
 
   /// 物资调拨编辑-新增物资
   static const String kEditAddTransferMaterialUrl = "/api/warehouse/manage/materialChangeRelation/addMaterialChangeRelationList";
