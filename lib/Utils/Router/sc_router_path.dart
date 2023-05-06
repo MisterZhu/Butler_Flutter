@@ -237,4 +237,11 @@ class SCRouterPath {
   /// 巡查转派
   static String patrolTransferPage = "/lib/Page/Patrol/Page/sc_patrol_transfer_page";
 
+
+  /*************************** 电子巡更 ******************************/
+
+  /// 巡更列表
+  static String electronicPatrolPage = "/lib/Page/ElectronicPatrol/Page/sc_electronic_patrol_page";
+
+
 }

@@ -15,12 +15,10 @@ import '../../../../../Utils/sc_utils.dart';
 import '../../../MaterialEntry/View/Alert/sc_sift_alert.dart';
 import '../../../MaterialEntry/View/Alert/sc_sort_alert.dart';
 import '../../../WarningCenter/Model/sc_warning_dealresult_model.dart';
-import '../../../WarningCenter/Other/sc_warning_utils.dart';
 import '../../../WarningCenter/View/Alert/sc_warningtype_alert.dart';
 import '../../Controller/sc_patrol_controller.dart';
 import '../../Model/sc_patrol_task_model.dart';
 import '../../Other/sc_patrol_utils.dart';
-import '../Alert/sc_deal_alert.dart';
 
 /// 巡查view
 
@@ -214,7 +212,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
       title: model.categoryName ?? '',
       titleIcon: SCAsset.iconPatrolTask,
       statusTitle: model.customStatus ?? '',
-      statusTitleColor: SCWarningCenterUtils.getStatusColor(model.customStatusInt ?? -1),
+      statusTitleColor: SCPatrolUtils.getStatusColor(model.customStatusInt ?? -1),
       content: model.procInstName ?? '',
       contentMaxLines: 30,
       address: '地址',

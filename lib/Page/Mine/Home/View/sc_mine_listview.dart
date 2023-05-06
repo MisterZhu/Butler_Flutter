@@ -253,16 +253,16 @@ class SCMineListView extends StatelessWidget {
         showLeftIcon: true,
         leftIcon: SCAsset.iconMineService,
         onTap: () {
-          SCRouterHelper.pathPage(SCRouterPath.patrolPage, null);
+          SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"type": 0});
         },
       );
     } else if (index == 15) {
       return SCSettingCell(
-        title: '巡更',
+        title: '品质督查',
         showLeftIcon: true,
         leftIcon: SCAsset.iconMineService,
         onTap: () {
-          SCRouterHelper.pathPage(SCRouterPath.patrolPage, null);
+          SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"type": 1});
         },
       );
     } else {

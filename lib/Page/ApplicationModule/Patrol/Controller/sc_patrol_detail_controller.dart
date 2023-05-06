@@ -8,7 +8,7 @@ import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_patrol_det
 import 'package:smartcommunity/Utils/Date/sc_date_utils.dart';
 import '../../../../Constants/sc_type_define.dart';
 import '../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
-import '../../WarningCenter/Other/sc_warning_utils.dart';
+import '../Other/sc_patrol_utils.dart';
 
 /// 巡查详情controller
 
@@ -164,8 +164,7 @@ class SCPatrolDetailController extends GetxController {
         "type": 2,
         "title": model.categoryName,
         "content": model.customStatus,
-        'contentColor':
-            SCWarningCenterUtils.getStatusColor(model.customStatusInt ?? -1)
+        'contentColor': SCPatrolUtils.getStatusColor(model.customStatusInt ?? -1)
       },
       {"type": 5, "content": model.procInstName, "maxLength": 10},
       {"type": 7, "title": '任务地点', "content": model.formData?.checkObject?.place?.placeName ?? ''},

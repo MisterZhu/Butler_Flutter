@@ -6,17 +6,17 @@ import 'package:sc_uikit/sc_uikit.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
-import '../Controller/sc_patrol_controller.dart';
-import '../View/Patrol/sc_patrol_view.dart';
+import '../../Patrol/Controller/sc_patrol_controller.dart';
+import '../../Patrol/View/Patrol/sc_patrol_view.dart';
 
-/// 巡查任务列表page
+/// 电子巡更任务列表page
 
-class SCPatrolPage extends StatefulWidget {
+class SCElectronicPatrolPage extends StatefulWidget {
   @override
-  SCPatrolPageState createState() => SCPatrolPageState();
+  SCElectronicPatrolPageState createState() => SCElectronicPatrolPageState();
 }
 
-class SCPatrolPageState extends State<SCPatrolPage> with AutomaticKeepAliveClientMixin{
+class SCElectronicPatrolPageState extends State<SCElectronicPatrolPage> with AutomaticKeepAliveClientMixin{
 
   /// SCPatrolController
   late SCPatrolController controller;
@@ -30,9 +30,9 @@ class SCPatrolPageState extends State<SCPatrolPage> with AutomaticKeepAliveClien
   @override
   initState() {
     super.initState();
-    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCPatrolPage).toString());
+    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCElectronicPatrolPage).toString());
     controller = Get.put(SCPatrolController(), tag: controllerTag);
-    controller.initParams(Get.arguments);
+    controller.loadData(isMore: false);
     addNotification();
   }
 
@@ -67,7 +67,7 @@ class SCPatrolPageState extends State<SCPatrolPage> with AutomaticKeepAliveClien
 
   /// pageName
   String pageName() {
-    return (SCPatrolPage).toString();
+    return (SCElectronicPatrolPage).toString();
   }
 
   /// 通知
