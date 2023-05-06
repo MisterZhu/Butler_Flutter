@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Model/sc_warningcenter_model.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Constants/sc_key.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../../WarningCenter/Model/sc_warning_dealresult_model.dart';
-import '../../WarningCenter/Other/sc_warning_utils.dart';
 import '../Model/sc_patrol_task_model.dart';
+import '../Other/sc_patrol_utils.dart';
 
 /// 搜索巡查
 class SCSearchPatrolController extends GetxController {
@@ -145,16 +144,7 @@ class SCSearchPatrolController extends GetxController {
 
   /// 处理状态文本颜色
   Color getStatusColor(int status) {
-    return SCWarningCenterUtils.getStatusColor(status);
+    return SCPatrolUtils.getStatusColor(status);
   }
 
-  /// 预警等级文本颜色
-  Color getLevelTextColor(int level) {
-    return SCWarningCenterUtils.getLevelTextColor(level);
-  }
-
-  /// 预警等级背景颜色
-  Color getLevelBGColor(int level) {
-    return SCWarningCenterUtils.getLevelBGColor(level);
-  }
 }

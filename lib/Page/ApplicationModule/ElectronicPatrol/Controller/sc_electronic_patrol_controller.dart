@@ -1,19 +1,18 @@
 
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_patrol_type_model.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
+import '../../Patrol/Model/sc_patrol_task_model.dart';
 import '../../WarningCenter/Model/sc_warning_dealresult_model.dart';
-import '../Model/sc_patrol_task_model.dart';
 
-/// 巡查controller
+/// 电子巡更controller
 
-class SCPatrolController extends GetxController {
+class SCElectronicPatrolController extends GetxController {
 
   int pageNum = 1;
 
@@ -53,30 +52,11 @@ class SCPatrolController extends GetxController {
 
   List<SCPatrolTaskModel> dataList = [];
 
-  /// 页面类型，0巡查，1品质督查
-  int pageType = 0;
-
-  /// appCode
-  String appCode = "POLICED_POINT";
-
   @override
   onInit() {
     super.onInit();
     getTaskStatusData();
-  }
-
-  /// 初始化
-  initParams(Map<String, dynamic> params) {
-    if (params.isNotEmpty) {
-      if (params.containsKey("type")) {
-        pageType = params['type'];
-        if (pageType == 1) {// 品质督查
-          appCode = "QUALITY_REGULATION";
-        }
-      }
-    }
     getTypeData();
-    loadData(isMore: false);
   }
 
   /// 更新项目id
@@ -163,7 +143,7 @@ class SCPatrolController extends GetxController {
       "map": {},
       "method": 1,
       "name": "wt.appCode",
-      "value": appCode
+      "value": "POLICED_POINT"
     };
     fields.add(dic1);
     var params = {
@@ -228,7 +208,7 @@ class SCPatrolController extends GetxController {
 
   /// 获取分类
   getTypeData() {
-    SCHttpManager.instance.post(url: SCUrl.kPatrolTypeUrl, params: {"appCode": appCode},success: (value) {
+    SCHttpManager.instance.post(url: SCUrl.kPatrolTypeUrl, params: {"appCode": "POLICED_POINT"},success: (value) {
       List<SCPatrolTypeModel> list = List<SCPatrolTypeModel>.from(value.map((e) => SCPatrolTypeModel.fromJson(e)).toList());
       for (SCPatrolTypeModel model in list) {
         List children = [];

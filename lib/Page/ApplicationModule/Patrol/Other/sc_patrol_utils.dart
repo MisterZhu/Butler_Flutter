@@ -324,4 +324,25 @@ class SCPatrolUtils {
     }
     return list;
   }
+
+  /// 处理状态文本颜色
+  static Color getStatusColor(int status) {
+    if (status == 10) {// 待处理
+      return SCColors.color_FF7F09;
+    } else if (status == 20) {// 处理中
+      return SCColors.color_4285F4;
+    } else if (status == 30) {// 已处理
+      return SCColors.color_1B1D33;
+    } else if (status == 40) {// 已完成
+      return SCColors.color_1B1D33;
+    } else if (status == 41) {// 已取消
+      return SCColors.color_B0B1B8;
+    } else if (status == 42) {// 已关闭
+      return SCColors.color_B0B1B8;
+    } else if (status == 43) {// 已拒绝
+      return SCColors.color_FF4040;
+    } else {
+      return SCColors.color_1B1D33;
+    }
+  }
 }

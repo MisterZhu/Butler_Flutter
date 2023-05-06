@@ -3,15 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/Other/sc_patrol_utils.dart';
-import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Controller/sc_warning_search_controller.dart';
-import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/Model/sc_warningcenter_model.dart';
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
-import '../../../MaterialEntry/View/Alert/sc_reject_alert.dart';
-import '../../../WarningCenter/Model/sc_warning_dealresult_model.dart';
-import '../../../WarningCenter/Other/sc_warning_utils.dart';
 import '../../Controller/sc_patrol_search_controller.dart';
 import '../../Model/sc_patrol_task_model.dart';
 
@@ -230,7 +225,7 @@ class SCSearchPatrolViewState extends State<SCSearchPatrolView> {
       title: model.categoryName ?? '',
       titleIcon: SCAsset.iconPatrolTask,
       statusTitle: model.customStatus ?? '',
-      statusTitleColor: SCWarningCenterUtils.getStatusColor(model.customStatusInt ?? -1),
+      statusTitleColor: SCPatrolUtils.getStatusColor(model.customStatusInt ?? -1),
       content: model.procInstName ?? '',
       contentMaxLines: 30,
       address: '',
