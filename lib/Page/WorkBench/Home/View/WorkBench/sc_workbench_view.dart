@@ -1,3 +1,4 @@
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,39 +15,39 @@ import 'package:smartcommunity/Page/WorkBench/Home/View/RealVerification/sc_real
 import 'package:smartcommunity/Utils/sc_utils.dart';
 
 import '../../../../../Constants/sc_enum.dart';
+import '../../../../../Delegate/sc_sticky_tabbar_delegate.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import '../../GetXController/sc_workbench_controller.dart';
+import '../AppBar/sc_workbench_card.dart';
 import '../AppBar/sc_workbench_header.dart';
 import '../PageView/sc_workbench_empty_view.dart';
 
 /// 工作台-view
 
 class SCWorkBenchView extends StatelessWidget {
-  SCWorkBenchView(
-      {Key? key,
-      required this.state,
-      required this.waitController,
-      required this.doingController,
-      required this.height,
-      required this.tabController,
-      required this.tabTitleList,
-      this.tagAction,
-      this.menuTap,
-      this.onRefreshAction,
-      this.detailAction,
-      this.verificationDetailAction,
-      this.hotelOrderDetailAction,
-      this.showSpaceAlert,
-      this.scanAction,
-      this.messageAction,
-      this.cardDetailAction,
-      this.headerAction,
-      this.searchAction,
-      this.siftAction,
-      })
-      : super(key: key);
+  SCWorkBenchView({
+    Key? key,
+    required this.state,
+    required this.waitController,
+    required this.doingController,
+    required this.height,
+    required this.tabController,
+    required this.tabTitleList,
+    this.tagAction,
+    this.menuTap,
+    this.detailAction,
+    this.verificationDetailAction,
+    this.hotelOrderDetailAction,
+    this.showSpaceAlert,
+    this.scanAction,
+    this.messageAction,
+    this.cardDetailAction,
+    this.headerAction,
+    this.searchAction,
+    this.siftAction,
+  }) : super(key: key);
 
   /// 工作台controller
   final SCWorkBenchController state;
@@ -81,9 +82,6 @@ class SCWorkBenchView extends StatelessWidget {
   /// 酒店订单处理详情
   final Function(SCHotelOrderModel model)? hotelOrderDetailAction;
 
-  /// 下拉刷新
-  final Function? onRefreshAction;
-
   /// 显示空间弹窗
   final Function? showSpaceAlert;
 
@@ -107,41 +105,47 @@ class SCWorkBenchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshConfiguration(
-        enableScrollWhenRefreshCompleted: true,
-        child: SmartRefresher(
-          controller: state.refreshController,
-          enablePullUp: false,
-          enablePullDown: true,
-          header: const SCCustomHeader(
-            style: SCCustomHeaderStyle.noNavigation,
-          ),
-          onRefresh: onRefresh,
-          child: listView(),
-        ));
+    return listView();
   }
 
   /// listView
   Widget listView() {
-    //double headerHeight = 305.0 + SCUtils().getTopSafeArea();
-    double headerHeight = 235.0 + SCUtils().getTopSafeArea();
+    double headerHeight = 44.0;
     double contentHeight = height - headerHeight;
-    return ListView.separated(
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        itemBuilder: (BuildContext context, int index) {
-          return SCStickyHeader(
-              header: headerView(headerHeight, context),
-              content: pageView(contentHeight));
+    return ExtendedNestedScrollView(
+        controller: ScrollController(),
+        onlyOneScrollInBody: true,
+        pinnedHeaderSliverHeightBuilder: () {
+          return headerHeight;
         },
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox();
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[scrollHeader(), stickyTabBar(headerHeight)];
         },
-        itemCount: 1);
+        body: pageView(contentHeight));
+  }
+
+  Widget scrollHeader() {
+    return SliverToBoxAdapter(
+      child: SCWorkBenchCard(
+        data: state.numDataList,
+        onTap: (int index) {
+          cardDetailAction?.call(index);
+        },
+      ),
+    );
+  }
+
+  /// tabBar
+  Widget stickyTabBar(double height) {
+    return SliverPersistentHeader(
+        pinned: true,
+        floating: false,
+        delegate:
+            SCStickyTabBarDelegate(child: headerView(height), height: height));
   }
 
   /// header
-  Widget headerView(double height, BuildContext context) {
+  Widget headerView(double height) {
     return SCWorkBenchHeader(
       state: state,
       height: height,
@@ -149,7 +153,7 @@ class SCWorkBenchView extends StatelessWidget {
       tabController: tabController,
       currentTabIndex: state.currentWorkOrderIndex,
       switchSpaceAction: () {
-        switchAction(context);
+        // switchAction(context);
       },
       scanAction: () {
         scanAction?.call();
@@ -176,20 +180,10 @@ class SCWorkBenchView extends StatelessWidget {
   Widget pageView(double height) {
     Widget tabBarView = SizedBox(
       height: height,
-      child: TabBarView(
-        controller: tabController,
-          children: state.tabBarViewList
-      ),
+      child:
+          TabBarView(controller: tabController, children: state.tabBarViewList),
     );
     return tabBarView;
-  }
-
-  /// 下拉刷新
-  Future onRefresh() async {
-    onRefreshAction?.call();
-    // Future.delayed(const Duration(milliseconds: 1500), () {
-    //   refreshController.refreshCompleted();
-    // });
   }
 
   /// 切换空间

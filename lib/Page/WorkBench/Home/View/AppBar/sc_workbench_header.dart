@@ -86,58 +86,13 @@ class SCWorkBenchHeader extends StatelessWidget {
     } else {
       spaceName = SCScaffoldManager.instance.user.tenantName ?? '';
     }
-    return Padding(
-      padding: EdgeInsets.only(top: SCUtils().getTopSafeArea()),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SCWorkBenchSwitchSpaceView(
-            avatar: SCScaffoldManager.instance.user.headPicUri?.fileKey != null ? SCConfig.getImageUrl(SCScaffoldManager.instance.user.headPicUri?.fileKey ?? '') : SCAsset.iconUserDefault,
-            space: spaceName,
-            onTap: () {
-              switchSpaceAction?.call();
-            },
-            headerTap: () {
-              headerAction?.call();
-            },
-          ),
-          const SizedBox(
-            height: 7.0,
-          ),
-          SCWorkBenchSearch(
-            unreadNum: SCScaffoldManager.instance.unreadMessageCount,
-            searchAction: () {
-              searchAction?.call();
-            },
-            scanAction: () {
-              scanAction?.call();
-            },
-            messageAction: () {
-              messageAction?.call();
-            },
-          ),
-          const SizedBox(
-            height: 22.0,
-          ),
-          SCWorkBenchCard(
-            data: state.numDataList,
-            onTap: (int index) {
-              cardDetailAction?.call(index);
-            },
-          ),
-          const SizedBox(
-            height: 12.0,
-          ),
-          SCWorkBenchTabBar(
-            tabController: tabController,
-            tabTitleList: tabTitleList,
-            currentTabIndex: currentTabIndex,
-            siftAction: () {
-              siftAction?.call();
-            },
-          )
-        ],
-      ),
+    return SCWorkBenchTabBar(
+      tabController: tabController,
+      tabTitleList: tabTitleList,
+      currentTabIndex: currentTabIndex,
+      siftAction: () {
+        siftAction?.call();
+      },
     );
   }
 }

@@ -22,11 +22,18 @@ class SCWorkBenchToDoListView extends StatelessWidget {
   /// refreshController
   final RefreshController refreshController;
 
+  /// 下拉刷新
+  final Function? onRefreshAction;
+
   /// 加载更多
   final Function? loadMoreAction;
 
   const SCWorkBenchToDoListView(
-      {Key? key, required this.data, required this.refreshController, this.loadMoreAction})
+      {Key? key,
+      required this.data,
+      required this.refreshController,
+      this.onRefreshAction,
+      this.loadMoreAction})
       : super(key: key);
 
   @override
@@ -34,9 +41,11 @@ class SCWorkBenchToDoListView extends StatelessWidget {
     if (data.isNotEmpty) {
       return SmartRefresher(
         controller: refreshController,
-        enablePullDown: false,
+        enablePullDown: true,
         enablePullUp: true,
+        onRefresh: onRefresh,
         onLoading: onLoading,
+        header: const SCCustomHeader(),
         footer: const ClassicFooter(
           loadingText: '加载中...',
           idleText: '加载更多',
@@ -47,7 +56,7 @@ class SCWorkBenchToDoListView extends StatelessWidget {
         child: listView(),
       );
     } else {
-      return SCWorkBenchEmptyView();
+      return const SCWorkBenchEmptyView();
     }
   }
 
@@ -71,6 +80,7 @@ class SCWorkBenchToDoListView extends StatelessWidget {
     // todo 暂时固定
     model.statusValue = '2';
     String status = model.statusValue ?? '0';
+    bool hideAddressRow = true;
     return SCTaskCardCell(
       timeType: index,
       title: model.title,
@@ -78,13 +88,19 @@ class SCWorkBenchToDoListView extends StatelessWidget {
       statusTitleColor: SCColors.color_4285F4,
       content: model.content,
       tagList: const [],
-      address: '慧享科技馆',
-      contactUserName: '张三',
+      address: '',
+      contactUserName: '',
       remainingTime: 0,
       time: model.createTime,
-      btnText: SCUtils.getWorkOrderButtonText(int.parse(status.isEmpty ? '0' : status)),
+      btnText: SCUtils.getWorkOrderButtonText(
+          int.parse(status.isEmpty ? '0' : status)),
       hideBtn: false,
+      hideAddressRow: hideAddressRow,
       btnTapAction: () {
+        model.statusValue = '2';
+        SCToDoUtils().deal(model);
+      },
+      detailTapAction: () {
         model.statusValue = '2';
         SCToDoUtils().deal(model);
       },
@@ -96,6 +112,14 @@ class SCWorkBenchToDoListView extends StatelessWidget {
     return const SizedBox(
       height: 10.0,
     );
+  }
+
+  /// 下拉刷新
+  Future onRefresh() async {
+    onRefreshAction?.call();
+    // widget.state.loadMore().then((value) {
+    //   refreshController.loadComplete();
+    // });
   }
 
   /// 加载更多

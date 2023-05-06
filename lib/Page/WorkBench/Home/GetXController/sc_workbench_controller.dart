@@ -127,9 +127,6 @@ class SCWorkBenchController extends GetxController {
   /// 待办——key
   List todoKeyList = [];
 
-  RefreshController refreshController =
-      RefreshController(initialRefresh: false);
-
   @override
   onInit() {
     super.onInit();
@@ -138,7 +135,7 @@ class SCWorkBenchController extends GetxController {
     initToDoController();
     initFilterData();
     location();
-    loadData();
+    loadData(loadAllToDo: true);
     loadUnreadMessageCount();
   }
 
@@ -209,6 +206,10 @@ class SCWorkBenchController extends GetxController {
             return SCWorkBenchToDoListView(
               data: todoController.data,
               refreshController: todoController.refreshController,
+              onRefreshAction: () {
+                loadData();
+                todoController.getData(isMore: false);
+              },
               loadMoreAction: () {
                 todoController.getData(isMore: true);
               },
@@ -408,17 +409,15 @@ class SCWorkBenchController extends GetxController {
   }
 
   /// 加载数据
-  loadData() {
+  loadData({bool? loadAllToDo}) {
     getDefaultConfig().then((value) {
-      refreshController.refreshCompleted();
       if (value == true) {
         getUserInfo().then((subValue) {
           if (subValue == true) {
             getWorkOrderNumber();
-            waitPageNum = 1;
-            processingPageNum = 1;
-            updatePlateIndex(currentPlateIndex);
-            getToDoData();
+            if (loadAllToDo == true) {
+              getToDoData();
+            }
           }
         });
       }

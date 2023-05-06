@@ -77,6 +77,13 @@ class SCWorkBenchToDoController extends GetxController {
             if (isLoadMore == false) {}
           }
           if (isLoadMore == true) {
+            if (value is List && value.isEmpty) {
+              refreshController.loadNoData();
+            } else {
+              refreshController.loadComplete();
+            }
+          } else {
+            refreshController.refreshCompleted();
             refreshController.loadComplete();
           }
           update();

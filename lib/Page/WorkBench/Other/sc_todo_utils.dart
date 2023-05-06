@@ -10,7 +10,6 @@ import '../../../Utils/sc_utils.dart';
 import '../Home/Model/sc_todo_model.dart';
 
 /// 点击待办处理
-
 class SCToDoUtils {
   /// 点击处理按钮
   deal(SCToDoModel model) {

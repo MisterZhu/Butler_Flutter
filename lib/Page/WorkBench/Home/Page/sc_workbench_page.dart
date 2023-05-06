@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -24,6 +23,7 @@ import '../../../../Utils/sc_utils.dart';
 import '../Model/sc_home_task_model.dart';
 import '../View/Alert/sc_task_module_alert.dart';
 import '../View/Alert/sc_task_sift_alert.dart';
+import '../View/AppBar/sc_workbench_search.dart';
 
 /// 工作台-page
 
@@ -128,55 +128,69 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
       width: double.infinity,
       height: double.infinity,
       color: SCColors.color_F2F3F5,
-      child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-        return GetBuilder<SCWorkBenchController>(
-            tag: workBenchControllerTag,
-            init: workBenchController,
-            builder: (value) {
-              return SCWorkBenchView(
-                state: workBenchController,
-                waitController: waitController,
-                doingController: processingController,
-                height: constraints.maxHeight,
-                tabTitleList: workBenchController.tabTitleList,
-                tabController: tabController,
-                onRefreshAction: () {
-                  workBenchController.loadData();
-                },
-                detailAction: (SCWorkOrderModel model) {
-                  detailAction(model);
-                },
-                showSpaceAlert: () {
-                  showSpaceAlert();
-                },
-                scanAction: () {
-                  scanAction();
-                },
-                messageAction: () {
-                  messageAction();
-                },
-                cardDetailAction: (int index) {
-                  cardDetailAction(index);
-                },
-                headerAction: () {
-                  userInfoAction();
-                },
-                searchAction: () {
-                  searchAction();
-                },
-                siftAction: () {
-                  siftAction();
-                },
-                verificationDetailAction: (SCVerificationOrderModel model) {
-                  verificationDetailAction(model);
-                },
-                hotelOrderDetailAction: (SCHotelOrderModel model) {
-                  hotelOrderDetailAction(model);
-                },
-              );
-            });
-      }),
+      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+      child: Column(
+        children: [
+          SCWorkBenchSearch(
+            unreadNum: SCScaffoldManager.instance.unreadMessageCount,
+            searchAction: () {
+              searchAction();
+            },
+            scanAction: () {
+              scanAction();
+            },
+            messageAction: () {
+              messageAction();
+            },
+          ),
+          Expanded(child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return GetBuilder<SCWorkBenchController>(
+                    tag: workBenchControllerTag,
+                    init: workBenchController,
+                    builder: (value) {
+                      return SCWorkBenchView(
+                        state: workBenchController,
+                        waitController: waitController,
+                        doingController: processingController,
+                        height: constraints.maxHeight,
+                        tabTitleList: workBenchController.tabTitleList,
+                        tabController: tabController,
+                        detailAction: (SCWorkOrderModel model) {
+                          detailAction(model);
+                        },
+                        showSpaceAlert: () {
+                          showSpaceAlert();
+                        },
+                        scanAction: () {
+                          scanAction();
+                        },
+                        messageAction: () {
+                          messageAction();
+                        },
+                        cardDetailAction: (int index) {
+                          cardDetailAction(index);
+                        },
+                        headerAction: () {
+                          userInfoAction();
+                        },
+                        searchAction: () {
+                          searchAction();
+                        },
+                        siftAction: () {
+                          siftAction();
+                        },
+                        verificationDetailAction: (SCVerificationOrderModel model) {
+                          verificationDetailAction(model);
+                        },
+                        hotelOrderDetailAction: (SCHotelOrderModel model) {
+                          hotelOrderDetailAction(model);
+                        },
+                      );
+                    });
+              }))
+        ],
+      ),
     );
   }
 
@@ -245,6 +259,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
 
     }
   }
+
   /// 酒店订单处理详情
   hotelOrderDetailAction(SCHotelOrderModel model) {
     String realUrl = SCUtils.getWebViewUrl(url: '${SCConfig.getH5Url(SCH5.hotelOrderDetailUrl)}?isFromWorkBench=1&orderId=${model.id ?? ''}', title: '', needJointParams: true);
@@ -340,8 +355,8 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   addNotification() {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
-      if (key == SCKey.kSwitchEnterprise || key == SCKey.kRefreshWorkBenchPage) {
-        workBenchController.loadData();
+      if (key == SCKey.kSwitchEnterprise || key == SCKey.kRefreshWorkBenchPage || key == SCKey.kRefreshPatrolPage) {
+        workBenchController.loadData(loadAllToDo: true);
       } else if (key == SCKey.kReloadUnreadMessageCount) {
         workBenchController.update();
       }
