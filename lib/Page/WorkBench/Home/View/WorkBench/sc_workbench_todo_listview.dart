@@ -38,26 +38,30 @@ class SCWorkBenchToDoListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget body;
     if (data.isNotEmpty) {
-      return SmartRefresher(
-        controller: refreshController,
-        enablePullDown: true,
-        enablePullUp: true,
-        onRefresh: onRefresh,
-        onLoading: onLoading,
-        header: const SCCustomHeader(),
-        footer: const ClassicFooter(
-          loadingText: '加载中...',
-          idleText: '加载更多',
-          noDataText: '到底了',
-          failedText: '加载失败',
-          canLoadingText: '加载更多',
-        ),
-        child: listView(),
-      );
+      body = listView();
     } else {
-      return const SCWorkBenchEmptyView();
+      body = const SCWorkBenchEmptyView(
+        scrollPhysics: NeverScrollableScrollPhysics(),
+      );
     }
+    return SmartRefresher(
+      controller: refreshController,
+      enablePullDown: true,
+      enablePullUp: data.isNotEmpty,
+      onRefresh: onRefresh,
+      onLoading: onLoading,
+      header: const SCCustomHeader(),
+      footer: const ClassicFooter(
+        loadingText: '加载中...',
+        idleText: '加载更多',
+        noDataText: '到底了',
+        failedText: '加载失败',
+        canLoadingText: '加载更多',
+      ),
+      child: body,
+    );
   }
 
   /// listView
