@@ -97,9 +97,9 @@ class SCAddMaterialController extends GetxController {
     };
     String url = '';
     if (materialType == SCWarehouseManageType.entry) {
-      url = SCUrl.kMaterialListUrl;
+      url = SCUrl.kAllMaterialListUrl;
     } else {
-      url = SCUrl.kOtherMaterialListUrl;
+      url = SCUrl.kAllOtherMaterialListUrl;
     }
     SCHttpManager.instance.post(
         url: url,
