@@ -6,7 +6,7 @@ import 'package:smartcommunity/Page/ApplicationModule/WarningCenter/View/Alert/s
 
 import '../../Model/sc_warning_dealresult_model.dart';
 
-/// 预计类型弹窗
+/// 预警类型弹窗
 
 class SCWarningTypeView extends StatefulWidget {
 
