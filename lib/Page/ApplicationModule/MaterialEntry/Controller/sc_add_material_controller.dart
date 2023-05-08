@@ -92,84 +92,117 @@ class SCAddMaterialController extends GetxController {
       "count": false,
       "last": false,
       "orderBy": [],
-      "pageNum": pageNum,
-      "pageSize": 20
     };
     String url = '';
     if (materialType == SCWarehouseManageType.entry) {
       url = SCUrl.kAllMaterialListUrl;
-    } else {
-      url = SCUrl.kAllOtherMaterialListUrl;
-    }
-    SCHttpManager.instance.post(
-        url: url,
-        params: params,
-        success: (value) {
-          SCLoadingUtils.hide();
-          if ((value['records'] is List) == false) {
-            bool last = false;
-            if (isLoadMore) {
-              last = value['last'];
+      SCHttpManager.instance.get(
+          url: url,
+          params: params,
+          success: (value) {
+            SCLoadingUtils.hide();
+            if (isLoadMore == true) {
+              materialList.addAll(List<SCMaterialListModel>.from(
+                  value.map((e) => SCMaterialListModel.fromJson(e)).toList()));
+            } else {
+              materialList = List<SCMaterialListModel>.from(
+                  value.map((e) => SCMaterialListModel.fromJson(e)).toList());
             }
-            completeHandler?.call(false, last);
-            update();
-            return;
-          }
-          List list = value['records'];
-          if (isLoadMore == true) {
-            materialList.addAll(List<SCMaterialListModel>.from(
-                list.map((e) => SCMaterialListModel.fromJson(e)).toList()));
-          } else {
-            materialList = List<SCMaterialListModel>.from(
-                list.map((e) => SCMaterialListModel.fromJson(e)).toList());
-          }
-          for (SCMaterialListModel model in materialList) {
-            for (SCMaterialListModel subModel in originalList) {
-              if (isEdit) {
-                if (materialType == SCWarehouseManageType.entry) {
-                  if (model.id == subModel.materialId) {
-                    model.localNum = subModel.localNum;
-                    model.isSelect = true;
-                    model.materialId = subModel.materialId;
-                    model.reportId = subModel.reportId;
+            for (SCMaterialListModel model in materialList) {
+              for (SCMaterialListModel subModel in originalList) {
+                if (isEdit) {
+                  if (materialType == SCWarehouseManageType.entry) {
+                    if (model.id == subModel.materialId) {
+                      model.localNum = subModel.localNum;
+                      model.isSelect = true;
+                      model.materialId = subModel.materialId;
+                      model.reportId = subModel.reportId;
+                    }
+                  } else {
+                    if (model.materialId == subModel.materialId) {
+                      model.localNum = subModel.localNum;
+                      model.isSelect = true;
+                      model.materialId = subModel.materialId;
+                      model.reportId = subModel.reportId;
+                    }
                   }
                 } else {
-                  if (model.materialId == subModel.materialId) {
-                    model.localNum = subModel.localNum;
-                    model.isSelect = true;
-                    model.materialId = subModel.materialId;
-                    model.reportId = subModel.reportId;
-                  }
-                }
-              } else {
-                if (materialType == SCWarehouseManageType.entry) {
-                  if (model.id == subModel.id) {
-                    model.localNum = subModel.localNum;
-                    model.isSelect = true;
-                  }
-                } else {
-                  if (model.materialId == subModel.materialId) {
-                    model.localNum = subModel.localNum;
-                    model.isSelect = true;
+                  if (materialType == SCWarehouseManageType.entry) {
+                    if (model.id == subModel.id) {
+                      model.localNum = subModel.localNum;
+                      model.isSelect = true;
+                    }
+                  } else {
+                    if (model.materialId == subModel.materialId) {
+                      model.localNum = subModel.localNum;
+                      model.isSelect = true;
+                    }
                   }
                 }
               }
             }
-          }
-          update();
-          bool last = false;
-          if (isLoadMore) {
-            last = value['last'];
-          }
-          completeHandler?.call(true, last);
-        },
-        failure: (value) {
-          if (isLoadMore) {
-            pageNum--;
-          }
-          SCToast.showTip(value['message']);
-          completeHandler?.call(false, false);
-        });
+            update();
+            completeHandler?.call(true, true);
+          },
+          failure: (value) {
+            SCToast.showTip(value['message']);
+            completeHandler?.call(false, false);
+          });
+    } else {
+      url = SCUrl.kAllOtherMaterialListUrl;
+      SCHttpManager.instance.post(
+          url: url,
+          params: params,
+          success: (value) {
+            SCLoadingUtils.hide();
+            if (isLoadMore == true) {
+              materialList.addAll(List<SCMaterialListModel>.from(
+                  value.map((e) => SCMaterialListModel.fromJson(e)).toList()));
+            } else {
+              materialList = List<SCMaterialListModel>.from(
+                  value.map((e) => SCMaterialListModel.fromJson(e)).toList());
+            }
+            for (SCMaterialListModel model in materialList) {
+              for (SCMaterialListModel subModel in originalList) {
+                if (isEdit) {
+                  if (materialType == SCWarehouseManageType.entry) {
+                    if (model.id == subModel.materialId) {
+                      model.localNum = subModel.localNum;
+                      model.isSelect = true;
+                      model.materialId = subModel.materialId;
+                      model.reportId = subModel.reportId;
+                    }
+                  } else {
+                    if (model.materialId == subModel.materialId) {
+                      model.localNum = subModel.localNum;
+                      model.isSelect = true;
+                      model.materialId = subModel.materialId;
+                      model.reportId = subModel.reportId;
+                    }
+                  }
+                } else {
+                  if (materialType == SCWarehouseManageType.entry) {
+                    if (model.id == subModel.id) {
+                      model.localNum = subModel.localNum;
+                      model.isSelect = true;
+                    }
+                  } else {
+                    if (model.materialId == subModel.materialId) {
+                      model.localNum = subModel.localNum;
+                      model.isSelect = true;
+                    }
+                  }
+                }
+              }
+            }
+            update();
+            completeHandler?.call(true, true);
+          },
+          failure: (value) {
+            SCToast.showTip(value['message']);
+            completeHandler?.call(false, false);
+          });
+    }
   }
 
   /// 新增入库-资产列表数据

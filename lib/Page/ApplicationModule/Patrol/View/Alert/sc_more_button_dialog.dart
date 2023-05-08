@@ -75,8 +75,8 @@ class SCMoreButtonDialog extends StatelessWidget{
       alignment: Alignment.topCenter,
       children: [
         Image.asset(
-          SCAsset.iconMoreButtonBg,
-          centerSlice: const Rect.fromLTRB(24, 23, 86, 95),
+          SCAsset.iconMoreButtonBottomBg,
+          centerSlice: const Rect.fromLTRB(17, 13, 102, 46),
           width: width,
           height: height,
         ),

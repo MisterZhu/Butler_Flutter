@@ -44,7 +44,7 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
     controller = Get.put(SCPatrolDetailController(), tag: controllerTag);
     controller.initParams(Get.arguments);
     patrolUtils = SCPatrolUtils();
-    patrolUtils.taskId = controller.taskId;
+    patrolUtils.taskId = controller.model.taskId ?? '';
     patrolUtils.procInstId = controller.procInstId;
     addNotification();
   }
@@ -125,8 +125,9 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
   /// 任务处理
   taskAction(String name) {
     SCPatrolUtils patrolUtils = SCPatrolUtils();
-    patrolUtils.taskId = controller.taskId;
+    patrolUtils.taskId = controller.model.taskId ?? '';
     patrolUtils.procInstId = controller.procInstId;
+    patrolUtils.nodeId = controller.nodeId;
     patrolUtils.taskAction(name: name, isDetailPage: true);
   }
 

@@ -22,6 +22,9 @@ class SCPatrolUtils {
   /// 任务ID
   String taskId = "";
 
+  /// nodeID
+  String nodeId = "";
+
   /// 节点数组
   List nodeList = [];
 
@@ -53,8 +56,41 @@ class SCPatrolUtils {
           transfer(userId: userId, isDetailPage: isDetailPage);
         }
       }
+    } else if (name == '接收') {
+      accept(isDetailPage: isDetailPage);
+    } else if (name == '拒绝') {
+      refuse(isDetailPage: isDetailPage);
     }
   }
+
+  /// 接收
+  accept({bool? isDetailPage}) {
+    dealTask(action: "accept", result: (result) {
+      if (result == true) {
+        SCToast.showTip('接收成功').then((status) {
+          SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
+          if (isDetailPage == true) {
+            SCRouterHelper.back(null);
+          }
+        });
+      }
+    });
+  }
+
+  /// 拒绝
+  refuse({bool? isDetailPage}) {
+    dealTask(action: "notAccept", result: (result) {
+      if (result == true) {
+        SCToast.showTip('拒绝成功').then((status) {
+          SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
+          if (isDetailPage == true) {
+            SCRouterHelper.back(null);
+          }
+        });
+      }
+    });
+  }
+
 
   /// 任务关闭
   close({bool? isDetailPage}) {
@@ -163,8 +199,10 @@ class SCPatrolUtils {
       if (result == true) {
         // 扫码
         var data = await SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
-        print("扫码结果===$data");
-        showDealAlert(code: data, isDetailPage: isDetailPage);
+        print("扫码结果===$data========");
+        if (data != '') {
+          showDealAlert(code: data, isDetailPage: isDetailPage);
+        }
       } else {
         showDealAlert(isDetailPage: isDetailPage);
       }
@@ -176,7 +214,7 @@ class SCPatrolUtils {
     SCLoadingUtils.show();
     SCHttpManager.instance.get(
         url: SCUrl.kNeedScanUrl,
-        params: {"procInstId": procInstId, "taskId": taskId},
+        params: {"procInstId": procInstId, "nodeId": nodeId},
         success: (value) {
           SCLoadingUtils.hide();
           print('是否需要扫码======$value');
@@ -286,6 +324,18 @@ class SCPatrolUtils {
         "attachments": transferImage(imageList ?? []),
         "text": content,
       };
+    } else if (action == "accept") {
+      // 接收
+      comment = {
+        "attachments": transferImage(imageList ?? []),
+        "text": content,
+      };
+    } else if (action == "notAccept") {
+      // 拒绝
+      comment = {
+        "attachments": transferImage(imageList ?? []),
+        "text": content,
+      };
     }
     var params = {
       "action": action,
@@ -296,6 +346,7 @@ class SCPatrolUtils {
       "targetUser": targetUser,
       "targetNode": targetNode
     };
+    print('222======$taskId');
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kDealTaskUrl,

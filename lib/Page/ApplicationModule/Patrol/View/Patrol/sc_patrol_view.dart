@@ -224,7 +224,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
         detailAction(widget.state.dataList[index]);
       },
       btnTapAction: () {
-        dealAction(btnText, model.taskId ?? '', model.procInstId ?? '');
+        dealAction(name: btnText, taskId: model.taskId ?? '', procInstId: model.procInstId ?? '', nodeId: model.nodeId ?? '');
       },
     );
   }
@@ -318,16 +318,17 @@ class SCPatrolViewState extends State<SCPatrolView> {
   }
 
   /// 处理
-  dealAction(String name, String taskId, String procInstId) {
+  dealAction({required String name, required String taskId, required String procInstId, required String nodeId}) {
     SCPatrolUtils patrolUtils = SCPatrolUtils();
     patrolUtils.taskId = taskId;
     patrolUtils.procInstId = procInstId;
+    patrolUtils.nodeId = nodeId;
     patrolUtils.taskAction(name: name);
   }
 
   /// 详情
   detailAction(SCPatrolTaskModel model) {
-    SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "taskId": model.taskId ?? ''});
+    SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});
   }
 
   /// 打电话

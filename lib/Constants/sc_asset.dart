@@ -360,6 +360,8 @@ class SCAsset {
 
   /// 更多按钮弹窗背景图
   static const String iconMoreButtonBg = "images/patrol/icon_more_button_dialog_bg.png";
+  /// 底部更多按钮弹窗背景图
+  static const String iconMoreButtonBottomBg = "images/patrol/icon_more_button_bottom_dialog_bg.png";
 
   /// 任务icon
   static const String iconPatrolTask = "images/patrol/ic_patrol_task.png";

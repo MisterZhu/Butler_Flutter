@@ -243,7 +243,7 @@ class SCUrl {
   static const String kOtherMaterialListUrl = "/api/warehouse/manage/warehouseAccount/chooseWareHouseAccountList";
 
   /// 出库、报损、调拨、盘点物资列表-不分页
-  static const String kAllOtherMaterialListUrl = "/api/retailmall/mallClassify/manager/AppClassify/getAllLevelOne";
+  static const String kAllOtherMaterialListUrl = "/api/warehouse/manage/warehouseAccount/chooseWareHouseAccountListNoPage";
 
   /// 物资调拨编辑-新增物资
   static const String kEditAddTransferMaterialUrl = "/api/warehouse/manage/materialChangeRelation/addMaterialChangeRelationList";
@@ -393,7 +393,7 @@ class SCUrl {
   /// 巡查分类
   static const String kPatrolTypeUrl = "/api/quality/safetyProduction/task/fullTree";
   /// 巡查详情
-  static const String kPatrolDetailUrl = "/api/quality/safetyProduction/task/getById";
+  static const String kPatrolDetailUrl = "/api/quality/safetyProduction/task/getById?procInstId=";
   /// 任务日志
   static const String kPatrolTaskLogUrl = "/api/bpm/log/list";
   /// 处理任务
