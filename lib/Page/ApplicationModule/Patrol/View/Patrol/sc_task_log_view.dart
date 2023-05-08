@@ -22,33 +22,19 @@ class SCTaskLogView extends StatelessWidget {
 
   /// body
   Widget body() {
-    return Column(
-      children: [
-        listview(),
-        const Expanded(child: SizedBox())
-      ],
-    );
-  }
-
-  Widget listview() {
     if (state.dataList.isNotEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-        child: Container(
-            decoration: BoxDecoration(
-              color: SCColors.color_FFFFFF,
-              borderRadius: BorderRadius.circular(4.0),),
-            child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return cell(index);
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox();
-                },
-                itemCount: state.dataList.length)
-        ),
+        child: ListView.separated(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return cell(index);
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return const SizedBox();
+            },
+            itemCount: state.dataList.length),
       );
     } else {
       return const SizedBox();
@@ -58,10 +44,10 @@ class SCTaskLogView extends StatelessWidget {
   Widget cell(int index) {
     return Stack(
       children: [
-        Positioned(child: rightItem(index)),
+        rightItem(index),
         Positioned(
-            left: 0,
-            top: 0,
+            left: 12,
+            top: index == 0 ? 12.0 : 0.0,
             bottom: 0,
             width: 8,
             child: leftItem(index))
@@ -97,9 +83,22 @@ class SCTaskLogView extends StatelessWidget {
 
   /// rightItem
   Widget rightItem(int index) {
+    BorderRadiusGeometry borderRadius;
+    if (index == 0) {
+      if (state.dataList.length == 1) {
+        borderRadius = BorderRadius.circular(4.0);
+      } else {
+        borderRadius = const BorderRadius.only(topLeft: Radius.circular(4.0), topRight: Radius.circular(4.0));
+      }
+    } else {
+      borderRadius = const BorderRadius.only(bottomLeft: Radius.circular(4.0), bottomRight: Radius.circular(4.0));
+    }
     SCTaskLogModel model = state.dataList[index];
-    return Padding(
-      padding: const EdgeInsets.only(left: 26.0),
+    return DecoratedBox(decoration: BoxDecoration(
+      color: SCColors.color_FFFFFF,
+      borderRadius: borderRadius
+    ), child: Padding(
+      padding: EdgeInsets.only(left: 38.0, top: index == 0 ? 12.0 : 0.0, right: 12.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -141,7 +140,7 @@ class SCTaskLogView extends StatelessWidget {
           const SizedBox(height: 20.0,),
         ],
       ),
-    );
+    ),);
   }
 
   /// textListView
