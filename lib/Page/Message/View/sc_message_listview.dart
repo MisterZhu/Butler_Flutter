@@ -90,7 +90,12 @@ class SCMessageListView extends StatelessWidget {
                 if (ext['jumpUrl'] != null) {
                   if (model.cardCode == 'CONTENT_MESSAGE') {
                     // 跳转到站内信详情h5
-                    String jumpUrl = SCConfig.getH5Url('/h5Manage/#${ext['jumpUrl']}');
+                    String jumpUrl = SCConfig.getH5Url(ext['jumpUrl']);
+                    if (jumpUrl.contains("?")) {
+                      jumpUrl = "${SCConfig.getH5Url(ext['jumpUrl'])}&noticeArriveId=${model.noticeArriveId}";
+                    } else {
+                      jumpUrl = "${SCConfig.getH5Url(ext['jumpUrl'])}?noticeArriveId=${model.noticeArriveId}";
+                    }
                     String url = SCUtils.getWebViewUrl(url: jumpUrl, title: '通知公告',  needJointParams: true);
                     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {'title' : '通知公告', 'url' : url});
                   }
