@@ -393,7 +393,7 @@ class SCUrl {
   /// 巡查分类
   static const String kPatrolTypeUrl = "/api/quality/safetyProduction/task/fullTree";
   /// 巡查详情
-  static const String kPatrolDetailUrl = "/api/quality/safetyProduction/task/getById";
+  static const String kPatrolDetailUrl = "/api/quality/safetyProduction/task/getById?procInstId=";
   /// 任务日志
   static const String kPatrolTaskLogUrl = "/api/bpm/log/list";
   /// 处理任务

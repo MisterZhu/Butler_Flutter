@@ -16,7 +16,8 @@ class SCPatrolTaskModel {
       this.procInstName, 
       this.procName, 
       this.startTime, 
-      this.taskId,});
+      this.taskId,
+      this.nodeId,});
 
   SCPatrolTaskModel.fromJson(dynamic json) {
     actionVo = json['actionVo'] != null ? json['actionVo'].cast<String>() : [];
@@ -34,6 +35,7 @@ class SCPatrolTaskModel {
     procName = json['procName'];
     startTime = json['startTime'];
     taskId = json['taskId'];
+    nodeId = json['nodeId'];
   }
   List<String>? actionVo;
   String? assignee;
@@ -50,6 +52,7 @@ class SCPatrolTaskModel {
   String? procName;
   String? startTime;
   String? taskId;
+  String? nodeId;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -68,6 +71,7 @@ class SCPatrolTaskModel {
     map['procName'] = procName;
     map['startTime'] = startTime;
     map['taskId'] = taskId;
+    map['nodeId'] = nodeId;
     return map;
   }
 

@@ -50,17 +50,17 @@ class SCToDoUtils {
   patrolDetail(SCToDoModel model) {
     String id = model.taskId ?? '';
     String procInstId = '';
-    String taskId = '';
+    String nodeId = '';
     if (id.isNotEmpty) {
       if (id.contains('_')) {
         List idList = id.split('_');
         if (idList.length > 1) {
           procInstId = idList[0];
-          taskId = idList[1];
+          nodeId = idList[1];
         }
       }
     }
-    SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": procInstId, "taskId": taskId})?.then((value) {
+    SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": procInstId, "nodeId": nodeId})?.then((value) {
       SCScaffoldManager.instance.eventBus.fire({"key" : SCKey.kRefreshWorkBenchPage});
     });
   }

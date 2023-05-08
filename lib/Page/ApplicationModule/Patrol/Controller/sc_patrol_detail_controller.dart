@@ -5,7 +5,6 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Network/sc_url.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_patrol_detail_model.dart';
-import 'package:smartcommunity/Utils/Date/sc_date_utils.dart';
 import '../../../../Constants/sc_type_define.dart';
 import '../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import '../Other/sc_patrol_utils.dart';
@@ -16,8 +15,8 @@ class SCPatrolDetailController extends GetxController {
   /// 编号
   String procInstId = "";
 
-  /// 任务ID
-  String taskId = "";
+  /// nodeID
+  String nodeId = "";
 
   /// 是否成功获取数据
   bool getDataSuccess = false;
@@ -55,8 +54,8 @@ class SCPatrolDetailController extends GetxController {
       if (params.containsKey("procInstId")) {
         procInstId = params['procInstId'];
       }
-      if (params.containsKey("taskId")) {
-        taskId = params['taskId'];
+      if (params.containsKey("nodeId")) {
+        nodeId = params['nodeId'];
       }
       getDetailData();
     }
@@ -64,11 +63,10 @@ class SCPatrolDetailController extends GetxController {
 
   /// 巡查详情
   getDetailData() {
-    var params = {"procInstId": procInstId, "taskId": taskId};
     SCLoadingUtils.show();
     SCHttpManager.instance.get(
-        url: SCUrl.kPatrolDetailUrl,
-        params: params,
+        url: SCUrl.kPatrolDetailUrl+procInstId+'\$_\$'+nodeId,
+        params: null,
         success: (value) {
           log('巡查详情===$value');
           SCLoadingUtils.hide();
@@ -202,89 +200,5 @@ class SCPatrolDetailController extends GetxController {
     return List.from(data.map((e) {
       return SCUIDetailCellModel.fromJson(e);
     }));
-  }
-
-  /// 处理任务
-  /// action:操作类型
-  /// dealChannel：处理来源，1-判断是否需要扫码,2-处理操作
-  /// mode：选择的节点
-  /// content：内容
-  /// imageList：图片
-  /// code：二维码
-  dealTask(
-      {required String action,
-      int? dealChannel,
-      String? node,
-      String? content,
-      List? imageList,
-      String? code}) {
-    var comment = {};
-    if (action == "handle") {
-      // 处理
-      if (dealChannel == 2) {
-        comment = {
-          "attachments": transferImage(imageList ?? []),
-          "text": content
-        };
-      } else {}
-    } else if (action == "transfer") {
-      // 转派
-      comment = {
-        "attachments": transferImage(imageList ?? []),
-        "text": content
-      };
-    } else if (action == "close") {
-      // 关闭
-      comment = {
-        "attachments": transferImage(imageList ?? []),
-        "text": content
-      };
-    } else if (action == "comment") {
-      // 添加日志
-      comment = {
-        "attachments": transferImage(imageList ?? []),
-        "text": content
-      };
-    } else if (action == "recall") {
-      // 回退
-      comment = {
-        "attachments": transferImage(imageList ?? []),
-        "text": content
-      };
-    }
-    var params = {
-      "action": action,
-      "comment": comment,
-      "formData": {"code": code ?? ''},
-      "instanceId": procInstId,
-      "taskId": taskId
-    };
-    SCHttpManager.instance.post(
-        url: SCUrl.kDealTaskUrl,
-        params: params,
-        success: (value) {
-          log('处理任务===$value');
-          SCLoadingUtils.hide();
-
-          update();
-        },
-        failure: (value) {
-          SCToast.showTip(value['message']);
-        });
-  }
-
-  /// 图片转换
-  List transferImage(List imageList) {
-    List list = [];
-    for (var params in imageList) {
-      var newParams = {
-        "id": SCDateUtils.timestamp(),
-        "isImage": true,
-        "name": params['name'],
-        "url": params['fileKey']
-      };
-      list.add(newParams);
-    }
-    return list;
   }
 }
