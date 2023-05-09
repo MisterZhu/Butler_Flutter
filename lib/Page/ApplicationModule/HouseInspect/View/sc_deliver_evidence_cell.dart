@@ -96,22 +96,20 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
 
   /// 图片
   Widget photoItem(int index) {
-    if (index == widget.files.length) {
+    if (index == widget.files.length) {//加号图案
       return GestureDetector(
         onTap: () {
           addPhotoAction(index);
         },
-        child: SizedBox(
-          width: 79.0,
-          height:  79.0,
+        child: AspectRatio(
+          aspectRatio: 1.0,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(index == widget.files.length ? 0.0 : 4.0),
-            child: Image.asset(
-              widget.addIcon,
-              width: 79.0,
-              height: 79.0,
-              fit: BoxFit.fill,),)
-        ),
+            child: SCImage(
+              url: widget.addIcon,
+              fit: BoxFit.cover,
+            ),
+          )),
       );
     } else {
       var file = widget.files[index];
@@ -119,25 +117,22 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
       if (file != null) {
         fileKey = file['fileKey'] ?? '';
       }
-      return SizedBox(
-        width: 79.0,
-        height:  79.0,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(index == widget.files.length ? 0.0 : 4.0),
-          child: Stack(
-            alignment: Alignment.topRight,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  previewImage(SCConfig.getImageUrl(fileKey));
-                },
+      return Stack(
+        alignment: Alignment.topRight,
+        children: [
+          GestureDetector(
+            onTap: () {
+              previewImage(SCConfig.getImageUrl(fileKey));
+            },
+            child: AspectRatio(
+              aspectRatio: 1.0,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(index == widget.files.length ? 0.0 : 4.0),
                 child: SCImage(
                   url: SCConfig.getImageUrl(fileKey),
-                  width: 79.0,
-                  height: 79.0,
-                  fit: BoxFit.cover,),
+                  fit: BoxFit.cover,),))
               ),
-              GestureDetector(
+            GestureDetector(
                 onTap: () {
                   setState(() {
                     widget.files.removeAt(index);
@@ -150,9 +145,7 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
                     height: 22.0,
                     fit: BoxFit.fill,),
               ),
-            ],
-          )
-        )
+        ],
       );
     }
   }
