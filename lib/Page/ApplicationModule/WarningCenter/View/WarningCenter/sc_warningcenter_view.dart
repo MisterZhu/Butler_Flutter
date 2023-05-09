@@ -208,7 +208,7 @@ class SCWarningCenterViewState extends State<SCWarningCenterView> {
       tagBGColorList: [widget.state.getLevelBGColor(model.levelId ?? 0)],
       tagTextColorList: [widget.state.getLevelTextColor(model.levelId ?? 0)],
       time: model.generationTime,
-      title: model.ruleName,
+      title: model.alertTypeStr,
       titleIcon: SCAsset.iconWarningTypeOrange,
       statusTitle: model.statusName,
       statusTitleColor: widget.state.getStatusColor(model.status ?? -1),

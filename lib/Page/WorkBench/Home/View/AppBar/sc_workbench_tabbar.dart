@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 
+import '../../../../../Network/sc_config.dart';
+
 /// 导航栏
 
 class SCWorkBenchTabBar extends StatefulWidget {
@@ -88,14 +90,15 @@ class SCWorkBenchTabBarState extends State<SCWorkBenchTabBar> {
                 labelPadding: const EdgeInsets.symmetric(horizontal: 12.0),
                 isScrollable: true,
                 indicatorSize: TabBarIndicatorSize.label,
-                indicator: SCTabIndicator(indicatorWidth: 30, borderSide: const BorderSide(width: 3.0, color: SCColors.color_4285F4)),
+                indicator: SCTabIndicator(indicatorWidth: 28.0, borderSide: const BorderSide(width: 2.5, color: SCColors.color_4285F4)),
                 indicatorColor: SCColors.color_4285F4,
                 unselectedLabelColor: SCColors.color_5E5F66,
                 labelColor: SCColors.color_1B1D33,
                 indicatorWeight: 2.5,
-                labelStyle: const TextStyle(
+                labelStyle: TextStyle(
                     fontSize: SCFonts.f14,
                     fontWeight: FontWeight.w500,
+                    fontFamilyFallback: SCConfig.getPFSCForIOS(),
                     color: SCColors.color_1B1D33),
                 unselectedLabelStyle: const TextStyle(
                     fontSize: SCFonts.f14,

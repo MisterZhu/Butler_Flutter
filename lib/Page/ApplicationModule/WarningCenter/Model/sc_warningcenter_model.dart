@@ -7,7 +7,8 @@ class SCWarningCenterModel {
       this.alertExplain, 
       this.alertPlanName, 
       this.alertSource, 
-      this.alertType, 
+      this.alertType,
+      this.alertTypeStr,
       this.alertWorkOrderVList, 
       this.beginTime, 
       this.communityId, 
@@ -42,6 +43,7 @@ class SCWarningCenterModel {
     alertPlanName = json['alertPlanName'];
     alertSource = json['alertSource'];
     alertType = json['alertType'];
+    alertTypeStr = json['alertTypeStr'];
     if (json['alertWorkOrderVList'] != null) {
       alertWorkOrderVList = [];
       json['alertWorkOrderVList'].forEach((v) {
@@ -80,6 +82,7 @@ class SCWarningCenterModel {
   String? alertPlanName;
   String? alertSource;
   String? alertType;
+  String? alertTypeStr;
   List<SCAlertWorkOrderVList>? alertWorkOrderVList;
   String? beginTime;
   String? communityId;
@@ -112,6 +115,7 @@ class SCWarningCenterModel {
     map['alertPlanName'] = alertPlanName;
     map['alertSource'] = alertSource;
     map['alertType'] = alertType;
+    map['alertTypeStr'] = alertTypeStr;
     if (alertWorkOrderVList != null) {
       map['alertWorkOrderVList'] = alertWorkOrderVList?.map((v) => v.toJson()).toList();
     }
