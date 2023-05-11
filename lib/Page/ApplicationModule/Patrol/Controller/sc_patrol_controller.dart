@@ -72,6 +72,8 @@ class SCPatrolController extends GetxController {
         pageType = params['type'];
         if (pageType == 1) {// 品质督查
           appCode = "QUALITY_REGULATION";
+        } else if (pageType == 2) {// 巡检
+          appCode = "POLICED_DEVICE";
         }
       }
     }

@@ -85,7 +85,7 @@ class SCMineListView extends StatelessWidget {
   }
 
   Widget listview(BuildContext context) {
-    int count = 16;
+    int count = 17;
     if (SCConfig.env == SCEnvironment.production &&
         !SCConfig.isSupportProxyForProduction) {
       if (SCConfig.yycTenantId() == (SCScaffoldManager.instance.defaultConfigModel?.tenantId ?? '')) {
@@ -263,6 +263,15 @@ class SCMineListView extends StatelessWidget {
         leftIcon: SCAsset.iconMineService,
         onTap: () {
           SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"type": 1});
+        },
+      );
+    } else if (index == 16) {
+      return SCSettingCell(
+        title: '巡检',
+        showLeftIcon: true,
+        leftIcon: SCAsset.iconMineService,
+        onTap: () {
+          SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"type": 2});
         },
       );
     } else {
