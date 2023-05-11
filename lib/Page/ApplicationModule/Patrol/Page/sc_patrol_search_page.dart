@@ -36,16 +36,8 @@ class SCSearchPatrolPageState extends State<SCSearchPatrolPage> with AutomaticKe
     super.initState();
     controllerTag = SCScaffoldManager.instance.getXControllerTag((SCSearchPatrolPage).toString());
     controller = Get.put(SCSearchPatrolController(), tag: controllerTag);
-    initPageData();
+    controller.initParams(Get.arguments);
     addNotification();
-  }
-
-  /// 页面传递过来的数据
-  initPageData() {
-    var params = Get.arguments;
-    if (params != null) {
-
-    }
   }
 
   /// 通知

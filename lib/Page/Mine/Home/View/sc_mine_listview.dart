@@ -253,7 +253,7 @@ class SCMineListView extends StatelessWidget {
         showLeftIcon: true,
         leftIcon: SCAsset.iconMineService,
         onTap: () {
-          SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"type": 0});
+          SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"pageType": 0});
         },
       );
     } else if (index == 15) {
@@ -262,7 +262,7 @@ class SCMineListView extends StatelessWidget {
         showLeftIcon: true,
         leftIcon: SCAsset.iconMineService,
         onTap: () {
-          SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"type": 1});
+          SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"pageType": 1});
         },
       );
     } else if (index == 16) {
@@ -271,7 +271,7 @@ class SCMineListView extends StatelessWidget {
         showLeftIcon: true,
         leftIcon: SCAsset.iconMineService,
         onTap: () {
-          SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"type": 2});
+          SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"pageType": 2});
         },
       );
     } else {
