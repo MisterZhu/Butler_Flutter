@@ -111,13 +111,13 @@ class SCWorkBenchMaterialListView extends StatelessWidget {
 
   /// 加载更多
   Future onLoading() async {
-    state.loadMore().then((value) {
-      if (isLast) {
-        refreshController.loadNoData();
-      } else {
-        refreshController.loadComplete();
-      }
-    });
+    // state.loadMore().then((value) {
+    //   if (isLast) {
+    //     refreshController.loadNoData();
+    //   } else {
+    //     refreshController.loadComplete();
+    //   }
+    // });
   }
 
   /// 详情

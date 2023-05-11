@@ -30,6 +30,12 @@ class SCKey {
   static const String kProxyMap = "kProxyMap";
   /// 工作台-搜索历史记录key
   static const String kWorkBenchSearchHistory = "kWorkBenchSearchHistory";
+  /// 工作台-缓存的tab数据-key
+  static const String kWorkBenchTabKey = "kWorkBenchTabKey";
+  /// 工作台-所有的tabTitleList
+  static const String kWorkBenchAllTabTitleListKey = "kWorkBenchAllTabTitleListKey";
+  /// 工作太-我的任务tabTitleList
+  static const String kWorkBenchMyTabTitleListKey = "kWorkBenchMyTabTitleListKey";
 
   /// 仓储-刷新物资入库页面
   static const String kRefreshMaterialEntryPage = "kRefreshMaterialEntryPage";

@@ -9,7 +9,6 @@ import 'package:smartcommunity/Constants/sc_key.dart';
 import 'package:smartcommunity/Network/sc_config.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_changespace_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_workbench_controller.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_listview_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_hotel_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_space_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_model.dart';
@@ -20,8 +19,6 @@ import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../../Utils/sc_utils.dart';
-import '../Model/sc_home_task_model.dart';
-import '../View/Alert/sc_task_module_alert.dart';
 import '../View/Alert/sc_task_sift_alert.dart';
 import '../View/AppBar/sc_workbench_search.dart';
 
@@ -33,28 +30,13 @@ class SCWorkBenchPage extends StatefulWidget {
 }
 
 class SCWorkBenchPageState extends State<SCWorkBenchPage>
-    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
 
   /// 工作台controller
   late SCWorkBenchController workBenchController;
 
-  /// 待处理controller
-  late SCWorkBenchListViewController waitController;
-
-  /// 处理中controller
-  late SCWorkBenchListViewController processingController;
-
-  /// tabController
-  late TabController tabController;
-
   /// SCWorkBenchController - tag
   String workBenchControllerTag = '';
-
-  /// 待处理SCWorkBenchListViewController - tag
-  String waitControllerTag = '';
-
-  /// 处理中SCWorkBenchListViewController - tag
-  String processingControllerTag = '';
 
   /// changeSpaceController
   SCChangeSpaceController changeSpaceController =
@@ -63,7 +45,11 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   /// 通知
   late StreamSubscription subscription;
 
+  /// pageName
   late String pageName;
+
+  /// tabController
+  late TabController tabController;
 
   @override
   initState() {
@@ -72,36 +58,19 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     pageName = (SCWorkBenchPage).toString();
     workBenchControllerTag =
         SCScaffoldManager.instance.getXControllerTag(pageName);
-    waitControllerTag = SCScaffoldManager.instance.getXControllerTag(pageName);
-    processingControllerTag = SCScaffoldManager.instance.getXControllerTag(pageName);
     workBenchController =
         Get.put(SCWorkBenchController(), tag: workBenchControllerTag);
     workBenchController.tag = workBenchControllerTag;
     workBenchController.pageName = pageName;
-    tabController = TabController(length: workBenchController.tabTitleList.length, vsync: this);
-    waitController =
-        Get.put(SCWorkBenchListViewController(), tag: waitControllerTag);
-    workBenchController.tag = waitControllerTag;
-    workBenchController.pageName = pageName;
-    processingController =
-        Get.put(SCWorkBenchListViewController(), tag: processingControllerTag);
-    processingController.tag = processingControllerTag;
-    processingController.pageName = pageName;
-    workBenchController.waitController = waitController;
-    workBenchController.processingController = processingController;
     addNotification();
     workBenchController.startTimer();
+    workBenchController.initData();
+    tabController = TabController(length: workBenchController.tabTitleList.length, vsync: this);
     tabController.addListener(() {
       if (workBenchController.currentWorkOrderIndex != tabController.index) {
         workBenchController.updateCurrentWorkOrderIndex(tabController.index);
       }
     });
-    // // 监听接收native_flutter消息
-    // SCScaffoldManager.instance.nativeToFlutter.receiveBroadcastStream()
-    //     .listen(getNativeData, onError: getNativeDataError);
-    // Future.delayed(const Duration(seconds: 5), (){
-    //   SCScaffoldManager.instance.flutterToNativeAction(SCFlutterKey.kShowAlert, {"data" : "123"});
-    // });
   }
 
   @override
@@ -109,8 +78,6 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     super.dispose();
     subscription.cancel();
     SCScaffoldManager.instance.deleteGetXControllerTag(pageName, workBenchControllerTag);
-    SCScaffoldManager.instance.deleteGetXControllerTag(pageName, waitControllerTag);
-    SCScaffoldManager.instance.deleteGetXControllerTag(pageName, processingControllerTag);
   }
 
   @override
@@ -143,55 +110,64 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
               messageAction();
             },
           ),
-          Expanded(child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                return GetBuilder<SCWorkBenchController>(
-                    tag: workBenchControllerTag,
-                    init: workBenchController,
-                    builder: (value) {
-                      return SCWorkBenchView(
-                        state: workBenchController,
-                        waitController: waitController,
-                        doingController: processingController,
-                        height: constraints.maxHeight,
-                        tabTitleList: workBenchController.tabTitleList,
-                        tabController: tabController,
-                        detailAction: (SCWorkOrderModel model) {
-                          detailAction(model);
-                        },
-                        showSpaceAlert: () {
-                          showSpaceAlert();
-                        },
-                        scanAction: () {
-                          scanAction();
-                        },
-                        messageAction: () {
-                          messageAction();
-                        },
-                        cardDetailAction: (int index) {
-                          cardDetailAction(index);
-                        },
-                        headerAction: () {
-                          userInfoAction();
-                        },
-                        searchAction: () {
-                          searchAction();
-                        },
-                        siftAction: () {
-                          siftAction();
-                        },
-                        verificationDetailAction: (SCVerificationOrderModel model) {
-                          verificationDetailAction(model);
-                        },
-                        hotelOrderDetailAction: (SCHotelOrderModel model) {
-                          hotelOrderDetailAction(model);
-                        },
-                      );
-                    });
-              }))
+        workBenchView()
         ],
       ),
     );
+  }
+
+  /// 工作台
+  Widget workBenchView() {
+    Widget contentView;
+    if (workBenchController.tabTitleList.isNotEmpty) {
+      contentView = Expanded(child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return GetBuilder<SCWorkBenchController>(
+                tag: workBenchControllerTag,
+                init: workBenchController,
+                builder: (value) {
+                  return SCWorkBenchView(
+                    state: workBenchController,
+                    height: constraints.maxHeight,
+                    tabTitleList: workBenchController.tabTitleList,
+                    tabController: tabController,
+                    detailAction: (SCWorkOrderModel model) {
+                      detailAction(model);
+                    },
+                    showSpaceAlert: () {
+                      showSpaceAlert();
+                    },
+                    scanAction: () {
+                      scanAction();
+                    },
+                    messageAction: () {
+                      messageAction();
+                    },
+                    cardDetailAction: (int index) {
+                      cardDetailAction(index);
+                    },
+                    headerAction: () {
+                      userInfoAction();
+                    },
+                    searchAction: () {
+                      searchAction();
+                    },
+                    siftAction: () {
+                      siftAction();
+                    },
+                    verificationDetailAction: (SCVerificationOrderModel model) {
+                      verificationDetailAction(model);
+                    },
+                    hotelOrderDetailAction: (SCHotelOrderModel model) {
+                      hotelOrderDetailAction(model);
+                    },
+                  );
+                });
+          }));
+    } else {
+      contentView = const SizedBox();
+    }
+    return contentView;
   }
 
   /// 详情
@@ -328,6 +304,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
           isDismissible: true,
           context: context,
           widget: SCTaskSiftAlert(
+            canEditMyTask: true,
             myTaskList: workBenchController.tabTitleList,
             taskTypeList: workBenchController.taskTypeList,
             selectTaskList: workBenchController.myTaskSelectList,
@@ -347,8 +324,33 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
               }
               workBenchController.loadData();
             },
+            editMyTaskAction: () {
+              Navigator.of(context).pop();
+              editWorkBenchAction();
+            },
           ));
     });
+  }
+
+  /// 编辑工作台
+  editWorkBenchAction() async {
+    List myTaskTitleList = workBenchController.tabTitleList;
+    List allTaskTitleList = workBenchController.getAllTabTitleData();
+    var params = {
+      SCKey.kWorkBenchAllTabTitleListKey : allTaskTitleList,
+      SCKey.kWorkBenchMyTabTitleListKey : myTaskTitleList
+    };
+    var result = await SCRouterHelper.pathPage(SCRouterPath.workBenchEditPage, params);
+    List editMyTaskTitleList = [];
+    if ((result ?? {}).containsKey('data')) {
+      editMyTaskTitleList = result['data'];
+      if (editMyTaskTitleList.length > 2) {
+        workBenchController.updateLocalCacheTab(list: editMyTaskTitleList, completeHandler: () {
+          tabController = TabController(length: workBenchController.tabTitleList.length, vsync: this);
+          workBenchController.update();
+        });
+      }
+    }
   }
 
   /// 通知

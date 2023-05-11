@@ -50,6 +50,10 @@ class SCWorkBenchCard extends StatelessWidget {
     var map = data[index];
     num number = map['number'];
     String description = map['description'];
+    String richText = '';// 富文本
+    if (map.containsKey('richText')) {
+      richText = map['richText'];
+    }
     return GestureDetector(
       onTap: () {
         onTap?.call(index);
@@ -62,7 +66,7 @@ class SCWorkBenchCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            numberItem(number, index == 2 ? '%': ''),
+            numberItem(number, richText),
             const SizedBox(
               height: 4.0,
             ),
