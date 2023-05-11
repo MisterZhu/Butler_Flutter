@@ -115,28 +115,6 @@ class SCWorkBenchController extends GetxController{
   /// 初始化tabData
   initTabData(List list) {
     tabDataList = list;
-    // tabDataList = [
-    //   {
-    //     "title": "任务大厅",
-    //     "key": "hallUserIds",
-    //   },
-    //   {
-    //     "title": "我待办的",
-    //     "key": "handleUserIds",
-    //   },
-    //   // {
-    //   //   "title": "我创建的",
-    //   //   "key": "creator",
-    //   // },
-    //   // {
-    //   //   "title": "我经办的",
-    //   //   "key": "handledUserIds",
-    //   // },
-    //   // {
-    //   //   "title": "我关注的",
-    //   //   "key": "followUserIds",
-    //   // },
-    // ];
     tabTitleList = [];
     todoKeyList = [];
     taskTypeList = [];
@@ -208,7 +186,6 @@ class SCWorkBenchController extends GetxController{
   getLocalCacheTab() {
     if (SCSpUtil.containsKey(SCKey.kWorkBenchTabKey)) {
       var data = SCSpUtil.getMap(SCKey.kWorkBenchTabKey);
-      print("本地缓存tab===${data['data']}");
       initTabData(data['data']);
     } else {
       List list = getAllTabData();
