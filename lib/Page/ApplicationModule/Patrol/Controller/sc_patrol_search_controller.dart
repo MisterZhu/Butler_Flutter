@@ -21,6 +21,26 @@ class SCSearchPatrolController extends GetxController {
   /// 搜索内容
   String searchString = '';
 
+  /// appCode
+  String appCode = "POLICED_POINT";
+
+  /// 页面类型，0巡查，1品质督查，2巡检
+  int pageType = 0;
+
+  /// 初始化
+  initParams(Map<String, dynamic> params) {
+    if (params.isNotEmpty) {
+      if (params.containsKey("pageType")) {
+        pageType = params['pageType'];
+        if (pageType == 1) {// 品质督查
+          appCode = "QUALITY_REGULATION";
+        } else if (pageType == 2) {// 巡检
+          appCode = "POLICED_DEVICE";
+        }
+      }
+    }
+  }
+
   /// 更新搜索内容
   updateSearchString(String value) {
     searchString = value;
@@ -38,12 +58,16 @@ class SCSearchPatrolController extends GetxController {
       pageNum = 1;
       SCLoadingUtils.show();
     }
+    List fields = [{"map": {}, "method": 7, "name": "ak.ID_", "value": searchString}];
+    var dic1 = {
+      "map": {},
+      "method": 1,
+      "name": "wt.appCode",
+      "value": appCode
+    };
+    fields.add(dic1);
     var params = {
-      "conditions": {
-        "fields": [
-          {"map": {}, "method": 7, "name": "ak.ID_", "value": searchString}
-        ],
-      },
+      "conditions": {"fields": fields},
       "count": false,
       "last": false,
       "orderBy": [],

@@ -63,7 +63,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
         SCMaterialSearchItem(
           name: '搜索任务',
           searchAction: () {
-            SCRouterHelper.pathPage(SCRouterPath.searchPatrolPage, {});
+            SCRouterHelper.pathPage(SCRouterPath.searchPatrolPage, {'pageType': widget.state.pageType});
           },
         ),
         siftItem(),

@@ -184,7 +184,6 @@ class SCOnlineMonitorViewState extends State<SCOnlineMonitorView> {
         crossAxisCount: 2,
         shrinkWrap: true,
         itemCount: widget.state.dataList.length,
-        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           SCMonitorListModel model = widget.state.dataList[index];
           return SCMonitorCell(
