@@ -208,7 +208,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
       timeType: 0,
       remainingTime: 0,
       tagList: [],
-      time: model.endTime,
+      time: model.startTime,
       title: model.categoryName ?? '',
       titleIcon: SCAsset.iconPatrolTask,
       statusTitle: model.customStatus ?? '',
