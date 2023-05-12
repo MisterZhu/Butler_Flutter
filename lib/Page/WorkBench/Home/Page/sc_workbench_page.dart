@@ -31,7 +31,6 @@ class SCWorkBenchPage extends StatefulWidget {
 
 class SCWorkBenchPageState extends State<SCWorkBenchPage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-
   /// 工作台controller
   late SCWorkBenchController workBenchController;
 
@@ -65,7 +64,8 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     addNotification();
     workBenchController.startTimer();
     workBenchController.initData();
-    tabController = TabController(length: workBenchController.tabTitleList.length, vsync: this);
+    tabController = TabController(
+        length: workBenchController.tabTitleList.length, vsync: this);
     tabController.addListener(() {
       if (workBenchController.currentWorkOrderIndex != tabController.index) {
         workBenchController.updateCurrentWorkOrderIndex(tabController.index);
@@ -77,7 +77,8 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   dispose() {
     super.dispose();
     subscription.cancel();
-    SCScaffoldManager.instance.deleteGetXControllerTag(pageName, workBenchControllerTag);
+    SCScaffoldManager.instance
+        .deleteGetXControllerTag(pageName, workBenchControllerTag);
   }
 
   @override
@@ -110,7 +111,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
               messageAction();
             },
           ),
-        workBenchView()
+          workBenchView()
         ],
       ),
     );
@@ -122,48 +123,48 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     if (workBenchController.tabTitleList.isNotEmpty) {
       contentView = Expanded(child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return GetBuilder<SCWorkBenchController>(
-                tag: workBenchControllerTag,
-                init: workBenchController,
-                builder: (value) {
-                  return SCWorkBenchView(
-                    state: workBenchController,
-                    height: constraints.maxHeight,
-                    tabTitleList: workBenchController.tabTitleList,
-                    tabController: tabController,
-                    detailAction: (SCWorkOrderModel model) {
-                      detailAction(model);
-                    },
-                    showSpaceAlert: () {
-                      showSpaceAlert();
-                    },
-                    scanAction: () {
-                      scanAction();
-                    },
-                    messageAction: () {
-                      messageAction();
-                    },
-                    cardDetailAction: (int index) {
-                      cardDetailAction(index);
-                    },
-                    headerAction: () {
-                      userInfoAction();
-                    },
-                    searchAction: () {
-                      searchAction();
-                    },
-                    siftAction: () {
-                      siftAction();
-                    },
-                    verificationDetailAction: (SCVerificationOrderModel model) {
-                      verificationDetailAction(model);
-                    },
-                    hotelOrderDetailAction: (SCHotelOrderModel model) {
-                      hotelOrderDetailAction(model);
-                    },
-                  );
-                });
-          }));
+        return GetBuilder<SCWorkBenchController>(
+            tag: workBenchControllerTag,
+            init: workBenchController,
+            builder: (value) {
+              return SCWorkBenchView(
+                state: workBenchController,
+                height: constraints.maxHeight,
+                tabTitleList: workBenchController.tabTitleList,
+                tabController: tabController,
+                detailAction: (SCWorkOrderModel model) {
+                  detailAction(model);
+                },
+                showSpaceAlert: () {
+                  showSpaceAlert();
+                },
+                scanAction: () {
+                  scanAction();
+                },
+                messageAction: () {
+                  messageAction();
+                },
+                cardDetailAction: (int index) {
+                  cardDetailAction(index);
+                },
+                headerAction: () {
+                  userInfoAction();
+                },
+                searchAction: () {
+                  searchAction();
+                },
+                siftAction: () {
+                  siftAction();
+                },
+                verificationDetailAction: (SCVerificationOrderModel model) {
+                  verificationDetailAction(model);
+                },
+                hotelOrderDetailAction: (SCHotelOrderModel model) {
+                  hotelOrderDetailAction(model);
+                },
+              );
+            });
+      }));
     } else {
       contentView = const SizedBox();
     }
@@ -171,7 +172,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   }
 
   /// 详情
-  detailAction(SCWorkOrderModel model) async{
+  detailAction(SCWorkOrderModel model) async {
     String title = SCUtils.getWorkOrderButtonText(model.status ?? 0);
     String url =
         "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=${model.status}&orderId=${model.orderId}&isCharge=${model.isCharge}&spaceId=${model.spaceId}&communityId=${model.communityId}";
@@ -188,7 +189,8 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
           "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=${model.status}&orderId=${model.orderId}&isCharge=0&type=$type&spaceId=${model.spaceId}&communityId=${model.communityId}";
     }
     if (Platform.isAndroid) {
-      String realUrl = SCUtils.getWebViewUrl(url: url,title: title,  needJointParams: true);
+      String realUrl =
+          SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
 
       /// 调用Android WebView
       var params = {"title": model.description, "url": realUrl};
@@ -197,7 +199,8 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
           await channel.invokeMethod(SCScaffoldManager.android_webview, params);
       workBenchController.loadData();
     } else {
-      String realUrl = SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
+      String realUrl =
+          SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
       SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
         "title": model.description ?? '',
         "url": realUrl,
@@ -212,10 +215,16 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   verificationDetailAction(SCVerificationOrderModel model) {
     int status = model.dealStatus ?? -1;
     if (status == 0) {
-      workBenchController.verificationOrderDetailTap('${model.id})').then((value) {
-        String realUrl = SCUtils.getWebViewUrl(url: '${SCConfig.getH5Url(SCH5.verificationDetailUrl)}?isFromWorkBench=1',title: '',  needJointParams: true);
+      workBenchController
+          .verificationOrderDetailTap('${model.id})')
+          .then((value) {
+        String realUrl = SCUtils.getWebViewUrl(
+            url:
+                '${SCConfig.getH5Url(SCH5.verificationDetailUrl)}?isFromWorkBench=1',
+            title: '',
+            needJointParams: true);
         SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
-          "title":  '',
+          "title": '',
           "url": realUrl,
           "needJointParams": false
         })?.then((value) {
@@ -223,24 +232,29 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
         });
       });
     } else if (status == 1) {
-      String realUrl = SCUtils.getWebViewUrl(url: SCConfig.getH5Url(SCH5.verificationDetailUrl),title: '',  needJointParams: true);
+      String realUrl = SCUtils.getWebViewUrl(
+          url: SCConfig.getH5Url(SCH5.verificationDetailUrl),
+          title: '',
+          needJointParams: true);
       SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
-        "title":  '',
+        "title": '',
         "url": realUrl,
         "needJointParams": false
       })?.then((value) {
         workBenchController.loadData();
       });
-    } else {
-
-    }
+    } else {}
   }
 
   /// 酒店订单处理详情
   hotelOrderDetailAction(SCHotelOrderModel model) {
-    String realUrl = SCUtils.getWebViewUrl(url: '${SCConfig.getH5Url(SCH5.hotelOrderDetailUrl)}?isFromWorkBench=1&orderId=${model.id ?? ''}', title: '', needJointParams: true);
+    String realUrl = SCUtils.getWebViewUrl(
+        url:
+            '${SCConfig.getH5Url(SCH5.hotelOrderDetailUrl)}?isFromWorkBench=1&orderId=${model.id ?? ''}',
+        title: '',
+        needJointParams: true);
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
-      "title":  model.hotelName,
+      "title": model.hotelName,
       "url": realUrl,
       "needJointParams": true
     })?.then((value) {
@@ -316,6 +330,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
               workBenchController.loadData();
             },
             sureAction: (list1, list2) {
+              print("list2===$list2");
               int index = workBenchController.updateMyTaskSelectList(list1);
               workBenchController.updateTaskTypeSelectList(list2);
               Navigator.of(context).pop();
@@ -337,18 +352,22 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     List myTaskTitleList = workBenchController.tabTitleList;
     List allTaskTitleList = workBenchController.getAllTabTitleData();
     var params = {
-      SCKey.kWorkBenchAllTabTitleListKey : allTaskTitleList,
-      SCKey.kWorkBenchMyTabTitleListKey : myTaskTitleList
+      SCKey.kWorkBenchAllTabTitleListKey: allTaskTitleList,
+      SCKey.kWorkBenchMyTabTitleListKey: myTaskTitleList
     };
-    var result = await SCRouterHelper.pathPage(SCRouterPath.workBenchEditPage, params);
+    var result =
+        await SCRouterHelper.pathPage(SCRouterPath.workBenchEditPage, params);
     List editMyTaskTitleList = [];
     if ((result ?? {}).containsKey('data')) {
       editMyTaskTitleList = result['data'];
       if (editMyTaskTitleList.length > 2) {
-        workBenchController.updateLocalCacheTab(list: editMyTaskTitleList, completeHandler: () {
-          tabController = TabController(length: workBenchController.tabTitleList.length, vsync: this);
-          workBenchController.update();
-        });
+        workBenchController.updateLocalCacheTab(
+            list: editMyTaskTitleList,
+            completeHandler: () {
+              tabController = TabController(
+                  length: workBenchController.tabTitleList.length, vsync: this);
+              workBenchController.update();
+            });
       }
     }
   }
@@ -357,7 +376,9 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   addNotification() {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
-      if (key == SCKey.kSwitchEnterprise || key == SCKey.kRefreshWorkBenchPage || key == SCKey.kRefreshPatrolPage) {
+      if (key == SCKey.kSwitchEnterprise ||
+          key == SCKey.kRefreshWorkBenchPage ||
+          key == SCKey.kRefreshPatrolPage) {
         workBenchController.loadData(loadAllToDo: true);
       } else if (key == SCKey.kReloadUnreadMessageCount) {
         workBenchController.update();

@@ -25,7 +25,8 @@ class SCToDoModel {
       this.tenantId, 
       this.tenantName, 
       this.communityId, 
-      this.communityName,});
+      this.communityName,
+      this.operationList});
 
   SCToDoModel.fromJson(dynamic json) {
     appName = json['appName'];
@@ -53,6 +54,7 @@ class SCToDoModel {
     tenantName = json['tenantName'];
     communityId = json['communityId'];
     communityName = json['communityName'];
+    operationList = json['operationList'];
   }
   String? appName;
   String? type;
@@ -79,6 +81,7 @@ class SCToDoModel {
   String? tenantName;
   String? communityId;
   String? communityName;
+  List? operationList;// 操作按钮
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -107,6 +110,7 @@ class SCToDoModel {
     map['tenantName'] = tenantName;
     map['communityId'] = communityId;
     map['communityName'] = communityName;
+    map['operationList'] = operationList;
     return map;
   }
 

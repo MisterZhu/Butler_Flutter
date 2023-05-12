@@ -253,6 +253,7 @@ class SCWorkBenchController extends GetxController{
         for (SCWorkBenchToDoController toDoController in todoControllerList) {
           toDoController.subKey = params['key'];
           toDoController.subValue = params['value'];
+          toDoController.getData(isMore: false);
         }
         break;
       }
@@ -263,6 +264,7 @@ class SCWorkBenchController extends GetxController{
   /// 更新当前工单index
   updateCurrentWorkOrderIndex(int value) {
     currentWorkOrderIndex = value;
+    myTaskSelectList = [tabTitleList[value]];
   }
 
   /// 更新头部数量数据
@@ -296,6 +298,7 @@ class SCWorkBenchController extends GetxController{
         getUserInfo().then((subValue) {
           if (subValue == true) {
             getWorkOrderNumber();
+            getTaskCount();
             if (loadAllToDo == true) {
               getToDoData();
             }
@@ -396,6 +399,19 @@ class SCWorkBenchController extends GetxController{
           // newOrder = value['newOrder'] ?? 0;
           updateNumData();
         });
+  }
+
+  /// 获取卡片数量
+  getTaskCount() {
+    SCHttpManager.instance.post(url: SCUrl.kWorkBenchTaskCountUrl, params: null, success: (value) {
+      orderNum = value['hallCount'] ?? 0;
+      taskNum = value['todayTaskCount'] ?? 0;
+      collectionRate = value['collectionRate'] ?? 0;
+      serviceNum = value['todayServiceBusinessCount'] ?? 0;
+      update();
+    }, failure: (value) {
+
+    });
   }
 
   /// 提交入库
@@ -560,6 +576,7 @@ class SCWorkBenchController extends GetxController{
     for (SCWorkBenchToDoController toDoController in todoControllerList) {
       toDoController.subKey = "";
       toDoController.subValue = "";
+      toDoController.getData(isMore: false);
     }
   }
 

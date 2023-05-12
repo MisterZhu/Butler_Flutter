@@ -49,7 +49,9 @@ class SCWorkBenchToDoController extends GetxController {
       SCLoadingUtils.show();
     }
     var params = {
-      "conditions": {key: SCScaffoldManager.instance.user.id, subKey: subValue},
+      "conditions": {key: SCScaffoldManager.instance.user.id, subKey.isEmpty ? 'data' : subKey
+
+          : subValue},
       "count": true,
       "last": isLast,
       "pageNum": pageNum,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Other/sc_patrol_utils.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_todo_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Other/sc_todo_utils.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
@@ -8,6 +9,8 @@ import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../../Constants/sc_h5.dart';
 import '../../../../../Constants/sc_key.dart';
 import '../../../../../Network/sc_config.dart';
+import '../../../../../Network/sc_http_manager.dart';
+import '../../../../../Network/sc_url.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
@@ -85,6 +88,11 @@ class SCWorkBenchToDoListView extends StatelessWidget {
     model.statusValue = '2';
     String status = model.statusValue ?? '0';
     bool hideAddressRow = true;
+    // 按钮文字
+    String btnText = '';
+    if ((model.operationList ?? []).isNotEmpty) {
+      btnText = model.operationList?.first;
+    }
     return SCTaskCardCell(
       timeType: index,
       title: model.title,
@@ -96,17 +104,16 @@ class SCWorkBenchToDoListView extends StatelessWidget {
       contactUserName: '',
       remainingTime: 0,
       time: model.createTime,
-      btnText: SCUtils.getWorkOrderButtonText(
-          int.parse(status.isEmpty ? '0' : status)),
-      hideBtn: false,
+      btnText: btnText,
+      // btnText: SCUtils.getWorkOrderButtonText(
+      //     int.parse(status.isEmpty ? '0' : status)),
+      hideBtn: (model.operationList ?? []).isEmpty,
       hideAddressRow: hideAddressRow,
       btnTapAction: () {
-        model.statusValue = '2';
-        SCToDoUtils().deal(model);
+        SCToDoUtils().dealPatrolTask(model, btnText);
       },
       detailTapAction: () {
-        model.statusValue = '2';
-        SCToDoUtils().deal(model);
+        SCToDoUtils().detail(model);
       },
     );
   }
