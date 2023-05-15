@@ -103,11 +103,11 @@ class SCWorkBenchToDoListView extends StatelessWidget {
     // 创建时间
     String createTime = cardStyle['createTime'];
     // 地址
-    String address = model.address ?? '';
+    String address = model.contactAddress ?? '';
     // 联系人
-    String userName = model.userName ?? '';
+    String userName = model.contact ?? '';
     // 手机号
-    String phone = model.phone ?? '';
+    String phone = model.contactInform ?? '';
     return SCTaskCardCell(
       title: title,
       statusTitle: statusTitle,

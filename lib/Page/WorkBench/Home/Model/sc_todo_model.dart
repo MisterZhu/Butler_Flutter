@@ -1,35 +1,36 @@
 /// 工作台-待办model
 class SCToDoModel {
-  SCToDoModel({
-      this.appName, 
-      this.type, 
-      this.subType, 
-      this.taskId, 
-      this.id, 
-      this.code, 
-      this.title, 
-      this.content, 
-      this.statusName, 
-      this.statusValue, 
-      this.handleUserIds, 
-      this.handledUserIds, 
-      this.followUserIds, 
-      this.hallUserIds, 
-      this.beginTime, 
-      this.endTime, 
-      this.createTime, 
-      this.creator, 
-      this.operator, 
-      this.creatorName, 
-      this.operatorName, 
-      this.tenantId, 
-      this.tenantName, 
-      this.communityId, 
+  SCToDoModel(
+      {this.appName,
+      this.type,
+      this.subType,
+      this.taskId,
+      this.id,
+      this.code,
+      this.title,
+      this.content,
+      this.statusName,
+      this.statusValue,
+      this.handleUserIds,
+      this.handledUserIds,
+      this.followUserIds,
+      this.hallUserIds,
+      this.beginTime,
+      this.endTime,
+      this.createTime,
+      this.creator,
+      this.operator,
+      this.creatorName,
+      this.operatorName,
+      this.tenantId,
+      this.tenantName,
+      this.communityId,
       this.communityName,
       this.operationList,
-    this.userName,
-    this.address,
-    this.phone});
+      this.contact,// 联系人姓名
+      this.contactAddress,// 联系人房屋地址
+      this.contactInform, // 联系人手机号
+      });
 
   SCToDoModel.fromJson(dynamic json) {
     appName = json['appName'];
@@ -58,9 +59,9 @@ class SCToDoModel {
     communityId = json['communityId'];
     communityName = json['communityName'];
     operationList = json['operationList'];
-    userName = json['userName'];
-    phone = json['phone'];
-    address = json['address'];
+    contact = json['contact'];
+    contactInform = json['contactInform'];
+    contactAddress = json['contactAddress'];
   }
   String? appName;
   String? type;
@@ -87,10 +88,10 @@ class SCToDoModel {
   String? tenantName;
   String? communityId;
   String? communityName;
-  List? operationList;// 操作按钮
-  String? userName;
-  String? address;
-  String? phone;
+  List? operationList; // 操作按钮
+  String? contact;
+  String? contactAddress;
+  String? contactInform;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -120,10 +121,9 @@ class SCToDoModel {
     map['communityId'] = communityId;
     map['communityName'] = communityName;
     map['operationList'] = operationList;
-    map['userName'] = userName;
-    map['phone'] = phone;
-    map['address'] = address;
+    map['contact'] = contact;
+    map['contactInform'] = contactInform;
+    map['contactAddress'] = contactAddress;
     return map;
   }
-
 }
