@@ -66,11 +66,10 @@ class SCToDoUtils {
 
   /// 工单详情
   workOrderDetail(SCToDoModel model) {
-    String statusValue = model.statusValue ?? '0';
-    int status = int.parse(statusValue.isEmpty ? '0' : statusValue);
+    int status = (model.statusValue ?? '0').cnToInt();
     String title = SCUtils.getWorkOrderButtonText(status);
     String url =
-        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=$status&orderId=${model.id}";
+        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=$status&orderId=${model.taskId}";
     String realUrl =
         SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
@@ -175,7 +174,7 @@ class SCToDoUtils {
       }
     } else if (model.appName == "WORK_ORDER") {
       ///  工单
-      btnTitle = SCUtils.getWorkOrderButtonText(int.parse(model.statusValue ?? '0'));
+      btnTitle = SCUtils.getWorkOrderButtonText((model.statusValue ?? '0').cnToInt());
     } else {
       /// 未知
 

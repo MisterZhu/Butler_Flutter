@@ -34,16 +34,16 @@ class SCWorkBenchController extends GetxController{
   String tag = '';
 
   /// 抢单大厅数量
-  int orderNum = 10;
+  int orderNum = 0;
 
   /// 今日任务数量
-  int taskNum = 20;
+  int taskNum = 0;
 
   /// 收缴率
-  num collectionRate = 88.8;
+  num collectionRate = 0;
 
   /// 今日服务业主数量
-  int serviceNum = 2;
+  int serviceNum = 0;
 
   List numDataList = [];
 
@@ -192,8 +192,9 @@ class SCWorkBenchController extends GetxController{
       List list = getAllTabData();
       if (list.length > 2) {
         var data = list.sublist(0, 2);
+        initTabData(data);
         SCSpUtil.setMap(SCKey.kWorkBenchTabKey, {'data': data}).then((value) {
-          initTabData(data);
+
         });
       }
     }
