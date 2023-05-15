@@ -146,7 +146,6 @@ class SCToDoUtils {
     Color statusColor = SCColors.color_1B1D33;
     // 状态
     int status = (model.statusValue ?? '0').cnToInt();
-
     // 剩余时间相关信息
     var remainingTimeMap = getRemainingTime(model);
     // 创建时间
@@ -190,7 +189,7 @@ class SCToDoUtils {
   /// 通过结束时间获取剩余时间
   Map<String, dynamic> getRemainingTime(SCToDoModel model) {
     // 创建时间
-    String createTime = '';
+    String createTime = model.createTime ?? '';
     // 是否显示倒计时
     bool isShowTimer = false;
     // 剩余时间
