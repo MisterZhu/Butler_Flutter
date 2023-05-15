@@ -84,36 +84,52 @@ class SCWorkBenchToDoListView extends StatelessWidget {
   /// cell
   Widget getCell(int index) {
     SCToDoModel model = data[index];
-    // todo 暂时固定
-    model.statusValue = '2';
-    String status = model.statusValue ?? '0';
     bool hideAddressRow = true;
+    var cardStyle = SCToDoUtils().getCardStyle(model);
+    // title
+    String title = model.title ?? '';
+    // content
+    String content = model.content ?? '';
     // 按钮文字
-    String btnText = '';
-    if ((model.operationList ?? []).isNotEmpty) {
-      btnText = model.operationList?.first;
-    }
+    String btnTitle = cardStyle['btnTitle'];
+    // 处理状态文字
+    String statusTitle = cardStyle['statusTitle'];
+    // 处理状态文字颜色
+    Color statusColor = cardStyle['statusColor'];
+    // 是否显示倒计时
+    bool isShowTimer = cardStyle['isShowTimer'];
+    // 剩余时间
+    int remainingTime = cardStyle['remainingTime'];
+    // 创建时间
+    String createTime = cardStyle['createTime'];
+    // 地址
+    String address = model.address ?? '';
+    // 联系人
+    String userName = model.userName ?? '';
+    // 手机号
+    String phone = model.phone ?? '';
     return SCTaskCardCell(
-      timeType: index,
-      title: model.title,
-      statusTitle: model.statusName,
-      statusTitleColor: SCColors.color_4285F4,
-      content: model.content,
+      title: title,
+      statusTitle: statusTitle,
+      statusTitleColor: statusColor,
+      content: content,
       tagList: const [],
-      address: '',
-      contactUserName: '',
-      remainingTime: 0,
-      time: model.createTime,
-      btnText: btnText,
-      // btnText: SCUtils.getWorkOrderButtonText(
-      //     int.parse(status.isEmpty ? '0' : status)),
-      hideBtn: (model.operationList ?? []).isEmpty,
+      address: address,
+      contactUserName: userName,
+      remainingTime: remainingTime,
+      time: createTime,
+      timeType: isShowTimer ? 1 : 0,
+      btnText: btnTitle,
+      hideBtn: btnTitle.isEmpty,
       hideAddressRow: hideAddressRow,
       btnTapAction: () {
-        SCToDoUtils().dealPatrolTask(model, btnText);
+        SCToDoUtils().dealAction(model, btnTitle);
       },
       detailTapAction: () {
         SCToDoUtils().detail(model);
+      },
+      callAction: () {
+        SCUtils.call(phone);
       },
     );
   }

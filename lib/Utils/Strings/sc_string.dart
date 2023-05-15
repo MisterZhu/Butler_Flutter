@@ -16,4 +16,17 @@ extension SCFixAutoLines on String {
   String fixAutoLines() {
     return Characters(this).join('\u{200B}');
   }
+
+  bool cnIsNumber() {
+    final reg = RegExp(r'^-?[0-9]+');
+    return reg.hasMatch(this);
+  }
+
+  int cnToInt() {
+    if (cnIsNumber() == true) {
+      var result = int.parse(this).toInt();
+      return result;
+    }
+    return 0;
+  }
 }

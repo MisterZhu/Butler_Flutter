@@ -99,6 +99,7 @@ class SCWorkBenchController extends GetxController{
   onInit() {
     super.onInit();
     Future.delayed(const Duration(milliseconds: 2000), () {location();});
+    // startTimer();
   }
 
   /// 初始化
@@ -501,31 +502,12 @@ class SCWorkBenchController extends GetxController{
   /// 定时器
   startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      // if (currentPlateIndex == 0) {
-      //   for (int i = 0; i < waitDataList.length; i++) {
-      //     if (waitDataList[i] is SCWorkOrderModel) {
-      //       SCWorkOrderModel model = waitDataList[i];
-      //       int subTime = model.remainingTime ?? 0;
-      //       if (subTime > 0) {
-      //         model.remainingTime = subTime - 1;
-      //       } else if (subTime == 0) {
-      //         model.remainingTime = 0;
-      //       } else {}
-      //     }
-      //   }
-      //
-      //   for (int i = 0; i < processingDataList.length; i++) {
-      //     if (processingDataList[i] is SCWorkOrderModel) {
-      //       SCWorkOrderModel model = processingDataList[i];
-      //       int subTime = model.remainingTime ?? 0;
-      //       if (subTime > 0) {
-      //         model.remainingTime = subTime - 1;
-      //       } else if (subTime == 0) {
-      //         model.remainingTime = 0;
-      //       } else {}
-      //     }
-      //   }
-      // }
+      for (int i = 0; i < todoControllerTagList.length; i++) {
+        String controllerTag = todoControllerTagList[i];
+        SCWorkBenchToDoController todoController =
+        Get.find(tag: controllerTag);
+        todoController.update();
+      }
     });
   }
 

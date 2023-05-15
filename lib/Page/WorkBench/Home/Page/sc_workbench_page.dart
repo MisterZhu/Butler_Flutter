@@ -360,7 +360,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     List editMyTaskTitleList = [];
     if ((result ?? {}).containsKey('data')) {
       editMyTaskTitleList = result['data'];
-      if (editMyTaskTitleList.length > 2) {
+      if (editMyTaskTitleList.length >= 2) {
         workBenchController.updateLocalCacheTab(
             list: editMyTaskTitleList,
             completeHandler: () {
