@@ -91,7 +91,6 @@ class SCToDoUtils {
     if (id.isNotEmpty) {
       if (id.contains('\$_\$')) {
         List idList = id.split('\$_\$');
-        print("id列表===$idList");
         if (idList.length > 1) {
           procInstId = idList[0];
           nodeId = idList[1];
