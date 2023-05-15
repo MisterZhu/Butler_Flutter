@@ -140,7 +140,7 @@ class SCWorkBenchController extends GetxController{
       {
         "title": "巡查任务",
         "key": "TASK",
-        "value": "2"
+        "value": "POLICED_POINT"
       },
     ];
     for (var params in taskTypeDataList) {
@@ -407,7 +407,7 @@ class SCWorkBenchController extends GetxController{
     SCHttpManager.instance.post(url: SCUrl.kWorkBenchTaskCountUrl, params: null, success: (value) {
       orderNum = value['hallCount'] ?? 0;
       taskNum = value['todayTaskCount'] ?? 0;
-      collectionRate = value['collectionRate'] ?? 0;
+      collectionRate = (value['collectionRate'] ?? 0) * 100;
       serviceNum = value['todayServiceBusinessCount'] ?? 0;
       update();
     }, failure: (value) {

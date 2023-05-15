@@ -22,8 +22,14 @@ class SCWorkBenchToDoListView extends StatelessWidget {
   /// 数据源
   final List data;
 
+  /// 是否可以上拉加载更多,默认true
+  final bool? canLoadMore;
+
   /// refreshController
   final RefreshController refreshController;
+
+  /// 底部距离,默认12.0
+  final double? bottomPadding;
 
   /// 下拉刷新
   final Function? onRefreshAction;
@@ -35,6 +41,8 @@ class SCWorkBenchToDoListView extends StatelessWidget {
       {Key? key,
       required this.data,
       required this.refreshController,
+      this.canLoadMore,
+      this.bottomPadding,
       this.onRefreshAction,
       this.loadMoreAction})
       : super(key: key);
@@ -52,7 +60,7 @@ class SCWorkBenchToDoListView extends StatelessWidget {
     return SmartRefresher(
       controller: refreshController,
       enablePullDown: true,
-      enablePullUp: data.isNotEmpty,
+      enablePullUp: data.isNotEmpty && (canLoadMore ?? true),
       onRefresh: onRefresh,
       onLoading: onLoading,
       header: const SCCustomHeader(),
@@ -70,7 +78,7 @@ class SCWorkBenchToDoListView extends StatelessWidget {
   /// listView
   Widget listView() {
     return ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+        padding: EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0, bottom: bottomPadding ?? 12.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return getCell(index);

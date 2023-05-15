@@ -91,10 +91,15 @@ class SCToDoUtils {
     if (id.isNotEmpty) {
       if (id.contains('\$_\$')) {
         List idList = id.split('\$_\$');
+        print("id列表===$idList");
         if (idList.length > 1) {
           procInstId = idList[0];
           nodeId = idList[1];
+        } else if (idList.length == 1) {
+          procInstId = idList[0];
         }
+      } else {
+        procInstId = model.taskId ?? '';
       }
     }
     SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage,
@@ -171,7 +176,7 @@ class SCToDoUtils {
       }
     } else if (model.appName == "WORK_ORDER") {
       ///  工单
-      // btnTitle = SCUtils.getWorkOrderButtonText(int.parse(model.statusValue ?? '0'));
+      btnTitle = SCUtils.getWorkOrderButtonText(int.parse(model.statusValue ?? '0'));
     } else {
       /// 未知
 

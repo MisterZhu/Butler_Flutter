@@ -330,7 +330,6 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
               workBenchController.loadData();
             },
             sureAction: (list1, list2) {
-              print("list2===$list2");
               int index = workBenchController.updateMyTaskSelectList(list1);
               workBenchController.updateTaskTypeSelectList(list2);
               Navigator.of(context).pop();
