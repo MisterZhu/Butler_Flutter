@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Other/sc_patrol_utils.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_todo_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Other/sc_todo_utils.dart';
 import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
@@ -8,6 +9,8 @@ import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../../Constants/sc_h5.dart';
 import '../../../../../Constants/sc_key.dart';
 import '../../../../../Network/sc_config.dart';
+import '../../../../../Network/sc_http_manager.dart';
+import '../../../../../Network/sc_url.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
@@ -19,8 +22,14 @@ class SCWorkBenchToDoListView extends StatelessWidget {
   /// 数据源
   final List data;
 
+  /// 是否可以上拉加载更多,默认true
+  final bool? canLoadMore;
+
   /// refreshController
   final RefreshController refreshController;
+
+  /// 底部距离,默认12.0
+  final double? bottomPadding;
 
   /// 下拉刷新
   final Function? onRefreshAction;
@@ -32,6 +41,8 @@ class SCWorkBenchToDoListView extends StatelessWidget {
       {Key? key,
       required this.data,
       required this.refreshController,
+      this.canLoadMore,
+      this.bottomPadding,
       this.onRefreshAction,
       this.loadMoreAction})
       : super(key: key);
@@ -49,7 +60,7 @@ class SCWorkBenchToDoListView extends StatelessWidget {
     return SmartRefresher(
       controller: refreshController,
       enablePullDown: true,
-      enablePullUp: data.isNotEmpty,
+      enablePullUp: data.isNotEmpty && (canLoadMore ?? true),
       onRefresh: onRefresh,
       onLoading: onLoading,
       header: const SCCustomHeader(),
@@ -67,7 +78,7 @@ class SCWorkBenchToDoListView extends StatelessWidget {
   /// listView
   Widget listView() {
     return ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+        padding: EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0, bottom: bottomPadding ?? 12.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return getCell(index);
@@ -81,32 +92,52 @@ class SCWorkBenchToDoListView extends StatelessWidget {
   /// cell
   Widget getCell(int index) {
     SCToDoModel model = data[index];
-    // todo 暂时固定
-    model.statusValue = '2';
-    String status = model.statusValue ?? '0';
     bool hideAddressRow = true;
+    var cardStyle = SCToDoUtils().getCardStyle(model);
+    // title
+    String title = model.title ?? '';
+    // content
+    String content = model.content ?? '';
+    // 按钮文字
+    String btnTitle = cardStyle['btnTitle'];
+    // 处理状态文字
+    String statusTitle = cardStyle['statusTitle'];
+    // 处理状态文字颜色
+    Color statusColor = cardStyle['statusColor'];
+    // 是否显示倒计时
+    bool isShowTimer = cardStyle['isShowTimer'];
+    // 剩余时间
+    int remainingTime = cardStyle['remainingTime'];
+    // 创建时间
+    String createTime = cardStyle['createTime'];
+    // 地址
+    String address = model.contactAddress ?? '';
+    // 联系人
+    String userName = model.contact ?? '';
+    // 手机号
+    String phone = model.contactInform ?? '';
     return SCTaskCardCell(
-      timeType: index,
-      title: model.title,
-      statusTitle: model.statusName,
-      statusTitleColor: SCColors.color_4285F4,
-      content: model.content,
+      title: title,
+      statusTitle: statusTitle,
+      statusTitleColor: statusColor,
+      content: content,
       tagList: const [],
-      address: '',
-      contactUserName: '',
-      remainingTime: 0,
-      time: model.createTime,
-      btnText: SCUtils.getWorkOrderButtonText(
-          int.parse(status.isEmpty ? '0' : status)),
-      hideBtn: false,
+      address: address,
+      contactUserName: userName,
+      remainingTime: remainingTime,
+      time: createTime,
+      timeType: isShowTimer ? 1 : 0,
+      btnText: btnTitle,
+      hideBtn: btnTitle.isEmpty,
       hideAddressRow: hideAddressRow,
       btnTapAction: () {
-        model.statusValue = '2';
-        SCToDoUtils().deal(model);
+        SCToDoUtils().dealAction(model, btnTitle);
       },
       detailTapAction: () {
-        model.statusValue = '2';
-        SCToDoUtils().deal(model);
+        SCToDoUtils().detail(model);
+      },
+      callAction: () {
+        SCUtils.call(phone);
       },
     );
   }

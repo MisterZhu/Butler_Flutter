@@ -1,19 +1,10 @@
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/GetXController/sc_wrokbench_listview_controller.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_hotel_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_verification_order_model.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Model/sc_work_order_model.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/View/Hotel/sc_hotel_listview.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/View/Material/sc_workbench_material_listview.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_listview.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/View/RealVerification/sc_realverification_listview.dart';
 import 'package:smartcommunity/Utils/sc_utils.dart';
-
 import '../../../../../Constants/sc_enum.dart';
 import '../../../../../Delegate/sc_sticky_tabbar_delegate.dart';
 import '../../../../../Utils/Router/sc_router_helper.dart';
@@ -22,7 +13,6 @@ import '../../../../ApplicationModule/MaterialEntry/Model/sc_material_entry_mode
 import '../../GetXController/sc_workbench_controller.dart';
 import '../AppBar/sc_workbench_card.dart';
 import '../AppBar/sc_workbench_header.dart';
-import '../PageView/sc_workbench_empty_view.dart';
 
 /// 工作台-view
 
@@ -30,8 +20,6 @@ class SCWorkBenchView extends StatelessWidget {
   SCWorkBenchView({
     Key? key,
     required this.state,
-    required this.waitController,
-    required this.doingController,
     required this.height,
     required this.tabController,
     required this.tabTitleList,
@@ -51,12 +39,6 @@ class SCWorkBenchView extends StatelessWidget {
 
   /// 工作台controller
   final SCWorkBenchController state;
-
-  /// 待处理controller
-  final SCWorkBenchListViewController waitController;
-
-  /// 处理中controller
-  final SCWorkBenchListViewController doingController;
 
   /// 组件高度
   final double height;
@@ -238,37 +220,37 @@ class SCWorkBenchView extends StatelessWidget {
 
   /// 物资提交
   materialSubmit(SCMaterialEntryModel model, SCWarehouseManageType type) {
-    if (type == SCWarehouseManageType.entry) {
-      // 物资入库
-      state.materialEntrySubmit(
-          id: model.id ?? '',
-          completeHandler: (success) {
-            state.getMaterialEntryWaitList(isMore: false);
-          });
-    } else if (type == SCWarehouseManageType.outbound) {
-      // 物资出库
-      state.materialOutSubmit(
-          id: model.id ?? '',
-          completeHandler: (success) {
-            state.getMaterialOutWaitList(isMore: false);
-          });
-    } else if (type == SCWarehouseManageType.frmLoss) {
-      // 物资报损
-      state.materialFrmLossSubmit(
-          id: model.id ?? '',
-          completeHandler: (success) {
-            state.getMaterialFrmLossWaitList(isMore: false);
-          });
-    } else if (type == SCWarehouseManageType.transfer) {
-      // 物资调拨
-      state.materialTransferSubmit(
-          id: model.id ?? '',
-          completeHandler: (success) {
-            state.getMaterialTransferWaitList(isMore: false);
-          });
-    } else {
-      // 其他
-
-    }
+    // if (type == SCWarehouseManageType.entry) {
+    //   // 物资入库
+    //   state.materialEntrySubmit(
+    //       id: model.id ?? '',
+    //       completeHandler: (success) {
+    //         state.getMaterialEntryWaitList(isMore: false);
+    //       });
+    // } else if (type == SCWarehouseManageType.outbound) {
+    //   // 物资出库
+    //   state.materialOutSubmit(
+    //       id: model.id ?? '',
+    //       completeHandler: (success) {
+    //         state.getMaterialOutWaitList(isMore: false);
+    //       });
+    // } else if (type == SCWarehouseManageType.frmLoss) {
+    //   // 物资报损
+    //   state.materialFrmLossSubmit(
+    //       id: model.id ?? '',
+    //       completeHandler: (success) {
+    //         state.getMaterialFrmLossWaitList(isMore: false);
+    //       });
+    // } else if (type == SCWarehouseManageType.transfer) {
+    //   // 物资调拨
+    //   state.materialTransferSubmit(
+    //       id: model.id ?? '',
+    //       completeHandler: (success) {
+    //         state.getMaterialTransferWaitList(isMore: false);
+    //       });
+    // } else {
+    //   // 其他
+    //
+    // }
   }
 }

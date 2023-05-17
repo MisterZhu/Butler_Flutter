@@ -27,49 +27,23 @@ import '../Model/sc_work_order_model.dart';
 
 /// 工作台Controller
 
-class SCWorkBenchController extends GetxController {
+class SCWorkBenchController extends GetxController{
+
   String pageName = '';
 
   String tag = '';
 
-  /// 待处理工单数据
-  List waitDataList = [];
-
-  /// 待处理pageNum
-  int waitPageNum = 1;
-
-  /// 处理中pageNum
-  int processingPageNum = 1;
-
-  /// 我执行的pageNum
-  int iExecutedPageNum = 1;
-
-  /// 我创建的
-  int iCreatedPageNum = 1;
-
-  /// 我经办的
-  int iDoPageNum = 1;
-
-  /// 我关注的
-  int iLikedPageNum = 1;
-
-  /// 抢单大厅
-  int grabHallPageNum = 1;
-
-  /// 处理中工单 数据
-  List processingDataList = [];
-
   /// 抢单大厅数量
-  int orderNum = 10;
+  int orderNum = 0;
 
   /// 今日任务数量
-  int taskNum = 20;
+  int taskNum = 0;
 
   /// 收缴率
-  num collectionRate = 88.8;
+  num collectionRate = 0;
 
   /// 今日服务业主数量
-  int serviceNum = 2;
+  int serviceNum = 0;
 
   List numDataList = [];
 
@@ -78,12 +52,6 @@ class SCWorkBenchController extends GetxController {
 
   /// 定时器
   late Timer timer;
-
-  /// 待处理controller
-  late SCWorkBenchListViewController waitController;
-
-  /// 处理中controller
-  late SCWorkBenchListViewController processingController;
 
   /// 当前工单index,0-待处理,1-处理中
   int currentWorkOrderIndex = 0;
@@ -130,39 +98,29 @@ class SCWorkBenchController extends GetxController {
   @override
   onInit() {
     super.onInit();
-    initTabData();
-    // taskTypeList = ['全部', '工单服务', '审批中心', '巡查任务', '收费账单'];
+    Future.delayed(const Duration(milliseconds: 2000), () {location();});
+    // startTimer();
+  }
+
+  /// 初始化
+  initData() {
+    getLocalCacheTab();
+    taskTypeList = ['全部', '工单服务', '审批中心', '巡查任务', '收费账单'];
     initToDoController();
     initFilterData();
-    location();
     loadData(loadAllToDo: true);
     loadUnreadMessageCount();
+    getLocalCacheTab();
   }
 
   /// 初始化tabData
-  initTabData() {
-    tabDataList = [
-      {
-        "title": "任务大厅",
-        "key": "hallUserIds",
-      },
-      {
-        "title": "我待办的",
-        "key": "handleUserIds",
-      },
-      {
-        "title": "我创建的",
-        "key": "creator",
-      },
-      {
-        "title": "我经办的",
-        "key": "handledUserIds",
-      },
-      {
-        "title": "我关注的",
-        "key": "followUserIds",
-      },
-    ];
+  initTabData(List list) {
+    tabDataList = list;
+    tabTitleList = [];
+    todoKeyList = [];
+    taskTypeList = [];
+    taskTypeKeyList = [];
+    taskTypeValueList = [];
     for (var params in tabDataList) {
       tabTitleList.add(params['title']);
       todoKeyList.add(params['key']);
@@ -182,7 +140,7 @@ class SCWorkBenchController extends GetxController {
       {
         "title": "巡查任务",
         "key": "TASK",
-        "value": "2"
+        "value": "POLICED_POINT"
       },
     ];
     for (var params in taskTypeDataList) {
@@ -194,6 +152,9 @@ class SCWorkBenchController extends GetxController {
 
   /// 初始化todoController
   initToDoController() {
+    todoControllerList = [];
+    todoControllerTagList =[];
+    tabBarViewList= [];
     for (int i = 0; i < tabTitleList.length; i++) {
       String controllerTag = "SCWorkBenchToDoController_$i";
       SCWorkBenchToDoController todoController =
@@ -219,6 +180,51 @@ class SCWorkBenchController extends GetxController {
       todoControllerTagList.add(controllerTag);
       tabBarViewList.add(view);
       todoController.getData(isMore: false);
+    }
+  }
+
+  /// 获取本地存储的tab
+  getLocalCacheTab() {
+    if (SCSpUtil.containsKey(SCKey.kWorkBenchTabKey)) {
+      var data = SCSpUtil.getMap(SCKey.kWorkBenchTabKey);
+      initTabData(data['data']);
+    } else {
+      List list = getAllTabData();
+      if (list.length > 2) {
+        var data = list.sublist(0, 2);
+        initTabData(data);
+        SCSpUtil.setMap(SCKey.kWorkBenchTabKey, {'data': data}).then((value) {
+
+        });
+      }
+    }
+  }
+
+  /// 更新本地存储的tab
+  updateLocalCacheTab({required List list, Function? completeHandler}) {
+    List newMyTaskList = [];
+
+    for (var title in list) {
+      bool contains = false;
+      var params = {};
+      for (var map in getAllTabData()) {
+        String subTitle = map['title'];
+        if (title == subTitle) {
+          params = map;
+          contains = true;
+        }
+      }
+
+      if (contains) {
+        newMyTaskList.add(params);
+      }
+    }
+
+    if (newMyTaskList.isNotEmpty) {
+      SCSpUtil.setMap(SCKey.kWorkBenchTabKey, {'data': newMyTaskList}).then((value) {
+        initData();
+        completeHandler?.call();
+      });
     }
   }
 
@@ -249,6 +255,7 @@ class SCWorkBenchController extends GetxController {
         for (SCWorkBenchToDoController toDoController in todoControllerList) {
           toDoController.subKey = params['key'];
           toDoController.subValue = params['value'];
+          toDoController.getData(isMore: false);
         }
         break;
       }
@@ -259,130 +266,7 @@ class SCWorkBenchController extends GetxController {
   /// 更新当前工单index
   updateCurrentWorkOrderIndex(int value) {
     currentWorkOrderIndex = value;
-    if (value == 0) {
-      waitPageNum = 1;
-    } else {
-      processingPageNum = 1;
-    }
-  }
-
-  /// 更新当前板块index
-  updatePlateIndex(int value) {
-    currentPlateIndex = value;
-    if (currentWorkOrderIndex == 0) {
-      waitPageNum = 1;
-    } else {
-      processingPageNum = 1;
-    }
-    update();
-    if (currentPlateIndex == 0) {
-      workOrderAPI();
-    } else if (currentPlateIndex == 1) {
-      realVerificationAPI();
-    } else if (currentPlateIndex == 2) {
-      orderFormAPI();
-    } else if (currentPlateIndex == 3) {
-      // 物资入库
-      if (currentWorkOrderIndex == 0) {
-        materialEntryAPI();
-      }
-    } else if (currentPlateIndex == 4) {
-      // 物资出库
-      if (currentWorkOrderIndex == 0) {
-        materialOutAPI();
-      }
-    } else if (currentPlateIndex == 5) {
-      // 物资报损
-      if (currentWorkOrderIndex == 0) {
-        materialFrmLossAPI();
-      }
-    } else if (currentPlateIndex == 6) {
-      // 物资调拨
-      if (currentWorkOrderIndex == 0) {
-        materialTransferAPI();
-      }
-    }
-
-    // getTaskData(isMore: false);
-  }
-
-  /// 加载更多
-  Future loadMore() async {
-    if (currentWorkOrderIndex == 0) {
-      /// 待处理
-      if (currentPlateIndex == 0) {
-        // 工单处理
-        return getWorkOrderList(isMore: true);
-      } else if (currentPlateIndex == 1) {
-        // 实地核验
-        return getRealVerificationWaitList(isMore: true);
-      } else if (currentPlateIndex == 2) {
-        // 订单处理
-        return getOrderFormWaitList(isMore: true);
-      } else if (currentPlateIndex == 3) {
-        // 物资入库
-        return getMaterialEntryWaitList(isMore: true);
-      } else if (currentPlateIndex == 4) {
-        // 物资出库
-        return getMaterialOutWaitList(isMore: true);
-      } else if (currentPlateIndex == 5) {
-        // 物资报损
-        return getMaterialFrmLossWaitList(isMore: true);
-      } else if (currentPlateIndex == 6) {
-        // 物资调拨
-        return getMaterialTransferWaitList(isMore: true);
-      }
-    } else {
-      /// 处理中
-      if (currentPlateIndex == 0) {
-        // 工单处理
-        return getProcessingWorkOrderList(isMore: true);
-      } else if (currentPlateIndex == 1) {
-        // 实地核验
-        return getRealVerificationProcessingList(isMore: true);
-      } else if (currentPlateIndex == 2) {
-        // 订单处理
-        return getOrderFormProcessingList(isMore: true);
-      }
-    }
-  }
-
-  /// 调用工单处理接口
-  workOrderAPI({bool? isMore}) {
-    getWorkOrderList(isMore: isMore);
-    getProcessingWorkOrderList(isMore: isMore);
-  }
-
-  /// 调用实地核验接口
-  realVerificationAPI({bool? isMore}) {
-    getRealVerificationWaitList(isMore: isMore);
-    getRealVerificationProcessingList(isMore: isMore);
-  }
-
-  /// 调用订单处理接口
-  orderFormAPI({bool? isMore}) {
-    getOrderFormWaitList(isMore: isMore);
-    getOrderFormProcessingList(isMore: isMore);
-  }
-
-  /// 调用物资入库接口
-  materialEntryAPI({bool? isMore}) {
-    getMaterialEntryWaitList(isMore: isMore);
-  }
-
-  /// 调用物资出库接口
-  materialOutAPI({bool? isMore}) {
-    getMaterialOutWaitList(isMore: isMore);
-  }
-
-  /// 调用物资报损接口
-  materialFrmLossAPI({bool? isMore}) {
-    getMaterialFrmLossWaitList(isMore: isMore);
-  }
-
-  /// 调用物资调拨接口
-  materialTransferAPI({bool? isMore}) {
-    getMaterialTransferWaitList(isMore: isMore);
+    myTaskSelectList = [tabTitleList[value]];
   }
 
   /// 更新头部数量数据
@@ -399,6 +283,7 @@ class SCWorkBenchController extends GetxController {
       {
         'number': collectionRate,
         'description': '收缴率',
+        'richText': '%'
       },
       {
         'number': serviceNum,
@@ -415,6 +300,7 @@ class SCWorkBenchController extends GetxController {
         getUserInfo().then((subValue) {
           if (subValue == true) {
             getWorkOrderNumber();
+            getTaskCount();
             if (loadAllToDo == true) {
               getToDoData();
             }
@@ -517,552 +403,17 @@ class SCWorkBenchController extends GetxController {
         });
   }
 
-  /// 工单处理-待处理数据
-  Future getWorkOrderList({bool? isMore}) {
-    bool isLoadMore = isMore ?? false;
-    if (isLoadMore == true) {
-      waitPageNum++;
-    } else {
-      SCLoadingUtils.show();
-    }
-    var params = {
-      "conditions": {
-        "fields": [
-          {"map": {}, "method": 1, "name": "wo.status", "value": 2},
-          {
-            "map": {},
-            "method": 1,
-            "name": "wo.process_user_id",
-            "value": SCScaffoldManager.instance.user.id
-          }
-        ]
-      },
-      "count": true,
-      "last": true,
-      "orderBy": [
-        {"asc": false, "field": "wo.create_time"}
-      ],
-      "pageNum": waitPageNum,
-      "pageSize": 10
-    };
-    return SCHttpManager.instance.post(
-        url: SCUrl.kWorkOrderListUrl,
-        params: params,
-        success: (value) {
-          SCLoadingUtils.hide();
-          if (value is Map) {
-            List list = value['records'];
-            if (isLoadMore == true) {
-              waitDataList.addAll(List<SCWorkOrderModel>.from(
-                  list.map((e) => SCWorkOrderModel.fromJson(e)).toList()));
-            } else {
-              waitDataList = List<SCWorkOrderModel>.from(
-                  list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
-            }
-          } else {
-            if (isLoadMore == false) {
-              waitDataList = [];
-            }
-          }
-          update();
-          waitController.dataList = waitDataList;
-          waitController.update();
-        },
-        failure: (value) {
-          SCLoadingUtils.hide();
-          if (currentPlateIndex == 0 && isLoadMore == true) {
-            waitPageNum--;
-          }
-        });
-  }
+  /// 获取卡片数量
+  getTaskCount() {
+    SCHttpManager.instance.post(url: SCUrl.kWorkBenchTaskCountUrl, params: null, success: (value) {
+      orderNum = value['hallCount'] ?? 0;
+      taskNum = value['todayTaskCount'] ?? 0;
+      collectionRate = (value['collectionRate'] ?? 0) * 100;
+      serviceNum = value['todayServiceBusinessCount'] ?? 0;
+      update();
+    }, failure: (value) {
 
-  /// 工单处理-处理中数据
-  Future getProcessingWorkOrderList({bool? isMore}) {
-    bool isLoadMore = isMore ?? false;
-    if (isLoadMore == true) {
-      processingPageNum++;
-    } else {
-      SCLoadingUtils.show();
-    }
-    var params = {
-      "conditions": {
-        "fields": [
-          {"map": {}, "method": 1, "name": "wo.status", "value": 5},
-          {
-            "map": {},
-            "method": 1,
-            "name": "wo.process_user_id",
-            "value": SCScaffoldManager.instance.user.id
-          }
-        ]
-      },
-      "count": true,
-      "last": true,
-      "orderBy": [
-        {"asc": false, "field": "wo.create_time"}
-      ],
-      "pageNum": processingPageNum,
-      "pageSize": 10
-    };
-    return SCHttpManager.instance.post(
-        url: SCUrl.kWorkOrderListUrl,
-        params: params,
-        success: (value) {
-          log('aaa===$value');
-          SCLoadingUtils.hide();
-          if (value is Map) {
-            List list = value['records'];
-            if (isLoadMore == true) {
-              processingDataList.addAll(List<SCWorkOrderModel>.from(
-                  list.map((e) => SCWorkOrderModel.fromJson(e)).toList()));
-            } else {
-              processingDataList = List<SCWorkOrderModel>.from(
-                  list.map((e) => SCWorkOrderModel.fromJson(e)).toList());
-            }
-          } else {
-            if (isLoadMore == false) {
-              processingDataList = [];
-            }
-          }
-          update();
-          processingController.dataList = processingDataList;
-          processingController.update();
-        },
-        failure: (value) {
-          SCLoadingUtils.hide();
-          if (currentPlateIndex == 0 && isLoadMore == true) {
-            processingPageNum--;
-          }
-        });
-  }
-
-  /// 实地核验-待处理数据
-  Future getRealVerificationWaitList({bool? isMore}) {
-    bool isLoadMore = isMore ?? false;
-    if (isLoadMore == true) {
-      waitPageNum++;
-    } else {
-      SCLoadingUtils.show();
-    }
-    var params = {
-      "conditions": {
-        "fields": [
-          {"map": {}, "method": 1, "name": "dealStatus", "value": 0}
-        ],
-        "specialMap": {}
-      },
-      "count": true,
-      "last": true,
-      "orderBy": [
-        {"asc": true, "field": "applyTime"}
-      ],
-      "pageNum": waitPageNum,
-      "pageSize": 10
-    };
-    return SCHttpManager.instance.post(
-        url: SCUrl.kActualVerifyUrl,
-        params: params,
-        success: (value) {
-          SCLoadingUtils.hide();
-          if (value is Map) {
-            List list = value['records'];
-            if (isLoadMore == true) {
-              waitDataList.addAll(List<SCVerificationOrderModel>.from(list
-                  .map((e) => SCVerificationOrderModel.fromJson(e))
-                  .toList()));
-            } else {
-              waitDataList = List<SCVerificationOrderModel>.from(list
-                  .map((e) => SCVerificationOrderModel.fromJson(e))
-                  .toList());
-            }
-          } else {
-            if (isLoadMore == false) {
-              waitDataList = [];
-            }
-          }
-          update();
-          waitController.dataList = waitDataList;
-          waitController.update();
-        },
-        failure: (value) {
-          SCLoadingUtils.hide();
-          if (currentPlateIndex == 1 && isLoadMore == true) {
-            waitPageNum--;
-          }
-        });
-  }
-
-  /// 实地核验-处理中数据
-  Future getRealVerificationProcessingList({bool? isMore}) {
-    bool isLoadMore = isMore ?? false;
-    if (isLoadMore == true) {
-      processingPageNum++;
-    } else {
-      SCLoadingUtils.show();
-    }
-    var params = {
-      "conditions": {
-        "fields": [
-          {"map": {}, "method": 1, "name": "dealStatus", "value": 1}
-        ],
-        "specialMap": {}
-      },
-      "count": true,
-      "last": true,
-      "orderBy": [
-        {"asc": true, "field": "applyTime"}
-      ],
-      "pageNum": processingPageNum,
-      "pageSize": 10
-    };
-    return SCHttpManager.instance.post(
-        url: SCUrl.kActualVerifyUrl,
-        params: params,
-        success: (value) {
-          SCLoadingUtils.hide();
-          if (value is Map) {
-            List list = value['records'];
-            if (isLoadMore == true) {
-              processingDataList.addAll(List<SCVerificationOrderModel>.from(list
-                  .map((e) => SCVerificationOrderModel.fromJson(e))
-                  .toList()));
-            } else {
-              processingDataList = List<SCVerificationOrderModel>.from(list
-                  .map((e) => SCVerificationOrderModel.fromJson(e))
-                  .toList());
-            }
-          } else {
-            if (isLoadMore == false) {
-              processingDataList = [];
-            }
-          }
-          update();
-          processingController.dataList = processingDataList;
-          processingController.update();
-        },
-        failure: (value) {
-          SCLoadingUtils.hide();
-          if (currentPlateIndex == 1 && isLoadMore == true) {
-            processingPageNum--;
-          }
-        });
-  }
-
-  /// 订单处理-待处理数据
-  Future getOrderFormWaitList({bool? isMore}) {
-    bool isLoadMore = isMore ?? false;
-    if (isLoadMore == true) {
-      waitPageNum++;
-    } else {
-      SCLoadingUtils.show();
-    }
-    var params = {
-      "conditions": {
-        "fields": [
-          {"name": "state", "value": 2}
-        ]
-      },
-      "pageNum": waitPageNum,
-      "pageSize": 10
-    };
-    return SCHttpManager.instance.post(
-        url: SCUrl.kOrderFormUrl,
-        params: params,
-        success: (value) {
-          SCLoadingUtils.hide();
-          if (value is Map) {
-            List list = value['records'];
-            if (isLoadMore == true) {
-              waitDataList.addAll(List<SCHotelOrderModel>.from(
-                  list.map((e) => SCHotelOrderModel.fromJson(e)).toList()));
-            } else {
-              waitDataList = List<SCHotelOrderModel>.from(
-                  list.map((e) => SCHotelOrderModel.fromJson(e)).toList());
-            }
-          } else {
-            if (isLoadMore == false) {
-              waitDataList = [];
-            }
-          }
-          update();
-          waitController.dataList = waitDataList;
-          waitController.update();
-        },
-        failure: (value) {
-          SCLoadingUtils.hide();
-          if (currentPlateIndex == 2 && isLoadMore == true) {
-            waitPageNum--;
-          }
-        });
-  }
-
-  /// 订单处理-处理中数据
-  Future getOrderFormProcessingList({bool? isMore}) {
-    bool isLoadMore = isMore ?? false;
-    if (isLoadMore == true) {
-      processingPageNum++;
-    } else {
-      SCLoadingUtils.show();
-    }
-    var params = {
-      "conditions": {
-        "fields": [
-          {"name": "state", "value": 3}
-        ]
-      },
-      "pageNum": processingPageNum,
-      "pageSize": 10
-    };
-    return SCHttpManager.instance.post(
-        url: SCUrl.kOrderFormUrl,
-        params: params,
-        success: (value) {
-          SCLoadingUtils.hide();
-          if (value is Map) {
-            List list = value['records'];
-            if (isLoadMore == true) {
-              processingDataList.addAll(List<SCHotelOrderModel>.from(
-                  list.map((e) => SCHotelOrderModel.fromJson(e)).toList()));
-            } else {
-              processingDataList = List<SCHotelOrderModel>.from(
-                  list.map((e) => SCHotelOrderModel.fromJson(e)).toList());
-            }
-          } else {
-            if (isLoadMore == false) {
-              processingDataList = [];
-            }
-          }
-          update();
-          processingController.dataList = processingDataList;
-          processingController.update();
-        },
-        failure: (value) {
-          SCLoadingUtils.hide();
-          if (currentPlateIndex == 2 && isLoadMore == true) {
-            processingPageNum--;
-          }
-        });
-  }
-
-  /// 物资入库-待处理数据
-  Future getMaterialEntryWaitList({bool? isMore}) {
-    bool isLoadMore = isMore ?? false;
-    if (isLoadMore == true) {
-      waitPageNum++;
-    } else {
-      SCLoadingUtils.show();
-    }
-    List fields = [];
-    var dic = {"map": {}, "method": 1, "name": "status", "value": 1};
-    fields.add(dic);
-    var params = {
-      "conditions": {"fields": fields, "specialMap": {}},
-      "count": false,
-      "last": false,
-      "orderBy": [
-        {"asc": false, "field": "gmtModify"}
-      ],
-      "pageNum": waitPageNum,
-      "pageSize": 20
-    };
-    return SCHttpManager.instance.post(
-        url: SCUrl.kMaterialEntryListUrl,
-        params: params,
-        success: (value) {
-          SCLoadingUtils.hide();
-          if (value is Map) {
-            List list = value['records'];
-            if (isLoadMore == true) {
-              waitController.materialEntryList.addAll(
-                  List<SCMaterialEntryModel>.from(list
-                      .map((e) => SCMaterialEntryModel.fromJson(e))
-                      .toList()));
-            } else {
-              waitController.materialEntryList =
-                  List<SCMaterialEntryModel>.from(list
-                      .map((e) => SCMaterialEntryModel.fromJson(e))
-                      .toList());
-            }
-          } else {
-            if (isLoadMore == false) {
-              waitController.materialEntryList = [];
-            }
-          }
-          if (isLoadMore == true) {
-            waitController.isEntryListLast = value['last'] ?? false;
-          }
-          update();
-          waitController.update();
-        },
-        failure: (value) {
-          SCLoadingUtils.hide();
-          if (currentPlateIndex >= 2 && isLoadMore == true) {
-            waitPageNum--;
-          }
-        });
-  }
-
-  /// 物资出库-待处理数据
-  Future getMaterialOutWaitList({bool? isMore}) {
-    bool isLoadMore = isMore ?? false;
-    if (isLoadMore == true) {
-      waitPageNum++;
-    } else {
-      SCLoadingUtils.show();
-    }
-    List fields = [];
-    var dic = {"map": {}, "method": 1, "name": "status", "value": 1};
-    fields.add(dic);
-    var params = {
-      "conditions": {"fields": fields, "specialMap": {}},
-      "count": false,
-      "last": false,
-      "orderBy": [
-        {"asc": false, "field": "gmtModify"}
-      ],
-      "pageNum": waitPageNum,
-      "pageSize": 20
-    };
-    return SCHttpManager.instance.post(
-        url: SCUrl.kMaterialOutboundListUrl,
-        params: params,
-        success: (value) {
-          SCLoadingUtils.hide();
-          if (value is Map) {
-            List list = value['records'];
-            if (isLoadMore == true) {
-              waitController.materialOutList.addAll(
-                  List<SCMaterialEntryModel>.from(list
-                      .map((e) => SCMaterialEntryModel.fromJson(e))
-                      .toList()));
-            } else {
-              waitController.materialOutList = List<SCMaterialEntryModel>.from(
-                  list.map((e) => SCMaterialEntryModel.fromJson(e)).toList());
-            }
-          } else {
-            if (isLoadMore == false) {
-              waitController.materialOutList = [];
-            }
-          }
-          update();
-          waitController.update();
-        },
-        failure: (value) {
-          SCLoadingUtils.hide();
-          if (currentPlateIndex >= 2 && isLoadMore == true) {
-            waitPageNum--;
-          }
-        });
-  }
-
-  /// 物资报损-待处理数据
-  Future getMaterialFrmLossWaitList({bool? isMore}) {
-    bool isLoadMore = isMore ?? false;
-    if (isLoadMore == true) {
-      waitPageNum++;
-    } else {
-      SCLoadingUtils.show();
-    }
-    List fields = [];
-    var dic = {"map": {}, "method": 1, "name": "status", "value": 1};
-    fields.add(dic);
-    var params = {
-      "conditions": {"fields": fields, "specialMap": {}},
-      "count": false,
-      "last": false,
-      "orderBy": [
-        {"asc": false, "field": "gmtModify"}
-      ],
-      "pageNum": waitPageNum,
-      "pageSize": 20
-    };
-    return SCHttpManager.instance.post(
-        url: SCUrl.kMaterialFrmLossListUrl,
-        params: params,
-        success: (value) {
-          SCLoadingUtils.hide();
-          if (value is Map) {
-            List list = value['records'];
-            if (isLoadMore == true) {
-              waitController.materialReportList.addAll(
-                  List<SCMaterialEntryModel>.from(list
-                      .map((e) => SCMaterialEntryModel.fromJson(e))
-                      .toList()));
-            } else {
-              waitController.materialReportList =
-                  List<SCMaterialEntryModel>.from(list
-                      .map((e) => SCMaterialEntryModel.fromJson(e))
-                      .toList());
-            }
-          } else {
-            if (isLoadMore == false) {
-              waitController.materialReportList = [];
-            }
-          }
-          update();
-          waitController.update();
-        },
-        failure: (value) {
-          SCLoadingUtils.hide();
-          if (currentPlateIndex >= 2 && isLoadMore == true) {
-            waitPageNum--;
-          }
-        });
-  }
-
-  /// 物资调拨-待处理数据
-  Future getMaterialTransferWaitList({bool? isMore}) {
-    bool isLoadMore = isMore ?? false;
-    if (isLoadMore == true) {
-      waitPageNum++;
-    } else {
-      SCLoadingUtils.show();
-    }
-    List fields = [];
-    var dic = {"map": {}, "method": 1, "name": "status", "value": 1};
-    fields.add(dic);
-    var params = {
-      "conditions": {"fields": fields, "specialMap": {}},
-      "count": false,
-      "last": false,
-      "orderBy": [
-        {"asc": false, "field": "gmtModify"}
-      ],
-      "pageNum": waitPageNum,
-      "pageSize": 20
-    };
-    return SCHttpManager.instance.post(
-        url: SCUrl.kMaterialTransferListUrl,
-        params: params,
-        success: (value) {
-          SCLoadingUtils.hide();
-          if (value is Map) {
-            List list = value['records'];
-            if (isLoadMore == true) {
-              waitController.materialTransferList.addAll(
-                  List<SCMaterialEntryModel>.from(list
-                      .map((e) => SCMaterialEntryModel.fromJson(e))
-                      .toList()));
-            } else {
-              waitController.materialTransferList =
-                  List<SCMaterialEntryModel>.from(list
-                      .map((e) => SCMaterialEntryModel.fromJson(e))
-                      .toList());
-            }
-          } else {
-            if (isLoadMore == false) {
-              waitController.materialTransferList = [];
-            }
-          }
-          update();
-          waitController.update();
-        },
-        failure: (value) {
-          SCLoadingUtils.hide();
-          if (currentPlateIndex >= 2 && isLoadMore == true) {
-            waitPageNum--;
-          }
-        });
+    });
   }
 
   /// 提交入库
@@ -1152,35 +503,11 @@ class SCWorkBenchController extends GetxController {
   /// 定时器
   startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (currentPlateIndex == 0) {
-        for (int i = 0; i < waitDataList.length; i++) {
-          if (waitDataList[i] is SCWorkOrderModel) {
-            SCWorkOrderModel model = waitDataList[i];
-            int subTime = model.remainingTime ?? 0;
-            if (subTime > 0) {
-              model.remainingTime = subTime - 1;
-            } else if (subTime == 0) {
-              model.remainingTime = 0;
-            } else {}
-          }
-        }
-
-        for (int i = 0; i < processingDataList.length; i++) {
-          if (processingDataList[i] is SCWorkOrderModel) {
-            SCWorkOrderModel model = processingDataList[i];
-            int subTime = model.remainingTime ?? 0;
-            if (subTime > 0) {
-              model.remainingTime = subTime - 1;
-            } else if (subTime == 0) {
-              model.remainingTime = 0;
-            } else {}
-          }
-        }
-
-        waitController.dataList = waitDataList;
-        waitController.update();
-        processingController.dataList = processingDataList;
-        processingController.update();
+      for (int i = 0; i < todoControllerTagList.length; i++) {
+        String controllerTag = todoControllerTagList[i];
+        SCWorkBenchToDoController todoController =
+        Get.find(tag: controllerTag);
+        todoController.update();
       }
     });
   }
@@ -1232,6 +559,7 @@ class SCWorkBenchController extends GetxController {
     for (SCWorkBenchToDoController toDoController in todoControllerList) {
       toDoController.subKey = "";
       toDoController.subValue = "";
+      toDoController.getData(isMore: false);
     }
   }
 
@@ -1249,6 +577,41 @@ class SCWorkBenchController extends GetxController {
         },
         failure: (value) {
         });
+  }
+
+  /// 所有的tab数据
+  List getAllTabData() {
+    return [
+      {
+        "title": "任务大厅",
+        "key": "hallUserIds",
+      },
+      {
+        "title": "我待办的",
+        "key": "handleUserIds",
+      },
+      {
+        "title": "我创建的",
+        "key": "creator",
+      },
+      {
+        "title": "我经办的",
+        "key": "handledUserIds",
+      },
+      {
+        "title": "我关注的",
+        "key": "followUserIds",
+      },
+    ];
+  }
+
+  /// 获取所有的tabTitle数据
+  List getAllTabTitleData() {
+    List list = [];
+    for (var map in getAllTabData()) {
+      list.add(map['title']);
+    }
+    return list;
   }
 
   @override

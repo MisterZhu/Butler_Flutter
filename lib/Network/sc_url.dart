@@ -33,6 +33,12 @@ class SCUrl {
   /// 待办任务url
   static const String kSearchTaskUrl = '/api/search/task/page';
 
+  /// 卡片数量
+  static const String kWorkBenchTaskCountUrl = '/api/search/task/app/count';
+
+  /// 工作台-搜索
+  static const String kWorkBenchSearchUrl = '/api/search/task/app/page';
+
   /************************* 工单 *************************/
 
   /// 工单数量url

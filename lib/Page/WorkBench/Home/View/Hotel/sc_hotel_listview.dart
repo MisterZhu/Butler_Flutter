@@ -83,8 +83,8 @@ class SCHotelListView extends StatelessWidget {
 
   /// 加载更多
   Future onLoading() async {
-    state.loadMore().then((value) {
-      refreshController.loadComplete();
-    });
+    // state.loadMore().then((value) {
+    //   refreshController.loadComplete();
+    // });
   }
 }

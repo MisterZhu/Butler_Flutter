@@ -7,7 +7,9 @@ import 'package:smartcommunity/Page/WorkBench/Home/View/Search/sc_search_history
 import 'package:smartcommunity/Page/WorkBench/Home/View/Search/sc_workbench_search_result_cell.dart';
 import '../../../../../Constants/sc_key.dart';
 import '../../../../../Utils/sc_sp_utils.dart';
+import '../../../../../Utils/sc_utils.dart';
 import '../../GetXController/sc_workbench_search_controller.dart';
+import '../WorkBench/sc_workbench_todo_listview.dart';
 
 
 /// 工作台-搜索view
@@ -191,22 +193,40 @@ class SCWorkBenchSearchViewState extends State<SCWorkBenchSearchView> {
             setState(() {
               showCancel = false;
             });
+            widget.state.cancelSearch();
           }),
     );
   }
 
+  /// contentView
   Widget contentView() {
-    return SmartRefresher(
-        controller: refreshController,
-        enablePullUp: true,
-        enablePullDown: true,
-        header: const SCCustomHeader(
-          style: SCCustomHeaderStyle.noNavigation,
-        ),
-        onRefresh: onRefresh,
-        onLoading: loadMore,
-        child: widget.state.showSearchResult == true ? listView() : historyView()
-    );
+    if (widget.state.data.isEmpty) {
+      return historyView();
+    } else {
+      return SCWorkBenchToDoListView(
+        data: widget.state.data,
+        canLoadMore: false,
+        bottomPadding: SCUtils().getBottomSafeArea(),
+        refreshController: widget.state.refreshController,
+        onRefreshAction: () {
+          widget.state.searchData(isMore: false);
+        },
+        loadMoreAction: () {
+          widget.state.searchData(isMore: true);
+        },
+      );
+    }
+    // return SmartRefresher(
+    //     controller: refreshController,
+    //     enablePullUp: true,
+    //     enablePullDown: true,
+    //     header: const SCCustomHeader(
+    //       style: SCCustomHeaderStyle.noNavigation,
+    //     ),
+    //     onRefresh: onRefresh,
+    //     onLoading: loadMore,
+    //     child: widget.state.showSearchResult == true ? listView() : historyView()
+    // );
   }
 
   /// 历史记录view

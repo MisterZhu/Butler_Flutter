@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Network/sc_url.dart';
@@ -21,6 +22,7 @@ import '../../../../Constants/sc_key.dart';
 import '../../../../Utils/Location/sc_location_model.dart';
 import '../../../ApplicationModule/MaterialEntry/Model/sc_material_entry_model.dart';
 import '../../../../Utils/sc_sp_utils.dart';
+import '../Model/sc_todo_model.dart';
 import '../Model/sc_work_order_model.dart';
 
 /// 工作台搜索Controller
@@ -37,6 +39,13 @@ class SCWorkBenchSearchController extends GetxController {
 
   /// 历史记录数组
   List<String> historyDataList = [];
+
+  /// 搜索结果
+  List data = [];
+
+  /// refreshController
+  RefreshController refreshController =
+  RefreshController(initialRefresh: false);
 
   @override
   onInit() {
@@ -76,17 +85,70 @@ class SCWorkBenchSearchController extends GetxController {
     update();
   }
 
+  /// 取消搜索
+  cancelSearch() {
+    showSearchResult = false;
+    update();
+  }
 
+  /// 搜索
   searchData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       pageNum++;
     } else {
       pageNum = 1;
-      //SCLoadingUtils.show();
+      SCLoadingUtils.show();
     }
-    showSearchResult = true;
-    update();
+    var params = {
+      "conditions": {"title": searchString},
+      "count": true,
+      "last": false,
+      "orderBy": [],
+      "pageNum": pageNum,
+      "pageSize": 20
+    };
+    SCHttpManager.instance.post(
+        url: SCUrl.kWorkBenchSearchUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          log('搜索结果===$value');
+          if (value is List) {
+            if (isLoadMore == false) {
+              List list = List.from(value.map((e) {
+                return SCToDoModel.fromJson(e);
+              }));
+              data = list;
+            } else {
+              List list = List.from(value.map((e) {
+                return SCToDoModel.fromJson(e);
+              }));
+              data.addAll(list);
+            }
+          } else {
+            if (isLoadMore == false) {}
+          }
+          if (isLoadMore == true) {
+            if (value is List && value.isEmpty) {
+              refreshController.loadNoData();
+            } else {
+              refreshController.loadComplete();
+            }
+          } else {
+            refreshController.refreshCompleted();
+            refreshController.loadComplete();
+          }
+          showSearchResult = true;
+          update();
+        },
+        failure: (value) {
+          if (isLoadMore) {
+            pageNum--;
+          }
+          SCToast.showTip(value['message']);
+          completeHandler?.call(false, false);
+        });
   }
 
 }

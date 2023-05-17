@@ -12,6 +12,7 @@ import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../../Network/sc_config.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
+import '../../../../Utils/JPush/sc_jpush.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../GetXController/sc_mine_controller.dart';
 import '../Model/sc_community_common_model.dart';
@@ -115,6 +116,21 @@ class SCMineListView extends StatelessWidget {
         showLeftIcon: true,
         leftIcon: SCAsset.iconMineNewSetting,
         onTap: () {
+          // var message = {
+          //   "aps": {
+          //     "alert": {
+          //       "title": "善数管理"
+          //     }
+          //   },
+          //   "badge": "+1",
+          //   "alert": "有超时待接收工单，请尽快接收！",
+          //   "sound": "sound.caf",
+          //   "extras": {
+          //     "type": 100,
+          //     "url": "https://saas.wisharetec.com/h5Manage-order/#/workOrder/orderDetail?source=my&orderId=787c83230d2210a97607c89d2c67628c"
+          //   }
+          // };
+          // SCJPush.dealJPush(message);
           SCRouterHelper.pathPage(SCRouterPath.settingPath, null);
         },
       );

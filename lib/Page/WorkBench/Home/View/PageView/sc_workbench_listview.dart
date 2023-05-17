@@ -463,9 +463,9 @@ class SCWorkBenchListViewState extends State<SCWorkBenchListView>
 
   /// 加载更多
   Future onLoading() async {
-    widget.state.loadMore().then((value) {
-      refreshController.loadComplete();
-    });
+    // widget.state.loadMore().then((value) {
+    //   refreshController.loadComplete();
+    // });
   }
 
   @override

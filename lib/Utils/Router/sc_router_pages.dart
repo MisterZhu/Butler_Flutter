@@ -25,6 +25,7 @@ import 'package:smartcommunity/Page/Mine/Home/Page/sc_switch_tenant_page.dart';
 import 'package:smartcommunity/Page/Tab/Page/sc_tab_page.dart';
 import 'package:smartcommunity/Page/Webview/Page/sc_webview_page.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_detail_page.dart';
+import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_edit_page.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/Page/sc_workbench_page.dart';
 import '../../Page/ApplicationModule/FixedCheck/Page/sc_fixedcheck_material_detail_page.dart';
 import '../../Page/ApplicationModule/HouseInspect/Page/sc_enter_house_inspect_page.dart';
@@ -209,6 +210,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.patrolTransferPage, page: () => SCPatrolTransferPage()),
     /*工作台-搜索*/
     GetPage(name: SCRouterPath.workBenchSearchPage, page: () => SCWorkBenchSearchPage()),
+    /*工作台-编辑*/
+    GetPage(name: SCRouterPath.workBenchEditPage, page: () => SCWorkBenchEditPage()),
   ];
 
   /*根据code使用路由*/

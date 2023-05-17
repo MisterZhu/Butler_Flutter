@@ -19,7 +19,7 @@ import '../Router/sc_router_path.dart';
 class SCJPush {
   /// 初始化极光推送
   static initJPush() {
-    JPush jPush = new JPush();
+    JPush jPush = JPush();
     SCScaffoldManager.instance.jPush = jPush;
     jPushEventHandler(jPush);
     setupJPush(jPush);
@@ -123,21 +123,16 @@ class SCJPush {
     if (message.containsKey('extras')) {
       var extras;
       var alert;
-      int type = -1;
+      // int type = -1;
       String url = '';
       String title = '';
       if (Platform.isIOS) {
         extras = message['extras'];
-        alert = message['aps']['alert'];
-        if (alert.containsKey('title')) {
-          title = alert['title'];
-        }
       } else {
         extras = jsonDecode(message['extras']['cn.jpush.android.EXTRA']);
-        title = message['title'];
       }
-      if (extras.containsKey('type')) {
-        type = extras['type'];
+      if (message.containsKey('title')) {
+        title = message['title'];
       }
       if (extras.containsKey('url')) {
         url = extras['url'];
