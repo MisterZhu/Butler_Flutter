@@ -6,10 +6,10 @@ import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
+import '../../../../Utils/Router/sc_router_path.dart';
 import '../../HouseInspect/View/sc_bottom_button_item.dart';
-import '../../MaterialOutbound/Controller/sc_select_department_controller.dart';
+import '../../MaterialEntry/View/MaterialEntry/sc_material_search_item.dart';
 import '../Controller/sc_patrol_transfer_controller.dart';
-import '../Other/sc_patrol_utils.dart';
 import '../View/Transfer/sc_patrol_transfer_view.dart';
 
 /// 巡查-转派page
@@ -47,7 +47,7 @@ class SCPatrolTransferPageState extends State<SCPatrolTransferPage>
   @override
   Widget build(BuildContext context) {
     return SCCustomScaffold(
-        title: "转派", centerTitle: true, elevation: 0, body: body());
+        title: "选择处理人", centerTitle: true, elevation: 0, body: body());
   }
 
   /// body
@@ -57,7 +57,18 @@ class SCPatrolTransferPageState extends State<SCPatrolTransferPage>
       height: double.infinity,
       color: SCColors.color_F2F3F5,
       child: Column(
-        children: [contentView(), bottomView()],
+        children: [
+          SCMaterialSearchItem(
+            name: '搜索人员名称',
+            searchAction: () async {
+              var data = await SCRouterHelper.pathPage(SCRouterPath.operatorSearchPage, null);
+              if (data != null) {
+                SCRouterHelper.back({"userId": data['userId']});
+              }
+            },
+          ),
+          contentView(),
+          bottomView()],
       ),
     );
   }
