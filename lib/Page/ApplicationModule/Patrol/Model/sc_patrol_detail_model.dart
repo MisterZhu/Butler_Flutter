@@ -113,7 +113,9 @@ class CheckObject {
   CheckObject({
       this.checkList, 
       this.place, 
-      this.bizTag,});
+      this.bizTag,
+      this.device,
+  });
 
   CheckObject.fromJson(dynamic json) {
     if (json['checkList'] != null) {
@@ -124,10 +126,12 @@ class CheckObject {
     }
     place = json['place'] != null ? Place.fromJson(json['place']) : null;
     bizTag = json['bizTag'];
+    device = json['device'] != null ? Device.fromJson(json['device']) : null;
   }
   List<CheckList>? checkList;
   Place? place;
   String? bizTag;
+  Device? device;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -138,6 +142,9 @@ class CheckObject {
       map['place'] = place?.toJson();
     }
     map['bizTag'] = bizTag;
+    if (device != null) {
+      map['device'] = device?.toJson();
+    }
     return map;
   }
 
@@ -231,6 +238,103 @@ class Place {
     map['orgName'] = orgName;
     map['spaceId'] = spaceId;
     map['bizTag'] = bizTag;
+    return map;
+  }
+
+}
+
+class Device {
+  Device({
+    this.id,
+    this.tenantId,
+    this.tenantName,
+    this.productCategory,
+    this.subCount,
+    this.deviceSort,
+    this.deviceName,
+    this.deviceCode,
+    this.deviceState,
+    this.useState,
+    this.communityId,
+    this.communityName,
+    this.spaceName,
+    this.deviceType,
+    this.spaceId,
+    this.productLabel,
+    this.productId,
+    this.productName,
+    this.productMode,
+    this.manufacturerName,
+    this.isSync,});
+
+  Device.fromJson(dynamic json) {
+    id = json['id'];
+    tenantId = json['tenantId'];
+    tenantName = json['tenantName'];
+    productCategory = json['productCategory'];
+    subCount = json['subCount'];
+    deviceSort = json['deviceSort'];
+    deviceName = json['deviceName'];
+    deviceCode = json['deviceCode'];
+    deviceState = json['deviceState'];
+    useState = json['useState'];
+    communityId = json['communityId'];
+    communityName = json['communityName'];
+    spaceName = json['spaceName'];
+    deviceType = json['deviceType'];
+    spaceId = json['spaceId'];
+    productLabel = json['productLabel'];
+    productId = json['productId'];
+    productName = json['productName'];
+    productMode = json['productMode'];
+    manufacturerName = json['manufacturerName'];
+    isSync = json['isSync'];
+  }
+  String? id;
+  String? tenantId;
+  String? tenantName;
+  String? productCategory;
+  int? subCount;
+  int? deviceSort;
+  String? deviceName;
+  String? deviceCode;
+  int? deviceState;
+  int? useState;
+  String? communityId;
+  String? communityName;
+  String? spaceName;
+  int? deviceType;
+  int? spaceId;
+  int? productLabel;
+  int? productId;
+  String? productName;
+  String? productMode;
+  String? manufacturerName;
+  int? isSync;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    map['tenantId'] = tenantId;
+    map['tenantName'] = tenantName;
+    map['productCategory'] = productCategory;
+    map['subCount'] = subCount;
+    map['deviceSort'] = deviceSort;
+    map['deviceName'] = deviceName;
+    map['deviceCode'] = deviceCode;
+    map['deviceState'] = deviceState;
+    map['useState'] = useState;
+    map['communityId'] = communityId;
+    map['communityName'] = communityName;
+    map['spaceName'] = spaceName;
+    map['deviceType'] = deviceType;
+    map['spaceId'] = spaceId;
+    map['productLabel'] = productLabel;
+    map['productId'] = productId;
+    map['productName'] = productName;
+    map['productMode'] = productMode;
+    map['manufacturerName'] = manufacturerName;
+    map['isSync'] = isSync;
     return map;
   }
 

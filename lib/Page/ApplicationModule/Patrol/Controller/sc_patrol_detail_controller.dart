@@ -199,6 +199,8 @@ class SCPatrolDetailController extends GetxController {
     List data = [
       {"type": 7, "title": '任务编号', "content": model.procInstId, "maxLength": 2},
       {"type": 7, "title": '任务来源', "content": model.instSource},
+      {"type": 7, "title": '归属项目', "content": ""},
+      {"type": 7, "title": '当前执行人', "content": ""},
       {"type": 7, "title": '发起时间', "content": model.startTime},
       {"type": 7, "title": '实际完成时间', "content": model.endTime}
     ];

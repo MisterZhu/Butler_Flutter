@@ -31,7 +31,7 @@ class SCPatrolUtils {
   /// 节点名称数组
   List nodeNameList = [];
 
-  /// 需要扫描的二维码
+  /// 巡查需要扫描的二维码
   String placeCode = '';
 
   /// 任务操作
@@ -194,7 +194,7 @@ class SCPatrolUtils {
         var data = await SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
         print("扫码结果===$data========");
         if (data != null && data != '') {// 有扫描结果
-          if (data == placeCode) {
+          if (data == placeCode) {// 巡查
             showDealAlert(code: data, isDetailPage: isDetailPage);
           } else {
             SCToast.showTip('二维码校验不通过，请重新扫描');
