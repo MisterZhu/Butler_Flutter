@@ -57,6 +57,7 @@ import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_material_transfer_
 import '../../Page/ApplicationModule/MaterialTransfer/Page/sc_material_transfer_page.dart';
 import '../../Page/ApplicationModule/OnlineMonitor/Page/sc_monitor_search_page.dart';
 import '../../Page/ApplicationModule/OnlineMonitor/Page/sc_online_monitor_page.dart';
+import '../../Page/ApplicationModule/Patrol/Page/sc_operator_search_page.dart';
 import '../../Page/ApplicationModule/Patrol/Page/sc_patrol_page.dart';
 import '../../Page/ApplicationModule/Patrol/Page/sc_task_log_page.dart';
 import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_add_property_frmLoss_page.dart';
@@ -212,6 +213,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.workBenchSearchPage, page: () => SCWorkBenchSearchPage()),
     /*工作台-编辑*/
     GetPage(name: SCRouterPath.workBenchEditPage, page: () => SCWorkBenchEditPage()),
+    /*处理人搜索*/
+    GetPage(name: SCRouterPath.operatorSearchPage, page: () => SCOperatorSearchPage()),
   ];
 
   /*根据code使用路由*/

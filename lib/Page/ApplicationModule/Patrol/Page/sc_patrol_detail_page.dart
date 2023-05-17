@@ -128,6 +128,7 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
     patrolUtils.taskId = controller.model.taskId ?? '';
     patrolUtils.procInstId = controller.procInstId;
     patrolUtils.nodeId = controller.nodeId;
+    patrolUtils.placeCode = controller.model.formData?.checkObject?.place?.extra ?? '';
     patrolUtils.taskAction(name: name, isDetailPage: true);
   }
 
@@ -141,7 +142,7 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
       if (key == SCKey.kRefreshPatrolDetailPage) {
-        // controller.loadData(isMore: false);
+        controller.getDetailData();
       }
     });
   }

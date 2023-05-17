@@ -3,14 +3,6 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
-import '../../../../../Constants/sc_default_value.dart';
-import '../../../../../Utils/Router/sc_router_helper.dart';
-import '../../../../../Utils/Router/sc_router_path.dart';
-import '../../../MaterialEntry/Model/sc_selectcategory_model.dart';
-import '../../../MaterialEntry/Model/sc_selectcategory_tree_model.dart';
-import '../../../MaterialEntry/View/SelectCategoryAlert/sc_add_material_selectcategory_alert.dart';
-import '../../../MaterialOutbound/Controller/sc_select_department_controller.dart';
-import '../../../MaterialOutbound/Model/sc_receiver_model.dart';
 import '../../Controller/sc_patrol_transfer_controller.dart';
 import '../../Model/sc_tenant_user_model.dart';
 

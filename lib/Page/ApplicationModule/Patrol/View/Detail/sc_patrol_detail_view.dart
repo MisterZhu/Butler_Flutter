@@ -82,7 +82,6 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
         // SCImagePreviewUtils.previewImage(imageList: [imageList[index]]);
       },
       detailAction: (int subIndex) {
-        print("点击了第几个：${subIndex}");
         // 任务日志
         SCRouterHelper.pathPage(SCRouterPath.taskLogPage, {'bizId': widget.state.procInstId});
       },
@@ -96,9 +95,15 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
       leftAction: (String value, int index) {},
       rightAction: (String value, int index) {},
       imageTap: (int imageIndex, List imageList, int index) {
-        // SCImagePreviewUtils.previewImage(imageList: [imageList[index]]);
       },
       detailAction: (int subIndex) {
+        if (widget.state.model.customStatusInt! >= 40) {//已完成的任务，不能进行报事
+          return;
+        }
+        if (widget.state.model.isScanCode == false) {// 任务扫码前，不可对检查项进行报事
+          SCToast.showTip('请先扫码');
+          return;
+        }
         SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
           "title": '快捷报事',
           "url": SCUtils.getWebViewUrl(

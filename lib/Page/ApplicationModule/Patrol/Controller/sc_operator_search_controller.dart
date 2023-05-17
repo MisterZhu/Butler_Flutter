@@ -7,9 +7,15 @@ import '../../MaterialEntry/Model/sc_selectcategory_model.dart';
 import '../../MaterialOutbound/Model/sc_receiver_model.dart';
 import '../Model/sc_tenant_user_model.dart';
 
-/// 转派-controller
+/// 转派人员搜索-controller
 
-class SCPatrolTransferController extends GetxController {
+class SCOperatorSearchController extends GetxController {
+
+  /// 搜索内容
+  String searchString = '';
+
+  /// 无搜索结果提示
+  String tips = '';
 
   /// 人id
   String userId = "";
@@ -22,11 +28,16 @@ class SCPatrolTransferController extends GetxController {
   @override
   onInit() {
     super.onInit();
-    loadDataList();
   }
 
-  /// 转派人列表
-  loadDataList({bool? isMore, Function(bool success, bool last)? completeHandler}) {
+  /// 更新搜索内容
+  updateSearchString(String value) {
+    searchString = value;
+    update();
+  }
+
+  /// 搜索列表数据
+  searchData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
       pageNum++;
@@ -42,6 +53,12 @@ class SCPatrolTransferController extends GetxController {
             "method": 1,
             "name": "orgIds",
             "value": []
+          },
+          {
+            "map": {},
+            "method": 7,
+            "name": "userName",
+            "value": searchString
           }
         ]
       },
@@ -61,6 +78,11 @@ class SCPatrolTransferController extends GetxController {
             dataList.addAll(List<SCTenantUserModel>.from(list.map((e) => SCTenantUserModel.fromJson(e)).toList()));
           } else {
             dataList = List<SCTenantUserModel>.from(list.map((e) => SCTenantUserModel.fromJson(e)).toList());
+          }
+          if (dataList.isNotEmpty) {
+            tips = '';
+          } else {
+            tips = '暂无搜索结果';
           }
           update();
           bool last = false;
