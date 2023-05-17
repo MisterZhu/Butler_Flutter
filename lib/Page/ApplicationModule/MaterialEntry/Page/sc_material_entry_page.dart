@@ -47,8 +47,7 @@ class SCMaterialEntryPageState extends State<SCMaterialEntryPage> with Automatic
 
   @override
   Widget build(BuildContext context) {
-    return SCCustomScaffold(
-        title: "物资入库", centerTitle: true, elevation: 0, body: body());
+    return SCCustomScaffold(title: "物资入库", centerTitle: true, elevation: 0, body: body());
   }
 
   /// body

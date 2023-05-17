@@ -24,12 +24,12 @@ import '../View/sc_application_listView.dart';
 /// 全部应用-page
 
 class SCApplicationPage extends StatefulWidget {
+
   @override
   SCApplicationPageState createState() => SCApplicationPageState();
 }
 
-class SCApplicationPageState extends State<SCApplicationPage>
-    with AutomaticKeepAliveClientMixin {
+class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeepAliveClientMixin {
   /// SCApplicationController
   late SCApplicationController state;
 
@@ -42,8 +42,7 @@ class SCApplicationPageState extends State<SCApplicationPage>
   /// notify
   late StreamSubscription subscription;
 
-  RefreshController refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController refreshController = RefreshController(initialRefresh: false);
 
   @override
   // TODO: implement wantKeepAlive

@@ -233,8 +233,7 @@ class SCScaffoldManager {
     state.setPrimaryColor(color);
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString(
-        SkinDefaultKey.scaffold_key, jsonEncode(_scaffoldModel.toJson()));
+    sharedPreferences.setString(SkinDefaultKey.scaffold_key, jsonEncode(_scaffoldModel.toJson()));
   }
 
   /*修改title颜色*/
@@ -244,8 +243,7 @@ class SCScaffoldManager {
     state.setTitleColor(color);
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString(
-        SkinDefaultKey.scaffold_key, jsonEncode(_scaffoldModel.toJson()));
+    sharedPreferences.setString(SkinDefaultKey.scaffold_key, jsonEncode(_scaffoldModel.toJson()));
   }
 
   /*缓存用户登录状态*/

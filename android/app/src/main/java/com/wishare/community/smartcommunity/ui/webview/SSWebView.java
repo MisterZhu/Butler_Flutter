@@ -97,6 +97,7 @@ public class SSWebView extends AppCompatActivity implements BridgeWebChromeClien
 
         title = getIntent().getStringExtra("title");
         url = getIntent().getStringExtra("url");
+        android.util.Log.i("ddd", "initView: "+url);
         if (!TextUtils.isEmpty(title)) {
             tv_center_title.setText(title);
         }
