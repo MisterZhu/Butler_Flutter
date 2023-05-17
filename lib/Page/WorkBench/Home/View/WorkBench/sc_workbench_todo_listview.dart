@@ -95,9 +95,9 @@ class SCWorkBenchToDoListView extends StatelessWidget {
     bool hideAddressRow = true;
     var cardStyle = SCToDoUtils().getCardStyle(model);
     // title
-    String title = model.title ?? '';
+    String title = model.typeDesc ?? '';
     // content
-    String content = model.content ?? '';
+    String content = '${model.title ?? ''}\n${model.content ?? ''}';
     // 按钮文字
     String btnTitle = cardStyle['btnTitle'];
     // 处理状态文字

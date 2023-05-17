@@ -30,6 +30,7 @@ class SCToDoModel {
       this.contact,// 联系人姓名
       this.contactAddress,// 联系人房屋地址
       this.contactInform, // 联系人手机号
+        this.typeDesc,// 任务类型
       });
 
   SCToDoModel.fromJson(dynamic json) {
@@ -62,6 +63,7 @@ class SCToDoModel {
     contact = json['contact'];
     contactInform = json['contactInform'];
     contactAddress = json['contactAddress'];
+    typeDesc = json['typeDesc'];
   }
   String? appName;
   String? type;
@@ -92,6 +94,7 @@ class SCToDoModel {
   String? contact;
   String? contactAddress;
   String? contactInform;
+  String? typeDesc;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -124,6 +127,7 @@ class SCToDoModel {
     map['contact'] = contact;
     map['contactInform'] = contactInform;
     map['contactAddress'] = contactAddress;
+    map['typeDesc'] = typeDesc;
     return map;
   }
 }
