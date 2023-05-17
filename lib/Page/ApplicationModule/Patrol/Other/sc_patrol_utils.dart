@@ -31,9 +31,6 @@ class SCPatrolUtils {
   /// 节点名称数组
   List nodeNameList = [];
 
-  /// 巡查需要扫描的二维码
-  String placeCode = '';
-
   /// 任务操作
   taskAction({required String name, bool? isDetailPage}) async {
     print('任务操作========$name');
@@ -194,11 +191,14 @@ class SCPatrolUtils {
         var data = await SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
         print("扫码结果===$data========");
         if (data != null && data != '') {// 有扫描结果
-          if (data == placeCode) {// 巡查
-            showDealAlert(code: data, isDetailPage: isDetailPage);
-          } else {
-            SCToast.showTip('二维码校验不通过，请重新扫描');
-          }
+          // 校验二维码是否正确
+          checkQrcode(qrCode: data, result: (status) {
+            if (status == true) {
+              showDealAlert(code: data, isDetailPage: isDetailPage);
+            } else {
+              SCToast.showTip('二维码校验不通过，请重新扫描');
+            }
+          });
         }
       } else {
         showDealAlert(isDetailPage: isDetailPage);
@@ -276,6 +276,25 @@ class SCPatrolUtils {
         });
   }
 
+  /// 校验二维码是否正确
+  checkQrcode({required String qrCode, Function(bool value)? result}) {
+    var params = {
+      "procInstId": procInstId,
+      "taskId": taskId,
+      "nodeId": nodeId,
+      "qrCode": qrCode
+    };
+    SCHttpManager.instance.post(
+        url: SCUrl.kCheckCodeUrl,
+        params: params,
+        success: (value) {
+          print('校验二维码是否正确=========$value=');
+          result?.call(value == '成功' ? true : false);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
 
   /// 处理任务
   /// action:操作类型

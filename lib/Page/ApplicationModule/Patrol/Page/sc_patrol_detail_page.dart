@@ -128,7 +128,6 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
     patrolUtils.taskId = controller.model.taskId ?? '';
     patrolUtils.procInstId = controller.procInstId;
     patrolUtils.nodeId = controller.nodeId;
-    patrolUtils.placeCode = controller.model.formData?.checkObject?.place?.extra ?? '';
     patrolUtils.taskAction(name: name, isDetailPage: true);
   }
 
