@@ -173,6 +173,8 @@ class SCUtils {
         return "完成";
       case 9:
         return "完成处理";
+      case 10:
+        return "";
       default:
         return "完成";
     }

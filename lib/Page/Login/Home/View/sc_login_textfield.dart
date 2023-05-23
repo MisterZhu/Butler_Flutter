@@ -321,7 +321,7 @@ class SCLoginTextFieldState extends State<SCLoginTextField> {
 
   /// 验证码按钮是否可以点击
   updateCodeButtonState() {
-    if (state.phone.length == 11) {
+    if (state.phone.length == 11 && state.codeTime == 60) {
       state.updateCodeButtonState(enable: true);
     } else {
       state.updateCodeButtonState(enable: false);

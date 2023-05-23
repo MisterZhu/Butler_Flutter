@@ -33,10 +33,8 @@ class SCPatrolDetailController extends GetxController {
   /// 底部按钮list
   List bottomButtonList = [];
 
-  /// 检查项list
-  List checkList = [];
-
   List dataList = [];
+
   @override
   onInit() {
     super.onInit();
@@ -73,9 +71,7 @@ class SCPatrolDetailController extends GetxController {
           getDataSuccess = true;
           model = SCPatrolDetailModel.fromJson(value);
           updateDataList();
-          if ((model.formData?.checkObject?.checkList ?? []).isNotEmpty) {
-            updateCheckList();
-          }
+          updateCheckList();
           updateBottomButtonList();
           update();
         },
@@ -130,19 +126,28 @@ class SCPatrolDetailController extends GetxController {
 
   /// 更新检查项
   updateCheckList() {
-    for (int i = 0; i < (model.formData?.checkObject?.checkList ?? []).length; i++) {
-      CheckList? check = model.formData?.checkObject?.checkList?[i];
-      var dic = {
-        "type": 7,
-        "title": check?.checkContent ?? '',
-        "subTitle": '',
-        "content": "",
-        "subContent": '',
-        "rightIcon": "images/common/icon_arrow_right.png"
-      };
-      checkList.add(SCUIDetailCellModel.fromJson(dic));
+    for (int i = 0; i < dataList.length; i++) {
+      var dic = dataList[i];
+      if (dic['type'] == SCTypeDefine.SC_PATROL_TYPE_CHECK) {
+        dataList.removeAt(i);
+      }
     }
-    dataList.insert(1, {'type': SCTypeDefine.SC_PATROL_TYPE_CHECK, 'data': checkList});
+    List list = [];
+    if ((model.formData?.checkObject?.checkList ?? []).isNotEmpty) {
+      for (int i = 0; i < (model.formData?.checkObject?.checkList ?? []).length; i++) {
+        CheckList? check = model.formData?.checkObject?.checkList?[i];
+        var dic = {
+          "type": 7,
+          "title": check?.checkContent ?? '',
+          "subTitle": '',
+          "content": "",
+          "subContent": '',
+          "rightIcon": "images/common/icon_arrow_right.png"
+        };
+        list.add(SCUIDetailCellModel.fromJson(dic));
+      }
+      dataList.insert(1, {'type': SCTypeDefine.SC_PATROL_TYPE_CHECK, 'data': list});
+    }
   }
 
   /// 更新dataList
@@ -192,8 +197,10 @@ class SCPatrolDetailController extends GetxController {
   /// 任务信息-数据源
   List infoList() {
     List data = [
-      {"type": 7, "title": '任务编号', "content": model.procInstId},
+      {"type": 7, "title": '任务编号', "content": model.procInstId, "maxLength": 2},
       {"type": 7, "title": '任务来源', "content": model.instSource},
+      {"type": 7, "title": '归属项目', "content": model.procName},
+      {"type": 7, "title": '当前执行人', "content": model.assigneeName},
       {"type": 7, "title": '发起时间', "content": model.startTime},
       {"type": 7, "title": '实际完成时间', "content": model.endTime}
     ];

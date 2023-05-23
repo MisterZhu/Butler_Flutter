@@ -261,7 +261,7 @@ class SCDefaultValue {
   static const String selectPatrolDepartment = "请选择部门";
 
   /// 巡查-请选择人员
-  static const String selectPatrolUser = "请选择转派人";
+  static const String selectPatrolUser = "请选择处理人";
 
   /// 图片路径
   static const files = "/files/";

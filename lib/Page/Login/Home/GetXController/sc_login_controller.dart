@@ -60,6 +60,7 @@ class SCLoginController extends GetxController {
         codeText = "重新获取";
         disposeTimer();
       } else {
+        codeBtnEnable = false;
         codeText = '重新获取(${codeTime}s)';
       }
       update();

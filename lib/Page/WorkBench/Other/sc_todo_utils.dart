@@ -174,7 +174,8 @@ class SCToDoUtils {
       }
     } else if (model.appName == "WORK_ORDER") {
       ///  工单
-      btnTitle = SCUtils.getWorkOrderButtonText((model.statusValue ?? '0').cnToInt());
+      btnTitle =
+          SCUtils.getWorkOrderButtonText((model.statusValue ?? '0').cnToInt());
     } else {
       /// 未知
 

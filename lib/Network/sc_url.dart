@@ -406,6 +406,8 @@ class SCUrl {
   static const String kDealTaskUrl = "/api/quality/process/task/handler";
   /// 是否需要扫码
   static const String kNeedScanUrl = "/api/quality/process/task/handlerScanCode";
+  ///校验二维码是否正确
+  static const String kCheckCodeUrl = "/api/quality/process/task/handlerScanCode";
   /// 转派人列表
   static const String kTransferUserListUrl = "/api/user/info/pageByTenantIdAndOrgIdCommonTenant";
   /// 所有可回退的审批任务节点

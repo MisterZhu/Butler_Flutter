@@ -69,9 +69,7 @@ class SCPatrolUtils {
       if (result == true) {
         SCToast.showTip('接收成功').then((status) {
           SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
-          if (isDetailPage == true) {
-            SCRouterHelper.back(null);
-          }
+          SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolDetailPage});
         });
       }
     });
@@ -83,9 +81,7 @@ class SCPatrolUtils {
       if (result == true) {
         SCToast.showTip('拒绝成功').then((status) {
           SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
-          if (isDetailPage == true) {
-            SCRouterHelper.back(null);
-          }
+          SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolDetailPage});
         });
       }
     });
@@ -111,10 +107,7 @@ class SCPatrolUtils {
     dealTask(action: "transfer", targetUser: userId, result: (result) {
       if (result == true) {
         SCToast.showTip('转派成功').then((status) {
-          SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
-          if (isDetailPage == true) {
-            SCRouterHelper.back(null);
-          }
+          SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolDetailPage});
         });
       }
     });
@@ -139,10 +132,7 @@ class SCPatrolUtils {
                 dealTask(action: "recall", targetNode: nodeModel.nodeId, content: value, imageList: imageList, result: (result) {
                   if (result == true) {
                     SCToast.showTip('任务退回成功').then((status) {
-                      SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
-                      if (isDetailPage == true) {
-                        SCRouterHelper.back(null);
-                      }
+                      SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolDetailPage});
                     });
                   }
                 });
@@ -200,8 +190,15 @@ class SCPatrolUtils {
         // 扫码
         var data = await SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
         print("扫码结果===$data========");
-        if (data != '') {
-          showDealAlert(code: data, isDetailPage: isDetailPage);
+        if (data != null && data != '') {// 有扫描结果
+          // 校验二维码是否正确
+          checkQrcode(qrCode: data, result: (status) {
+            if (status == true) {
+              showDealAlert(code: data, isDetailPage: isDetailPage);
+            } else {
+              SCToast.showTip('二维码校验不通过，请重新扫描');
+            }
+          });
         }
       } else {
         showDealAlert(isDetailPage: isDetailPage);
@@ -237,7 +234,7 @@ class SCPatrolUtils {
             title: '处理',
             resultDes: '',
             reasonDes: '处理说明',
-            isRequired: true,
+            isRequired: false,
             tagList: [],
             hiddenTags: true,
             showNode: false,
@@ -245,9 +242,7 @@ class SCPatrolUtils {
               dealTask(action: "handle", code: code, content: value, imageList: imageList, result: (result) {
                 SCToast.showTip('处理成功').then((status) {
                   SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
-                  if (isDetailPage == true) {
-                    SCRouterHelper.back(null);
-                  }
+                  SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolDetailPage});
                 });
               });
             },
@@ -281,6 +276,25 @@ class SCPatrolUtils {
         });
   }
 
+  /// 校验二维码是否正确
+  checkQrcode({required String qrCode, Function(bool value)? result}) {
+    var params = {
+      "procInstId": procInstId,
+      "taskId": taskId,
+      "nodeId": nodeId,
+      "qrCode": qrCode
+    };
+    SCHttpManager.instance.post(
+        url: SCUrl.kCheckCodeUrl,
+        params: params,
+        success: (value) {
+          print('校验二维码是否正确=========$value=');
+          result?.call(value == '成功' ? true : false);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
 
   /// 处理任务
   /// action:操作类型
@@ -346,7 +360,6 @@ class SCPatrolUtils {
       "targetUser": targetUser,
       "targetNode": targetNode
     };
-    print('222======$taskId');
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kDealTaskUrl,
