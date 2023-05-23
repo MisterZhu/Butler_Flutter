@@ -412,4 +412,8 @@ class SCUrl {
   static const String kTransferUserListUrl = "/api/user/info/pageByTenantIdAndOrgIdCommonTenant";
   /// 所有可回退的审批任务节点
   static const String kTaskRecallNodeUrl = "/api/task/process/task/recall/nodes";
+
+  /************************* 资产维保 *************************/
+  /// 维保列表
+  static const String kPropertyRecordListUrl = "/api/warehouse/wareHouseMaintain/pageFront";
 }

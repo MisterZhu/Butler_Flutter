@@ -73,7 +73,7 @@ class SCToDoUtils {
     String realUrl =
         SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
-      "title": model.title ?? '',
+      "title": model.subTypeDesc ?? '',
       "url": realUrl,
       "needJointParams": false
     })?.then((value) {
