@@ -75,9 +75,7 @@ class SCRouterHelper {
       if (Platform.isAndroid) {
         /// 调用Android WebView
         var channel = SCScaffoldManager.flutterToNative;
-        var result =
-            await channel.invokeMethod(SCScaffoldManager.android_webview, params);
-
+        var result = await channel.invokeMethod(SCScaffoldManager.android_webview, params);
         /// todo 刷新控制台数据
         print("-------$result-------");
         return result;

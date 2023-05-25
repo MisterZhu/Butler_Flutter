@@ -32,11 +32,21 @@ import com.wishare.community.smartcommunity.ui.webview.helper.BridgeWebChromeCli
 import com.wishare.community.smartcommunity.ui.webview.helper.BridgeWebView;
 import com.wishare.community.smartcommunity.ui.webview.helper.BridgeWebViewClient;
 import com.wishare.community.smartcommunity.utils.ImageUtil;
+import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
 
 import java.io.File;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;
+import android.widget.FrameLayout;
+import android.webkit.WebChromeClient;
+import android.view.WindowManager;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+
+import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
+import android.view.View;
 
 /**
  * Copyright (c), 浙江慧享信息科技有限公司
@@ -58,6 +68,7 @@ public class SSWebView extends AppCompatActivity implements BridgeWebChromeClien
     private ValueCallback<Uri> mUploadMsgUri;
     private ValueCallback<Uri[]> mUploadMsgUris;
     private Intent mSourceIntent;
+    private FrameLayout mFl;
 
     private static final int REQUEST_CODE_PICK_IMAGE = 0;
     private static final int REQUEST_CODE_IMAGE_CAPTURE = 1;
@@ -91,7 +102,7 @@ public class SSWebView extends AppCompatActivity implements BridgeWebChromeClien
         img_close = findViewById(R.id.img_close);
         tv_center_title = findViewById(R.id.tv_center_title);
         mWebView = findViewById(R.id.mWebView);
-
+        mFl = findViewById(R.id.fl);
         img_back.setColorFilter(Color.parseColor("#1B1C33"));
         img_close.setColorFilter(Color.parseColor("#1B1C33"));
 
@@ -101,6 +112,8 @@ public class SSWebView extends AppCompatActivity implements BridgeWebChromeClien
         if (!TextUtils.isEmpty(title)) {
             tv_center_title.setText(title);
         }
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
     }
 
     /**
@@ -137,7 +150,7 @@ public class SSWebView extends AppCompatActivity implements BridgeWebChromeClien
      */
     private void initCommonBridge() {
         // 设置setWebChromeClient对象
-        mWebView.setWebChromeClient(new BridgeWebChromeClient(this) {
+        /*mWebView.setWebChromeClient(new BridgeWebChromeClient(this) {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
@@ -148,7 +161,10 @@ public class SSWebView extends AppCompatActivity implements BridgeWebChromeClien
             public void onPermissionRequest(PermissionRequest permissionRequest) {
                 permissionRequest.grant(permissionRequest.getResources());
             }
-        });
+
+        });*/
+        mWebView.setWebChromeClient(new MyWebChromeClient(this));
+       // mWebView.setWebChromeClient(new MyWebChromeClient());
         BridgeWebViewClient webViewClient = (BridgeWebViewClient) mWebView.getWebViewClient();
         webViewClient.setActivity(this);
         webViewClient.registWebClientListener(new BridgeWebViewClient.WebClientListener() {
@@ -382,6 +398,9 @@ public class SSWebView extends AppCompatActivity implements BridgeWebChromeClien
         }
     }
 
+
+
+
     /**
      * 置空  防止取消弹窗 图片上传弹窗不显示
      */
@@ -417,4 +436,108 @@ public class SSWebView extends AppCompatActivity implements BridgeWebChromeClien
             setReceiveValueNull();
         }
     }
+
+
+
+    private class MyWebChromeClient extends BridgeWebChromeClient{
+        private View mCustomView;
+        private IX5WebChromeClient.CustomViewCallback mCustomViewCallback;
+
+        public MyWebChromeClient(FileChooserCallback fileChooserCallback) {
+            super(fileChooserCallback);
+        }
+
+        @Override
+        public void onReceivedTitle(WebView webView, String s) {
+            super.onReceivedTitle(webView, s);
+            tv_center_title.setText(title);
+        }
+
+        @Override
+        public void onPermissionRequest(PermissionRequest permissionRequest) {
+            permissionRequest.grant(permissionRequest.getResources());
+        }
+
+        @Override
+        public void onShowCustomView(View view, IX5WebChromeClient.CustomViewCallback callback) {
+            super.onShowCustomView(view, callback);
+            if (mCustomView!=null){
+                callback.onCustomViewHidden();
+                return;
+            }
+            mCustomView = view;
+            mFl.addView(mCustomView);
+            mCustomViewCallback =  callback;
+            mWebView.setVisibility(View.GONE);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+
+        @Override
+        public void onHideCustomView() {
+            mWebView.setVisibility(View.VISIBLE);
+            if (mCustomView==null){
+                return;
+            }
+            mCustomView.setVisibility(View.GONE);
+            mFl.removeView(mCustomView);
+            mCustomViewCallback.onCustomViewHidden();
+            mCustomView = null;
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            super.onHideCustomView();
+        }
+    }
+
+
+  /*  private class MyWebChromeClient extends WebChromeClient{
+        private View mCustomView;
+        private android.webkit.WebChromeClient.CustomViewCallback mCustomViewCallback;
+
+
+        @Override
+        public void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback) {
+            super.onShowCustomView(view, callback);
+            if (mCustomView!=null){
+                callback.onCustomViewHidden();
+                return;
+            }
+            mCustomView = view;
+            mFl.addView(mCustomView);
+            mCustomViewCallback =  callback;
+            mWebView.setVisibility(View.GONE);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+
+        @Override
+        public void onHideCustomView() {
+            mWebView.setVisibility(View.VISIBLE);
+            if (mCustomView==null){
+                return;
+            }
+            mCustomView.setVisibility(View.GONE);
+            mFl.removeView(mCustomView);
+            mCustomViewCallback.onCustomViewHidden();
+            mCustomView = null;
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            super.onHideCustomView();
+        }
+
+
+    }*/
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        switch (newConfig.orientation){
+            case Configuration.ORIENTATION_LANDSCAPE:
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                break;
+            case Configuration.ORIENTATION_PORTRAIT:
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+                break;
+        }
+    }
+
+
 }

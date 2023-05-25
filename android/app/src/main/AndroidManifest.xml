@@ -84,6 +84,8 @@
 
         <activity
             android:name=".ui.webview.SSWebView"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:hardwareAccelerated="true"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 

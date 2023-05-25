@@ -11,9 +11,18 @@
         android:layout_height="0.5dp"
         android:background="#F2F3F5" />
 
-    <com.wishare.community.smartcommunity.ui.webview.helper.BridgeWebView
-        android:id="@+id/mWebView"
+    <FrameLayout
+        android:id="@+id/fl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        >
+
+        <com.wishare.community.smartcommunity.ui.webview.helper.BridgeWebView
+            android:id="@+id/mWebView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
 
 </LinearLayout>

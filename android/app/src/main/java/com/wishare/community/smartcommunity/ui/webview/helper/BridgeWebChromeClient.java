@@ -21,13 +21,15 @@ import com.tencent.smtt.sdk.ValueCallback;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebChromeClient.FileChooserParams;
-
+import android.view.View;
 public class BridgeWebChromeClient extends WebChromeClient {
+
     private FileChooserCallback fileChooserCallback;
 
     public BridgeWebChromeClient(FileChooserCallback fileChooserCallback) {
         this.fileChooserCallback = fileChooserCallback;
     }
+
 
     public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> valueCallback, FileChooserParams fileChooserParams) {
         if (this.fileChooserCallback != null) {
