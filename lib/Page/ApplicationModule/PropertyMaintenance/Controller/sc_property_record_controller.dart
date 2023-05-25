@@ -54,7 +54,7 @@ class SCPropertyRecordController extends GetxController {
     loadData(isMore: false);
   }
 
-  /// 出库列表数据
+  /// 资产维保列表数据
   loadData({bool? isMore, Function(bool success, bool last)? completeHandler}) {
     bool isLoadMore = isMore ?? false;
     if (isLoadMore == true) {
@@ -94,7 +94,7 @@ class SCPropertyRecordController extends GetxController {
       "pageSize": 20
     };
     SCHttpManager.instance.post(
-        url: SCUrl.kMaterialOutboundListUrl,
+        url: SCUrl.kPropertyRecordListUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
@@ -128,11 +128,11 @@ class SCPropertyRecordController extends GetxController {
         });
   }
 
-  /// 出库类型
+  /// 维保类型
   loadOutboundType(Function? resultHandler) {
     SCHttpManager.instance.post(
         url: SCUrl.kWareHouseTypeUrl,
-        params: {'dictionaryCode' : 'OUTBOUND'},
+        params: {'dictionaryCode' : 'MAINTAIN_TYPE'},
         success: (value) {
           outboundList = List<SCEntryTypeModel>.from(value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
           update();

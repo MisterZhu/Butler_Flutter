@@ -51,6 +51,8 @@ class SCPatrolPageState extends State<SCPatrolPage> with AutomaticKeepAliveClien
       title = "品质督查";
     } else if (controller.pageType == 2) {
       title = "巡检任务";
+    } else if (controller.pageType == 3) {
+      title = "巡更任务";
     }
     return SCCustomScaffold(title: title, centerTitle: true, elevation: 0, body: body());
   }
