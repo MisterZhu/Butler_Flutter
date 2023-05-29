@@ -92,8 +92,8 @@ class SCPropertyRecordViewState extends State<SCPropertyRecordView> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SCMaterialSearchItem(name: '搜索仓库名称/操作人', searchAction: () {
-          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.outbound});
+        SCMaterialSearchItem(name: '搜索资产名称/操作人', searchAction: () {
+          SCRouterHelper.pathPage(SCRouterPath.entrySearchPage, {'type': SCWarehouseManageType.propertyMaintenance});
         },),
         SCMaterialSiftItem(tagList:siftList, tapAction: (index) {
           if (index == 0) {
@@ -184,7 +184,7 @@ class SCPropertyRecordViewState extends State<SCPropertyRecordView> {
         itemBuilder: (BuildContext context, int index) {
           SCMaterialEntryModel model = widget.state.dataList[index];
           return SCMaterialEntryCell(
-            type: SCWarehouseManageType.outbound,
+            type: SCWarehouseManageType.propertyMaintenance,
             model: model,
             detailTapAction: () {
               /// 详情
@@ -220,7 +220,7 @@ class SCPropertyRecordViewState extends State<SCPropertyRecordView> {
     return Offstage(
       offstage: !showStatusAlert,
       child: SCSiftAlert(
-        title: '出库状态',
+        title: '维保状态',
         list: list,
         selectIndex: selectStatus,
         closeAction: () {
@@ -241,12 +241,12 @@ class SCPropertyRecordViewState extends State<SCPropertyRecordView> {
     );
   }
 
-  /// 出库类型弹窗
+  /// 维保类型弹窗
   Widget typeAlert() {
     return Offstage(
       offstage: !showTypeAlert,
       child: SCSiftAlert(
-        title: '出库类型',
+        title: '维保类型',
         list: typeList,
         selectIndex: selectType,
         closeAction: () {
@@ -260,7 +260,7 @@ class SCPropertyRecordViewState extends State<SCPropertyRecordView> {
               showTypeAlert = false;
               selectType = value;
               siftList[1] = value == 0 ? '类型' : typeList[value];
-              widget.state.updateType(value == 0 ? -1 : widget.state.outboundList[value - 1].code ?? -1);
+              widget.state.updateType(value == 0 ? '' : widget.state.outboundList[value - 1].stringCode ?? '');
             });
           }
         },),

@@ -45,9 +45,22 @@ class SCMaterialEntryCell extends StatelessWidget {
 
   /// body
   Widget body() {
-    String text = '数量';
+    // 卡片内容
+    String content = '';
+    // 数量描述
+    String numDes = '数量';
+    // 物资数量
+    String number = '';
     if (type == SCWarehouseManageType.check) {
-      text = '种类';
+      numDes = '种类';
+    }
+
+    if (type == SCWarehouseManageType.propertyMaintenance) {
+      content = model?.nameList ?? '';
+      number = '$numDes：${model?.fixNum ?? 0}';
+    } else {
+      content = (type == SCWarehouseManageType.propertyFrmLoss ? model?.assetNames ?? '' : model?.materialNames ?? '');
+      number = type == SCWarehouseManageType.propertyFrmLoss ? '$numDes：${model?.assetNums ?? 0}' : '$numDes：${model?.materialNums ?? 0}';
     }
     return GestureDetector(
       onTap: () {
@@ -67,11 +80,11 @@ class SCMaterialEntryCell extends StatelessWidget {
             const SizedBox(
               height: 12.0,
             ),
-            nameItem(type == SCWarehouseManageType.propertyFrmLoss ? model?.assetNames ?? '' : model?.materialNames ?? ''),
+            nameItem(content),
             const SizedBox(
               height: 4.0,
             ),
-            nameItem(type == SCWarehouseManageType.propertyFrmLoss ? '$text：${model?.assetNums ?? 0}' : '$text：${model?.materialNums ?? 0}'),
+            nameItem(number),
             const SizedBox(
               height: 6.0,
             ),
@@ -103,6 +116,8 @@ class SCMaterialEntryCell extends StatelessWidget {
       icon = SCAsset.iconMaterialTransfer;
     } else if (type == SCWarehouseManageType.check) {
       icon = SCAsset.iconMaterialCheck;
+    } else if (type == SCWarehouseManageType.propertyMaintenance) {
+      icon = SCAsset.iconPropertyMaintenance;
     }
     String statusDesc = SCUtils.getEntryStatusText(model?.status ?? 0);
     Color statusColor = SCUtils.getEntryStatusTextColor(model?.status ?? 0);
@@ -112,6 +127,9 @@ class SCMaterialEntryCell extends StatelessWidget {
     } else if (type == SCWarehouseManageType.outbound) {
       statusDesc = SCUtils.getOutboundStatusText(model?.status ?? 0);
       statusColor = SCUtils.getOutboundStatusTextColor(model?.status ?? 0);
+    } else if (type == SCWarehouseManageType.propertyMaintenance) {
+      statusDesc = SCUtils.getPropertyMaintenanceStatusText(model?.status ?? 0);
+      statusColor = SCUtils.getPropertyMaintenanceStatusTextColor(model?.status ?? 0);
     } else {
       statusDesc = model?.statusDesc ?? '';
       statusColor = SCUtils.getCheckStatusTextColor(model?.status ?? 0);
@@ -164,15 +182,24 @@ class SCMaterialEntryCell extends StatelessWidget {
 
   /// 地址等信息
   Widget addressInfoView() {
-    String name = '';
+    String address = '';
+    String userName = '';
     if (type == SCWarehouseManageType.transfer) {
-      name = '调入：${model?.inWareHouseName}  调出：${model?.outWareHouseName}';
+      address = '调入：${model?.inWareHouseName}  调出：${model?.outWareHouseName}';
     } else if (type == SCWarehouseManageType.propertyFrmLoss) {
-      name = model?.fetchOrgName ?? '';
+      address = model?.fetchOrgName ?? '';
     } else if (type == SCWarehouseManageType.fixedCheck) {
-      name = model?.dealOrgName ?? '';
+      address = model?.dealOrgName ?? '';
+    } else if (type == SCWarehouseManageType.propertyMaintenance) {
+      address = model?.partName ?? '';
     } else {
-      name = model?.wareHouseName ?? '';
+      address = model?.wareHouseName ?? '';
+    }
+
+    if (type == SCWarehouseManageType.propertyMaintenance) {
+      userName = model?.chargeName ?? '';
+    } else {
+      userName = model?.creatorName ?? '';
     }
 
     return Padding(
@@ -189,7 +216,7 @@ class SCMaterialEntryCell extends StatelessWidget {
           ),
           Expanded(
               child: Text(
-                name,
+                address,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -204,7 +231,7 @@ class SCMaterialEntryCell extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    model?.creatorName ?? '',
+                    userName,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -243,6 +270,8 @@ class SCMaterialEntryCell extends StatelessWidget {
 
   /// bottomItem
   Widget bottomItem() {
+    // 时间
+    String time = '';
     bool showBtn = false;
     if (type == SCWarehouseManageType.check) {
       if (model?.status == 0 || model?.status == 2 || model?.status == 4) {
@@ -261,6 +290,13 @@ class SCMaterialEntryCell extends StatelessWidget {
     if (btnText != null) {
      btnTitle = btnText ?? '';
     }
+
+    if (type == SCWarehouseManageType.propertyMaintenance) {
+      time = model?.postTime ?? '';
+    } else {
+      time = model?.gmtCreate ?? '';
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0), 
       child: Row(
@@ -268,7 +304,7 @@ class SCMaterialEntryCell extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(child: Text(
-            model?.gmtCreate ?? '',
+            time,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(

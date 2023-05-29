@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:date_format/date_format.dart';
 // import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -247,7 +248,7 @@ class SCAddPropertyMaintenanceViewState
                       widget.state.typeList[selectIndex];
                   widget.state.typeIndex = selectIndex;
                   widget.state.type = model.name ?? '';
-                  widget.state.typeID = subModel.code ?? 0;
+                  widget.state.typeID = subModel.stringCode ?? '';
                 }
               });
             },
@@ -255,7 +256,7 @@ class SCAddPropertyMaintenanceViewState
     });
   }
 
-  /// 报损时间弹窗
+  /// 维保时间弹窗
   showTimeAlert(BuildContext context, bool isStart) {
     DateTime now = DateTime.now();
     SCPickerUtils pickerUtils = SCPickerUtils();
@@ -384,7 +385,7 @@ class SCAddPropertyMaintenanceViewState
 
   /// 检查物资数据
   checkMaterialData(int status) {
-    if (widget.state.typeID <= 0) {
+    if (widget.state.typeID.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
       return;
     }
@@ -416,7 +417,19 @@ class SCAddPropertyMaintenanceViewState
 
     List materialList = [];
     for (SCMaterialListModel model in widget.state.selectedList) {
+      if (widget.state.unifyCompany) {
+        model.maintenanceCompany = widget.state.maintenanceCompany;
+        model.unifyMaintenanceCompany = widget.state.unifyCompany;
+      }
+
+      if (widget.state.unifyContent) {
+        model.maintenanceContent = widget.state.maintenanceContent;
+        model.unifyMaintenanceContent = widget.state.unifyContent;
+      }
       var params = model.toJson();
+      params['partName'] = model.maintenanceCompany ?? '';
+      params['remark'] = model.maintenanceContent ?? '';
+      params['price'] = model.maintenancePrice ?? 0.0;
       materialList.add(params);
     }
 
@@ -641,7 +654,7 @@ class SCAddPropertyMaintenanceViewState
   /// 编辑
   editAction() {
     print("编辑");
-    if (widget.state.typeID <= 0) {
+    if (widget.state.typeID.isEmpty) {
       SCToast.showTip(SCDefaultValue.selectWareHouseTypeTip);
       return;
     }

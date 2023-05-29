@@ -409,6 +409,44 @@ class SCUtils {
     }
   }
 
+  /// 根据status获取资产维保状态文本颜色
+  // 任务状态(0-待提交 1-待审批 2-审批中 3-已通过 4-已拒绝)
+  static Color getPropertyMaintenanceStatusTextColor(int status) {
+    switch (status) {
+      case 0:
+        return SCColors.color_FF8A00;
+      case 1:
+        return SCColors.color_FF8A00;
+      case 2:
+        return SCColors.color_4285F4;
+      case 3:
+        return SCColors.color_1B1D33;
+      case 4:
+        return SCColors.color_FF4040;
+      default:
+        return SCColors.color_B0B1B8;
+    }
+  }
+
+  /// 根据status获取资产维保状态文本
+  // 任务状态(0-待提交 1-待审批 2-审批中 3-已通过 4-已拒绝)
+  static String getPropertyMaintenanceStatusText(int status) {
+    switch (status) {
+      case 0:
+        return '待提交';
+      case 1:
+        return '待审批';
+      case 2:
+        return '审批中';
+      case 3:
+        return '已通过';
+      case 4:
+        return '已拒绝';
+      default:
+        return '';
+    }
+  }
+
   /// 复制粘贴板
   static pasteData(String data) {
     if (data.isNotEmpty && data != '') {

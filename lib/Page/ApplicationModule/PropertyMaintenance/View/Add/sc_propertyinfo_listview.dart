@@ -84,7 +84,7 @@ class SCPropertyInfoListView extends StatelessWidget {
         } else if (type == 1) {
           // 单位
           companyAction?.call(value);
-        } else if (type == 1) {
+        } else if (type == 2) {
           // 内容
           contentAction?.call(value);
         } else {}

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:get/get.dart';
@@ -217,6 +218,24 @@ class SCMaterialEntryDetailController extends GetxController {
         url: SCUrl.kMaterialTransferDetailUrl,
         params: {'id': id},
         success: (value) {
+          SCLoadingUtils.hide();
+          success = true;
+          model = SCMaterialTaskDetailModel.fromJson(value);
+          update();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
+  /// 资产维保详情
+  loadPropertyMaintenanceDetail() {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.get(
+        url: SCUrl.kPropertyMaintenanceDetailUrl,
+        params: {'id': id},
+        success: (value) {
+          log('资产维保详情===${jsonEncode(value)}');
           SCLoadingUtils.hide();
           success = true;
           model = SCMaterialTaskDetailModel.fromJson(value);

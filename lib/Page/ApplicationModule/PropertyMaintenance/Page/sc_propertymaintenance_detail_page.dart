@@ -44,17 +44,13 @@ class SCPropertyMaintenanceDetailPageState extends State<SCPropertyMaintenanceDe
         .getXControllerTag((SCMaterialEntryDetailPage).toString());
     controller = Get.put(SCMaterialEntryDetailController(), tag: controllerTag);
     var params = Get.arguments;
-    print('上个页面传过来的参数:$params');
     if (params != null) {
       var id = params['id'];
       if (id != null) {
         controller.id = id;
       }
-      if (params.containsKey('isLL')) {
-        controller.isLL = params['isLL'];
-      }
     }
-    controller.loadMaterialOutboundDetail();
+    controller.loadPropertyMaintenanceDetail();
   }
 
   @override
