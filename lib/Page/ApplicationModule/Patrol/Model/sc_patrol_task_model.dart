@@ -1,3 +1,9 @@
+
+
+
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_form_data_model.dart';
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_task_log_model.dart';
+
 /// 巡查任务model
 
 class SCPatrolTaskModel {
@@ -15,9 +21,11 @@ class SCPatrolTaskModel {
       this.procInstId, 
       this.procInstName, 
       this.procName, 
-      this.startTime, 
+      this.startTime,
       this.taskId,
-      this.nodeId,});
+      this.nodeId,
+      this.formData,
+  });
 
   SCPatrolTaskModel.fromJson(dynamic json) {
     actionVo = json['actionVo'] != null ? json['actionVo'].cast<String>() : [];
@@ -36,6 +44,7 @@ class SCPatrolTaskModel {
     startTime = json['startTime'];
     taskId = json['taskId'];
     nodeId = json['nodeId'];
+    formData =json['formData'] != null ? FormDataModel.fromJson(json['formData']) : null;
   }
   List<String>? actionVo;
   String? assignee;
@@ -53,6 +62,7 @@ class SCPatrolTaskModel {
   String? startTime;
   String? taskId;
   String? nodeId;
+  FormDataModel? formData;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -72,6 +82,7 @@ class SCPatrolTaskModel {
     map['startTime'] = startTime;
     map['taskId'] = taskId;
     map['nodeId'] = nodeId;
+    map['formData'] = formData;
     return map;
   }
 

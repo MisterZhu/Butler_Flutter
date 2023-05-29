@@ -242,6 +242,9 @@ class SCRouterPath {
   /// 处理人搜索
   static String operatorSearchPage = "/lib/Page/Patrol/Page/sc_operator_search_page";
 
+  ///巡查路线
+  static String patrolRoutePage = "/lib/Page/Patrol/Page/sc_patrol_route_page";
+
   /*************************** 电子巡更 ******************************/
 
   /// 巡更列表

@@ -53,7 +53,7 @@ class SCPatrolController extends GetxController {
 
   List<SCPatrolTaskModel> dataList = [];
 
-  /// 页面类型，0巡查，1品质督查，2巡检
+  /// 页面类型，0巡查，1品质督查，2巡检 3.巡更
   int pageType = 0;
 
   /// appCode
@@ -74,6 +74,8 @@ class SCPatrolController extends GetxController {
           appCode = "QUALITY_REGULATION";
         } else if (pageType == 2) {// 巡检
           appCode = "POLICED_DEVICE";
+        } else if(pageType == 3){
+          appCode = "POLICED_WATCH";
         }
       }
     }

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_empty_view.dart';
 import 'package:smartcommunity/Utils/Community/sc_selectcommunity_utils.dart';
@@ -328,7 +331,18 @@ class SCPatrolViewState extends State<SCPatrolView> {
 
   /// 详情
   detailAction(SCPatrolTaskModel model) {
-    SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});
+    if(widget.state.pageType==3){
+      log('我的数据-------------------------------------此处执行了');
+      log('我的数据===${model.formData?.checkObject?.type}');
+      if(model.formData?.checkObject?.type == "route"){
+        SCRouterHelper.pathPage(SCRouterPath.patrolRoutePage, {"place":model.formData });
+      }else{
+        log('我的数据-------------------------------------此处执行了${model.procInstId??''}  ${model.nodeId??''}');
+        SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});
+      }
+    }else{
+      SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});
+    }
   }
 
   /// 打电话
