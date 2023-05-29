@@ -416,4 +416,10 @@ class SCUrl {
   /************************* 资产维保 *************************/
   /// 维保列表
   static const String kPropertyRecordListUrl = "/api/warehouse/wareHouseMaintain/pageFront";
+
+  /// 新增维保
+  static const String kAddPropertyMaintenanceUrl = "/api/warehouse/manage/wareHouseMaintain/add";
+
+  /// 维保详情
+  static const String kPropertyMaintenanceDetailUrl = "/api/warehouse/manage/wareHouseMaintain/detail";
 }

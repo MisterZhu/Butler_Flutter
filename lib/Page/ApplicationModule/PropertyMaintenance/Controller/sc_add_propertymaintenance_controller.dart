@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:date_format/date_format.dart';
 // import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
@@ -20,7 +22,7 @@ class SCAddPropertyMaintenanceController extends GetxController {
   /// 仓库列表数组
   List<SCWareHouseModel> wareHouseList = [];
 
-  /// 入库类型数组
+  /// 维保类型数组
   List<SCEntryTypeModel> typeList = [];
 
   /// 已选择的资产数据
@@ -36,7 +38,7 @@ class SCAddPropertyMaintenanceController extends GetxController {
   String type = '';
 
   /// 类型id
-  int typeID = 0;
+  String typeID = '';
 
   /// 类型index
   int typeIndex = -1;
@@ -163,7 +165,7 @@ class SCAddPropertyMaintenanceController extends GetxController {
 
       for (int i = 0; i < typeList.length; i++) {
         SCEntryTypeModel model = typeList[i];
-        if (model.code == typeID) {
+        if (model.stringCode == typeID) {
           typeIndex = i;
           break;
         }
@@ -212,20 +214,23 @@ class SCAddPropertyMaintenanceController extends GetxController {
       "typeName": data['typeName'],
       "fetchOrgName": data['fetchOrgName'],
       "fetchOrgId": data['fetchOrgId'],
-      "reportUserName": data['reportUserName'],
-      "reportUserId": data['reportUserId'],
-      "reportOrgName": data['reportOrgName'],
-      "reportOrgId": data['reportOrgId'],
+      "chargeName": data['reportUserName'],
+      "chargeId": data['reportUserId'],
+      "partName": data['reportOrgName'],
+      "partId": data['reportOrgId'],
       "reportTime": data['reportTime'],
+      "startTime": reportStartTime,
+      "endTime": reportEndTime
     };
+    log('资产参数:$params');
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
-        url: SCUrl.kAddPropertyFrmLossUrl,
+        url: SCUrl.kAddPropertyMaintenanceUrl,
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshPropertyFrmLossPage});
+              .fire({'key': SCKey.kRefreshPropertyMaintenancePage});
           SCRouterHelper.back(null);
         },
         failure: (value) {
@@ -310,9 +315,14 @@ class SCAddPropertyMaintenanceController extends GetxController {
     SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kWareHouseTypeUrl,
-        params: {'dictionaryCode': 'REPORTLOSS_TYPE'},
+        params: {'dictionaryCode': 'MAINTAIN_TYPE'},
         success: (value) {
           SCLoadingUtils.hide();
+          for (var map in value) {
+            String stringCode = map['code'];
+            map['code'] = 0;
+            map['stringCode'] = stringCode;
+          }
           typeList = List<SCEntryTypeModel>.from(
               value.map((e) => SCEntryTypeModel.fromJson(e)).toList());
           initEditParams();

@@ -123,7 +123,9 @@
     // 返回
     [self.bridge registerHandler:@"sc_app_back" handler:^(id data, WVJBResponseCallback responseCallback) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
-        [strongSelf dismissViewControllerAnimated:YES completion:nil];
+        [strongSelf dismissViewControllerAnimated:YES completion:^{
+            strongSelf.completeHandler(@{});
+        }];
     }];
     // 领料
     [self.bridge registerHandler:@"goToMaterial" handler:^(id data, WVJBResponseCallback responseCallback) {
