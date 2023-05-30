@@ -60,7 +60,33 @@ class SCPatrolUtils {
       accept(isDetailPage: isDetailPage);
     } else if (name == '拒绝') {
       refuse(isDetailPage: isDetailPage);
+    } else if(name == '抢单'){
+       toGetOrder();
     }
+  }
+
+
+
+  //抢单处理
+  toGetOrder(){
+    SCLoadingUtils.show();
+    var params = {
+      "action": "accept",
+      "instanceId": nodeId,
+      "taskId": taskId
+    };
+    SCHttpManager.instance.post(
+        url: SCUrl.kPatrolGetOrder,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          SCToast.showTip("抢单成功").then((value){
+              SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
+          });
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
   }
 
   /// 接收

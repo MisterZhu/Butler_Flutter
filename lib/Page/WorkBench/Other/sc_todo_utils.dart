@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Utils/Strings/sc_string.dart';
@@ -22,7 +24,7 @@ class SCToDoUtils {
   detail(SCToDoModel model) {
     if (model.appName == "TASK") {
       /// 三巡一保
-      if (model.type == "POLICED_POINT") {
+      if (model.type == "POLICED_POINT" || model.type == "POLICED_DEVICE" || model.type == "POLICED_WATCH") {
         /// 巡查
         patrolDetail(model);
       } else if (model.type == "SAFE_PROD") {
@@ -45,12 +47,12 @@ class SCToDoUtils {
   dealAction(SCToDoModel model, String btnText) {
     if (model.appName == "TASK") {
       /// 三巡一保
-      if (model.type == "POLICED_POINT") {
+      if (model.type == "POLICED_POINT" || model.type == "POLICED_DEVICE" || model.type == "POLICED_WATCH") {
         /// 巡查
         dealPatrolTask(model, btnText);
       } else if (model.type == "SAFE_PROD") {
         /// 安全生产
-
+        dealPatrolTask(model, btnText);
       } else {
         /// 未知
 
@@ -62,6 +64,26 @@ class SCToDoUtils {
       /// 未知
       SCToast.showTip('未知错误');
     }
+  }
+
+  //抢单处理
+  toGetOrder(SCToDoModel model){
+
+    SCLoadingUtils.show();
+    var params = {
+      "action": "accept",
+      "instanceId": "",
+      "taskId": "",
+    };
+    SCHttpManager.instance.post(
+        url: SCUrl.kTransferUserListUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
   }
 
   /// 工单详情

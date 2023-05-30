@@ -398,6 +398,8 @@ class SCUrl {
   static const String kPatrolListUrl = "/api/quality/safetyProduction/task/frontPolicedPage";
   /// 巡查分类
   static const String kPatrolTypeUrl = "/api/quality/safetyProduction/task/fullTree";
+
+  static const String kPatrolGetOrder = "/api/task/process/task/handler";
   /// 巡查详情
   static const String kPatrolDetailUrl = "/api/quality/safetyProduction/task/getById?procInstId=";
   /// 任务日志

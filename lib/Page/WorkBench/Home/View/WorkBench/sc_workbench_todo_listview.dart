@@ -130,10 +130,10 @@ class SCWorkBenchToDoListView extends StatelessWidget {
       btnText: btnTitle,
       hideBtn: btnTitle.isEmpty,
       hideAddressRow: hideAddressRow,
-      btnTapAction: () {
+      btnTapAction: () {//卡片button点击
         SCToDoUtils().dealAction(model, btnTitle);
       },
-      detailTapAction: () {
+      detailTapAction: () {//整个卡片的点击
         SCToDoUtils().detail(model);
       },
       callAction: () {
