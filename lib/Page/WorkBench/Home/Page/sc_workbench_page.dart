@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,7 @@ import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../../Utils/sc_utils.dart';
+import '../Model/sc_scan_result_model.dart';
 import '../View/Alert/sc_task_sift_alert.dart';
 import '../View/AppBar/sc_workbench_search.dart';
 
@@ -287,8 +289,19 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   }
 
   /// 扫一扫
-  scanAction() {
-    SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
+  scanAction() async{
+    var data = await SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
+    print("扫码结果===$data=======");
+    Map<String,dynamic> map = json.decode(data);
+    ScanResultModel model = ScanResultModel.fromJson(map);
+    switch(model.code){
+      case "100001":
+        String token = SCScaffoldManager.instance.user.token ?? '';
+        var url = "${model.url}&Authorization=$token";
+        var params = {'title' : "访客管理", 'url' : SCUtils.getWebViewUrl(url: url, title: "访客管理", needJointParams: true),'removeLoginCheck' : true};
+        SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
+        break;
+    }
   }
 
   /// 消息

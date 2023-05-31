@@ -65,11 +65,8 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
     super.initState();
     dynamic params = Get.arguments;
     log('webView接收的参数：$params');
-    _title =
-        StringUtils.isNotNullOrEmpty(params?["title"]) ? params!["title"] : "";
-    _richText = StringUtils.isNotNullOrEmpty(params?["richText"])
-        ? params!["richText"]
-        : "";
+    _title = StringUtils.isNotNullOrEmpty(params?["title"]) ? params!["title"] : "";
+    _richText = StringUtils.isNotNullOrEmpty(params?["richText"]) ? params!["richText"] : "";
     _isLocalUrl = params?["isLocalUrl"] ?? false;
     needJointParams = params["needJointParams"] ?? false;
 

@@ -12,7 +12,7 @@ class SCRouterPath {
   /// tabPage
   static String tabPath = "/lib/Page/Tab/Page/sc_tab_page";
   /// flutter-webView
-  static String webViewPath = "/lib/Page/WebView/Page/sc_webview_age";
+  static String webViewPath = "/lib/Page/WebView/Page/sc_webview_page";
   /// native-webView
   static String nativeWebViewPath = "/lib/Page/WebView/Page/sc_native_webview_age";
 
