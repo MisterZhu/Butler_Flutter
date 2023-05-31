@@ -63,7 +63,7 @@ class SCPatrolDetailController extends GetxController {
   getDetailData() {
     SCLoadingUtils.show();
     SCHttpManager.instance.get(
-        url: SCUrl.kPatrolDetailUrl+procInstId+'\$_\$'+nodeId,
+        url: '${SCUrl.kPatrolDetailUrl}$procInstId\$_\$$nodeId',
         params: null,
         success: (value) {
           log('巡查详情===$value');
