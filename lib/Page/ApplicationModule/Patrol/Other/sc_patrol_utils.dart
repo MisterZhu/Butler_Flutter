@@ -82,6 +82,7 @@ class SCPatrolUtils {
           SCLoadingUtils.hide();
           SCToast.showTip("抢单成功").then((value){
               SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
+              SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolDetailPage});
           });
         },
         failure: (value) {
