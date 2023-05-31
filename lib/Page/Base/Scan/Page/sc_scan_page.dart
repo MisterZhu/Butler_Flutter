@@ -37,6 +37,7 @@ class SCScanState extends State<SCScanPage> {
     } else if (Platform.isIOS) {
       controller!.resumeCamera();
     }
+
   }
 
   @override
@@ -60,6 +61,8 @@ class SCScanState extends State<SCScanPage> {
       onPermissionSet: (controller, status) {
         if (status == false) {
           showNoPermissionAlert();
+        }else{
+          controller.resumeCamera();
         }
       },
     );

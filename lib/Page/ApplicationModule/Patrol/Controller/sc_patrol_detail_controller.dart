@@ -117,6 +117,7 @@ class SCPatrolDetailController extends GetxController {
             "title": list.first,
           }
         ];
+        moreButtonList.clear();
         for (int i = 2; i < list.length; i++) {
           moreButtonList.add(list[i]);
         }

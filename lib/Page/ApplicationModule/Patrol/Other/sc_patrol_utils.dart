@@ -61,14 +61,38 @@ class SCPatrolUtils {
     } else if (name == '拒绝') {
       refuse(isDetailPage: isDetailPage);
     } else if(name == '抢单'){
-       toGetOrder();
+      showDialogTip(isDetailPage: isDetailPage);
+    }
+  }
+
+  showDialogTip({bool? isDetailPage}){
+    if(isDetailPage == true){
+      toGetOrder(isDetailPage: isDetailPage);
+    }else{
+      SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+        SCDialogUtils.instance.showMiddleDialog(
+          context: context,
+          content: "确认领取该任务？",
+          customWidgetButtons: [
+            defaultCustomButton(context,
+                text: '取消',
+                textColor: SCColors.color_1B1C33,
+                fontWeight: FontWeight.w400),
+            defaultCustomButton(context,
+                text: '确定',
+                textColor: SCColors.color_1B1C33,
+                fontWeight: FontWeight.w400, onTap: () {
+                  toGetOrder(isDetailPage: isDetailPage);
+                }),
+          ],
+        );
+      });
     }
   }
 
 
-
   //抢单处理
-  toGetOrder(){
+  toGetOrder({bool? isDetailPage}){
     SCLoadingUtils.show();
     var params = {
       "action": "accept",
@@ -80,10 +104,15 @@ class SCPatrolUtils {
         params: params,
         success: (value) {
           SCLoadingUtils.hide();
-          SCToast.showTip("抢单成功").then((value){
-              SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
+          if(isDetailPage == true){
+            SCToast.showTip("抢单成功").then((value){
               SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolDetailPage});
-          });
+            });
+          }else{
+            SCToast.showTip("抢单成功，请前往”我待办的“处理任务").then((value){
+              SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
+            });
+          }
         },
         failure: (value) {
           SCToast.showTip(value['message']);
