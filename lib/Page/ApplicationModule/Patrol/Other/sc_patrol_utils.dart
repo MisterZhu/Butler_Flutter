@@ -273,6 +273,8 @@ class SCPatrolUtils {
           print('是否需要扫码======$value');
           if (value is Map && value.containsKey('isScanCode')) {
             result?.call(value['isScanCode']);
+          }else{
+            result?.call(false);
           }
         },
         failure: (value) {
@@ -297,8 +299,8 @@ class SCPatrolUtils {
             sureAction: (int index, String value, List imageList) {
               dealTask(action: "handle", code: code, content: value, imageList: imageList, result: (result) {
                 SCToast.showTip('处理成功').then((status) {
-                  SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
                   SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolDetailPage});
+                  SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
                 });
               });
             },
