@@ -299,8 +299,10 @@ class SCPatrolUtils {
             sureAction: (int index, String value, List imageList) {
               dealTask(action: "handle", code: code, content: value, imageList: imageList, result: (result) {
                 SCToast.showTip('处理成功').then((status) {
-                  SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolDetailPage});
                   SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
+                  if(isDetailPage==true){
+                    SCRouterHelper.back(null);
+                  }
                 });
               });
             },

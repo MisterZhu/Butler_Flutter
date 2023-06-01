@@ -140,6 +140,7 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
   addNotification() {
     subscription = SCScaffoldManager.instance.eventBus.on().listen((event) {
       String key = event['key'];
+      print("刷新数据=======================$key=======");
       if (key == SCKey.kRefreshPatrolDetailPage) {
         controller.getDetailData();
       }
