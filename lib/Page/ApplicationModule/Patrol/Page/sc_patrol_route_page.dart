@@ -89,10 +89,15 @@ class _ScPatrolRoutePageState extends State<ScPatrolRoutePage> with SingleTicker
   }
 
   Widget contentItem() {
+
+    List list1 = controller.titleList();
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SCDetailCell(list: list1,),
+        const SizedBox(height: 10,),
         CommonTabTopItem(tabController: tabController, titleList: tabList),
         Expanded(child: TabBarView(
             controller: tabController,
@@ -106,10 +111,17 @@ class _ScPatrolRoutePageState extends State<ScPatrolRoutePage> with SingleTicker
   }
 
 
-
-
-
-
+  /// cell1
+  Widget cell1(List list) {
+    return SCDetailCell(
+      list: list,
+      leftAction: (String value, int index) {},
+      rightAction: (String value, int index) {},
+      imageTap: (int imageIndex, List imageList, int index) {
+        // SCImagePreviewUtils.previewImage(imageList: [imageList[index]]);
+      },
+    );
+  }
 
 
 

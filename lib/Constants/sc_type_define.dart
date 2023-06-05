@@ -117,4 +117,7 @@ class SCTypeDefine {
   /// 编号、时间等信息
   static const int SC_PATROL_TYPE_INFO = 3;
 
+  static const int SC_PATROL_TYPE_PINGFEN = 4;
+
+
 }

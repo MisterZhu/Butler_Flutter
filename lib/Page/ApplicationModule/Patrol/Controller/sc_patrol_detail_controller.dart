@@ -156,8 +156,39 @@ class SCPatrolDetailController extends GetxController {
     dataList = [
       {'type': SCTypeDefine.SC_PATROL_TYPE_TITLE, 'data': titleList()},
       {'type': SCTypeDefine.SC_PATROL_TYPE_LOG, 'data': logList()},
-      {'type': SCTypeDefine.SC_PATROL_TYPE_INFO, 'data': infoList()}
+      {'type': SCTypeDefine.SC_PATROL_TYPE_INFO, 'data': infoList()},
+      {'type':SCTypeDefine.SC_PATROL_TYPE_PINGFEN,'data':pingfen()}
     ];
+  }
+
+  List pingfen(){
+    List data = [
+      {"type": 5, "content": "评分统计", "maxLength": 10},
+      {
+        "type": 7,
+        "title": '合格项',
+        "content": "12",
+      },
+      {
+        "type": 7,
+        "title": '不合格项',
+        "content": "12",
+      },
+      {
+        "type": 7,
+        "title": '不涉及项',
+        "content": "12",
+      }
+      , {
+        "type": 7,
+        "title": '未完成项',
+        "content": "12",
+      }
+    ];
+    return List.from(data.map((e) {
+      return SCUIDetailCellModel.fromJson(e);
+    }));
+
   }
 
   /// title-数据源

@@ -338,7 +338,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
         SCRouterHelper.pathPage(SCRouterPath.patrolRoutePage, {"place":model.formData });
       }else{
         log('我的数据-------------------------------------此处执行了${model.procInstId??''}  ${model.nodeId??''}');
-        SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});
+        SCRouterHelper.pathPage(SCRouterPath.patrolRoutePage, {"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});
       }
     }else{
       SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});

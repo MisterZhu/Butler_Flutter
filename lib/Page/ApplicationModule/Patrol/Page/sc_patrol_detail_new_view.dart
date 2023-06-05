@@ -1,0 +1,121 @@
+import 'package:flutter/cupertino.dart';
+import 'package:sc_uikit/sc_uikit.dart';
+
+import '../../../../Constants/sc_h5.dart';
+import '../../../../Constants/sc_type_define.dart';
+import '../../../../Network/sc_config.dart';
+import '../../../../Utils/Router/sc_router_helper.dart';
+import '../../../../Utils/Router/sc_router_path.dart';
+import '../../../../Utils/sc_utils.dart';
+import '../Controller/sc_patrol_detail_controller.dart';
+
+class PatrolDetailNewView extends StatefulWidget {
+
+  final SCPatrolDetailController state;
+
+  const PatrolDetailNewView({Key? key, required this.state}) : super(key: key);
+
+  @override
+  State<PatrolDetailNewView> createState() => _PatrolDetailNewViewState();
+}
+
+class _PatrolDetailNewViewState extends State<PatrolDetailNewView> {
+  @override
+  Widget build(BuildContext context) {
+    return body();
+  }
+
+  Widget body() {
+    return ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int index) {
+          return getCell(index: index);
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return const SizedBox(
+            height: 10.0,
+          );
+        },
+        itemCount: widget.state.dataList.length);
+  }
+
+  /// cell
+    /// cell
+    Widget getCell({required int index}) {
+      int type = widget.state.dataList[index]['type'];
+      List list = widget.state.dataList[index]['data'];
+      if (type == SCTypeDefine.SC_PATROL_TYPE_TITLE) {
+        return cell1(list);
+      } else if (type == SCTypeDefine.SC_PATROL_TYPE_LOG) {
+        return logCell(list);
+      } else if (type == SCTypeDefine.SC_PATROL_TYPE_CHECK) {
+        return checkCell(list);
+      } else if (type == SCTypeDefine.SC_PATROL_TYPE_INFO) {
+        return cell1(list);
+      } else if(type == SCTypeDefine.SC_PATROL_TYPE_PINGFEN){
+         return cell1(list);
+      } else {
+        return const SizedBox();
+      }
+    }
+    
+
+
+    /// cell1
+      Widget cell1(List list) {
+        return SCDetailCell(
+          list: list,
+          leftAction: (String value, int index) {},
+          rightAction: (String value, int index) {},
+          imageTap: (int imageIndex, List imageList, int index) {
+            // SCImagePreviewUtils.previewImage(imageList: [imageList[index]]);
+          },
+        );
+      }
+
+  /// 任务日志cell
+  Widget logCell(List list) {
+    return SCDetailCell(
+      list: list,
+      leftAction: (String value, int index) {},
+      rightAction: (String value, int index) {},
+      imageTap: (int imageIndex, List imageList, int index) {
+        // SCImagePreviewUtils.previewImage(imageList: [imageList[index]]);
+      },
+      detailAction: (int subIndex) {
+        // 任务日志
+        SCRouterHelper.pathPage(SCRouterPath.taskLogPage, {'bizId': widget.state.procInstId});
+      },
+    );
+  }
+
+  /// 检查项cell
+  Widget checkCell(List list) {
+    return SCDetailCell(
+      list: list,
+      leftAction: (String value, int index) {},
+      rightAction: (String value, int index) {},
+      imageTap: (int imageIndex, List imageList, int index) {
+      },
+      detailAction: (int subIndex) {
+        if (widget.state.model.customStatusInt! >= 40) {//已完成的任务，不能进行报事
+          return;
+        }
+        if (widget.state.model.isScanCode == false) {// 任务扫码前，不可对检查项进行报事
+          SCToast.showTip('请先扫码');
+          return;
+        }
+        SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+          "title": '快捷报事',
+          "url": SCUtils.getWebViewUrl(
+              url: SCConfig.getH5Url(SCH5.quickReportUrl),
+              title: '快捷报事',
+              needJointParams: true)
+        });
+      },
+    );
+  }
+
+
+}

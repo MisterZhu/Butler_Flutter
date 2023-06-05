@@ -13,6 +13,8 @@ class SCConfig {
   /// iOS是否支持平方SC字体
   static bool isSupportPFSCForIOS = true;
 
+  static String URL_R = "/api";
+
   /// base url
   static String get BASE_URL {
     switch (env) {

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Page/sc_patrol_detail_new_view.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/View/Detail/sc_patrol_detail_view.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/Other/sc_patrol_utils.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
@@ -80,7 +81,9 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
               children: [
                 Column(
                   children: [
-                    Expanded(child: SCPatrolDetailView(state: state,)),
+               //     Expanded(child: SCPatrolDetailView(state: state,)),
+                  //测试数据
+                    Expanded(child: PatrolDetailNewView(state:state)),
                     bottomView()
                   ]
                 ),
