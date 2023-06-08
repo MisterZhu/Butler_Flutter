@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
@@ -28,7 +29,7 @@ class SCPatrolRouteListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<PlaceList>? data = state.model.checkObject?.placeList;
+    List<PlaceList>? data = state.model1.checkObject?.placeList;
     return SmartRefresher(
         controller: refreshController,
         enablePullUp: false,
@@ -43,7 +44,7 @@ class SCPatrolRouteListView extends StatelessWidget {
   }
 
   Widget listView() {
-    List<PlaceList>? data =state.model.checkObject?.placeList;
+    List<PlaceList>? data =state.model1.checkObject?.placeList;
     return ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
         shrinkWrap: true,
@@ -61,7 +62,7 @@ class SCPatrolRouteListView extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         var model = data!=null? data[index]:null;
-        SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model?.tenantId ?? '',"nodeId":  ''});
+        SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model?.tenantId ?? '',"nodeId":  '',"type":"POLICED_WATCH"});
         //detailTapAction?.call();
       },
       child: Container(
@@ -75,30 +76,70 @@ class SCPatrolRouteListView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+            Row(
+              children:  [
+                const Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                  child:DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: SCColors.color_4285F4
+                    ),
+                    child: SizedBox(
+                      width: 2,
+                      height: 15,
+                    ),
+                  )
+                ),
+                Text(
+                    data!=null ? ("巡更点${index+1}") : "",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: SCFonts.f16,
+                        fontWeight: FontWeight.w500,
+                        color: SCColors.color_1B1D33)),
+
+              ],
+            ),
               const SizedBox(
                 height: 10.0,
-              ),
-            Text(
-                data!=null ? ("巡更地点${index+1}") : "",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                    fontSize: SCFonts.f18,
-                    fontWeight: FontWeight.w500,
-                    color: SCColors.color_1B1D33)),
-              const SizedBox(
-                height: 16.0,
               ),
             Text(
                 data!=null ? (data[index].placeName ?? "") : "",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
-                style:  const TextStyle(
-                    fontSize: SCFonts.f12,
-                    fontWeight: FontWeight.w400,
-                    color: SCColors.color_8D8E99)),
+                style: const TextStyle(
+                    fontSize: SCFonts.f16,
+                    fontWeight: FontWeight.w500,
+                    color: SCColors.color_1B1D33)),
+              const SizedBox(
+                height: 10.0,
+              ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+               const Text(
+                    "巡更方式",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style:  TextStyle(
+                        fontSize: SCFonts.f16,
+                        fontWeight: FontWeight.w400,
+                        color: SCColors.color_8D8E99)),
+                Text(
+                    data!=null ? (data[index].execWay ?? "") : "",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: SCFonts.f16,
+                        fontWeight: FontWeight.w500,
+                        color: SCColors.color_1B1D33)),
+              ],
+            ),
               const SizedBox(
                 height: 10.0,
               ),

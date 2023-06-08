@@ -335,10 +335,12 @@ class SCPatrolViewState extends State<SCPatrolView> {
       log('我的数据-------------------------------------此处执行了');
       log('我的数据===${model.formData?.checkObject?.type}');
       if(model.formData?.checkObject?.type == "route"){
-        SCRouterHelper.pathPage(SCRouterPath.patrolRoutePage, {"place":model.formData });
+        SCRouterHelper.pathPage(SCRouterPath.patrolRoutePage, {"place":model.formData,"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});
       }else{
         log('我的数据-------------------------------------此处执行了${model.procInstId??''}  ${model.nodeId??''}');
-        SCRouterHelper.pathPage(SCRouterPath.patrolRoutePage, {"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});
+        SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});
+       // SCRouterHelper.pathPage(SCRouterPath.patrolRoutePage, {"place":model.formData,"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});
+
       }
     }else{
       SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});

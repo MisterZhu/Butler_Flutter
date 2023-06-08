@@ -89,7 +89,7 @@ class Route {
   String? orgId;
   String? orgName;
   String? orgPath;
-  String? placeNum;
+  int? placeNum;
   String? tenantId;
 
   Route(

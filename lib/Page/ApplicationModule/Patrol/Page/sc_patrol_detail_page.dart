@@ -83,7 +83,7 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
                   children: [
                //     Expanded(child: SCPatrolDetailView(state: state,)),
                   //测试数据
-                    Expanded(child: PatrolDetailNewView(state:state)),
+                    getPatrolView(state),
                     bottomView()
                   ]
                 ),
@@ -107,6 +107,16 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
         }),
     );
   }
+
+  Widget getPatrolView(state){
+    if(controller.type == "POLICED_WATCH"){
+     return Expanded(child: PatrolDetailNewView(state:state));
+    }else{
+     return Expanded(child: SCPatrolDetailView(state: state,));
+    }
+  }
+
+
 
   /// 底部按钮
   Widget bottomView() {

@@ -360,7 +360,9 @@ class CheckList {
       this.creatorName, 
       this.operatorName, 
       this.gmtCreate, 
-      this.gmtModify,});
+      this.gmtModify,
+      this.evaluateResult,
+  });
 
   CheckList.fromJson(dynamic json) {
     id = json['id'];
@@ -378,6 +380,7 @@ class CheckList {
     operatorName = json['operatorName'];
     gmtCreate = json['gmtCreate'];
     gmtModify = json['gmtModify'];
+    evaluateResult = json['evaluateResult'];
   }
   int? id;
   String? tenantId;
@@ -394,6 +397,7 @@ class CheckList {
   String? operatorName;
   String? gmtCreate;
   String? gmtModify;
+  String? evaluateResult;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -412,6 +416,7 @@ class CheckList {
     map['operatorName'] = operatorName;
     map['gmtCreate'] = gmtCreate;
     map['gmtModify'] = gmtModify;
+    map['evaluateResult'] = evaluateResult;
     return map;
   }
 

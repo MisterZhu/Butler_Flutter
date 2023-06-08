@@ -402,6 +402,15 @@ class SCUrl {
   static const String kPatrolGetOrder = "/api/task/process/task/handler";
   /// 巡查详情
   static const String kPatrolDetailUrl = "/api/quality/safetyProduction/task/getById?procInstId=";
+
+  //获取评分接口
+  static const String kPatrolScoreUrl = "/api/quality/process/task/checkStat";
+
+  //巡更上报接口
+  static const String kPatrolReport = "/api/quality/process/task/evaluated";
+
+  static const String kPatrolUrl = "/api/quality/safetyProduction/task/frontPage";
+
   /// 任务日志
   static const String kPatrolTaskLogUrl = "/api/bpm/log/list";
   /// 处理任务

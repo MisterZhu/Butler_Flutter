@@ -9,6 +9,8 @@ import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Skin/View/sc_custom_scaffold.dart';
 import '../../../Message/Page/sc_message_page.dart';
 import '../View/Patrol/sc_common_top_item.dart';
+import '../View/Patrol/sc_patrol_derivelist_view.dart';
+import '../View/Patrol/sc_patrol_errorlist_view.dart';
 import '../View/Patrol/sc_patrol_route_list_view.dart';
 
 
@@ -27,12 +29,13 @@ class _ScPatrolRoutePageState extends State<ScPatrolRoutePage> with SingleTicker
 
   late TabController tabController;
 
-  List tabList = ['巡更任务', '异常报事'];
+  List tabList = ['详情信息', '被派生/关联','派生任务'];
 
   RefreshController refreshController1 = RefreshController(initialRefresh: false);
 
   RefreshController refreshController2 = RefreshController(initialRefresh: false);
 
+  RefreshController refreshController3 = RefreshController(initialRefresh: false);
 
 
   @override
@@ -103,7 +106,21 @@ class _ScPatrolRoutePageState extends State<ScPatrolRoutePage> with SingleTicker
             controller: tabController,
             children:  [
               SCPatrolRouteListView(state: controller,  refreshController: refreshController1),
-              SCPatrolRouteListView(state: controller,  refreshController: refreshController2),
+              SCPatrolDeriveListView(data:controller.dataList2,refreshController: refreshController2,onfreshFun: (){
+                controller.loadData2(
+                    isMore: false,
+                    completeHandler: (bool success,bool last) {
+                      refreshController2.refreshCompleted();
+                      refreshController2.loadComplete();
+                    });
+              },onLoadMoreFun: (){
+                controller.loadData2(
+                    isMore: true,
+                    completeHandler: (bool success,bool last) {
+                      refreshController2.loadComplete();
+                    });
+              },ht: 124.0,),
+              SCPatrolErrorListView(state: controller,  refreshController: refreshController3),
             ])
         ),
       ],

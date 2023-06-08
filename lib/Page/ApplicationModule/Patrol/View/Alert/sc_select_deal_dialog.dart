@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/View/Alert/sc_select_btn_view.dart';
 
@@ -10,30 +8,27 @@ import '../../../../WorkBench/Home/View/Alert/sc_alert_header_view.dart';
 import '../../../HouseInspect/View/sc_bottom_button_item.dart';
 import '../../Model/sc_patrol_detail_model.dart';
 
-class CheckPlaceDialog extends StatefulWidget {
+class SelectDealDialog extends StatefulWidget {
+   String? title;
 
-  String? title;
+   CheckList checkList;
 
-  CheckList checkList;
 
-  Function(CheckList data,int str)? f1;
-
-  Function()? f2;
-  
-  CheckPlaceDialog({Key? key,required this.title, required this.checkList,this.f1,this.f2}) : super(key: key);
+  SelectDealDialog({Key? key, required this.title, required this.checkList})
+      : super(key: key);
 
   @override
-  State<CheckPlaceDialog> createState() => _CheckPlaceDialogState();
+  State<SelectDealDialog> createState() => _SelectDealDialogState();
 }
 
-class _CheckPlaceDialogState extends State<CheckPlaceDialog> {
+class _SelectDealDialogState extends State<SelectDealDialog> {
   bool selectStatus1 = false;
 
   bool selectStatus2 = false;
 
   @override
   Widget build(BuildContext context) {
-    double height = 290.0;
+    double height = 395.0;
 
     return Container(
       width: double.infinity,
@@ -48,21 +43,15 @@ class _CheckPlaceDialogState extends State<CheckPlaceDialog> {
           titleItem(context),
           Expanded(child: listView()),
           const SizedBox(
-            height: 60.0,
+            height: 40.0,
           ),
           SCBottomButtonItem(
-            list: const ['完成'],
+            list: const ['确定'],
             buttonType: 0,
             leftTapAction: () {
               Navigator.of(context).pop();
             },
-            tapAction:(){
-              int str = -1;
-              selectStatus1?str=0:-1;
-              selectStatus2?str=1:-1;
-              widget.f1?.call(widget.checkList,str);
-              Navigator.of(context).pop();
-            },
+            rightTapAction: () {},
           ),
         ],
       ),
@@ -113,8 +102,8 @@ class _CheckPlaceDialogState extends State<CheckPlaceDialog> {
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: SCFonts.f16,
-              fontWeight: FontWeight.w500,
               color: SCColors.color_1B1D33,
+              fontWeight: FontWeight.w400,
             )));
   }
 
@@ -127,7 +116,7 @@ class _CheckPlaceDialogState extends State<CheckPlaceDialog> {
             padding: EdgeInsets.only(left: 10, right: 110),
             child: Text("类型",
                 style: TextStyle(
-                  fontSize: 17,
+                  fontSize: SCFonts.f16,
                   color: SCColors.color_1B1D33,
                   fontWeight: FontWeight.w400,
                 ))),
@@ -136,7 +125,7 @@ class _CheckPlaceDialogState extends State<CheckPlaceDialog> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SelectBtnView(
-                btnValue: "正常", selectStatus: selectStatus1, fuc: (status) {
+                btnValue: "检查", selectStatus: selectStatus1, fuc: (status) {
               setState(() {
                 selectStatus1 = status;
                 selectStatus2 = false;
@@ -144,7 +133,7 @@ class _CheckPlaceDialogState extends State<CheckPlaceDialog> {
             }),
             const SizedBox(width: 10),
             SelectBtnView(
-                btnValue: "异常", selectStatus: selectStatus2, fuc: (status) {
+                btnValue: "整改任务", selectStatus: selectStatus2, fuc: (status) {
               setState(() {
                 selectStatus1 = false;
                 selectStatus2 = status;
@@ -158,33 +147,68 @@ class _CheckPlaceDialogState extends State<CheckPlaceDialog> {
 
 
   Widget isLinkItem() {
-    return Padding(padding:const EdgeInsets.only(left: 10,right: 10) ,child:Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children:[
-          const Text("异常报事", style:  TextStyle(
-              fontSize: 17,
-              color: SCColors.color_1B1D33,
-              fontWeight: FontWeight.w400)),
-
-          ElevatedButton(
-              onPressed: (){
-                  widget.f2?.call();
-                  Navigator.of(context).pop();
-              },
-              child:const Text("报事",style:  TextStyle(
-                  fontSize: 17,
+    return Column(
+      children: [
+      Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Padding(
+            padding: EdgeInsets.only(left: 10, right: 60),
+            child: Text("是否涉及项",
+                style: TextStyle(
+                  fontSize: SCFonts.f16,
                   color: SCColors.color_1B1D33,
-                  fontWeight: FontWeight.w400)))
-
-        ],
-      ));
-
-
+                  fontWeight: FontWeight.w400,
+                ))),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SelectBtnView(
+                btnValue: "是", selectStatus: selectStatus1, fuc: (status) {
+              setState(() {
+                selectStatus1 = status;
+                selectStatus2 = false;
+              });
+            }),
+            const SizedBox(width: 10),
+            SelectBtnView(
+                btnValue: "否", selectStatus: selectStatus2, fuc: (status) {
+              setState(() {
+                selectStatus1 = false;
+                selectStatus2 = status;
+              });
+            })
+          ],
+        ),
+      ],),
+      const SizedBox(height: 10,),
+      showTipTxt()
+      ],
+    );
 
   }
 
 
-  
+  Widget showTipTxt() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+      child: Container(
+          width: double.infinity,
+          height: 55,
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: SCColors.color_F7F8FA,
+              borderRadius: BorderRadius.circular(4.0)),
+          child:const Text("若该检查项为当前项目不涉及的内容，则勾选该选项，勾选后不计算该项得分",style: TextStyle(
+            fontSize: SCFonts.f14,
+            color: SCColors.color_8D8E99,
+            fontWeight: FontWeight.w400,
+          ),)),
+    );
+  }
+
   /// title
   Widget titleItem(BuildContext context) {
     return SCAlertHeaderView(
@@ -194,12 +218,4 @@ class _CheckPlaceDialogState extends State<CheckPlaceDialog> {
       },
     );
   }
-  
-  
-  
 }
-
-
-
-
-

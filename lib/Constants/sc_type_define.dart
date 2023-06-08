@@ -119,5 +119,6 @@ class SCTypeDefine {
 
   static const int SC_PATROL_TYPE_PINGFEN = 4;
 
+  static const int SC_PATROL_TYPE_TAB = 5;
 
 }

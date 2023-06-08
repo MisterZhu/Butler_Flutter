@@ -123,7 +123,7 @@ class SCToDoUtils {
       }
     }
     SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage,
-        {"procInstId": procInstId, "nodeId": nodeId})?.then((value) {
+        {"procInstId": procInstId, "nodeId": nodeId,"type":model.type})?.then((value) {
       SCScaffoldManager.instance.eventBus
           .fire({"key": SCKey.kRefreshWorkBenchPage});
     });
