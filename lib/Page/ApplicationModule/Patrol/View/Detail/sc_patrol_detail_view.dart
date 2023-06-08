@@ -65,7 +65,9 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
     return SCDetailCell(
       list: list,
       leftAction: (String value, int index) {},
-      rightAction: (String value, int index) {},
+      rightAction: (String value, int index) {
+
+      },
       imageTap: (int imageIndex, List imageList, int index) {
         // SCImagePreviewUtils.previewImage(imageList: [imageList[index]]);
       },

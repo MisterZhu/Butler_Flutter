@@ -7,7 +7,9 @@ import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';
 import 'package:smartcommunity/Network/sc_url.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_patrol_detail_model.dart';
+import '../../../../Constants/sc_key.dart';
 import '../../../../Constants/sc_type_define.dart';
+import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import '../Model/sc_patrol_task_model.dart';
 import '../Model/sc_star_model.dart';
@@ -77,6 +79,9 @@ class SCPatrolDetailController extends GetxController {
       }
       log('三巡累行::===$type');
       getDetailData();
+      if(type=="POLICED_WATCH"){
+        loadData2(isMore: false);
+      }
     }
   }
 
@@ -197,6 +202,7 @@ class SCPatrolDetailController extends GetxController {
         success: (value) {
           log('巡更检查上报===$value');
           SCLoadingUtils.hide();
+          SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolDetailPage});
           update();
         },
         failure: (value) {

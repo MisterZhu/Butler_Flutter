@@ -387,4 +387,9 @@ class SCAsset {
   /**************** 资产维保 ****************/
   /// 资产维保icon
   static const String iconPropertyMaintenance = "images/propertyMaintenance/icon_property_maintenance.png";
+
+  static const String iconArrowBottom = "images/patrol/ic_arrow_bottom.png";
+
+  static const String iconArrowTop = "images/patrol/ic_arrow_top.png";
+
 }
