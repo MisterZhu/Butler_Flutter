@@ -66,6 +66,7 @@ import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_add_property_frmLos
 import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_property_frmLoss_detail_page.dart';
 import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_property_frmLoss_page.dart';
 import '../../Page/ApplicationModule/WarningCenter/Page/sc_warning_detail_page.dart';
+import '../../Page/Login/Privacy/Page/sc_privacy_alert_new_page.dart';
 import '../../Page/Message/Page/sc_message_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
 import '../../Page/Mine/Home/Page/sc_proxy_page.dart';
@@ -78,7 +79,7 @@ class SCRouterPages {
   /*根据path使用路由*/
   static final List<GetPage> getPages = [
     /*用户协议和隐私政策弹窗*/
-    GetPage(name: SCRouterPath.basePrivacyPath, page: () => SCPrivacyAlertPage()),
+    GetPage(name: SCRouterPath.basePrivacyPath, page: () => const PrivacyAlertNewPage()),
     /*登录*/
     GetPage(name: SCRouterPath.loginPath, page: () => SCLoginPage()),
     /*tab*/

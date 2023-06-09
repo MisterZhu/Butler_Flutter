@@ -8,7 +8,9 @@ class SCRouterPath {
   /// 登录
   static String loginPath = "/lib/Page/Login/Home/Page/sc_login_page";
   /// 用户协议和隐私政策弹窗
-  static String basePrivacyPath = "/lib/Page/Login/Privacy/sc_privacy_page";
+  //static String basePrivacyPath = "/lib/Page/Login/Privacy/sc_privacy_page";
+  static String basePrivacyPath = "/lib/Page/Login/Privacy/Page/sc_privacy_alert_new_page";
+
   /// tabPage
   static String tabPath = "/lib/Page/Tab/Page/sc_tab_page";
   /// flutter-webView

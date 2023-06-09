@@ -11,13 +11,7 @@ import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 
 /// 用户协议与隐私政策弹窗-page
-
-class SCPrivacyAlertPage extends StatefulWidget {
-  @override
-  SCPrivacyAlertPageState createState() => SCPrivacyAlertPageState();
-}
-
-class SCPrivacyAlertPageState extends State<SCPrivacyAlertPage> {
+class SCPrivacyAlertPage extends StatelessWidget {
   SCBasePrivacyController state = Get.put(SCBasePrivacyController());
 
   @override
@@ -27,10 +21,6 @@ class SCPrivacyAlertPageState extends State<SCPrivacyAlertPage> {
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   /// body
   Widget body() {
