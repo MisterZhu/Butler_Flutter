@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_patrol_detail_model.dart';
 
 import '../../../../../Constants/sc_h5.dart';
 import '../../../../../Constants/sc_type_define.dart';
@@ -13,15 +12,12 @@ import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../../../../common/component/common_info_list_fold_view.dart';
-import '../../../MaterialEntry/View/Alert/sc_reject_alert.dart';
 import '../../Controller/sc_patrol_detail_controller.dart';
 import '../../Model/sc_form_data_model.dart';
 import '../Alert/sc_check_palce_dialog.dart';
-import '../Alert/sc_select_deal_dialog.dart';
 import '../Patrol/sc_common_top_item.dart';
 import '../Patrol/sc_patrol_derivelist_view.dart';
 import '../Patrol/sc_patrol_detial_checklist_view.dart';
-import '../Patrol/sc_patrol_route_list_view.dart';
 
 class PatrolDetailNewView extends StatefulWidget {
 
@@ -113,7 +109,6 @@ class _PatrolDetailNewViewState extends State<PatrolDetailNewView>
             SCPatrolDetailCheckListView(
                 data: list,
                 fun: (data, index) {
-                  log('巡查详情yyyyyyyy===${data.checkName}');
                   showDialog(data);
                 }),
             SCPatrolDeriveListView(

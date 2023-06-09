@@ -1,7 +1,5 @@
 import 'dart:developer';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
 import 'package:smartcommunity/Network/sc_http_manager.dart';

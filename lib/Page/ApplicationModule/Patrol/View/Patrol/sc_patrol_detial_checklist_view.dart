@@ -3,19 +3,11 @@ import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_asset.dart';
-import '../../../../../Network/sc_config.dart';
-import '../../../../../Utils/Date/sc_date_utils.dart';
-import '../../../../../Utils/Router/sc_router_helper.dart';
-import '../../../../../Utils/Router/sc_router_path.dart';
-import '../../../../../Utils/sc_utils.dart';
-import '../../Controller/sc_patrol_route_controller.dart';
+
 import '../../Model/sc_form_data_model.dart';
-import '../../Model/sc_patrol_detail_model.dart';
-import '../../Model/sc_patrol_task_model.dart';
 
 /// 消息listview
 class SCPatrolDetailCheckListView extends StatelessWidget {
