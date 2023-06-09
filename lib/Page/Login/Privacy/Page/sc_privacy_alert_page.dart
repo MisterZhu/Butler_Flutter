@@ -60,8 +60,7 @@ class SCPrivacyAlertPageState extends State<SCPrivacyAlertPage> {
         },
         sureAction: () async {
           if (state.isAgree == true) {
-            SharedPreferences preference =
-                await SharedPreferences.getInstance();
+            SharedPreferences preference = await SharedPreferences.getInstance();
             preference.setBool(SCKey.isShowPrivacyAlert, false);
             SCJPush.initJPush();
             SCRouterHelper.pathOffAllPage(SCRouterPath.loginPath, null);
