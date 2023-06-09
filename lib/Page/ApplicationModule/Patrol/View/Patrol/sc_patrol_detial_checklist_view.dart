@@ -13,6 +13,7 @@ import '../../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../Controller/sc_patrol_route_controller.dart';
+import '../../Model/sc_form_data_model.dart';
 import '../../Model/sc_patrol_detail_model.dart';
 import '../../Model/sc_patrol_task_model.dart';
 
@@ -25,11 +26,24 @@ class SCPatrolDetailCheckListView extends StatelessWidget {
 
   Function(CheckList list,int index)? fun;
 
-  SCPatrolDetailCheckListView({Key? key, required this.data, required this.fun}) : super(key: key);
+  SCPatrolDetailCheckListView({Key? key,this.data, required this.fun}) : super(key: key);
+
+  RefreshController refreshController =
+  RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
-    return listView();
+    return SmartRefresher(
+        controller: refreshController,
+        enablePullUp: false,
+        enablePullDown: false,
+        header: const SCCustomHeader(
+          style: SCCustomHeaderStyle.noNavigation,
+        ),
+        onRefresh: null,
+        onLoading: null,
+        child: data!=null && data!.isNotEmpty ? listView() : emptyView()
+    );
   }
 
   Widget listView() {
@@ -112,7 +126,7 @@ class SCPatrolDetailCheckListView extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(
-          height: 124.0,
+          height: 20.0,
         ),
         Image.asset(SCAsset.iconMessageEmpty, width: 120.0, height: 120.0,),
         const SizedBox(

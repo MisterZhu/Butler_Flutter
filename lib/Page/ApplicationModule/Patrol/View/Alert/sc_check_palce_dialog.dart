@@ -8,7 +8,7 @@ import 'package:smartcommunity/Page/ApplicationModule/Patrol/View/Alert/sc_selec
 import '../../../../../Constants/sc_asset.dart';
 import '../../../../WorkBench/Home/View/Alert/sc_alert_header_view.dart';
 import '../../../HouseInspect/View/sc_bottom_button_item.dart';
-import '../../Model/sc_patrol_detail_model.dart';
+import '../../Model/sc_form_data_model.dart';
 
 class CheckPlaceDialog extends StatefulWidget {
 

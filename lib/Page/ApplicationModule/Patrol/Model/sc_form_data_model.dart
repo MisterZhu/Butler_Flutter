@@ -22,11 +22,12 @@ class CheckObject {
   Route? route;
   List<CheckList>? checkList;
   List<PlaceList>? placeList;
+  Place? place;
   String? bizTag;
   String? type;
 
   CheckObject(
-      {this.route, this.checkList, this.placeList, this.bizTag, this.type});
+      {this.route, this.checkList, this.placeList, this.bizTag, this.type,this.place});
 
   CheckObject.fromJson(Map<String, dynamic> json) {
     route = json['route'] != null ? Route.fromJson(json['route']) : null;
@@ -42,6 +43,7 @@ class CheckObject {
         placeList!.add(PlaceList.fromJson(v));
       });
     }
+    place = json['place'] != null ? Place.fromJson(json['place']) : null;
     bizTag = json['bizTag'];
     type = json['type'];
   }
@@ -53,6 +55,9 @@ class CheckObject {
     }
     if (checkList != null) {
       data['checkList'] = checkList!.map((v) => v.toJson()).toList();
+    }
+    if (place != null) {
+      data['place'] = place?.toJson();
     }
     if (placeList != null) {
       data['placeList'] = placeList!.map((v) => v.toJson()).toList();
@@ -365,3 +370,96 @@ class PlaceList {
     return data;
   }
 }
+
+class Place {
+  Place({
+    this.id,
+    this.policedClassId,
+    this.policedClassName,
+    this.disable,
+    this.execWay,
+    this.extra,
+    this.creator,
+    this.operator,
+    this.creatorName,
+    this.operatorName,
+    this.gmtCreate,
+    this.gmtModify,
+    this.placeName,
+    this.tenantId,
+    this.projectId,
+    this.projectName,
+    this.orgId,
+    this.orgName,
+    this.spaceId,
+    this.bizTag,});
+
+  Place.fromJson(dynamic json) {
+    id = json['id'];
+    policedClassId = json['policedClassId'];
+    policedClassName = json['policedClassName'];
+    disable = json['disable'];
+    execWay = json['execWay'];
+    extra = json['extra'];
+    creator = json['creator'];
+    operator = json['operator'];
+    creatorName = json['creatorName'];
+    operatorName = json['operatorName'];
+    gmtCreate = json['gmtCreate'];
+    gmtModify = json['gmtModify'];
+    placeName = json['placeName'];
+    tenantId = json['tenantId'];
+    projectId = json['projectId'];
+    projectName = json['projectName'];
+    orgId = json['orgId'];
+    orgName = json['orgName'];
+    spaceId = json['spaceId'];
+    bizTag = json['bizTag'];
+  }
+  String? id;
+  int? policedClassId;
+  String? policedClassName;
+  bool? disable;
+  String? execWay;
+  String? extra;
+  String? creator;
+  String? operator;
+  String? creatorName;
+  String? operatorName;
+  String? gmtCreate;
+  String? gmtModify;
+  String? placeName;
+  String? tenantId;
+  String? projectId;
+  String? projectName;
+  String? orgId;
+  String? orgName;
+  int? spaceId;
+  String? bizTag;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    map['policedClassId'] = policedClassId;
+    map['policedClassName'] = policedClassName;
+    map['disable'] = disable;
+    map['execWay'] = execWay;
+    map['extra'] = extra;
+    map['creator'] = creator;
+    map['operator'] = operator;
+    map['creatorName'] = creatorName;
+    map['operatorName'] = operatorName;
+    map['gmtCreate'] = gmtCreate;
+    map['gmtModify'] = gmtModify;
+    map['placeName'] = placeName;
+    map['tenantId'] = tenantId;
+    map['projectId'] = projectId;
+    map['projectName'] = projectName;
+    map['orgId'] = orgId;
+    map['orgName'] = orgName;
+    map['spaceId'] = spaceId;
+    map['bizTag'] = bizTag;
+    return map;
+  }
+}
+

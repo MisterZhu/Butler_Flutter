@@ -15,6 +15,7 @@ import '../../../../../Utils/sc_utils.dart';
 import '../../../../../common/component/common_info_list_fold_view.dart';
 import '../../../MaterialEntry/View/Alert/sc_reject_alert.dart';
 import '../../Controller/sc_patrol_detail_controller.dart';
+import '../../Model/sc_form_data_model.dart';
 import '../Alert/sc_check_palce_dialog.dart';
 import '../Alert/sc_select_deal_dialog.dart';
 import '../Patrol/sc_common_top_item.dart';
@@ -93,7 +94,7 @@ class _PatrolDetailNewViewState extends State<PatrolDetailNewView>
     }
   }
 
-  Widget tabPage(List list) {
+   Widget tabPage(List? list) {
     return Container(
       height: 200,
       decoration: const BoxDecoration(

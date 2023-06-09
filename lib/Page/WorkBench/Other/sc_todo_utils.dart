@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import '../../../Utils/Date/sc_date_utils.dart';
 import '../../../Utils/Router/sc_router_helper.dart';
 import '../../../Utils/Router/sc_router_path.dart';
 import '../../../Utils/sc_utils.dart';
+import '../../ApplicationModule/Patrol/Model/sc_patrol_detail_model.dart';
 import '../../ApplicationModule/Patrol/Other/sc_patrol_utils.dart';
 import '../Home/Model/sc_todo_model.dart';
 
@@ -24,9 +26,11 @@ class SCToDoUtils {
   detail(SCToDoModel model) {
     if (model.appName == "TASK") {
       /// 三巡一保
-      if (model.type == "POLICED_POINT" || model.type == "POLICED_DEVICE" || model.type == "POLICED_WATCH") {
+      if (model.type == "POLICED_POINT" || model.type == "POLICED_DEVICE" ) {
         /// 巡查
         patrolDetail(model);
+      }else if(model.type == "POLICED_WATCH"){
+        dealPatrolNewTask(model);
       } else if (model.type == "SAFE_PROD") {
         /// 安全生产
         SCToast.showTip(SCDefaultValue.developingTip);
@@ -155,6 +159,41 @@ class SCToDoUtils {
           patrolUtils.procInstId = procInstId;
           patrolUtils.nodeId = nodeId;
           patrolUtils.taskAction(name: btnText);
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
+
+  /// 巡查处理
+  dealPatrolNewTask(SCToDoModel model) async {
+    String id = model.taskId ?? '';
+    String procInstId = '';
+    String nodeId = '';
+    if (id.isNotEmpty) {
+      if (id.contains('\$_\$')) {
+        List idList = id.split('\$_\$');
+        if (idList.length > 1) {
+          procInstId = idList[0];
+          nodeId = idList[1];
+        }
+      }
+    }
+    SCLoadingUtils.show();
+    SCHttpManager.instance.get(
+        url: '${SCUrl.kPatrolDetailUrl}$procInstId\$_\$$nodeId',
+        params: null,
+        success: (value) {
+          SCLoadingUtils.hide();
+
+          SCPatrolDetailModel model = SCPatrolDetailModel.fromJson(value);
+          if(model.formData?.checkObject?.type == "route"){
+            SCRouterHelper.pathPage(SCRouterPath.patrolRoutePage, {"place":model.formData,"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});
+          }else{
+            log('我的数据-------------------------------------此处执行了${model.procInstId??''}  ${model.nodeId??''}');
+            SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? '',"type":"POLICED_WATCH"});
+          }
         },
         failure: (value) {
           SCToast.showTip(value['message']);

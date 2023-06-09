@@ -61,8 +61,8 @@ class SCPatrolRouteListView extends StatelessWidget {
   Widget body(List<PlaceList>? data,int index) {
     return GestureDetector(
       onTap: () {
-        var model = data!=null? data[index]:null;
-        SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model?.tenantId ?? '',"nodeId":  '',"type":"POLICED_WATCH"});
+       // var model = data!=null? data[index]:null;
+       // SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model?.tenantId ?? '',"nodeId":  '',"type":"POLICED_WATCH"});
         //detailTapAction?.call();
       },
       child: Container(

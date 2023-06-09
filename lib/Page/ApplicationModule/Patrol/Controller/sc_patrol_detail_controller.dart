@@ -11,6 +11,7 @@ import '../../../../Constants/sc_key.dart';
 import '../../../../Constants/sc_type_define.dart';
 import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
+import '../Model/sc_form_data_model.dart';
 import '../Model/sc_patrol_task_model.dart';
 import '../Model/sc_star_model.dart';
 import '../Other/sc_patrol_utils.dart';
@@ -281,6 +282,13 @@ class SCPatrolDetailController extends GetxController {
         }
         dataList.insert(1, {'type': SCTypeDefine.SC_PATROL_TYPE_CHECK, 'data': list});
       }
+    }else{
+      List list = [];
+      if((model.formData?.checkObject?.checkList ?? []).isNotEmpty){
+        dataList.insert(1, {'type': SCTypeDefine.SC_PATROL_TYPE_TAB, 'data': model.formData?.checkObject?.checkList});
+      }else{
+        dataList.insert(1, {'type': SCTypeDefine.SC_PATROL_TYPE_TAB, 'data': list});
+      }
     }
   }
 
@@ -289,8 +297,6 @@ class SCPatrolDetailController extends GetxController {
     if(type=="POLICED_WATCH"){
       dataList = [
         {'type': SCTypeDefine.SC_PATROL_TYPE_TITLE, 'data': titleList()},
-        {'type': SCTypeDefine.SC_PATROL_TYPE_TAB, 'data': model.formData?.checkObject?.checkList},
-        //{'type':SCTypeDefine.SC_PATROL_TYPE_PINGFEN,'data':pingfen()},
         {'type': SCTypeDefine.SC_PATROL_TYPE_LOG, 'data': logList()},
 
       ];

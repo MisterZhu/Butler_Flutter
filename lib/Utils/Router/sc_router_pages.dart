@@ -79,7 +79,7 @@ class SCRouterPages {
   /*根据path使用路由*/
   static final List<GetPage> getPages = [
     /*用户协议和隐私政策弹窗*/
-    GetPage(name: SCRouterPath.basePrivacyPath, page: () => const PrivacyAlertNewPage()),
+    GetPage(name: SCRouterPath.basePrivacyPath, page: () =>  SCPrivacyAlertPage()),
     /*登录*/
     GetPage(name: SCRouterPath.loginPath, page: () => SCLoginPage()),
     /*tab*/
