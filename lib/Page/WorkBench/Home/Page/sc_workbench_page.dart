@@ -294,11 +294,30 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     print("扫码结果===$data=======");
     Map<String,dynamic> map = json.decode(data);
     ScanResultModel model = ScanResultModel.fromJson(map);
+    //TODO 待优化
     switch(model.code){
       case "100001":
         String token = SCScaffoldManager.instance.user.token ?? '';
         var url = "${model.url}&Authorization=$token";
         var params = {'title' : "访客管理", 'url' : SCUtils.getWebViewUrl(url: url, title: "访客管理", needJointParams: true),'removeLoginCheck' : true};
+        SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
+        break;
+      case "100002":
+        String token = SCScaffoldManager.instance.user.token ?? '';
+        var url = "${model.url}&Authorization=$token";
+        var params = {'title' : "物品出门", 'url' : SCUtils.getWebViewUrl(url: url, title: "物品出门", needJointParams: true),'removeLoginCheck' : true};
+        SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
+        break;
+      case "100003":
+        String token = SCScaffoldManager.instance.user.token ?? '';
+        var url = "${model.url}&Authorization=$token";
+        var params = {'title' : "物品借用", 'url' : SCUtils.getWebViewUrl(url: url, title: "物品借用", needJointParams: true),'removeLoginCheck' : true};
+        SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
+        break;
+      case "100004":
+        String token = SCScaffoldManager.instance.user.token ?? '';
+        var url = "${model.url}&Authorization=$token";
+        var params = {'title' : "物品寄存", 'url' : SCUtils.getWebViewUrl(url: url, title: "物品寄存", needJointParams: true),'removeLoginCheck' : true};
         SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
         break;
     }
