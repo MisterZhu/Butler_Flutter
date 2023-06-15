@@ -149,6 +149,9 @@ class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeep
     } else if (title == "巡检") {
       SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"pageType": 2});
       return;
+    }else if (title == "巡更") {
+      SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"pageType": 3});
+      return;
     }
 
     if (Platform.isAndroid) {
