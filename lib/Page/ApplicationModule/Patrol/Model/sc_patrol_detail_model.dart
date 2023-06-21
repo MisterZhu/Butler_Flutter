@@ -94,4 +94,8 @@ class SCPatrolDetailModel {
     return map;
   }
 
+  @override
+  String toString() {
+    return 'SCPatrolDetailModel{procInstId: $procInstId, procInstName: $procInstName, categoryId: $categoryId, categoryName: $categoryName, instSource: $instSource, customStatus: $customStatus, sysStatus: $sysStatus, customStatusInt: $customStatusInt, customStatusList: $customStatusList, actionVo: $actionVo, isOverTime: $isOverTime, procName: $procName, assignee: $assignee, startTime: $startTime, endTime: $endTime, taskId: $taskId, nodeId: $nodeId, formData: $formData, isScanCode: $isScanCode, assigneeName: $assigneeName}';
+  }
 }

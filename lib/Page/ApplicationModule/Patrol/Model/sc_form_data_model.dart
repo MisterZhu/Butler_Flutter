@@ -1,3 +1,6 @@
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_image_model.dart';
+import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/Model/sc_attachment_model.dart';
+
 class FormDataModel {
   CheckObject? checkObject;
 
@@ -206,6 +209,8 @@ class CheckList {
   String? gmtCreate;
   String? gmtModify;
   String? evaluateResult;
+  String? comments;
+  List<Attachment>? attachments;
 
 
   CheckList(
@@ -213,6 +218,7 @@ class CheckList {
         this.tenantId,
         this.checkName,
         this.checkContent,
+        this.comments,
         this.standardCode,
         this.bizTag,
         this.groupId,
@@ -225,6 +231,7 @@ class CheckList {
         this.gmtCreate,
         this.gmtModify,
         this.evaluateResult,
+        this.attachments,
       });
 
   CheckList.fromJson(Map<String, dynamic> json) {
@@ -232,6 +239,7 @@ class CheckList {
     tenantId = json['tenantId'];
     checkName = json['checkName'];
     checkContent = json['checkContent'];
+    comments = json['comments'];
     standardCode = json['standardCode'];
     bizTag = json['bizTag'];
     groupId = json['groupId'];
@@ -244,7 +252,12 @@ class CheckList {
     gmtCreate = json['gmtCreate'];
     gmtModify = json['gmtModify'];
     evaluateResult = json['evaluateResult'];
-
+    if(json['attachments'] != null){
+      attachments = <Attachment>[];
+      json['attachments'].forEach((v) {
+        attachments?.add(Attachment.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -253,6 +266,7 @@ class CheckList {
     data['tenantId'] = tenantId;
     data['checkName'] = checkName;
     data['checkContent'] = checkContent;
+    data['comments'] = comments;
     data['standardCode'] = standardCode;
     data['bizTag'] = bizTag;
     data['groupId'] = groupId;
@@ -265,7 +279,13 @@ class CheckList {
     data['gmtCreate'] = gmtCreate;
     data['gmtModify'] = gmtModify;
     data['evaluateResult'] = evaluateResult;
+    data['attachments'] = attachments;
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'CheckList{id: $id, tenantId: $tenantId, checkName: $checkName, checkContent: $checkContent, standardCode: $standardCode, bizTag: $bizTag, groupId: $groupId, groupName: $groupName, disable: $disable, creator: $creator, operator: $operator, creatorName: $creatorName, operatorName: $operatorName, gmtCreate: $gmtCreate, gmtModify: $gmtModify, evaluateResult: $evaluateResult, attachments: $attachments}';
   }
 }
 
@@ -470,3 +490,94 @@ class Place {
   }
 }
 
+class CellDetailList {
+  String? checkId;
+  String? tenantId;
+  String? checkName;
+  String? checkContent;
+  String? standardCode;
+  String? bizTag;
+  String? groupId;
+  String? groupName;
+  bool? disable;
+  String? creator;
+  String? operator;
+  String? creatorName;
+  String? operatorName;
+  String? gmtCreate;
+  String? gmtModify;
+  String? evaluationStr;
+  String? comments;
+  List<Attachment>? attachments;
+
+
+  CellDetailList(
+      {this.checkId,
+        this.tenantId,
+        this.checkName,
+        this.checkContent,
+        this.comments,
+        this.standardCode,
+        this.bizTag,
+        this.groupId,
+        this.groupName,
+        this.disable,
+        this.creator,
+        this.operator,
+        this.creatorName,
+        this.operatorName,
+        this.gmtCreate,
+        this.gmtModify,
+        this.evaluationStr,
+        this.attachments,
+      });
+
+  CellDetailList.fromJson(Map<String, dynamic> json) {
+    checkId = json['checkId'];
+    tenantId = json['tenantId'];
+    checkName = json['checkName'];
+    checkContent = json['checkContent'];
+    comments = json['comments'];
+    standardCode = json['standardCode'];
+    bizTag = json['bizTag'];
+    groupId = json['groupId'];
+    groupName = json['groupName'];
+    disable = json['disable'];
+    creator = json['creator'];
+    operator = json['operator'];
+    creatorName = json['creatorName'];
+    operatorName = json['operatorName'];
+    gmtCreate = json['gmtCreate'];
+    gmtModify = json['gmtModify'];
+    evaluationStr = json['evaluationStr'];
+    if(json['attachments'] != null){
+      attachments = <Attachment>[];
+      json['attachments'].forEach((v) {
+        attachments?.add(Attachment.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['checkId'] = checkId;
+    data['tenantId'] = tenantId;
+    data['checkName'] = checkName;
+    data['checkContent'] = checkContent;
+    data['comments'] = comments;
+    data['standardCode'] = standardCode;
+    data['bizTag'] = bizTag;
+    data['groupId'] = groupId;
+    data['groupName'] = groupName;
+    data['disable'] = disable;
+    data['creator'] = creator;
+    data['operator'] = operator;
+    data['creatorName'] = creatorName;
+    data['operatorName'] = operatorName;
+    data['gmtCreate'] = gmtCreate;
+    data['gmtModify'] = gmtModify;
+    data['evaluationStr'] = evaluationStr;
+    data['attachments'] = attachments;
+    return data;
+  }
+}

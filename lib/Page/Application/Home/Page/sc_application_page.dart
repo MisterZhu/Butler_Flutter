@@ -140,7 +140,7 @@ class SCApplicationPageState extends State<SCApplicationPage> with AutomaticKeep
     } else if (title == "鹰眼服务") {
       SCRouterHelper.pathPage(SCRouterPath.onlineMonitorPage, null);
       return;
-    } else if (title == "巡查") {
+    } else if (title == "巡查管理") {
       SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"pageType": 0});
       return;
     } else if (title == "品质督查") {

@@ -410,6 +410,8 @@ class SCUrl {
   static const String kPatrolReport = "/api/quality/process/task/evaluated";
 
   static const String kPatrolUrl = "/api/quality/safetyProduction/task/frontPage";
+  //检查详情
+  static const String taskCheck = "/api/quality/process/task/taskCheck";
 
   /// 任务日志
   static const String kPatrolTaskLogUrl = "/api/bpm/log/list";
