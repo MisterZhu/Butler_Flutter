@@ -64,100 +64,88 @@ class SCCheckCellViewState extends State<SCCheckCellView> {
         SCUtils().hideKeyboard(context: context);
       },
       behavior: HitTestBehavior.opaque,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          listView(),
-          Expanded(child: Container()),
-          bottomView(),
-        ],
-      ),
-    );
-  }
-
-  Widget listView() {
-    return Padding(
+      child: Container(
         padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: SCColors.color_FFFFFF,
-            borderRadius: BorderRadius.circular(4.0),
-          ),
-          child: ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                return ddd();
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return const SizedBox(
-                  height: 10.0,
-                );
-              },
-              itemCount: 1),
-        ));
-  }
-
-  Widget ddd() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        DecoratedBox(
-          decoration: BoxDecoration(
-              color: SCColors.color_FFFFFF,
-              borderRadius: BorderRadius.circular(4.0)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.state.title ?? '',
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                    fontSize: SCFonts.f16,
-                    fontWeight: FontWeight.w500,
-                    color: SCColors.color_1B1D33),
-              ),
-              Row(
-                children: <Widget>[
-                  const Text("检查结果"),
-                  const SizedBox(width: 20),
-                  const Text("正常"),
-                  Radio(
-                    value: "0",
-                    groupValue: widget.state.groupValue,
-                    onChanged: (value) {
-                      setState(() {
-                        widget.state.groupValue = value.toString();
-                      });
-                    },
+        child: Column(
+          children: [
+            Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: SCColors.color_FFFFFF,
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+                child: Padding(
+                  padding:
+                  const EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.state.title ?? '',
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: SCFonts.f16,
+                            fontWeight: FontWeight.w500,
+                            color: SCColors.color_1B1D33),
+                      ),
+                      SizedBox(
+                        child: Text(
+                          widget.state.cellDetailList.checkContent ?? '',
+                          maxLines: 5,
+                          overflow: TextOverflow.ellipsis,
+                          strutStyle: const StrutStyle(
+                            fontSize: SCFonts.f14,
+                            height: 1.25,
+                            forceStrutHeight: true,
+                          ),
+                          style: const TextStyle(
+                            fontSize: SCFonts.f14,
+                            fontWeight: FontWeight.w400,
+                            color: SCColors.color_8D8E99,
+                          ),
+                        ),
+                      ),
+                      Row(
+                        children: <Widget>[
+                          const Text("检查结果"),
+                          const SizedBox(width: 20),
+                          const Text("正常"),
+                          Radio(
+                            value: "0",
+                            groupValue: widget.state.groupValue,
+                            onChanged: (value) {
+                              setState(() {
+                                widget.state.groupValue = value.toString();
+                              });
+                            },
+                          ),
+                          // const SizedBox(width: 10),
+                          const Text("异常"),
+                          Radio(
+                            value: "1",
+                            groupValue: widget.state.groupValue,
+                            onChanged: (value) {
+                              setState(() {
+                                widget.state.groupValue = value.toString();
+                              });
+                            },
+                          )
+                        ],
+                      ),
+                      line(),
+                      inputItem(),
+                      line(),
+                      photosItem(),
+                    ],
                   ),
-                  // const SizedBox(width: 10),
-                  const Text("异常"),
-                  Radio(
-                    value: "1",
-                    groupValue: widget.state.groupValue,
-                    onChanged: (value) {
-                      setState(() {
-                        widget.state.groupValue = value.toString();
-                      });
-                    },
-                  )
-                ],
-              ),
-              line(),
-              inputItem(),
-              line(),
-              photosItem(),
-            ],
-          ),
+                )),
+            // Expanded(flex: 1, child: Container()),
+            bottomView()
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -233,16 +221,18 @@ class SCCheckCellViewState extends State<SCCheckCellView> {
         "title": "确定",
       },
     ];
-    return SCMaterialDetailBottomView(
-        list: list,
-        onTap: (value) {
-          SCUtils().hideKeyboard(context: context);
-          if (value == '取消') {
-            SCRouterHelper.back(null);
-          } else if (value == '确定') {
-            widget.state.loadData(
-                int.parse(widget.state.groupValue), widget.state.photosList);
-          }
-        });
+    return Offstage(
+      offstage: false,
+      child: SCMaterialDetailBottomView(
+          list: list,
+          onTap: (value) {
+            SCUtils().hideKeyboard(context: context);
+            if (value == '取消') {
+              SCRouterHelper.back(null);
+            } else if (value == '确定') {
+              widget.state.loadData();
+            }
+          })
+    );
   }
 }

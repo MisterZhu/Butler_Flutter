@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -12,13 +13,15 @@ import 'package:smartcommunity/Utils/Date/sc_date_utils.dart';
 import 'package:smartcommunity/utils/Router/sc_router_helper.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
+import '../Model/sc_task_check_model.dart';
 
 /// 任务日志controller
 
 class SCCheckCellController extends GetxController {
-  SCUIDetailCellModel detailCellModel = SCUIDetailCellModel();
 
-  SCPatrolDetailModel detailModel = SCPatrolDetailModel();
+  CellDetailList cellDetailList = CellDetailList();
+
+  TaskCheckModel taskCheckModel = TaskCheckModel();
 
   ///默认选中的单选框的值
   String groupValue = "0";
@@ -32,8 +35,6 @@ class SCCheckCellController extends GetxController {
 
   String input = "";
 
-  CheckList checkId = CheckList();
-
   @override
   onInit() {
     super.onInit();
@@ -42,51 +43,43 @@ class SCCheckCellController extends GetxController {
   /// 初始化
   initParams(Map<String, dynamic> params) {
     if (params.isNotEmpty) {
-      var model = params['model'];
-      if (model != null) {
-        detailCellModel = model;
-        title = detailCellModel.title!;
-        log("detailCellModel--->${detailCellModel.toString()}");
-      }
-      var patrolDetail = params['patrolDetail'];
-      if (patrolDetail != null) {
-        detailModel = patrolDetail;
-        log("detailModel--->${detailModel.toString()}");
-      }
-      checkId = params['checkItem'];
-      if (checkId.evaluateResult?.isNotEmpty ?? false) {
-        if (checkId.evaluateResult == "QUALIFIED") {
-          groupValue = "0";
-        } else {
-          groupValue = "1";
+      cellDetailList = params['cellDetailList'];
+      taskCheckModel = params['taskCheckModel'];
+      if (cellDetailList != null) {
+        title = cellDetailList.checkName!;
+        if (cellDetailList.evaluateResult?.isNotEmpty ?? false) {
+          if (cellDetailList.evaluateResult == "QUALIFIED") {
+            groupValue = "0";
+          } else {
+            groupValue = "1";
+          }
         }
+        input = cellDetailList.comments ?? '';
       }
-      input = checkId.comments ?? '';
-      if ((checkId.attachments ?? []).isNotEmpty) {
-        for (var element in checkId.attachments ?? []) {
-          photosList.add(element.url);
+      if ((cellDetailList.attachments ?? []).isNotEmpty) {
+        for (Attachment element in cellDetailList.attachments ?? []) {
+          photosList.add(element.fileKey);
         }
-        log('photosList-->${photosList.toString()}');
       }
     }
   }
 
-  loadData(int type, List imageList) {
+  loadData() {
     SCLoadingUtils.show();
     String str = "";
-    if (type == 0) {
+    if (groupValue == "0") {
       str = "QUALIFIED";
     } else {
       str = "UNQUALIFIED";
     }
     var param1 = {
-      "checkId": checkId.id,
-      "nodeId": detailModel.nodeId,
-      "procInstId": detailModel.procInstId,
+      "checkId": cellDetailList.checkId,
+      "nodeId": taskCheckModel.nodeId,
+      "procInstId": taskCheckModel.procInstId,
       "evaluateResult": str,
-      "taskId": detailModel.taskId,
+      "taskId": taskCheckModel.taskId,
       "comments": input,
-      "attachments": transferImage(imageList ?? [])
+      "attachments": transferImage(photosList ?? [])
     };
     SCHttpManager.instance.post(
         url: SCUrl.kPatrolReport,
@@ -94,7 +87,7 @@ class SCCheckCellController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           SCScaffoldManager.instance.eventBus
-              .fire({'key': SCKey.kRefreshPatrolDetailPage});
+              .fire({'key': SCKey.kRefreshCellDetailPage});
           SCRouterHelper.back(null);
         },
         failure: (value) {
@@ -118,12 +111,12 @@ class SCCheckCellController extends GetxController {
           newParams['name'] = fileName;
         }
         if (fileUrl != null) {
-          newParams['url'] = fileUrl;
+          newParams['fileKey'] = fileUrl;
         }
       } catch (e) {
         List splitName = params.toString().split('/');
         newParams['name'] = splitName[splitName.length - 1];
-        newParams['url'] = params;
+        newParams['fileKey'] = params;
       }
 
       log("transferImage-->${imageList.toString()}");

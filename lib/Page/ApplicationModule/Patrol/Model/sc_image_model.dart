@@ -34,4 +34,9 @@ class Attachment {
     data['type'] = type;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'Attachment{id: $id, isImage: $isImage, name: $name, suffix: $suffix, url: $url, fileKey: $fileKey, size: $size, type: $type}';
+  }
 }

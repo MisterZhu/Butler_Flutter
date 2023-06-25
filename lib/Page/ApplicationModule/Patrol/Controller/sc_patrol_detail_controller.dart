@@ -15,6 +15,7 @@ import '../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import '../Model/sc_form_data_model.dart';
 import '../Model/sc_patrol_task_model.dart';
 import '../Model/sc_star_model.dart';
+import '../Model/sc_task_check_model.dart';
 import '../Other/sc_patrol_utils.dart';
 
 /// 巡查详情controller
@@ -46,6 +47,8 @@ class SCPatrolDetailController extends GetxController {
   int currentIndex = 0;
 
   StarResultModel? starResultModel;
+
+  TaskCheckModel? taskCheckModel;
   String? type;
 
   /// 更新currentIndex
@@ -339,7 +342,7 @@ class SCPatrolDetailController extends GetxController {
         });
   }
 
-  loadCheckCellDetailData(String checkId) {
+  loadCheckCellDetailData(SCPatrolDetailModel patrolDetailModel,String checkId) {
     var param1 = {
       "checkId": checkId,
       "nodeId": nodeId,
@@ -353,8 +356,16 @@ class SCPatrolDetailController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           CellDetailList cellDetailList = CellDetailList.fromJson(value);
-          SCRouterHelper.pathPage(SCRouterPath.patrolCheckCellDetailPage,
-              {'cellDetailList': cellDetailList});
+          taskCheckModel = TaskCheckModel(
+              checkId: checkId,
+              nodeId: nodeId,
+              procInstId: procInstId,
+              taskId: model.taskId);
+          SCRouterHelper.pathPage(SCRouterPath.patrolCheckCellDetailPage, {
+            'cellDetailList': cellDetailList,
+            'taskCheckModel': taskCheckModel,
+            'patrolDetailModel': patrolDetailModel
+          });
         },
         failure: (value) {
           SCToast.showTip(value['message']);
@@ -369,7 +380,7 @@ class SCPatrolDetailController extends GetxController {
         "id": SCDateUtils.timestamp(),
         "isImage": true,
         "name": params['name'],
-        "url": params['fileKey']
+        "fileKey": params['fileKey']
       };
       list.add(newParams);
     }

@@ -121,7 +121,7 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
                 },
               ));
         } else {
-          widget.state.loadCheckCellDetailData(checkItem?.id.toString() ?? '');
+          widget.state.loadCheckCellDetailData(widget.state.model,checkItem?.id.toString() ?? '');
         }
 
         // if (widget.state.model.customStatusInt! >= 40) {//已完成的任务，不能进行报事

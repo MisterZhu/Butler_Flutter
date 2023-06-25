@@ -65,6 +65,7 @@ class SCKey {
   static const String kRefreshPatrolPage = "kRefreshPatrolPage";
   /// 巡查详情
   static const String kRefreshPatrolDetailPage = "kRefreshPatrolDetailPage";
+  static const String kRefreshCellDetailPage = "kRefreshCellDetailPage";
   /// 刷新工作台
   static const String kRefreshWorkBenchPage = "kRefreshWorkBenchPage";
   /// 刷新未读消息数量key

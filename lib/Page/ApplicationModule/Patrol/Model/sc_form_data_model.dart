@@ -1,4 +1,5 @@
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_image_model.dart';
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_work_order_model.dart';
 import 'package:smartcommunity/Page/ApplicationModule/PropertyMaintenance/Model/sc_attachment_model.dart';
 
 class FormDataModel {
@@ -30,7 +31,12 @@ class CheckObject {
   String? type;
 
   CheckObject(
-      {this.route, this.checkList, this.placeList, this.bizTag, this.type,this.place});
+      {this.route,
+      this.checkList,
+      this.placeList,
+      this.bizTag,
+      this.type,
+      this.place});
 
   CheckObject.fromJson(Map<String, dynamic> json) {
     route = json['route'] != null ? Route.fromJson(json['route']) : null;
@@ -102,32 +108,32 @@ class Route {
 
   Route(
       {this.id,
-        this.groupId,
-        this.groupName,
-        this.bizTag,
-        this.policedClassId,
-        this.policedClassIds,
-        this.policedClassNames,
-        this.policedClassName,
-        this.disable,
-        this.execWay,
-        this.extra,
-        this.creator,
-        this.operator,
-        this.creatorName,
-        this.operatorName,
-        this.gmtCreate,
-        this.gmtModify,
-        this.tourRouteName,
-        this.dotRule,
-        this.routeValidityPeriod,
-        this.communityId,
-        this.communityName,
-        this.orgId,
-        this.orgName,
-        this.orgPath,
-        this.placeNum,
-        this.tenantId});
+      this.groupId,
+      this.groupName,
+      this.bizTag,
+      this.policedClassId,
+      this.policedClassIds,
+      this.policedClassNames,
+      this.policedClassName,
+      this.disable,
+      this.execWay,
+      this.extra,
+      this.creator,
+      this.operator,
+      this.creatorName,
+      this.operatorName,
+      this.gmtCreate,
+      this.gmtModify,
+      this.tourRouteName,
+      this.dotRule,
+      this.routeValidityPeriod,
+      this.communityId,
+      this.communityName,
+      this.orgId,
+      this.orgName,
+      this.orgPath,
+      this.placeNum,
+      this.tenantId});
 
   Route.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -212,27 +218,26 @@ class CheckList {
   String? comments;
   List<Attachment>? attachments;
 
-
-  CheckList(
-      {this.id,
-        this.tenantId,
-        this.checkName,
-        this.checkContent,
-        this.comments,
-        this.standardCode,
-        this.bizTag,
-        this.groupId,
-        this.groupName,
-        this.disable,
-        this.creator,
-        this.operator,
-        this.creatorName,
-        this.operatorName,
-        this.gmtCreate,
-        this.gmtModify,
-        this.evaluateResult,
-        this.attachments,
-      });
+  CheckList({
+    this.id,
+    this.tenantId,
+    this.checkName,
+    this.checkContent,
+    this.comments,
+    this.standardCode,
+    this.bizTag,
+    this.groupId,
+    this.groupName,
+    this.disable,
+    this.creator,
+    this.operator,
+    this.creatorName,
+    this.operatorName,
+    this.gmtCreate,
+    this.gmtModify,
+    this.evaluateResult,
+    this.attachments,
+  });
 
   CheckList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -252,7 +257,7 @@ class CheckList {
     gmtCreate = json['gmtCreate'];
     gmtModify = json['gmtModify'];
     evaluateResult = json['evaluateResult'];
-    if(json['attachments'] != null){
+    if (json['attachments'] != null) {
       attachments = <Attachment>[];
       json['attachments'].forEach((v) {
         attachments?.add(Attachment.fromJson(v));
@@ -317,29 +322,29 @@ class PlaceList {
 
   PlaceList(
       {this.id,
-        this.policedClassId,
-        this.policedClassIds,
-        this.policedClassNames,
-        this.policedClassName,
-        this.disable,
-        this.execWay,
-        this.extra,
-        this.creator,
-        this.operator,
-        this.creatorName,
-        this.operatorName,
-        this.gmtCreate,
-        this.gmtModify,
-        this.placeName,
-        this.groupId,
-        this.groupName,
-        this.tenantId,
-        this.projectId,
-        this.projectName,
-        this.orgId,
-        this.orgName,
-        this.spaceId,
-        this.bizTag});
+      this.policedClassId,
+      this.policedClassIds,
+      this.policedClassNames,
+      this.policedClassName,
+      this.disable,
+      this.execWay,
+      this.extra,
+      this.creator,
+      this.operator,
+      this.creatorName,
+      this.operatorName,
+      this.gmtCreate,
+      this.gmtModify,
+      this.placeName,
+      this.groupId,
+      this.groupName,
+      this.tenantId,
+      this.projectId,
+      this.projectName,
+      this.orgId,
+      this.orgName,
+      this.spaceId,
+      this.bizTag});
 
   PlaceList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -419,7 +424,8 @@ class Place {
     this.orgId,
     this.orgName,
     this.spaceId,
-    this.bizTag,});
+    this.bizTag,
+  });
 
   Place.fromJson(dynamic json) {
     id = json['id'];
@@ -443,6 +449,7 @@ class Place {
     spaceId = json['spaceId'];
     bizTag = json['bizTag'];
   }
+
   String? id;
   int? policedClassId;
   String? policedClassName;
@@ -506,31 +513,34 @@ class CellDetailList {
   String? operatorName;
   String? gmtCreate;
   String? gmtModify;
-  String? evaluationStr;
+  String? evaluateResultStr;
+  String? evaluateResult;
   String? comments;
   List<Attachment>? attachments;
+  List<WorkOrder>? workOrders;
 
-
-  CellDetailList(
-      {this.checkId,
-        this.tenantId,
-        this.checkName,
-        this.checkContent,
-        this.comments,
-        this.standardCode,
-        this.bizTag,
-        this.groupId,
-        this.groupName,
-        this.disable,
-        this.creator,
-        this.operator,
-        this.creatorName,
-        this.operatorName,
-        this.gmtCreate,
-        this.gmtModify,
-        this.evaluationStr,
-        this.attachments,
-      });
+  CellDetailList({
+    this.checkId,
+    this.tenantId,
+    this.checkName,
+    this.checkContent,
+    this.comments,
+    this.standardCode,
+    this.bizTag,
+    this.groupId,
+    this.groupName,
+    this.disable,
+    this.creator,
+    this.operator,
+    this.creatorName,
+    this.operatorName,
+    this.gmtCreate,
+    this.gmtModify,
+    this.evaluateResultStr,
+    this.evaluateResult,
+    this.attachments,
+    this.workOrders,
+  });
 
   CellDetailList.fromJson(Map<String, dynamic> json) {
     checkId = json['checkId'];
@@ -549,11 +559,18 @@ class CellDetailList {
     operatorName = json['operatorName'];
     gmtCreate = json['gmtCreate'];
     gmtModify = json['gmtModify'];
-    evaluationStr = json['evaluationStr'];
-    if(json['attachments'] != null){
+    evaluateResult = json['evaluateResult'];
+    evaluateResultStr = json['evaluateResultStr'];
+    if (json['attachments'] != null) {
       attachments = <Attachment>[];
       json['attachments'].forEach((v) {
         attachments?.add(Attachment.fromJson(v));
+      });
+    }
+    if (json['workOrders'] != null) {
+      workOrders = <WorkOrder>[];
+      json['workOrders'].forEach((v) {
+        workOrders?.add(WorkOrder.fromJson(v));
       });
     }
   }
@@ -576,7 +593,8 @@ class CellDetailList {
     data['operatorName'] = operatorName;
     data['gmtCreate'] = gmtCreate;
     data['gmtModify'] = gmtModify;
-    data['evaluationStr'] = evaluationStr;
+    data['evaluateResultStr'] = evaluateResultStr;
+    data['evaluateResult'] = evaluateResult;
     data['attachments'] = attachments;
     return data;
   }
