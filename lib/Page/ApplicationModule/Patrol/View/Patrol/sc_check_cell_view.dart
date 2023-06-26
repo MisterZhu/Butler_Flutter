@@ -33,7 +33,7 @@ import '../../Other/sc_patrol_utils.dart';
 /// 巡查view
 
 class SCCheckCellView extends StatefulWidget {
-  final SCCheckCellController state;
+  final SCCheckCellEditController state;
 
   SCCheckCellView({Key? key, required this.state}) : super(key: key);
 

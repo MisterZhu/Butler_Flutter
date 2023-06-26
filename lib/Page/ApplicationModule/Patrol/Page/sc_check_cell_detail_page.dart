@@ -16,8 +16,10 @@ import '../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../Utils/Router/sc_router_path.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../../../WorkBench/Home/View/PageView/sc_workbench_empty_view.dart';
+import '../../../WorkBench/Home/View/PageView/sc_workbench_time_view.dart';
 import '../Model/sc_image_model.dart';
 import '../Model/sc_work_order_model.dart';
+import '../View/Detail/workbench_time_view.dart';
 
 class SCCheckCellDetailPage extends StatefulWidget {
   @override
@@ -63,6 +65,8 @@ class SCCheckCellDetailPageState extends State<SCCheckCellDetailPage> {
       String key = event['key'];
       if (key == SCKey.kRefreshCellDetailPage) {
         cellDetailController.updateData();
+      } else if (key == SCKey.kRefreshCellReportPage) {
+        cellDetailController.loadWorkOrderList();
       }
     });
   }
@@ -72,47 +76,23 @@ class SCCheckCellDetailPageState extends State<SCCheckCellDetailPage> {
         tag: controllerTag,
         init: cellDetailController,
         builder: (state) {
-          return Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: SCColors.color_F2F3F5,
-            child: listView(),
+          return SingleChildScrollView(
+            child: Container(
+              padding:
+                  const EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0),
+              width: double.infinity,
+              color: SCColors.color_F2F3F5,
+              child: Column(
+                children: [
+                  contentItem(),
+                  reportList(),
+                ],
+              ),
+            ),
           );
         });
   }
 
-  /// listView
-  Widget listView() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0),
-      child: ListView.separated(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            return getCell(index);
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return const SizedBox(
-              height: 10,
-            );
-          },
-          itemCount: 3),
-    );
-  }
-
-  Widget getCell(int index) {
-    if (index == 0) {
-      // 检查详情
-      return contentItem();
-    } else if (index == 1) {
-      // 异常报事
-      return reportList();
-    } else {
-      return const SizedBox(
-        height: 10,
-      );
-    }
-  }
 
   /// contentItem
   Widget contentItem() {
@@ -173,21 +153,40 @@ class SCCheckCellDetailPageState extends State<SCCheckCellDetailPage> {
         children: [
           addReort(),
           line(),
-          ListView.separated(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                return reportItem(index);
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return line();
-              },
-              itemCount: cellDetailController.workOrderDetailList != null
-                  ? cellDetailController.workOrderDetailList.length
-                  : 0),
+          reportLayout(),
         ],
       ),
     );
+  }
+
+  Widget reportLayout() {
+    if (cellDetailController.workOrderDetailList.isNotEmpty) {
+      return ListView.separated(
+          padding: EdgeInsets.zero,
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            return reportItem(index);
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return line();
+          },
+          itemCount: cellDetailController.workOrderDetailList.length);
+    } else {
+      return const SizedBox(
+        height: 100.0,
+        child: Text(
+          "暂无异常报事",
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+              fontSize: SCFonts.f14,
+              fontWeight: FontWeight.w400,
+              color: SCColors.color_B0B1B8),
+        ),
+      );
+    }
   }
 
   Widget reportItem(int index) {
@@ -208,11 +207,7 @@ class SCCheckCellDetailPageState extends State<SCCheckCellDetailPage> {
         ],
       );
     }
-    return const SCWorkBenchEmptyView(
-      emptyIcon: SCAsset.iconEmptyRecord,
-      emptyDes: '暂无异常报事',
-      scrollPhysics: BouncingScrollPhysics(),
-    );
+    return const SizedBox();
   }
 
   Widget orderState(WorkOrder workOrder) {
@@ -224,7 +219,72 @@ class SCCheckCellDetailPageState extends State<SCCheckCellDetailPage> {
         decoration: BoxDecoration(
             color: SCColors.color_F7F8FA,
             borderRadius: BorderRadius.circular(4.0)),
-        child: SCTaskTimeItem(time: workOrder.remainingTime ?? 0));
+        child: setRemainingTime(workOrder));
+  }
+
+  Widget setRemainingTime(WorkOrder workOrder) {
+    if ((workOrder.remainingTime ?? 0) > 0) {
+      return Row(mainAxisSize: MainAxisSize.min, children: [
+        const Text(
+          '剩余时间',
+          style: TextStyle(
+              fontSize: SCFonts.f14,
+              fontWeight: FontWeight.w400,
+              color: SCColors.color_5E5F66),
+        ),
+        const SizedBox(
+          width: 6.0,
+        ),
+        Expanded(
+          child: SCWorkOrderTimeView(time: workOrder.remainingTime ?? 0),
+        )
+      ]);
+    } else {
+      return Row(mainAxisSize: MainAxisSize.min, children: [
+        reportText(workOrder),
+        const SizedBox(
+          width: 6.0,
+        ),
+        Expanded(
+          child: SCWorkOrderTimeView(time: workOrder.remainingTime ?? 0),
+        )
+      ]);
+    }
+  }
+
+  Widget reportText(WorkOrder workOrder) {
+    if (workOrder.status == 1) {
+      return const Text('待接收',
+          style: TextStyle(
+              fontSize: SCFonts.f14,
+              fontWeight: FontWeight.w400,
+              color: SCColors.color_5E5F66));
+    } else if (workOrder.status == 2) {
+      return const Text('待处理',
+          style: TextStyle(
+              fontSize: SCFonts.f14,
+              fontWeight: FontWeight.w400,
+              color: SCColors.color_5E5F66));
+    } else if (workOrder.status == 3) {
+      return const Text('超时待接收',
+          style: TextStyle(
+              fontSize: SCFonts.f14,
+              fontWeight: FontWeight.w400,
+              color: SCColors.color_FF8A00));
+    } else if (workOrder.status == 4) {
+      return const Text('超时待处理',
+          style: TextStyle(
+              fontSize: SCFonts.f14,
+              fontWeight: FontWeight.w400,
+              color: SCColors.color_FF8A00));
+    } else if (workOrder.status == 8) {
+      return const Text('关闭',
+          style: TextStyle(
+              fontSize: SCFonts.f14,
+              fontWeight: FontWeight.w400,
+              color: SCColors.color_5E5F66));
+    }
+    return const SizedBox();
   }
 
   Widget title(String str) {

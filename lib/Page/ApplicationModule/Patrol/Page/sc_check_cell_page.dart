@@ -9,15 +9,18 @@ import '../../../../Skin/View/sc_custom_scaffold.dart';
 
 /// 巡查检查项编辑页面
 
-class SCCheckCellPage extends StatefulWidget {
+class SCCheckCellEditPage extends StatefulWidget {
+
+  const SCCheckCellEditPage({Key? key}) : super(key: key);
+
   @override
-  SCCheckCellPageState createState() => SCCheckCellPageState();
+  SCCheckCellEditPageState createState() => SCCheckCellEditPageState();
 }
 
-class SCCheckCellPageState extends State<SCCheckCellPage>
+class SCCheckCellEditPageState extends State<SCCheckCellEditPage>
     with AutomaticKeepAliveClientMixin {
   /// SCPatrolController
-  late SCCheckCellController controller;
+  late SCCheckCellEditController controller;
 
   /// SCWarningCenterController - tag
   String controllerTag = '';
@@ -26,8 +29,8 @@ class SCCheckCellPageState extends State<SCCheckCellPage>
   initState() {
     super.initState();
     controllerTag = SCScaffoldManager.instance
-        .getXControllerTag((SCCheckCellPage).toString());
-    controller = Get.put(SCCheckCellController(), tag: controllerTag);
+        .getXControllerTag((SCCheckCellEditPage).toString());
+    controller = Get.put(SCCheckCellEditController(), tag: controllerTag);
     controller.initParams(Get.arguments);
   }
 
@@ -60,7 +63,7 @@ class SCCheckCellPageState extends State<SCCheckCellPage>
 
   /// pageName
   String pageName() {
-    return (SCCheckCellPage).toString();
+    return (SCCheckCellEditPage).toString();
   }
 
   @override

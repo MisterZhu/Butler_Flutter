@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -32,6 +33,9 @@ class SCCheckCellDetailController extends GetxController {
   List<WorkOrder> workOrders = [];
 
   List<WorkOrder> workOrderDetailList = [];
+
+  late Timer timer;
+
 
   @override
   onInit() {
@@ -107,6 +111,7 @@ class SCCheckCellDetailController extends GetxController {
           update();
         },
         failure: (value) {
+          SCLoadingUtils.hide();
           SCToast.showTip(value['message']);
         });
   }
@@ -130,18 +135,25 @@ class SCCheckCellDetailController extends GetxController {
       "pageNum": 1,
       "pageSize": 40
     };
+    SCLoadingUtils.show();
     SCHttpManager.instance.post(
         url: SCUrl.kWorkOrderListUrl,
         params: params,
         success: (value) {
+          SCLoadingUtils.hide();
           if (value is Map) {
             List list = value['records'];
             workOrderDetailList = List<WorkOrder>.from(
                 list.map((e) => WorkOrder.fromJson(e)).toList());
             update();
+            // TODO 待优化
+            if(workOrderDetailList.isNotEmpty){
+              startTimer();
+            }
           }
         },
         failure: (value) {
+          SCLoadingUtils.hide();
           SCToast.showTip(value['message']);
         });
   }
@@ -155,5 +167,29 @@ class SCCheckCellDetailController extends GetxController {
       str = "未查";
     }
     return str;
+  }
+
+  /// 定时器
+  startTimer() {
+      timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        for (int i = 0; i < workOrderDetailList.length; i++) {
+          WorkOrder model = workOrderDetailList[i];
+          int subTime = model.remainingTime ?? 0;
+          if (subTime > 0) {
+            model.remainingTime = subTime - 1;
+          } else if (subTime == 0) {
+            model.remainingTime = 0;
+          } else {}
+          update();
+        }
+      });
+  }
+
+  @override
+  onClose() {
+    super.onClose();
+    if (timer.isActive) {
+      timer.cancel();
+    }
   }
 }

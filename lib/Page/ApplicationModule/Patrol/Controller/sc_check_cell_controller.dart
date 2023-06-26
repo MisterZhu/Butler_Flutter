@@ -15,9 +15,8 @@ import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
 import '../Model/sc_task_check_model.dart';
 
-/// 任务日志controller
-
-class SCCheckCellController extends GetxController {
+/// 编辑详情
+class SCCheckCellEditController extends GetxController {
 
   CellDetailList cellDetailList = CellDetailList();
 

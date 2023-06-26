@@ -36,4 +36,6 @@ class SCH5 {
   static const String hotelOrderDetailUrl = "/h5Manage/#/order/orderDetail";
   /// 快捷报事
   static const String quickReportUrl = "/h5Manage-order/#/workOrderReport/propertyReport";
+  /// 品质督查
+  static const String qualityInspectionDetailsUrl = "/h5Manage/#/qualityInspection/qualityInspectionDetails";
 }

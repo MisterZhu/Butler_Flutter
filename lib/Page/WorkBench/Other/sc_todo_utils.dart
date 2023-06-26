@@ -34,7 +34,10 @@ class SCToDoUtils {
       } else if (model.type == "SAFE_PROD") {
         /// 安全生产
         SCToast.showTip(SCDefaultValue.developingTip);
-      } else {
+      } else if (model.type == "QUALITY_REGULATION") {
+        /// 品质督查
+        qualityRegulationDetail(model);
+      }else {
         /// 未知
         SCToast.showTip(SCDefaultValue.developingTip);
       }
@@ -90,14 +93,30 @@ class SCToDoUtils {
         });
   }
 
-  /// 工单详情
+  /// 品质督查
+  qualityRegulationDetail(SCToDoModel model) {
+    String title ='品质督查';
+    String url =
+        "${SCConfig.BASE_URL}${SCH5.qualityInspectionDetailsUrl}?id=${model.id}&nodeId=${model.taskId?.split("\$\_\$")[1]}";
+    // String realUrl =
+    //     SCUtils.getWebViewUrl(url: url, title: title, needJointParams: false);
+    SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+      "title": model.subTypeDesc ?? '',
+      "url": url,
+      "needJointParams": true
+    })?.then((value) {
+      SCScaffoldManager.instance.eventBus
+          .fire({"key": SCKey.kRefreshWorkBenchPage});
+    });
+  }
+
   workOrderDetail(SCToDoModel model) {
     int status = (model.statusValue ?? '0').cnToInt();
     String title = SCUtils.getWorkOrderButtonText(status);
     String url =
         "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=$status&orderId=${model.taskId}";
     String realUrl =
-        SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
+    SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
       "title": model.subTypeDesc ?? '',
       "url": realUrl,
