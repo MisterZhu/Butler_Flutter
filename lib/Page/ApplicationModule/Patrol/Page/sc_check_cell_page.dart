@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -15,8 +14,8 @@ class SCCheckCellPage extends StatefulWidget {
   SCCheckCellPageState createState() => SCCheckCellPageState();
 }
 
-class SCCheckCellPageState extends State<SCCheckCellPage> with AutomaticKeepAliveClientMixin{
-
+class SCCheckCellPageState extends State<SCCheckCellPage>
+    with AutomaticKeepAliveClientMixin {
   /// SCPatrolController
   late SCCheckCellController controller;
 
@@ -26,30 +25,37 @@ class SCCheckCellPageState extends State<SCCheckCellPage> with AutomaticKeepAliv
   @override
   initState() {
     super.initState();
-    controllerTag = SCScaffoldManager.instance.getXControllerTag((SCCheckCellPage).toString());
+    controllerTag = SCScaffoldManager.instance
+        .getXControllerTag((SCCheckCellPage).toString());
     controller = Get.put(SCCheckCellController(), tag: controllerTag);
     controller.initParams(Get.arguments);
   }
 
   @override
   dispose() {
-    SCScaffoldManager.instance.deleteGetXControllerTag(pageName(), controllerTag);
+    SCScaffoldManager.instance
+        .deleteGetXControllerTag(pageName(), controllerTag);
     controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SCCustomScaffold(title: '检查', centerTitle: true, elevation: 0, body: body());
+    return SCCustomScaffold(
+        title: '检查',
+        centerTitle: true,
+        elevation: 0,
+        resizeToAvoidBottomInset: false,
+        body: body());
   }
 
   /// body
   Widget body() {
     return Container(
-      width: double.infinity,
-      // height: double.infinity,
-      color: SCColors.color_F2F3F5,
-      child: SCCheckCellView(state: controller));
+        width: double.infinity,
+        // height: double.infinity,
+        color: SCColors.color_F2F3F5,
+        child: SCCheckCellView(state: controller));
   }
 
   /// pageName
@@ -57,8 +63,6 @@ class SCCheckCellPageState extends State<SCCheckCellPage> with AutomaticKeepAliv
     return (SCCheckCellPage).toString();
   }
 
-
   @override
   bool get wantKeepAlive => true;
-
 }
