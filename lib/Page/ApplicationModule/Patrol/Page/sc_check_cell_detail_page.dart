@@ -142,9 +142,8 @@ class SCCheckCellDetailPageState extends State<SCCheckCellDetailPage> {
                 const SizedBox(
                   height: 12.0,
                 ),
-                checkState(
-                    cellDetailController.cellDetailList.evaluateResultStr ??
-                        ''),
+                checkState(cellDetailController.setCheckState(
+                    cellDetailController.cellDetailList.evaluateResult ?? '')),
                 const SizedBox(
                   height: 12.0,
                 ),
@@ -192,9 +191,8 @@ class SCCheckCellDetailPageState extends State<SCCheckCellDetailPage> {
   }
 
   Widget reportItem(int index) {
-    if (cellDetailController.workOrderDetailList?.isNotEmpty ?? false) {
-      WorkOrder workOrder =
-          cellDetailController.workOrderDetailList?[index] ?? WorkOrder();
+    if (cellDetailController.workOrderDetailList.isNotEmpty) {
+      WorkOrder workOrder = cellDetailController.workOrderDetailList[index];
       return Column(
         children: [
           checkNameLabel(workOrder.address ?? ''),
@@ -219,14 +217,14 @@ class SCCheckCellDetailPageState extends State<SCCheckCellDetailPage> {
 
   Widget orderState(WorkOrder workOrder) {
     return Container(
-      width: double.infinity,
-      alignment: Alignment.centerLeft,
-      height: 30,
-      padding: const EdgeInsets.only(left: 10.0),
-      decoration: BoxDecoration(
-          color: SCColors.color_F7F8FA,
-          borderRadius: BorderRadius.circular(4.0)),
-      child: SCTaskTimeItem(time: workOrder.remainingTime ?? 0));
+        width: double.infinity,
+        alignment: Alignment.centerLeft,
+        height: 30,
+        padding: const EdgeInsets.only(left: 10.0),
+        decoration: BoxDecoration(
+            color: SCColors.color_F7F8FA,
+            borderRadius: BorderRadius.circular(4.0)),
+        child: SCTaskTimeItem(time: workOrder.remainingTime ?? 0));
   }
 
   Widget title(String str) {
@@ -469,7 +467,7 @@ class SCCheckCellDetailPageState extends State<SCCheckCellDetailPage> {
       children: [
         GestureDetector(
             onTap: () {
-              previewImage(SCConfig.getImageUrl(list[0].fileKey ?? ''));
+              previewImage();
             },
             child: SizedBox(
                 width: 76.0,
@@ -492,7 +490,7 @@ class SCCheckCellDetailPageState extends State<SCCheckCellDetailPage> {
       children: [
         GestureDetector(
             onTap: () {
-              previewImage(SCConfig.getImageUrl(list[0].fileKey ?? ''));
+              previewImage();
             },
             child: SizedBox(
                 width: 76.0,
@@ -507,7 +505,7 @@ class SCCheckCellDetailPageState extends State<SCCheckCellDetailPage> {
         const SizedBox(width: 12.0),
         GestureDetector(
             onTap: () {
-              previewImage(SCConfig.getImageUrl(list[1].fileKey ?? ''));
+              previewImage();
             },
             child: Stack(
               alignment: Alignment.center,
@@ -522,7 +520,16 @@ class SCCheckCellDetailPageState extends State<SCCheckCellDetailPage> {
                         fit: BoxFit.cover,
                       ),
                     )),
-                Text("+${(list.length - 2)}")
+                Text(
+                  (list.length - 2) == 0 ? '' : "+${(list.length - 2)}",
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontSize: SCFonts.f14,
+                      fontWeight: FontWeight.w400,
+                      color: SCColors.color_FFFFFF),
+                )
               ],
             )),
       ],
@@ -530,7 +537,8 @@ class SCCheckCellDetailPageState extends State<SCCheckCellDetailPage> {
   }
 
   /// 图片预览
-  previewImage(String url) {
-    SCImagePreviewUtils.previewImage(imageList: [url]);
+  previewImage() {
+    SCImagePreviewUtils.previewImage(
+        imageList: cellDetailController.photoList, needPerfix: true);
   }
 }

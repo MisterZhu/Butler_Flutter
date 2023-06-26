@@ -27,13 +27,11 @@ class SCCheckCellDetailController extends GetxController {
 
   SCPatrolDetailModel patrolDetailModel = SCPatrolDetailModel();
 
-  List photoList = [];
+  List<String> photoList = [];
 
   List<WorkOrder> workOrders = [];
 
   List<WorkOrder> workOrderDetailList = [];
-
-
 
   @override
   onInit() {
@@ -49,12 +47,13 @@ class SCCheckCellDetailController extends GetxController {
         patrolDetailModel = params['patrolDetailModel'];
         if (model != null) {
           cellDetailList = model;
+          photoList.clear();
           if (cellDetailList.attachments?.isNotEmpty ?? false) {
             cellDetailList.attachments?.forEach((element) {
-              photoList.add(element.fileKey);
+              photoList.add(element.fileKey ?? '');
             });
           }
-          workOrders = cellDetailList.workOrders?? [];
+          workOrders = cellDetailList.workOrders ?? [];
         }
       } catch (e) {
         e.toString();
@@ -81,7 +80,7 @@ class SCCheckCellDetailController extends GetxController {
     return SCConfig.getH5Url(
         "${SCH5.quickReportUrl}?procInstId=${taskCheckModel.procInstId ?? ''}"
         "&taskId=${taskCheckModel.taskId ?? ''}&nodeId=${taskCheckModel.nodeId ?? ''}&checkId=${taskCheckModel.checkId ?? ''}"
-        "&placeName=${patrolDetailModel.formData?.checkObject?.place?.placeName ?? ''}&placeName=${patrolDetailModel.procName}&communityId=${patrolDetailModel.communityId}");
+        "&placeName=${patrolDetailModel.formData?.checkObject?.place?.placeName ?? ''}&procName=${patrolDetailModel.procName}&communityId=${patrolDetailModel.communityId}");
   }
 
   updateData() {
@@ -98,6 +97,13 @@ class SCCheckCellDetailController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           cellDetailList = CellDetailList.fromJson(value);
+          photoList.clear();
+          if (cellDetailList.attachments?.isNotEmpty ?? false) {
+            cellDetailList.attachments?.forEach((element) {
+              photoList.add(element.fileKey ?? '');
+            });
+          }
+          workOrders = cellDetailList.workOrders ?? [];
           update();
         },
         failure: (value) {
@@ -130,12 +136,24 @@ class SCCheckCellDetailController extends GetxController {
         success: (value) {
           if (value is Map) {
             List list = value['records'];
-            workOrderDetailList = List<WorkOrder>.from(list.map((e) => WorkOrder.fromJson(e)).toList());
+            workOrderDetailList = List<WorkOrder>.from(
+                list.map((e) => WorkOrder.fromJson(e)).toList());
             update();
           }
         },
         failure: (value) {
           SCToast.showTip(value['message']);
         });
+  }
+
+  String setCheckState(String str) {
+    if (str == "QUALIFIED") {
+      str = "正常";
+    } else if (str == "UNQUALIFIED") {
+      str = "异常";
+    } else {
+      str = "未查";
+    }
+    return str;
   }
 }

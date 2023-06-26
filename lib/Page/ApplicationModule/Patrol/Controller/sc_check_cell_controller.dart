@@ -88,6 +88,8 @@ class SCCheckCellController extends GetxController {
           SCLoadingUtils.hide();
           SCScaffoldManager.instance.eventBus
               .fire({'key': SCKey.kRefreshCellDetailPage});
+          SCScaffoldManager.instance.eventBus
+              .fire({'key': SCKey.kRefreshPatrolDetailPage});
           SCRouterHelper.back(null);
         },
         failure: (value) {
