@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -17,43 +15,35 @@ import '../../../../Utils/sc_utils.dart';
 
 /// 标题+添加图片cell
 
-class SCDeliverEvidenceCell extends StatefulWidget {
+class CommDeliverEvidenceCell extends StatefulWidget {
   /// 标题
   final String title;
-
   /// 添加图片icon
   final String addIcon;
-
   /// 添加图片的类型
   final SCAddPhotoType addPhotoType;
-
   /// 最多可添加图片的数量，默认8张
   final int maxCount;
-
   /// 添加/删除图片
   final Function(List list)? updatePhoto;
 
   /// 图片数组
   final List files;
 
-  final bool isNew;
-
-  const SCDeliverEvidenceCell(
-      {Key? key,
-      required this.title,
-      this.addIcon = SCAsset.iconInspectProblemAddPhoto,
-      this.addPhotoType = SCAddPhotoType.all,
-      this.maxCount = 8,
-      required this.files,
-      this.updatePhoto,
-      this.isNew = true})
-      : super(key: key);
+  CommDeliverEvidenceCell({ Key? key,
+    required this.title,
+    this.addIcon = SCAsset.iconInspectProblemAddPhoto,
+    this.addPhotoType = SCAddPhotoType.all,
+    this.maxCount = 8,
+    required this.files,
+    this.updatePhoto}) : super(key: key);
 
   @override
-  SCDeliverEvidenceCellState createState() => SCDeliverEvidenceCellState();
+  CommDeliverEvidenceCellState createState() => CommDeliverEvidenceCellState();
 }
 
-class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
+class CommDeliverEvidenceCellState extends State<CommDeliverEvidenceCell> {
+
   @override
   Widget build(BuildContext context) {
     return body();
@@ -66,9 +56,7 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
       mainAxisSize: MainAxisSize.min,
       children: [
         titleItem(),
-        const SizedBox(
-          height: 12.0,
-        ),
+        const SizedBox(height: 12.0,),
         photosItem(),
       ],
     );
@@ -77,14 +65,14 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
   /// title
   Widget titleItem() {
     return Text(
-      widget.title,
-      textAlign: TextAlign.left,
-      overflow: TextOverflow.ellipsis,
-      style: const TextStyle(
-        fontSize: SCFonts.f16,
-        color: SCColors.color_1B1D33,
-        fontWeight: FontWeight.w400,
-      ),
+        widget.title,
+        textAlign: TextAlign.left,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(
+          fontSize: SCFonts.f16,
+          color: SCColors.color_1B1D33,
+          fontWeight: FontWeight.w400,
+        ),
     );
   }
 
@@ -96,9 +84,7 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
         crossAxisSpacing: 8,
         crossAxisCount: 4,
         shrinkWrap: true,
-        itemCount: widget.files.length >= widget.maxCount
-            ? widget.maxCount
-            : widget.files.length + 1,
+        itemCount: widget.files.length >= widget.maxCount ? widget.maxCount : widget.files.length + 1,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           return photoItem(index);
@@ -110,67 +96,51 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
 
   /// 图片
   Widget photoItem(int index) {
-    if (index == widget.files.length) {
-      //加号图案
+    if (index == widget.files.length) {//加号图案
       return GestureDetector(
         onTap: () {
           addPhotoAction(index);
         },
         child: AspectRatio(
-            aspectRatio: 1.0,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(
-                  index == widget.files.length ? 0.0 : 4.0),
-              child: SCImage(
-                url: widget.addIcon,
-                fit: BoxFit.cover,
-              ),
-            )),
+          aspectRatio: 1.0,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(index == widget.files.length ? 0.0 : 4.0),
+            child: SCImage(
+              url: widget.addIcon,
+              fit: BoxFit.cover,
+            ),
+          )),
       );
     } else {
       var file = widget.files[index];
-      String fileKey = '';
-      log("file-->${file}");
-      try{
-        if (file.isNotEmpty) {
-          fileKey = file['fileKey'] ?? '';
-        }
-      }catch(e){
-        e.toString();
-        fileKey = file.toString();
-      }
-      log("fileKey-->${fileKey}");
       return Stack(
         alignment: Alignment.topRight,
         children: [
           GestureDetector(
-              onTap: () {
-                previewImage(SCConfig.getImageUrl(fileKey));
-              },
-              child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                        index == widget.files.length ? 0.0 : 4.0),
-                    child: SCImage(
-                      url: SCConfig.getImageUrl(fileKey),
-                      fit: BoxFit.cover,
-                    ),
-                  ))),
-          GestureDetector(
             onTap: () {
-              setState(() {
-                widget.files.removeAt(index);
-                widget.updatePhoto?.call(widget.files);
-              });
+              previewImage(SCConfig.getImageUrlNonValue(file));
             },
-            child: Image.asset(
-              SCAsset.iconDeletePhoto,
-              width: 22.0,
-              height: 22.0,
-              fit: BoxFit.fill,
-            ),
-          ),
+            child: AspectRatio(
+              aspectRatio: 1.0,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(index == widget.files.length ? 0.0 : 4.0),
+                child: SCImage(
+                  url: SCConfig.getImageUrlNonValue(file),
+                  fit: BoxFit.cover,),))
+              ),
+            GestureDetector(
+                onTap: () {
+                  setState(() {
+                    widget.files.removeAt(index);
+                    widget.updatePhoto?.call(widget.files);
+                  });
+                },
+                child: Image.asset(
+                  SCAsset.iconDeletePhoto,
+                    width: 22.0,
+                    height: 22.0,
+                    fit: BoxFit.fill,),
+              ),
         ],
       );
     }
@@ -180,8 +150,7 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
   addPhotoAction(int index) {
     SCUtils().hideKeyboard(context: context);
     if (index == widget.files.length) {
-      if (widget.addPhotoType == SCAddPhotoType.photoPicker) {
-        //只能从相册选择图片
+      if (widget.addPhotoType == SCAddPhotoType.photoPicker) {//只能从相册选择图片
         SCPermissionUtils.photoPicker(
             maxLength: widget.maxCount - widget.files.length,
             requestType: RequestType.image,
@@ -190,9 +159,8 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
                 upLoadPhotos(imageList);
               });
             });
-      } else if (widget.addPhotoType == SCAddPhotoType.takePhoto) {
-        //只能拍照
-        SCPermissionUtils.takePhoto((String path) {
+      } else if (widget.addPhotoType == SCAddPhotoType.takePhoto) {//只能拍照
+        SCPermissionUtils.takePhoto((String path){
           setState(() {
             upLoadPhotos([path]);
           });
@@ -214,12 +182,13 @@ class SCDeliverEvidenceCellState extends State<SCDeliverEvidenceCell> {
   /// 上传照片到服务器
   upLoadPhotos(List photoList) {
     SCUploadUtils.uploadMoreImage(
-        imagePathList: photoList,
-        url: SCUrl.kMaterialUploadPicUrl,
-        successHandler: (list) {
-          widget.files.addAll(list);
-          widget.updatePhoto?.call(widget.files);
-        });
+      imagePathList: photoList,
+      url: SCUrl.kMaterialUploadPicUrl,
+      successHandler: (list) {
+        widget.files.addAll(list);
+        widget.updatePhoto?.call(widget.files);
+      }
+     );
   }
 
   /// 图片预览

@@ -384,6 +384,10 @@ class SCAsset {
   /// 领料
   static const String iconPatrolReceive = "images/patrol/ic_patrol_task_receive.png";
 
+  static const String iconPatrolEdit= "images/common/icon_title_edit.png";
+
+  static const String iconPatrolAdd= "images/common/icon_title_add.png";
+
   /**************** 资产维保 ****************/
   /// 资产维保icon
   static const String iconPropertyMaintenance = "images/propertyMaintenance/icon_property_maintenance.png";

@@ -6,27 +6,34 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 
 import '../../Constants/sc_asset.dart';
+import '../../Network/sc_config.dart';
 
 class SCPhotoView extends StatefulWidget {
-  SCPhotoView(
-      {Key? key,
-      required this.imageList,
-      this.defaultIndex = 0,
-      this.pageChanged,
-      this.direction = Axis.horizontal,
-      required this.decoration})
+  SCPhotoView({Key? key,
+    required this.imageList,
+    this.defaultIndex = 0,
+    this.pageChanged,
+    this.direction = Axis.horizontal,
+    this.needPerfix = false,
+    required this.decoration})
       : super(key: key);
 
   /*图片列表*/
   final List<String> imageList;
+
   /*默认第几张*/
   final int defaultIndex;
+
   /*切换图片回调*/
   final Function(int index)? pageChanged;
+
   /*图片查看方向*/
   final Axis direction;
+
   /*背景设计*/
   final BoxDecoration decoration;
+
+  final bool needPerfix;
 
   @override
   SCPhotoViewState createState() => SCPhotoViewState();
@@ -47,12 +54,18 @@ class SCPhotoViewState extends State<SCPhotoView> {
             Positioned(
               left: 0,
               right: 0,
-              top: MediaQuery.of(context).padding.top,
+              top: MediaQuery
+                  .of(context)
+                  .padding
+                  .top,
               height: 44.0,
               child: titleWidget(),
             ),
             Positioned(
-                top: MediaQuery.of(context).padding.top + 10.0,
+                top: MediaQuery
+                    .of(context)
+                    .padding
+                    .top + 10.0,
                 right: 16.0,
                 child: closeWidget())
           ],
@@ -74,8 +87,7 @@ class SCPhotoViewState extends State<SCPhotoView> {
       itemCount: widget.imageList.length,
       pageController: PageController(initialPage: widget.defaultIndex),
       builder: (BuildContext context, int index) {
-        return PhotoViewGalleryPageOptions(
-            imageProvider: imageProvider(index));
+        return PhotoViewGalleryPageOptions(imageProvider: imageProvider(index));
       },
       onPageChanged: (int index) {
         setState(() {
@@ -91,7 +103,8 @@ class SCPhotoViewState extends State<SCPhotoView> {
 
   /// image
   ImageProvider imageProvider(int index) {
-    String url = widget.imageList[index];
+    String url = widget.needPerfix ? SCConfig.getImageUrl(
+        widget.imageList[index]) : widget.imageList[index];
     if (url.contains('http')) {
       return CachedNetworkImageProvider(url);
     } else {
@@ -132,5 +145,4 @@ class SCPhotoViewState extends State<SCPhotoView> {
   void closeAction() {
     Navigator.of(context).pop();
   }
-
 }

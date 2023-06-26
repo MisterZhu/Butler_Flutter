@@ -14,7 +14,8 @@ class SCPatrolDetailModel {
       this.actionVo, 
       this.isOverTime, 
       this.procName, 
-      this.assignee, 
+      this.communityId,
+      this.assignee,
       this.startTime, 
       this.endTime, 
       this.taskId, 
@@ -37,6 +38,7 @@ class SCPatrolDetailModel {
     actionVo = json['actionVo'] != null ? json['actionVo'].cast<String>() : [];
     isOverTime = json['isOverTime'];
     procName = json['procName'];
+    communityId = json['communityId'];
     assignee = json['assignee'];
     startTime = json['startTime'];
     endTime = json['endTime'];
@@ -66,6 +68,7 @@ class SCPatrolDetailModel {
   FormDataModel? formData;
   bool? isScanCode;
   String? assigneeName;
+  String? communityId;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -81,6 +84,7 @@ class SCPatrolDetailModel {
     map['actionVo'] = actionVo;
     map['isOverTime'] = isOverTime;
     map['procName'] = procName;
+    map['communityId'] = communityId;
     map['assignee'] = assignee;
     map['startTime'] = startTime;
     map['endTime'] = endTime;
@@ -94,4 +98,8 @@ class SCPatrolDetailModel {
     return map;
   }
 
+  @override
+  String toString() {
+    return 'SCPatrolDetailModel{procInstId: $procInstId, procInstName: $procInstName, categoryId: $categoryId, categoryName: $categoryName, instSource: $instSource, customStatus: $customStatus, sysStatus: $sysStatus, customStatusInt: $customStatusInt, customStatusList: $customStatusList, actionVo: $actionVo, isOverTime: $isOverTime, procName: $procName, assignee: $assignee, startTime: $startTime, endTime: $endTime, taskId: $taskId, nodeId: $nodeId, formData: $formData, isScanCode: $isScanCode, assigneeName: $assigneeName}';
+  }
 }

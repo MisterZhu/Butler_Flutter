@@ -247,6 +247,12 @@ class SCRouterPath {
   ///巡查路线
   static String patrolRoutePage = "/lib/Page/Patrol/Page/sc_patrol_route_page";
 
+  /// 检查项编辑页面
+  static String patrolCheckCellPage = "/lib/Page/Patrol/Page/sc_check_cell_page";
+
+  ///检查项详情
+  static String patrolCheckCellDetailPage = "/lib/Page/Patrol/Page/sc_check_cell_detail_page";
+
   /*************************** 电子巡更 ******************************/
 
   /// 巡更列表

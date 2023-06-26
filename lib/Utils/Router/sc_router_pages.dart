@@ -8,6 +8,8 @@ import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_mate
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_purchase_search_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/Page/sc_purchase_selectmaterial_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/MaterialOutbound/Page/sc_add_outbound_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Page/sc_check_cell_detail_page.dart';
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Page/sc_check_cell_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/Page/sc_patrol_detail_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/Page/sc_patrol_search_page.dart';
 import 'package:smartcommunity/Page/ApplicationModule/Patrol/Page/sc_patrol_transfer_page.dart';
@@ -219,7 +221,12 @@ class SCRouterPages {
     /*处理人搜索*/
     GetPage(name: SCRouterPath.operatorSearchPage, page: () => SCOperatorSearchPage()),
 
+    GetPage(name: SCRouterPath.patrolCheckCellPage, page: () => SCCheckCellDetailPage()),
+
+    GetPage(name: SCRouterPath.patrolCheckCellDetailPage, page: () =>  SCCheckCellDetailPage()),
+
     GetPage(name: SCRouterPath.patrolRoutePage, page: () => const ScPatrolRoutePage(),binding:PatrolRouteBinding() )
+
   ];
 
   /*根据code使用路由*/

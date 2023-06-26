@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
+import 'package:smartcommunity/Page/ApplicationModule/MaterialEntry/View/Alert/check_cell_alert.dart';
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/Model/sc_patrol_detail_model.dart';
 import '../../../../../Constants/sc_h5.dart';
 import '../../../../../Constants/sc_type_define.dart';
 import '../../../../../Network/sc_config.dart';
@@ -11,7 +15,6 @@ import '../../Controller/sc_patrol_detail_controller.dart';
 /// 巡查详情view
 
 class SCPatrolDetailView extends StatefulWidget {
-
   /// SCPatrolDetailController
   final SCPatrolDetailController state;
 
@@ -65,9 +68,7 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
     return SCDetailCell(
       list: list,
       leftAction: (String value, int index) {},
-      rightAction: (String value, int index) {
-
-      },
+      rightAction: (String value, int index) {},
       imageTap: (int imageIndex, List imageList, int index) {
         // SCImagePreviewUtils.previewImage(imageList: [imageList[index]]);
       },
@@ -85,7 +86,8 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
       },
       detailAction: (int subIndex) {
         // 任务日志
-        SCRouterHelper.pathPage(SCRouterPath.taskLogPage, {'bizId': widget.state.procInstId});
+        SCRouterHelper.pathPage(
+            SCRouterPath.taskLogPage, {'bizId': widget.state.procInstId});
       },
     );
   }
@@ -96,25 +98,47 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
       list: list,
       leftAction: (String value, int index) {},
       rightAction: (String value, int index) {},
-      imageTap: (int imageIndex, List imageList, int index) {
-      },
+      imageTap: (int imageIndex, List imageList, int index) {},
       detailAction: (int subIndex) {
-        if (widget.state.model.customStatusInt! >= 40) {//已完成的任务，不能进行报事
-          return;
+        var checkItem =
+            widget.state.model.formData?.checkObject!.checkList![subIndex];
+        SCUIDetailCellModel detailCellModel = list[subIndex];
+        SCPatrolDetailModel model = widget.state.model;
+        if ((checkItem?.evaluateResult ?? '').isEmpty) {
+          SCDialogUtils().showCustomBottomDialog(
+              isDismissible: true,
+              context: context,
+              widget: CheckCellAlert(
+                title: '检查',
+                resultDes: '检查结果',
+                reasonDes: '意见',
+                isRequired: true,
+                checkName: detailCellModel.title ?? '',
+                hiddenTags: true,
+                sureAction: (int index, String value, List imageList,String type) {
+                  widget.state
+                      .loadData(checkItem?.id.toString() ?? '', model, imageList,value,type);
+                },
+              ));
+        } else {
+          widget.state.loadCheckCellDetailData(widget.state.model,checkItem?.id.toString() ?? '');
         }
-        if (widget.state.model.isScanCode == false) {// 任务扫码前，不可对检查项进行报事
-          SCToast.showTip('请先扫码');
-          return;
-        }
-        SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
-          "title": '快捷报事',
-          "url": SCUtils.getWebViewUrl(
-              url: SCConfig.getH5Url(SCH5.quickReportUrl),
-              title: '快捷报事',
-              needJointParams: true)
-        });
+
+        // if (widget.state.model.customStatusInt! >= 40) {//已完成的任务，不能进行报事
+        //   return;
+        // }
+        // if (widget.state.model.isScanCode == false) {// 任务扫码前，不可对检查项进行报事
+        //   SCToast.showTip('请先扫码');
+        //   return;
+        // }
+        // SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+        //   "title": '快捷报事',
+        //   "url": SCUtils.getWebViewUrl(
+        //       url: SCConfig.getH5Url(SCH5.quickReportUrl),
+        //       title: '快捷报事',
+        //       needJointParams: true)
+        // });
       },
     );
   }
-
 }

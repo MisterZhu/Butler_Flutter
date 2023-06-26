@@ -48,6 +48,11 @@ class SCConfig {
     return BASE_URL + SCDefaultValue.files + url;
   }
 
+  /// 图片url
+  static String getImageUrlNonValue(String url) {
+    return BASE_URL + url;
+  }
+
   /// h5 url
   static String getH5Url(String url) {
     if (url.contains('http')) {
