@@ -26,10 +26,10 @@ class SCToDoUtils {
   detail(SCToDoModel model) {
     if (model.appName == "TASK") {
       /// 三巡一保
-      if (model.type == "POLICED_POINT" || model.type == "POLICED_DEVICE" ) {
+      if (model.type == "POLICED_POINT" || model.type == "POLICED_DEVICE") {
         /// 巡查
         patrolDetail(model);
-      }else if(model.type == "POLICED_WATCH"){
+      } else if (model.type == "POLICED_WATCH") {
         dealPatrolNewTask(model);
       } else if (model.type == "SAFE_PROD") {
         /// 安全生产
@@ -37,7 +37,7 @@ class SCToDoUtils {
       } else if (model.type == "QUALITY_REGULATION") {
         /// 品质督查
         qualityRegulationDetail(model);
-      }else {
+      } else {
         /// 未知
         SCToast.showTip(SCDefaultValue.developingTip);
       }
@@ -54,7 +54,9 @@ class SCToDoUtils {
   dealAction(SCToDoModel model, String btnText) {
     if (model.appName == "TASK") {
       /// 三巡一保
-      if (model.type == "POLICED_POINT" || model.type == "POLICED_DEVICE" || model.type == "POLICED_WATCH") {
+      if (model.type == "POLICED_POINT" ||
+          model.type == "POLICED_DEVICE" ||
+          model.type == "POLICED_WATCH") {
         /// 巡查
         dealPatrolTask(model, btnText);
       } else if (model.type == "SAFE_PROD") {
@@ -74,8 +76,7 @@ class SCToDoUtils {
   }
 
   //抢单处理
-  toGetOrder(SCToDoModel model){
-
+  toGetOrder(SCToDoModel model) {
     SCLoadingUtils.show();
     var params = {
       "action": "accept",
@@ -95,14 +96,20 @@ class SCToDoUtils {
 
   /// 品质督查
   qualityRegulationDetail(SCToDoModel model) {
-    String title ='品质督查';
-    String url =
-        "${SCConfig.BASE_URL}${SCH5.qualityInspectionDetailsUrl}?id=${model.id}&nodeId=${model.taskId?.split("\$\_\$")[1]}";
-    // String realUrl =
-    //     SCUtils.getWebViewUrl(url: url, title: title, needJointParams: false);
+    List<String>? title = model.taskId?.split("\$\_\$");
+    String url = '';
+    if ((title ?? []).isNotEmpty && title?.length == 2) {
+      url =
+          "${SCConfig.BASE_URL}${SCH5.qualityInspectionDetailsUrl}?id=${title?[0]}&nodeId=${title?[1]}";
+    } else {
+      SCToast.showTip('未知错误');
+      return;
+    }
+    String realUrl =
+    SCUtils.getWebViewUrl(url: url, title: '', needJointParams: true);
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
       "title": model.subTypeDesc ?? '',
-      "url": url,
+      "url": realUrl,
       "needJointParams": true
     })?.then((value) {
       SCScaffoldManager.instance.eventBus
@@ -116,7 +123,7 @@ class SCToDoUtils {
     String url =
         "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=$status&orderId=${model.taskId}";
     String realUrl =
-    SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
+        SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
       "title": model.subTypeDesc ?? '',
       "url": realUrl,
@@ -145,8 +152,11 @@ class SCToDoUtils {
         procInstId = model.taskId ?? '';
       }
     }
-    SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage,
-        {"procInstId": procInstId, "nodeId": nodeId,"type":model.type})?.then((value) {
+    SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {
+      "procInstId": procInstId,
+      "nodeId": nodeId,
+      "type": model.type
+    })?.then((value) {
       SCScaffoldManager.instance.eventBus
           .fire({"key": SCKey.kRefreshWorkBenchPage});
     });
@@ -184,7 +194,6 @@ class SCToDoUtils {
         });
   }
 
-
   /// 巡查处理
   dealPatrolNewTask(SCToDoModel model) async {
     String id = model.taskId ?? '';
@@ -207,11 +216,19 @@ class SCToDoUtils {
           SCLoadingUtils.hide();
 
           SCPatrolDetailModel model = SCPatrolDetailModel.fromJson(value);
-          if(model.formData?.checkObject?.type == "route"){
-            SCRouterHelper.pathPage(SCRouterPath.patrolRoutePage, {"place":model.formData,"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});
-          }else{
-            log('我的数据-------------------------------------此处执行了${model.procInstId??''}  ${model.nodeId??''}');
-            SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? '',"type":"POLICED_WATCH"});
+          if (model.formData?.checkObject?.type == "route") {
+            SCRouterHelper.pathPage(SCRouterPath.patrolRoutePage, {
+              "place": model.formData,
+              "procInstId": model.procInstId ?? '',
+              "nodeId": model.nodeId ?? ''
+            });
+          } else {
+            log('我的数据-------------------------------------此处执行了${model.procInstId ?? ''}  ${model.nodeId ?? ''}');
+            SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {
+              "procInstId": model.procInstId ?? '',
+              "nodeId": model.nodeId ?? '',
+              "type": "POLICED_WATCH"
+            });
           }
         },
         failure: (value) {
