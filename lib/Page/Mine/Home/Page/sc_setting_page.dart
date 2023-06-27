@@ -29,7 +29,7 @@ class SCSettingState extends State<SCSettingPage> {
         centerTitle: true,
         navBackgroundColor: SCColors.color_F2F3F5,
         elevation: 0,
-        actions: [proxyItem()],
+        // actions: [proxyItem()],
         body: body());
   }
 

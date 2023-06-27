@@ -60,7 +60,7 @@ class SCMineListView extends StatelessWidget {
         SCMineHeaderItem(
           avatar: SCScaffoldManager.instance.user.headPicUri?.fileKey != null
               ? SCConfig.getImageUrl(
-                  SCScaffoldManager.instance.user.headPicUri?.fileKey ?? '')
+              SCScaffoldManager.instance.user.headPicUri?.fileKey ?? '')
               : SCAsset.iconUserDefault,
           nickname: SCScaffoldManager.instance.user.userName ?? '',
           space: SCScaffoldManager.instance.user.tenantName ?? '',
@@ -87,8 +87,7 @@ class SCMineListView extends StatelessWidget {
 
   Widget listview(BuildContext context) {
     int count = 18;
-    if (SCConfig.env == SCEnvironment.production &&
-        !SCConfig.isSupportProxyForProduction) {
+    if (SCConfig.env == SCEnvironment.production) {
       if (SCConfig.yycTenantId() == (SCScaffoldManager.instance.defaultConfigModel?.tenantId ?? '')) {
         count = 2;
       } else {
@@ -342,7 +341,7 @@ class SCMineListView extends StatelessWidget {
     String url =
         '${SCConfig.BASE_URL}/h5Manage-order/#/workOrderReport/propertyList?defCommunityId=${model.id}';
     String realUrl =
-        SCUtils.getWebViewUrl(url: url, title: '报事记录', needJointParams: true);
+    SCUtils.getWebViewUrl(url: url, title: '报事记录', needJointParams: true);
     SCRouterHelper.pathPage(SCRouterPath.webViewPath,
         {"title": '报事记录', "url": realUrl, "needJointParams": true});
   }

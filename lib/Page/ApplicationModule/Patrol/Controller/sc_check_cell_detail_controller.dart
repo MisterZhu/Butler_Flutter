@@ -34,8 +34,7 @@ class SCCheckCellDetailController extends GetxController {
 
   List<WorkOrder> workOrderDetailList = [];
 
-  late Timer timer;
-
+  Timer? timer;
 
   @override
   onInit() {
@@ -68,7 +67,7 @@ class SCCheckCellDetailController extends GetxController {
   }
 
   jumpToEdit() {
-    SCRouterHelper.pathPage(SCRouterPath.patrolCheckCellPage,
+    SCRouterHelper.pathPage(SCRouterPath.patrolCheckCellEditPage,
         {'cellDetailList': cellDetailList, 'taskCheckModel': taskCheckModel});
   }
 
@@ -83,8 +82,8 @@ class SCCheckCellDetailController extends GetxController {
   getReportUrl() {
     return SCConfig.getH5Url(
         "${SCH5.quickReportUrl}?procInstId=${taskCheckModel.procInstId ?? ''}"
-        "&taskId=${taskCheckModel.taskId ?? ''}&nodeId=${taskCheckModel.nodeId ?? ''}&checkId=${taskCheckModel.checkId ?? ''}"
-        "&placeName=${patrolDetailModel.formData?.checkObject?.place?.placeName ?? ''}&procName=${patrolDetailModel.procName}&communityId=${patrolDetailModel.communityId}");
+            "&taskId=${taskCheckModel.taskId ?? ''}&nodeId=${taskCheckModel.nodeId ?? ''}&checkId=${taskCheckModel.checkId ?? ''}"
+            "&placeName=${patrolDetailModel.formData?.checkObject?.place?.placeName ?? ''}&procName=${patrolDetailModel.procName}&communityId=${patrolDetailModel.communityId}");
   }
 
   updateData() {
@@ -147,7 +146,7 @@ class SCCheckCellDetailController extends GetxController {
                 list.map((e) => WorkOrder.fromJson(e)).toList());
             update();
             // TODO 待优化
-            if(workOrderDetailList.isNotEmpty){
+            if (workOrderDetailList.isNotEmpty) {
               startTimer();
             }
           }
@@ -171,25 +170,25 @@ class SCCheckCellDetailController extends GetxController {
 
   /// 定时器
   startTimer() {
-      timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        for (int i = 0; i < workOrderDetailList.length; i++) {
-          WorkOrder model = workOrderDetailList[i];
-          int subTime = model.remainingTime ?? 0;
-          if (subTime > 0) {
-            model.remainingTime = subTime - 1;
-          } else if (subTime == 0) {
-            model.remainingTime = 0;
-          } else {}
-          update();
-        }
-      });
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      for (int i = 0; i < workOrderDetailList.length; i++) {
+        WorkOrder model = workOrderDetailList[i];
+        int subTime = model.remainingTime ?? 0;
+        if (subTime > 0) {
+          model.remainingTime = subTime - 1;
+        } else if (subTime == 0) {
+          model.remainingTime = 0;
+        } else {}
+        update();
+      }
+    });
   }
 
   @override
   onClose() {
     super.onClose();
-    if (timer.isActive) {
-      timer.cancel();
+    if (timer != null) {
+      timer?.cancel();
     }
   }
 }

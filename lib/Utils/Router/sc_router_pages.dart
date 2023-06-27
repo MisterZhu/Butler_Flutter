@@ -221,7 +221,7 @@ class SCRouterPages {
     /*处理人搜索*/
     GetPage(name: SCRouterPath.operatorSearchPage, page: () => SCOperatorSearchPage()),
 
-    GetPage(name: SCRouterPath.patrolCheckCellPage, page: () => SCCheckCellDetailPage()),
+    GetPage(name: SCRouterPath.patrolCheckCellEditPage, page: () => SCCheckCellEditPage()),
 
     GetPage(name: SCRouterPath.patrolCheckCellDetailPage, page: () =>  SCCheckCellDetailPage()),
 

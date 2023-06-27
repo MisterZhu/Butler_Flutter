@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:http_proxy/http_proxy.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Network/sc_config.dart';
@@ -54,6 +55,7 @@ class SCHttpManager {
         headers: _headers,
       );
 
+
       _dio = Dio();
       _dio!.options = _baseOptions!;
       (_dio!.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
@@ -63,10 +65,6 @@ class SCHttpManager {
             (X509Certificate cert, String host, int port) => true;
         // 设置抓包代理，ip+端口号
         setProxy(client);
-        // client.findProxy = (uri) {
-        //   /// 172.16.171.69、172.16.171.30、172.16.171.63
-        //   return "PROXY 172.16.171.63:13920";
-        // };
         return null;
       };
       _dio?.interceptors
@@ -77,15 +75,17 @@ class SCHttpManager {
   }
 
   /// 设置代理
-  setProxy(HttpClient client) {
-    if (SCConfig.env != SCEnvironment.production ||
-        SCConfig.isSupportProxyForProduction) {
-      if (SCSpUtil.getKeys().contains(SCKey.kProxyMap)) {
-        var map = SCSpUtil.getMap(SCKey.kProxyMap);
+  setProxy(HttpClient client) async {
+    HttpProxy proxy = await HttpProxy.createHttpProxy();
+    if (SCConfig.isSupportProxyForProduction) {
+      if((proxy.host?? '').isNotEmpty && (proxy.port?? '').isNotEmpty){
+        client.idleTimeout = const Duration(seconds: 5);
         client.findProxy = (uri) {
-          /// 172.16.171.69、172.16.171.30、172.16.171.63
-          return "PROXY ${map['IP']}:${map['port']}";
+          log("----抓包代理:host=${proxy.host}:${proxy.host}----");
+          return "PROXY ${proxy.host}:${proxy.port}";
         };
+      }else{
+        log("----未设置抓包代理----");
       }
     }
   }
@@ -106,10 +106,10 @@ class SCHttpManager {
   /// 通用的GET请求
   Future get(
       {required String url,
-      dynamic params,
-      Map<String, dynamic>? headers,
-      Function(dynamic value)? success,
-      Function(dynamic value)? failure}) async {
+        dynamic params,
+        Map<String, dynamic>? headers,
+        Function(dynamic value)? success,
+        Function(dynamic value)? failure}) async {
     Options options = Options(headers: headers);
     late Response response;
     late Object exception;
@@ -141,11 +141,11 @@ class SCHttpManager {
   /// 通用的POST请求
   Future post(
       {required String url,
-      dynamic params,
-      Map<String, dynamic>? headers,
-      bool? isQuery,
-      Function(dynamic value)? success,
-      Function(dynamic value)? failure}) async {
+        dynamic params,
+        Map<String, dynamic>? headers,
+        bool? isQuery,
+        Function(dynamic value)? success,
+        Function(dynamic value)? failure}) async {
     Options options = Options(headers: headers);
     late Response response;
     late Object exception;
@@ -180,10 +180,10 @@ class SCHttpManager {
   /// 通用的PUT请求
   put(
       {required String url,
-      dynamic params,
-      Map<String, dynamic>? headers,
-      Function(dynamic value)? success,
-      Function(dynamic value)? failure}) async {
+        dynamic params,
+        Map<String, dynamic>? headers,
+        Function(dynamic value)? success,
+        Function(dynamic value)? failure}) async {
     Options options = Options(headers: headers);
     late Response response;
     late Object exception;
@@ -213,10 +213,10 @@ class SCHttpManager {
   /// 通用的DELETE请求
   delete(
       {required String url,
-      dynamic params,
-      Map<String, dynamic>? headers,
-      Function(dynamic value)? success,
-      Function(dynamic value)? failure}) async {
+        dynamic params,
+        Map<String, dynamic>? headers,
+        Function(dynamic value)? success,
+        Function(dynamic value)? failure}) async {
     Options options = Options(headers: headers);
     late Response response;
     late Object exception;
@@ -246,10 +246,10 @@ class SCHttpManager {
   /// 通用的PATCH请求
   patch(
       {required String url,
-      dynamic params,
-      Map<String, dynamic>? headers,
-      Function(dynamic value)? success,
-      Function(dynamic value)? failure}) async {
+        dynamic params,
+        Map<String, dynamic>? headers,
+        Function(dynamic value)? success,
+        Function(dynamic value)? failure}) async {
     Options options = Options(headers: headers);
     late Response response;
     late Object exception;

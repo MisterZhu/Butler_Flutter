@@ -100,8 +100,15 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
       rightAction: (String value, int index) {},
       imageTap: (int imageIndex, List imageList, int index) {},
       detailAction: (int subIndex) {
+        if (widget.state.model.customStatusInt! >= 40) {
+          return;
+        }
+        if (widget.state.model.isScanCode == false) {// 任务扫码前，不可对检查项进行报事
+          SCToast.showTip('请先扫码');
+          return;
+        }
         var checkItem =
-            widget.state.model.formData?.checkObject!.checkList![subIndex];
+        widget.state.model.formData?.checkObject!.checkList![subIndex];
         SCUIDetailCellModel detailCellModel = list[subIndex];
         SCPatrolDetailModel model = widget.state.model;
         if ((checkItem?.evaluateResult ?? '').isEmpty) {
@@ -123,7 +130,6 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
         } else {
           widget.state.loadCheckCellDetailData(widget.state.model,checkItem?.id.toString() ?? '');
         }
-
         // if (widget.state.model.customStatusInt! >= 40) {//已完成的任务，不能进行报事
         //   return;
         // }
