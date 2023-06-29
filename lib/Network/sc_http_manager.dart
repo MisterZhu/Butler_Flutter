@@ -58,15 +58,17 @@ class SCHttpManager {
 
       _dio = Dio();
       _dio!.options = _baseOptions!;
-      (_dio!.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-          (client) {
-        // 抓Https包设置  信任所有https证书
-        client.badCertificateCallback =
-            (X509Certificate cert, String host, int port) => true;
-        // 设置抓包代理，ip+端口号
-        setProxy(client);
-        return null;
-      };
+      if (SCConfig.isSupportProxyForProduction){
+        (_dio!.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+            (client) {
+          // 抓Https包设置  信任所有https证书
+          client.badCertificateCallback =
+              (X509Certificate cert, String host, int port) => true;
+          // 设置抓包代理，ip+端口号
+          setProxy(client);
+          return null;
+        };
+      }
       _dio?.interceptors
           .add(LogInterceptor(responseBody: true, requestBody: true)); // 日志打印
       //print("options.headers-->" + options.headers.toString());
@@ -77,16 +79,14 @@ class SCHttpManager {
   /// 设置代理
   setProxy(HttpClient client) async {
     HttpProxy proxy = await HttpProxy.createHttpProxy();
-    if (SCConfig.isSupportProxyForProduction) {
-      if((proxy.host?? '').isNotEmpty && (proxy.port?? '').isNotEmpty){
-        client.idleTimeout = const Duration(seconds: 5);
-        client.findProxy = (uri) {
-          log("----抓包代理:host=${proxy.host}:${proxy.host}----");
-          return "PROXY ${proxy.host}:${proxy.port}";
-        };
-      }else{
-        log("----未设置抓包代理----");
-      }
+    if((proxy.host?? '').isNotEmpty && (proxy.port?? '').isNotEmpty){
+      client.idleTimeout = const Duration(seconds: 5);
+      client.findProxy = (uri) {
+        log("----抓包代理:host=${proxy.host}:${proxy.host}----");
+        return "PROXY ${proxy.host}:${proxy.port}";
+      };
+    }else{
+      log("----未设置抓包代理----");
     }
   }
 
