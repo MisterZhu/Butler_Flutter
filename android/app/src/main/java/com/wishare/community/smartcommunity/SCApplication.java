@@ -2,7 +2,6 @@ package com.wishare.community.smartcommunity;
 
 import android.app.Application;
 
-import com.tencent.smtt.sdk.QbSdk;
 import com.wishare.community.smartcommunity.ui.webview.helper.QbSdkHelper;
 
 /**
