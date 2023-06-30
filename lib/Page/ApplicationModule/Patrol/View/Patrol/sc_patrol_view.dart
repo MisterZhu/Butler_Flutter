@@ -219,7 +219,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
       statusTitleColor: SCPatrolUtils.getStatusColor(model.customStatusInt ?? -1),
       content: model.procInstName ?? '',
       contentMaxLines: 30,
-      deviceSn: model.formData?.checkObject?.device?.deviceSn ?? '',
+      deviceSn: model.formData?.checkObject?.device?.deviceCode ?? '',
       address: '地址',
       btnText: btnText,
       hideBtn: (model.actionVo ?? []).isEmpty,

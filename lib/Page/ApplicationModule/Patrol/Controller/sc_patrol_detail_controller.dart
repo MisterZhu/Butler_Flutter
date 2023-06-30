@@ -526,11 +526,11 @@ class SCPatrolDetailController extends GetxController {
       {"type": 7, "title": '发起时间', "content": model.startTime},
       {"type": 7, "title": '实际完成时间', "content": model.endTime}
     ];
-    if ((model.formData?.checkObject?.device?.deviceSn ?? '').isNotEmpty) {
+    if ((model.formData?.checkObject?.device?.deviceCode ?? '').isNotEmpty) {
       data.insert(0, {
         "type": 7,
         "title": '设备编号',
-        "content": model.formData?.checkObject?.device?.deviceSn ?? '',
+        "content": model.formData?.checkObject?.device?.deviceCode ?? '',
         "maxLength": 20
       });
     }
