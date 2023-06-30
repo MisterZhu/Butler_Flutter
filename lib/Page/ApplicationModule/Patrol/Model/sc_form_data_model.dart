@@ -27,6 +27,7 @@ class CheckObject {
   List<CheckList>? checkList;
   List<PlaceList>? placeList;
   Place? place;
+  Device? device;
   String? bizTag;
   String? type;
 
@@ -35,6 +36,7 @@ class CheckObject {
       this.checkList,
       this.placeList,
       this.bizTag,
+      this.device,
       this.type,
       this.place});
 
@@ -53,6 +55,7 @@ class CheckObject {
       });
     }
     place = json['place'] != null ? Place.fromJson(json['place']) : null;
+    device = json['device'] != null ? Device.fromJson(json['device']) : null;
     bizTag = json['bizTag'];
     type = json['type'];
   }
@@ -67,6 +70,9 @@ class CheckObject {
     }
     if (place != null) {
       data['place'] = place?.toJson();
+    }
+    if (device != null) {
+      data['device'] = device?.toJson();
     }
     if (placeList != null) {
       data['placeList'] = placeList!.map((v) => v.toJson()).toList();
@@ -493,6 +499,36 @@ class Place {
     map['orgName'] = orgName;
     map['spaceId'] = spaceId;
     map['bizTag'] = bizTag;
+    return map;
+  }
+}
+
+class Device {
+  Device({
+    this.id,
+    this.deviceName,
+    this.deviceSn,
+    this.deviceCode,
+  });
+
+  Device.fromJson(dynamic json) {
+    id = json['id'];
+    deviceName = json['deviceName'];
+    deviceSn = json['deviceSn'];
+    deviceCode = json['deviceCode'];
+  }
+
+  String? id;
+  String? deviceName;
+  String? deviceSn;
+  String? deviceCode;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    map['deviceName'] = deviceName;
+    map['deviceSn'] = deviceSn;
+    map['deviceCode'] = deviceCode;
     return map;
   }
 }

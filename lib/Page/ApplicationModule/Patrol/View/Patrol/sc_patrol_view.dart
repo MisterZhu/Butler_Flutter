@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
+import 'package:smartcommunity/Page/ApplicationModule/Patrol/View/Patrol/sc_patrol_task_card_cell.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/PageView/sc_workbench_empty_view.dart';
 import 'package:smartcommunity/Utils/Community/sc_selectcommunity_utils.dart';
 import '../../../../../Constants/sc_asset.dart';
@@ -207,7 +208,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
     if ((model.actionVo ?? []).isNotEmpty) {
       btnText = model.actionVo!.first;
     }
-    return SCTaskCardCell(
+    return SCPatrolTaskCardCell(
       timeType: 0,
       remainingTime: 0,
       tagList: [],
@@ -218,6 +219,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
       statusTitleColor: SCPatrolUtils.getStatusColor(model.customStatusInt ?? -1),
       content: model.procInstName ?? '',
       contentMaxLines: 30,
+      deviceSn: model.formData?.checkObject?.device?.deviceSn ?? '',
       address: '地址',
       btnText: btnText,
       hideBtn: (model.actionVo ?? []).isEmpty,

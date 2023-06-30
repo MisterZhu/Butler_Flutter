@@ -9,6 +9,7 @@ import '../../../../../Utils/Router/sc_router_path.dart';
 import '../../../../../Utils/sc_utils.dart';
 import '../../Controller/sc_patrol_search_controller.dart';
 import '../../Model/sc_patrol_task_model.dart';
+import '../Patrol/sc_patrol_task_card_cell.dart';
 
 /// 搜索view
 
@@ -217,7 +218,7 @@ class SCSearchPatrolViewState extends State<SCSearchPatrolView> {
     if ((model.actionVo ?? []).isNotEmpty) {
       btnText = model.actionVo!.first;
     }
-    return SCTaskCardCell(
+    return SCPatrolTaskCardCell(
       timeType: 0,
       remainingTime: 0,
       tagList: [],
@@ -225,19 +226,28 @@ class SCSearchPatrolViewState extends State<SCSearchPatrolView> {
       title: model.categoryName ?? '',
       titleIcon: SCAsset.iconPatrolTask,
       statusTitle: model.customStatus ?? '',
-      statusTitleColor: SCPatrolUtils.getStatusColor(model.customStatusInt ?? -1),
+      statusTitleColor:
+          SCPatrolUtils.getStatusColor(model.customStatusInt ?? -1),
       content: model.procInstName ?? '',
       contentMaxLines: 30,
       address: '',
       btnText: btnText,
+      deviceSn: model.formData?.checkObject?.device?.deviceSn ?? '',
       hideBtn: false,
       hideAddressRow: true,
       hideCallIcon: true,
       detailTapAction: () {
-        SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {"procInstId": model.procInstId ?? '', "nodeId": model.nodeId ?? ''});
+        SCRouterHelper.pathPage(SCRouterPath.patrolDetailPage, {
+          "procInstId": model.procInstId ?? '',
+          "nodeId": model.nodeId ?? ''
+        });
       },
       btnTapAction: () {
-        dealAction(name: btnText, taskId: model.taskId ?? '', procInstId: model.procInstId ?? '', nodeId: model.nodeId ?? '');
+        dealAction(
+            name: btnText,
+            taskId: model.taskId ?? '',
+            procInstId: model.procInstId ?? '',
+            nodeId: model.nodeId ?? '');
       },
     );
   }
@@ -294,12 +304,15 @@ class SCSearchPatrolViewState extends State<SCSearchPatrolView> {
   }
 
   /// 处理
-  dealAction({required String name, required String taskId, required String procInstId, required String nodeId}) {
+  dealAction(
+      {required String name,
+      required String taskId,
+      required String procInstId,
+      required String nodeId}) {
     SCPatrolUtils patrolUtils = SCPatrolUtils();
     patrolUtils.taskId = taskId;
     patrolUtils.procInstId = procInstId;
     patrolUtils.nodeId = nodeId;
     patrolUtils.taskAction(name: name);
   }
-
 }
