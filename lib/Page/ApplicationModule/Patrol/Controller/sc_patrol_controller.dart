@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:developer';
 
@@ -14,7 +13,6 @@ import '../Model/sc_patrol_task_model.dart';
 /// 巡查controller
 
 class SCPatrolController extends GetxController {
-
   int pageNum = 1;
 
   /// 选中的状态index
@@ -46,7 +44,8 @@ class SCPatrolController extends GetxController {
   int currentCommunityIndex = 0;
 
   /// RefreshController
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
 
   /// 数据是否加载成功
   bool loadDataSuccess = false;
@@ -58,6 +57,7 @@ class SCPatrolController extends GetxController {
 
   /// appCode
   String appCode = "POLICED_POINT";
+  String deviceCode = "";
 
   @override
   onInit() {
@@ -70,17 +70,24 @@ class SCPatrolController extends GetxController {
     if (params.isNotEmpty) {
       if (params.containsKey("pageType")) {
         pageType = params['pageType'];
-        if (pageType == 1) {// 品质督查
+        if (pageType == 1) {
+          // 品质督查
           appCode = "QUALITY_REGULATION";
-        } else if (pageType == 2) {// 巡检
+        } else if (pageType == 2) {
+          // 巡检
           appCode = "POLICED_DEVICE";
-        } else if(pageType == 3){
+          deviceCode = params['deviceCode'];
+        } else if (pageType == 3) {
           appCode = "POLICED_WATCH";
         }
       }
     }
     getTypeData();
-    loadData(isMore: false);
+    if(deviceCode.isNotEmpty){
+      loadScanData(isMore: false);
+    }else{
+      loadData(isMore: false);
+    }
   }
 
   /// 更新项目id
@@ -97,7 +104,11 @@ class SCPatrolController extends GetxController {
     pageNum = 1;
 
     /// 重新获取数据
-    loadData(isMore: false);
+    if(deviceCode.isNotEmpty){
+      loadScanData(isMore: false);
+    }else{
+      loadData(isMore: false);
+    }
   }
 
   /// 更新排序，刷新页面数据
@@ -106,7 +117,11 @@ class SCPatrolController extends GetxController {
     pageNum = 1;
 
     /// 重新获取数据
-    loadData(isMore: false);
+    if(deviceCode.isNotEmpty){
+      loadScanData(isMore: false);
+    }else{
+      loadData(isMore: false);
+    }
   }
 
   /// 巡查列表数据
@@ -119,7 +134,8 @@ class SCPatrolController extends GetxController {
       SCLoadingUtils.show();
     }
     List fields = [];
-    if (typeIndex1 >= 0) {// 分类
+    if (typeIndex1 >= 0) {
+      // 分类
       SCWarningDealResultModel model1 = typeList[typeIndex1];
       if (typeIndex2 >= 0) {
         SCWarningDealResultModel model2 = model1.pdictionary![typeIndex2];
@@ -144,7 +160,8 @@ class SCPatrolController extends GetxController {
         fields.add(dic);
       }
     }
-    if (selectStatusIndex > 0) {// 状态
+    if (selectStatusIndex > 0) {
+      // 状态
       SCWarningDealResultModel model = statusList[selectStatusIndex];
       var dic = {
         "map": {},
@@ -163,18 +180,16 @@ class SCPatrolController extends GetxController {
       };
       fields.add(dic);
     }
-    var dic1 = {
-      "map": {},
-      "method": 1,
-      "name": "wt.appCode",
-      "value": appCode
-    };
+    var dic1 = {"map": {}, "method": 1, "name": "wt.appCode", "value": appCode};
     fields.add(dic1);
     var params = {
       "conditions": {"fields": fields},
       "count": false,
       "last": false,
-      "orderBy": [{"asc": sort, "field": "wt.gmtModify"}],// 排序，正序是 true，倒序是 false
+      "orderBy": [
+        {"asc": sort, "field": "wt.gmtModify"}
+      ],
+      // 排序，正序是 true，倒序是 false
       "pageNum": pageNum,
       "pageSize": 20
     };
@@ -187,9 +202,76 @@ class SCPatrolController extends GetxController {
           if (value is Map) {
             List list = value['records'];
             if (isLoadMore == true) {
-              dataList.addAll(List<SCPatrolTaskModel>.from(list.map((e) => SCPatrolTaskModel.fromJson(e)).toList()));
+              dataList.addAll(List<SCPatrolTaskModel>.from(
+                  list.map((e) => SCPatrolTaskModel.fromJson(e)).toList()));
             } else {
-              dataList = List<SCPatrolTaskModel>.from(list.map((e) => SCPatrolTaskModel.fromJson(e)).toList());
+              dataList = List<SCPatrolTaskModel>.from(
+                  list.map((e) => SCPatrolTaskModel.fromJson(e)).toList());
+            }
+          } else {
+            if (isLoadMore == false) {
+              dataList = [];
+            }
+          }
+          update();
+          bool last = false;
+          if (isLoadMore) {
+            last = value['last'];
+          }
+          completeHandler?.call(true, last);
+        },
+        failure: (value) {
+          if (isLoadMore) {
+            pageNum--;
+          }
+          SCToast.showTip(value['message']);
+          completeHandler?.call(false, false);
+        });
+  }
+
+  /// 扫描列表数据
+  loadScanData(
+      {bool? isMore, Function(bool success, bool last)? completeHandler}) {
+    bool isLoadMore = isMore ?? false;
+    if (isLoadMore == true) {
+      pageNum++;
+    } else {
+      pageNum = 1;
+      SCLoadingUtils.show();
+    }
+    List fields = [
+      {"map": {}, "method": 1, "name": "wt.appCode", "value": appCode}
+    ];
+    var dic1 = {
+      "map": {"wt.procInstName": deviceCode, "procName": deviceCode},
+      "method": 1,
+      "name": "searchs",
+      "value": deviceCode
+    };
+    fields.add(dic1);
+    var params = {
+      "conditions": {"fields": fields},
+      "count": false,
+      "last": false,
+      "orderBy": [],
+      "pageNum": pageNum,
+      "pageSize": 20
+    };
+    SCHttpManager.instance.post(
+        url: SCUrl.kPatrolListUrl,
+        params: params,
+        success: (value) {
+          SCLoadingUtils.hide();
+          loadDataSuccess = true;
+          SCLoadingUtils.hide();
+          if (value is Map) {
+            List list = value['records'];
+            if (isLoadMore == true) {
+              dataList.addAll(List<SCPatrolTaskModel>.from(
+                  list.map((e) => SCPatrolTaskModel.fromJson(e)).toList()));
+            } else {
+              dataList = List<SCPatrolTaskModel>.from(
+                  list.map((e) => SCPatrolTaskModel.fromJson(e)).toList());
             }
           } else {
             if (isLoadMore == false) {
@@ -218,10 +300,12 @@ class SCPatrolController extends GetxController {
         url: SCUrl.kConfigDictionaryPidCodeUrl,
         params: {'dictionaryCode': 'CUSTOM_STATUS'},
         success: (value) {
-          List<SCWarningDealResultModel> list = List<
-              SCWarningDealResultModel>.from(
-              value.map((e) => SCWarningDealResultModel.fromJson(e)).toList());
-          SCWarningDealResultModel model = SCWarningDealResultModel.fromJson({'name': '全部', 'code': -1});
+          List<SCWarningDealResultModel> list =
+              List<SCWarningDealResultModel>.from(value
+                  .map((e) => SCWarningDealResultModel.fromJson(e))
+                  .toList());
+          SCWarningDealResultModel model =
+              SCWarningDealResultModel.fromJson({'name': '全部', 'code': -1});
           list.insert(0, model);
           statusList = list;
         },
@@ -232,20 +316,33 @@ class SCPatrolController extends GetxController {
 
   /// 获取分类
   getTypeData() {
-    SCHttpManager.instance.post(url: SCUrl.kPatrolTypeUrl, params: {"appCode": appCode},success: (value) {
-      List<SCPatrolTypeModel> list = List<SCPatrolTypeModel>.from(value.map((e) => SCPatrolTypeModel.fromJson(e)).toList());
-      for (SCPatrolTypeModel model in list) {
-        List children = [];
-        for (SCPatrolTypeModel subModel in (model.children ?? [])) {
-          var subParams = {"id": subModel.id.toString(), "name": subModel.categoryName, };
-          children.add(subParams);
-        }
-        var params = {"id": model.id.toString(), "name": model.categoryName, "pdictionary": children};
-        SCWarningDealResultModel subModel = SCWarningDealResultModel.fromJson(params);
-        typeList.add(subModel);
-      }
-      log('分类===${jsonEncode(value)}');
-    }, failure: (value) {});
+    SCHttpManager.instance.post(
+        url: SCUrl.kPatrolTypeUrl,
+        params: {"appCode": appCode},
+        success: (value) {
+          List<SCPatrolTypeModel> list = List<SCPatrolTypeModel>.from(
+              value.map((e) => SCPatrolTypeModel.fromJson(e)).toList());
+          for (SCPatrolTypeModel model in list) {
+            List children = [];
+            for (SCPatrolTypeModel subModel in (model.children ?? [])) {
+              var subParams = {
+                "id": subModel.id.toString(),
+                "name": subModel.categoryName,
+              };
+              children.add(subParams);
+            }
+            var params = {
+              "id": model.id.toString(),
+              "name": model.categoryName,
+              "pdictionary": children
+            };
+            SCWarningDealResultModel subModel =
+                SCWarningDealResultModel.fromJson(params);
+            typeList.add(subModel);
+          }
+          log('分类===${jsonEncode(value)}');
+        },
+        failure: (value) {});
   }
 
   /// 更新类型的index

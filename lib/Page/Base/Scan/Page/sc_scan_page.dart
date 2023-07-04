@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -9,6 +10,7 @@ import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Page/Base/Scan/View/sc_scan_navigation.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import '../../../../Constants/sc_default_value.dart';
+import '../../../../Utils/Router/sc_router_path.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../Controller/sc_scan_controller.dart';
 
@@ -37,17 +39,13 @@ class SCScanState extends State<SCScanPage> {
     } else if (Platform.isIOS) {
       controller!.resumeCamera();
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [
-          scanView(),
-          navigation()
-        ],
+        children: [scanView(), navigation()],
       ),
     );
   }
@@ -61,7 +59,7 @@ class SCScanState extends State<SCScanPage> {
       onPermissionSet: (controller, status) {
         if (status == false) {
           showNoPermissionAlert();
-        }else{
+        } else {
           controller.resumeCamera();
         }
       },
@@ -71,22 +69,26 @@ class SCScanState extends State<SCScanPage> {
   /// 导航栏
   Widget navigation() {
     return Positioned(
-      left: 0, right: 0 ,top: SCUtils().getTopSafeArea(),
-        child: GetBuilder<SCScanController>(builder: (state){
+        left: 0,
+        right: 0,
+        top: SCUtils().getTopSafeArea(),
+        child: GetBuilder<SCScanController>(builder: (state) {
           return SCScanNavigation(
             isOpenFlash: state.isOpenFlash,
-            tapBack: () {/// 返回
+            tapBack: () {
+              /// 返回
               SCRouterHelper.back(null);
             },
-            tapAlbum: () {/// 相册
+            tapAlbum: () {
+              /// 相册
               scanFromAlbum();
             },
-            tapFlash: () {/// 闪光灯
+            tapFlash: () {
+              /// 闪光灯
               openFlash();
             },
           );
-        })
-    );
+        }));
   }
 
   /// 扫描结果
@@ -94,7 +96,12 @@ class SCScanState extends State<SCScanPage> {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       controller.stopCamera();
+      log("---扫码---${scanData.code}");
       SCRouterHelper.back(scanData.code);
+      //TODO 20230704 项目需要 产品要求统一写死
+      if (scanData.code?.isNotEmpty ?? false) {
+        state.deviceBasic(scanData.code);
+      }
     });
   }
 

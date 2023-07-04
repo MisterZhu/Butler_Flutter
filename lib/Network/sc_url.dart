@@ -370,6 +370,8 @@ class SCUrl {
   /// 查询空间列表
   static const String kSpaceListUrl = "/api/space/component/space/select";
 
+  static const String deviceBasicUrl = "/api/device/deviceBasic/detail/";
+
   /************************* 预警中心 *************************/
   /// 预警列表
   static const String kWarningCenterListUrl = "/api/alert/alert/getAlertsPage";
