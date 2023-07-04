@@ -103,10 +103,10 @@ class SCPatrolDetailViewState extends State<SCPatrolDetailView> {
         if (widget.state.model.customStatusInt! >= 40) {
           return;
         }
-        // if (widget.state.model.isScanCode == false) {// 任务扫码前，不可对检查项进行报事
-        //   SCToast.showTip('请先扫码');
-        //   return;
-        // }
+        if (widget.state.model.isScanCode == false) {// 任务扫码前，不可对检查项进行报事
+          SCToast.showTip('请先扫码');
+          return;
+        }
         var checkItem =
         widget.state.model.formData?.checkObject!.checkList![subIndex];
         SCUIDetailCellModel detailCellModel = list[subIndex];

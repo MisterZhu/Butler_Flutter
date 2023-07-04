@@ -241,27 +241,25 @@ class SCPatrolUtils {
   /// 处理操作
   deal({bool? isDetailPage}) {
     // 先判断要不要扫码，再处理任务
-    // 20230630 项目反馈无需扫码 暂时先注释
-    // needScan(result: (result) async {
-    //   if (result == true) {
-    //     // 扫码
-    //     var data = await SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
-    //     print("扫码结果===$data========");
-    //     if (data != null && data != '') {// 有扫描结果
-    //       // 校验二维码是否正确
-    //       checkQrcode(qrCode: data, result: (status) {
-    //         if (status == true) {
-    //           showDealAlert(code: data, isDetailPage: isDetailPage);
-    //         } else {
-    //           SCToast.showTip('二维码校验不通过，请重新扫描');
-    //         }
-    //       });
-    //     }
-    //   } else {
-    //     showDealAlert(isDetailPage: isDetailPage);
-    //   }
-    // });
-    showDealAlert(isDetailPage: isDetailPage);
+    needScan(result: (result) async {
+      if (result == true) {
+        // 扫码
+        var data = await SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
+        print("扫码结果===$data========");
+        if (data != null && data != '') {// 有扫描结果
+          // 校验二维码是否正确
+          checkQrcode(qrCode: data, result: (status) {
+            if (status == true) {
+              showDealAlert(code: data, isDetailPage: isDetailPage);
+            } else {
+              SCToast.showTip('二维码校验不通过，请重新扫描');
+            }
+          });
+        }
+      } else {
+        showDealAlert(isDetailPage: isDetailPage);
+      }
+    });
   }
 
   /// 是否需要扫码
