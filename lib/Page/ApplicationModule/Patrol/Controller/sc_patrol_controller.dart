@@ -76,7 +76,9 @@ class SCPatrolController extends GetxController {
         } else if (pageType == 2) {
           // 巡检
           appCode = "POLICED_DEVICE";
-          deviceCode = params['deviceCode'];
+          if(params.containsKey("deviceCode")){
+            deviceCode = params['deviceCode'];
+          }
         } else if (pageType == 3) {
           appCode = "POLICED_WATCH";
         }
