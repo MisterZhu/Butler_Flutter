@@ -24,6 +24,8 @@ class SCConfig {
         return "https://saastest.wisharetec.com";
       case SCEnvironment.production:
         return "https://saas.wisharetec.com";
+      case SCEnvironment.production_yyc:
+        return "https://yayun.wisharetec.com";
       default:
         return "https://saasdev.wisharetec.com";
     }
@@ -38,6 +40,8 @@ class SCConfig {
         return "https://saastest.wisharetec.com";
       case SCEnvironment.production:
         return "https://saas.wisharetec.com";
+      case SCEnvironment.production_yyc:
+        return "https://yayun.wisharetec.com";
       default:
         return "https://saasdev.wisharetec.com";
     }
@@ -79,5 +83,4 @@ class SCConfig {
       return [];
     }
   }
-
 }

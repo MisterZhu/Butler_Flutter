@@ -4,7 +4,9 @@ enum SCEnvironment {
   /// 预发环境
   pretest,
   /// 生产环境
-  production
+  production,
+  /// 亚运版
+  production_yyc
 }
 
 enum SCHttpMethod {
