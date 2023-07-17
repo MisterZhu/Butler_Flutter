@@ -164,6 +164,7 @@ class SCHttpManager {
     } finally {
       if (status) {
         var data = doResponse(response);
+        log('response \n $data');
         checkLogin(url: url, headers: response.headers.map, data: data);
         success?.call(data);
       } else {

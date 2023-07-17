@@ -300,6 +300,8 @@ class SCPatrolUtils {
               dealTask(action: "handle", code: code, content: value, imageList: imageList, result: (result) {
                 SCToast.showTip('处理成功').then((status) {
                   SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshPatrolPage});
+                  SCScaffoldManager.instance.eventBus.fire({'key': SCKey.kRefreshWorkBenchPage});
+
                   if(isDetailPage==true){
                     SCRouterHelper.back(null);
                   }

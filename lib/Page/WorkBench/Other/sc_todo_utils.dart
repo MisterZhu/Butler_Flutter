@@ -38,15 +38,13 @@ class SCToDoUtils {
         SCToast.showTip(SCDefaultValue.developingTip);
       } else if (model.type == "QUALITY_REGULATION") {
         /// 品质督查
-                debugPrint("点击品质督查");
-
-        qualityRegulationDetail(model);
+        debugPrint("点击品质督查");
+        checkDetail(model);
 
       }else if (model.type == "RECTIFICATION") {
         /// 整改任务
-                debugPrint("点击  整改任务");
-
-        qualityRegulationDetail(model);
+        debugPrint("点击  整改任务");
+        editDetail(model);
 
       } else {
         /// 未知
@@ -78,7 +76,6 @@ class SCToDoUtils {
         dealPatrolTask(model, btnText);
       }else if (model.type == "QUALITY_REGULATION" ||
                 model.type == "RECTIFICATION") {
-
         /// 品质督查  整改任务
         dealPatrolTask(model, btnText);
       } else {
@@ -114,12 +111,12 @@ class SCToDoUtils {
   }
 
   /// 品质督查
-  qualityRegulationDetail(SCToDoModel model) {
+  checkDetail(SCToDoModel model) {
     List<String>? title = model.taskId?.split("\$\_\$");
     String url = '';
     if ((title ?? []).isNotEmpty && title?.length == 2) {
       url =
-          "${SCConfig.BASE_URL}${SCH5.qualityInspectionDetailsUrl}?id=${title?[0]}&nodeId=${title?[1]}&from=app";
+          "${SCConfig.BASE_URL}${SCH5.checkDetailsUrl}?id=${title?[0]}&nodeId=${title?[1]}&from=app";
     } else {
       SCToast.showTip('未知错误');
       return;
@@ -138,12 +135,12 @@ class SCToDoUtils {
     });
   }
   /// 任务整改
-  taskRectificationDetail(SCToDoModel model) {
+  editDetail(SCToDoModel model) {
     List<String>? title = model.taskId?.split("\$\_\$");
     String url = '';
     if ((title ?? []).isNotEmpty && title?.length == 2) {
       url =
-      "${SCConfig.BASE_URL}${SCH5.taskRectificationDetailsUrl}?id=${title?[0]}&nodeId=${title?[1]}&from=app";
+      "${SCConfig.BASE_URL}${SCH5.editDetailsUrl}?id=${title?[0]}&nodeId=${title?[1]}&from=app";
     } else {
       SCToast.showTip('未知错误');
       return;

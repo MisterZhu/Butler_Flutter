@@ -37,8 +37,8 @@ class SCH5 {
   /// 快捷报事
   static const String quickReportUrl = "/h5Manage-order/#/workOrderReport/propertyReport";
   /// 品质督查
-  static const String qualityInspectionDetailsUrl = "/h5Manage/#/qualityInspection/qualityInspectionDetails";
+  static const String checkDetailsUrl = "/h5Manage/#/qualityInspection/qualityInspectionDetails";
   /// 任务整改
-  static const String taskRectificationDetailsUrl = "/h5Manage/#/qualityInspection/qualityInspectionitemAask";
+  static const String editDetailsUrl = "/h5Manage/#/qualityInspection/qualityInspectionitemAask";
 
 }
