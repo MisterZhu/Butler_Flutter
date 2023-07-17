@@ -101,7 +101,7 @@ class SCWorkBenchSearchController extends GetxController {
       SCLoadingUtils.show();
     }
     var params = {
-      "conditions": {"title": searchString},
+      "conditions": {"title": searchString,"hallUserIds":SCScaffoldManager.instance.user.id},
       "count": true,
       "last": false,
       "orderBy": [],
