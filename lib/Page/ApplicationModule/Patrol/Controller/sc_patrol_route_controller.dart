@@ -12,6 +12,7 @@ import '../../../../Network/sc_url.dart';
 import '../Model/sc_form_data_model.dart';
 import '../Model/sc_patrol_detail_model.dart';
 import '../Model/sc_patrol_task_model.dart';
+import '../Other/sc_patrol_utils.dart';
 
 class ScPatrolRouteController extends GetxController{
   /// 当前tab的index
@@ -37,9 +38,7 @@ class ScPatrolRouteController extends GetxController{
 
 
   FormDataModel model1 = FormDataModel();
-
   SCPatrolDetailModel model = SCPatrolDetailModel();
-
 
   /// 初始化
   initParams(Map<String, dynamic> params) {
@@ -56,6 +55,7 @@ class ScPatrolRouteController extends GetxController{
         log('获取model的数据22222===${params['nodeId']}');
         nodeId = params['nodeId'];
       }
+      getDetailData();
     }
 
     loadData(isMore: false);
@@ -107,7 +107,7 @@ class ScPatrolRouteController extends GetxController{
               dataList1 = [];
             }
           }
-          model = SCPatrolDetailModel.fromJson(value);
+          // model = SCPatrolDetailModel.fromJson(value);
           update();
           bool last = false;
           if (isLoadMore) {
@@ -160,7 +160,7 @@ class ScPatrolRouteController extends GetxController{
               dataList2 = [];
             }
           }
-          model = SCPatrolDetailModel.fromJson(value);
+          // model = SCPatrolDetailModel.fromJson(value);
           update();
           bool last = false;
           if (isLoadMore) {
@@ -196,20 +196,61 @@ class ScPatrolRouteController extends GetxController{
     ];
   }
 
+  getDetailData() {
+    SCLoadingUtils.show();
+    SCHttpManager.instance.get(
+        url: '${SCUrl.kPatrolDetailUrl}$procInstId\$_\$$nodeId',
+        params: null,
+        success: (value) {
+          log('巡查详情===$value');
+          SCLoadingUtils.hide();
+          model = SCPatrolDetailModel.fromJson(value);
+          // updateDataList();
+          update();
+        },
+        failure: (value) {
+          SCToast.showTip(value['message']);
+        });
+  }
+
 
 
   /// title-数据源
   List titleList() {
     List data = [
-      {"type":1,"title":"剩余时间","time":200345},
+      // {"type":1,"title":"剩余时间","time":200345},
+      // {
+      //   "leftIcon": SCAsset.iconPatrolTask,
+      //   "type": 2,
+      //   "title": "分类名称",
+      //   "content": "处理中"
+      // },
+      // {"type": 5, "content": "看发的看发你打开", "maxLength": 10},
       {
         "leftIcon": SCAsset.iconPatrolTask,
         "type": 2,
-        "title": "分类名称",
-        "content": "处理中"
+        "title": model.categoryName,
+        "content": model.customStatus,
+        'contentColor':
+        SCPatrolUtils.getStatusColor(model.customStatusInt ?? -1)
       },
-      {"type": 5, "content": "看发的看发你打开", "maxLength": 10},
-
+      {"type": 5, "content": model.procInstName, "maxLength": 10},
+      // {
+      //   "type": 7,
+      //   "title": '任务地点',
+      //   "content": model.formData?.checkObject?.place?.placeName ?? ''
+      // },
+      {
+        "type": 7,
+        "title": '任务编号',
+        "content": model.procInstId,
+        "maxLength": 2
+      },
+      {"type": 7, "title": '任务来源', "content": model.instSource},
+      {"type": 7, "title": '归属项目', "content": model.procName},
+      {"type": 7, "title": '当前执行人', "content": model.assigneeName},
+      {"type": 7, "title": '发起时间', "content": model.startTime},
+      {"type": 7, "title": '实际完成时间', "content": model.endTime}
     ];
     return List.from(data.map((e) {
       return SCUIDetailCellModel.fromJson(e);
