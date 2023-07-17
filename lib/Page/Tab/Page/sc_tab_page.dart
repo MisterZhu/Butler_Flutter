@@ -182,6 +182,7 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
               //   Navigator.of(context).pop();
               //   SCRouterHelper.pathPage(SCRouterPath.applicationPath, null);
               // } else {
+                debugPrint('The answer url: ${SCUtils.getWebViewUrl(url: url, title: text, needJointParams: true)}');
                 SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title": text, "url": SCUtils.getWebViewUrl(url: url, title: text, needJointParams: true)});
               // }
             },

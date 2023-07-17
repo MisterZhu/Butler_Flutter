@@ -24,6 +24,8 @@ import '../Home/Model/sc_todo_model.dart';
 class SCToDoUtils {
   /// 点击卡片-详情
   detail(SCToDoModel model) {
+    debugPrint("点击整个卡片");
+
     if (model.appName == "TASK") {
       /// 三巡一保
       if (model.type == "POLICED_POINT" || model.type == "POLICED_DEVICE") {
@@ -36,7 +38,16 @@ class SCToDoUtils {
         SCToast.showTip(SCDefaultValue.developingTip);
       } else if (model.type == "QUALITY_REGULATION") {
         /// 品质督查
+                debugPrint("点击品质督查");
+
         qualityRegulationDetail(model);
+
+      }else if (model.type == "RECTIFICATION") {
+        /// 整改任务
+                debugPrint("点击  整改任务");
+
+        qualityRegulationDetail(model);
+
       } else {
         /// 未知
         SCToast.showTip(SCDefaultValue.developingTip);
@@ -52,6 +63,9 @@ class SCToDoUtils {
 
   /// 点击卡片-处理
   dealAction(SCToDoModel model, String btnText) {
+
+    debugPrint("点击卡片按钮");
+
     if (model.appName == "TASK") {
       /// 三巡一保
       if (model.type == "POLICED_POINT" ||
@@ -61,6 +75,11 @@ class SCToDoUtils {
         dealPatrolTask(model, btnText);
       } else if (model.type == "SAFE_PROD") {
         /// 安全生产
+        dealPatrolTask(model, btnText);
+      }else if (model.type == "QUALITY_REGULATION" ||
+                model.type == "RECTIFICATION") {
+
+        /// 品质督查  整改任务
         dealPatrolTask(model, btnText);
       } else {
         /// 未知
@@ -100,7 +119,31 @@ class SCToDoUtils {
     String url = '';
     if ((title ?? []).isNotEmpty && title?.length == 2) {
       url =
-          "${SCConfig.BASE_URL}${SCH5.qualityInspectionDetailsUrl}?id=${title?[0]}&nodeId=${title?[1]}";
+          "${SCConfig.BASE_URL}${SCH5.qualityInspectionDetailsUrl}?id=${title?[0]}&nodeId=${title?[1]}&from=app";
+    } else {
+      SCToast.showTip('未知错误');
+      return;
+    }
+    String realUrl =
+    SCUtils.getWebViewUrl(url: url, title: '', needJointParams: true);
+    debugPrint("web url = $realUrl");
+
+    SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+      "title": model.subTypeDesc ?? '',
+      "url": realUrl,
+      "needJointParams": true
+    })?.then((value) {
+      SCScaffoldManager.instance.eventBus
+          .fire({"key": SCKey.kRefreshWorkBenchPage});
+    });
+  }
+  /// 任务整改
+  taskRectificationDetail(SCToDoModel model) {
+    List<String>? title = model.taskId?.split("\$\_\$");
+    String url = '';
+    if ((title ?? []).isNotEmpty && title?.length == 2) {
+      url =
+      "${SCConfig.BASE_URL}${SCH5.taskRectificationDetailsUrl}?id=${title?[0]}&nodeId=${title?[1]}&from=app";
     } else {
       SCToast.showTip('未知错误');
       return;

@@ -38,4 +38,7 @@ class SCH5 {
   static const String quickReportUrl = "/h5Manage-order/#/workOrderReport/propertyReport";
   /// 品质督查
   static const String qualityInspectionDetailsUrl = "/h5Manage/#/qualityInspection/qualityInspectionDetails";
+  /// 任务整改
+  static const String taskRectificationDetailsUrl = "/h5Manage/#/qualityInspection/qualityInspectionitemAask";
+
 }
