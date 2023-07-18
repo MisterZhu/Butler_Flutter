@@ -206,7 +206,7 @@ class SCScaffoldManager {
   /// 获取Router的BasePath
   Future<String> getRouterBasePath() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    bool isShowPrivacy = preferences.getBool(SCKey.isShowPrivacyAlert) ?? true;
+    bool isShowPrivacy = preferences.getBool(SCKey.isShowPrivacyAlert) ?? false;
 
     String basePath = SCRouterPath.loginPath;
 
