@@ -161,7 +161,7 @@ class SCToDoUtils {
     int status = (model.statusValue ?? '0').cnToInt();
     String title = SCUtils.getWorkOrderButtonText(status);
     String url =
-        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=$status&orderId=${model.taskId}";
+        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=$status&orderId=${model.taskId}&source=workbench";
     String realUrl =
         SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {

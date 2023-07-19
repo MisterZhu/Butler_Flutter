@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http_proxy/http_proxy.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 import 'package:smartcommunity/Constants/sc_default_value.dart';
@@ -14,6 +15,30 @@ import 'package:smartcommunity/Skin/Tools/sc_scaffold_manager.dart';
 import '../Constants/sc_enum.dart';
 import '../Constants/sc_key.dart';
 import '../Utils/sc_sp_utils.dart';
+
+class CustomLogInterceptor extends LogInterceptor {
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    super.onRequest(options, handler);
+    // 打印请求的基本信息
+    // print("1-->URL ${options.method} ${options.baseUrl}${options.path}");
+    // print("2-->Headers:");
+    // options.headers.forEach((key, value) => print('$key: $value'));
+    debugPrint('params: ${options.data}');// 打印请求的参数
+    
+  }
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    super.onResponse(response, handler);
+    // 请求成功后，打印响应数据
+    //print("<--URL ${response.statusCode} ${response.requestOptions.method} ${response.requestOptions.baseUrl}${response.requestOptions.path}");
+    // print("5<--Headers:");
+    // response.headers.forEach((key, value) => print('$key: $value'));
+    debugPrint('response: ${response.data}');// 打印响应数据
+
+
+  }
+}
 
 class SCHttpManager {
   factory SCHttpManager() => _getInstance();
@@ -69,10 +94,12 @@ class SCHttpManager {
           return null;
         };
       }
-      _dio?.interceptors
-          .add(LogInterceptor(responseBody: true, requestBody: true)); // 日志打印
-      //print("options.headers-->" + options.headers.toString());
+      // _dio?.interceptors
+      //     .add(LogInterceptor(responseBody: true, requestBody: true)); // 日志打印
 
+      //print("options.headers-->" + options.headers.toString());
+      // 使用自定义的 LogInterceptor
+      _dio?.interceptors.add(CustomLogInterceptor());
     }
   }
 
@@ -164,7 +191,6 @@ class SCHttpManager {
     } finally {
       if (status) {
         var data = doResponse(response);
-        log('response \n $data');
         checkLogin(url: url, headers: response.headers.map, data: data);
         success?.call(data);
       } else {

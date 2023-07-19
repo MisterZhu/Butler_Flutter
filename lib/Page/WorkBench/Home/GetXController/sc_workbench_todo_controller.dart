@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sc_uikit/sc_uikit.dart';
@@ -64,7 +65,6 @@ class SCWorkBenchToDoController extends GetxController {
         url: SCUrl.kSearchTaskUrl,
         params: params,
         success: (value) {
-          log('数据$key===${jsonEncode(value)}');
           SCLoadingUtils.hide();
           if (value is List) {
             if (isLoadMore == false) {
