@@ -86,7 +86,7 @@ class SCMineListView extends StatelessWidget {
   }
 
   Widget listview(BuildContext context) {
-    int count = 18;
+    int count = 17;
     if (SCConfig.env == SCEnvironment.production) {
       if (SCConfig.yycTenantId() == (SCScaffoldManager.instance.defaultConfigModel?.tenantId ?? '')) {
         count = 2;
@@ -271,16 +271,18 @@ class SCMineListView extends StatelessWidget {
           SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"pageType": 0});
         },
       );
-    } else if (index == 15) {
-      return SCSettingCell(
-        title: '品质督查',
-        showLeftIcon: true,
-        leftIcon: SCAsset.iconMineService,
-        onTap: () {
-          SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"pageType": 1});
-        },
-      );
-    } else if (index == 16) {
+    } 
+    // else if (index == 15) {
+    //   return SCSettingCell(
+    //     title: '品质督查',
+    //     showLeftIcon: true,
+    //     leftIcon: SCAsset.iconMineService,
+    //     onTap: () {
+    //       SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"pageType": 1});
+    //     },
+    //   );
+    // }
+     else if (index == 15) {
       return SCSettingCell(
         title: '巡检',
         showLeftIcon: true,
@@ -289,7 +291,7 @@ class SCMineListView extends StatelessWidget {
           SCRouterHelper.pathPage(SCRouterPath.patrolPage, {"pageType": 2});
         },
       );
-    } else if (index == 17) {
+    } else if (index == 16) {
       return SCSettingCell(
         title: '巡更',
         showLeftIcon: true,
