@@ -39,6 +39,8 @@ class SCPatrolTaskCardCell extends StatelessWidget {
 
   final String? deviceSn;
 
+  final String? installAdress;
+
   /// content行数
   final int? contentMaxLines;
 
@@ -98,6 +100,7 @@ class SCPatrolTaskCardCell extends StatelessWidget {
     this.statusTitleColor,
     this.content,
     this.deviceSn,
+    this.installAdress,
     this.contentMaxLines,
     this.address,
     this.addressIcon,
@@ -145,6 +148,7 @@ class SCPatrolTaskCardCell extends StatelessWidget {
             tagsItem(),
             nameItem(content ?? ''),
             deviceItem(deviceSn ?? ''),
+            addressItem(installAdress ?? ''),
             addressInfoView(),
             bottomView()
           ],
@@ -283,6 +287,25 @@ class SCPatrolTaskCardCell extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0),
           child: Text(
             "设备编号：$name",
+            maxLines: contentMaxLines ?? 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontSize: SCFonts.f14,
+                fontWeight: FontWeight.w400,
+                fontFamilyFallback: SCToolsConfig.getPFSCForIOS(),
+                color: SCColors.color_1B1D33),
+          ));
+    }else{
+      return const SizedBox();
+    }
+  }
+
+  Widget addressItem(String name) {
+    if(name.isNotEmpty){
+      return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0),
+          child: Text(
+            "安装位置：$name",
             maxLines: contentMaxLines ?? 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(

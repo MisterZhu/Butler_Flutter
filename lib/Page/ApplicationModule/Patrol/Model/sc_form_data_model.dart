@@ -509,6 +509,8 @@ class Device {
     this.deviceName,
     this.deviceSn,
     this.deviceCode,
+    this.spaceName,
+    this.deviceLocation,
   });
 
   Device.fromJson(dynamic json) {
@@ -516,12 +518,16 @@ class Device {
     deviceName = json['deviceName'];
     deviceSn = json['deviceSn'];
     deviceCode = json['deviceCode'];
+    deviceCode = json['spaceName'];
+    deviceLocation = json['deviceLocation'];
   }
 
   String? id;
   String? deviceName;
   String? deviceSn;
   String? deviceCode;
+  String? spaceName;
+  String? deviceLocation;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -529,6 +535,8 @@ class Device {
     map['deviceName'] = deviceName;
     map['deviceSn'] = deviceSn;
     map['deviceCode'] = deviceCode;
+    map['spaceName'] = spaceName;
+    map['deviceLocation'] = deviceLocation;
     return map;
   }
 }

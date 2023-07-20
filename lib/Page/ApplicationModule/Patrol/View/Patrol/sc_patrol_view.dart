@@ -220,6 +220,7 @@ class SCPatrolViewState extends State<SCPatrolView> {
       content: model.procInstName ?? '',
       contentMaxLines: 30,
       deviceSn: model.formData?.checkObject?.device?.deviceCode ?? '',
+      installAdress: model.formData?.checkObject?.device?.deviceLocation ?? '',
       address: '地址',
       btnText: btnText,
       hideBtn: (model.actionVo ?? []).isEmpty,

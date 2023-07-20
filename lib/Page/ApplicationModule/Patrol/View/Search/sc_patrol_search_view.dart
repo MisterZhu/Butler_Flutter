@@ -233,6 +233,7 @@ class SCSearchPatrolViewState extends State<SCSearchPatrolView> {
       address: '',
       btnText: btnText,
       deviceSn: model.formData?.checkObject?.device?.deviceCode ?? '',
+      installAdress: model.formData?.checkObject?.device?.deviceLocation ?? '',
       hideBtn: false,
       hideAddressRow: true,
       hideCallIcon: true,
