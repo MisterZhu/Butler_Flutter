@@ -14,7 +14,6 @@ import '../Model/sc_message_card_model.dart';
 
 /// 消息listview
 class SCMessageListView extends StatelessWidget {
-
   /// SCMessageController
   final SCMessageController state;
 
@@ -24,11 +23,17 @@ class SCMessageListView extends StatelessWidget {
   /// RefreshController
   final RefreshController refreshController;
 
-  SCMessageListView({Key? key, required this.state, required this.type, required this.refreshController}) : super(key: key);
+  SCMessageListView(
+      {Key? key,
+      required this.state,
+      required this.type,
+      required this.refreshController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<SCMessageCardModel> data = type == 1 ? state.unreadDataList : state.allDataList;
+    List<SCMessageCardModel> data =
+        type == 1 ? state.unreadDataList : state.allDataList;
     return SmartRefresher(
         controller: refreshController,
         enablePullUp: true,
@@ -38,21 +43,22 @@ class SCMessageListView extends StatelessWidget {
         ),
         onRefresh: onRefresh,
         onLoading: loadMore,
-        child: data.isNotEmpty ? listView() : emptyView()
-    );
+        child: data.isNotEmpty ? listView() : emptyView());
   }
 
   Widget listView() {
-    List<SCMessageCardModel> data = type == 1 ? state.unreadDataList : state.allDataList;
+    List<SCMessageCardModel> data =
+        type == 1 ? state.unreadDataList : state.allDataList;
     return ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           SCMessageCardModel model = data[index];
           List list = [];
-          int cardType = 0;  // 卡片类型,0-只显示一行内容,1-显示两行内容,2-显示图片+内容+内容描述
+          int cardType = 0; // 卡片类型,0-只显示一行内容,1-显示两行内容,2-显示图片+内容+内容描述
           // noticeCardType卡片类型 1:数据卡片形式; 2:文章消息卡片
-          if (model.noticeCardType == 2) { // 2:文章消息卡片
+          if (model.noticeCardType == 2) {
+            // 2:文章消息卡片
             cardType = 2; // 2-显示图片+内容+内容描述
           }
           String head = '';
@@ -61,7 +67,8 @@ class SCMessageListView extends StatelessWidget {
             if (model.displayItems!.isNotEmpty) {
               List displayItems = model.displayItems!;
               DisplayItems firstItem = displayItems.first;
-              if (firstItem.noticeConsumerMobileCardItemDisplayType == 1) {//1值换行+加粗
+              if (firstItem.noticeConsumerMobileCardItemDisplayType == 1) {
+                //1值换行+加粗
                 cardType == 1;
               }
               head = firstItem.head ?? '';
@@ -77,27 +84,69 @@ class SCMessageListView extends StatelessWidget {
           return SCMessageCardCell(
             type: cardType,
             title: model.category,
-            icon: model.icon?.fileKey != null ? SCConfig.getImageUrl(model.icon?.fileKey ?? '') : SCAsset.iconMessageType,
-            time: SCDateUtils.relativeDateFormat(DateTime.parse(model.noticeTime ?? '')),
+            icon: model.icon?.fileKey != null
+                ? SCConfig.getImageUrl(model.icon?.fileKey ?? '')
+                : SCAsset.iconMessageType,
+            time: SCDateUtils.relativeDateFormat(
+                DateTime.parse(model.noticeTime ?? '')),
             isUnread: type == 1 ? true : false,
             head: head,
             content: content,
-            contentIcon: model.linkImage?.fileKey != null ? SCConfig.getImageUrl(model.linkImage?.fileKey ?? '') : SCAsset.iconMessageContentDefault,
+            contentIcon: model.linkImage?.fileKey != null
+                ? SCConfig.getImageUrl(model.linkImage?.fileKey ?? '')
+                : SCAsset.iconMessageContentDefault,
             bottomContentList: list,
             detailTapAction: () {
-              if (model.ext != null) {
-                var ext = jsonDecode(model.ext ?? '');
-                if (ext['jumpUrl'] != null) {
-                  if (model.cardCode == 'CONTENT_MESSAGE') {
-                    // 跳转到站内信详情h5
-                    String jumpUrl = SCConfig.getH5Url(ext['jumpUrl']);
-                    if (jumpUrl.contains("?")) {
-                      jumpUrl = "${SCConfig.getH5Url(ext['jumpUrl'])}&noticeArriveId=${model.noticeArriveId}";
-                    } else {
-                      jumpUrl = "${SCConfig.getH5Url(ext['jumpUrl'])}?noticeArriveId=${model.noticeArriveId}";
+              if (model.ext != '""') {
+                if (model.ext != null) {
+                  // String jsonString =
+                  //     "\"{\\\"annexFile\\\":{\\\"download\\\":false,\\\"files\\\":[{\\\"fileKey\\\":\\\"tmp/eb1e1ad8-85af-42d0-ba3c-21229be19009/20230713/1689235351742109.pdf\\\",\\\"name\\\":\\\"关于开展深入学习贯彻集团半年度会议宋卫平董事长“以人为本，以终为始，全面推进集团高质量发展”讲话精神的通知（绿城服务通〔2023〕147号）.pdf\\\",\\\"size\\\":192479,\\\"suffix\\\":\\\"pdf\\\"}]},\\\"jumpUrl\\\":\\\"/h5Manage/#/notification/notificationDetail?id=13214716299661\\\",\\\"tags\\\":[{\\\"code\\\":2,\\\"name\\\":\\\"公告\\\"}]}\"";
+                  String jsonString = model.ext ?? "";
+                  var ext = jsonDecode(jsonString);
+                  var jumpStr = "";
+                  // 判断字符串是否被双引号包裹
+                  if (jsonString.startsWith("\"") &&
+                      jsonString.endsWith("\"")) {
+                    // 去掉外层的双引号和转义字符
+                    jsonString = jsonString.replaceAll("\\", "");
+                    jsonString = jsonString.replaceAll('{', '');
+                    jsonString = jsonString.replaceAll('}', '');
+                    jsonString = jsonString.replaceAll('[', '');
+                    jsonString = jsonString.replaceAll(']', '');
+                    jsonString = jsonString.replaceAll('"', '');
+                    print("jsonString =" + jsonString);
+                    List<String> itemsList = jsonString.split(',');
+                    for (String fruit in itemsList) {
+                      if (fruit.contains("jumpUrl")) {
+                        List<String> parts = fruit.split(':');
+                        jumpStr = parts.last;
+                        break;
+                      }
                     }
-                    String url = SCUtils.getWebViewUrl(url: jumpUrl, title: '通知公告',  needJointParams: true);
-                    SCRouterHelper.pathPage(SCRouterPath.webViewPath, {'title' : '通知公告', 'url' : url});
+                    print("jumpUrl111 =" + jumpStr);
+                  } else {
+                    jumpStr = ext['jumpUrl'] ?? "";
+                    print("jumpUrl222 =" + jumpStr);
+                  }
+
+                  if (jumpStr.isNotEmpty) {
+                    if (model.cardCode == 'CONTENT_MESSAGE') {
+                      // 跳转到站内信详情h5
+                      String jumpUrl = SCConfig.getH5Url(jumpStr);
+                      if (jumpUrl.contains("?")) {
+                        jumpUrl =
+                            "${SCConfig.getH5Url(jumpStr)}&noticeArriveId=${model.noticeArriveId}";
+                      } else {
+                        jumpUrl =
+                            "${SCConfig.getH5Url(jumpStr)}?noticeArriveId=${model.noticeArriveId}";
+                      }
+                      String url = SCUtils.getWebViewUrl(
+                          url: jumpUrl, title: '通知公告', needJointParams: true);
+                      SCRouterHelper.pathPage(SCRouterPath.webViewPath,
+                          {'title': '通知公告', 'url': url});
+                    }
+                  } else if (model.noticeArriveId != null) {
+                    state.loadDetailData(model.noticeArriveId!);
                   }
                 }
               }
@@ -108,28 +157,38 @@ class SCMessageListView extends StatelessWidget {
           );
         },
         separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(height: 10.0,);
+          return const SizedBox(
+            height: 10.0,
+          );
         },
         itemCount: data.length);
   }
+
   /// emptyView
   Widget emptyView() {
-    if ((type == 0 && state.loadCompleted1 == true) || (type == 1 && state.loadCompleted2 == true)) {
+    if ((type == 0 && state.loadCompleted1 == true) ||
+        (type == 1 && state.loadCompleted2 == true)) {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(
             height: 124.0,
           ),
-          Image.asset(SCAsset.iconMessageEmpty, width: 120.0, height: 120.0,),
+          Image.asset(
+            SCAsset.iconMessageEmpty,
+            width: 120.0,
+            height: 120.0,
+          ),
           const SizedBox(
             height: 2.0,
           ),
-          const Text("暂无消息", style: TextStyle(
-              fontSize: SCFonts.f14,
-              fontWeight: FontWeight.w400,
-              color: SCColors.color_8D8E99
-          ),)
+          const Text(
+            "暂无消息",
+            style: TextStyle(
+                fontSize: SCFonts.f14,
+                fontWeight: FontWeight.w400,
+                color: SCColors.color_8D8E99),
+          )
         ],
       );
     } else {
@@ -172,5 +231,4 @@ class SCMessageListView extends StatelessWidget {
           });
     }
   }
-
 }

@@ -73,4 +73,6 @@ class SCKey {
   static const String kRefreshWorkBenchPage = "kRefreshWorkBenchPage";
   /// 刷新未读消息数量key
   static const String kReloadUnreadMessageCount = "kReloadUnreadMessageCount";
+  /// 加载未读消息数量key
+  static const String kRefreshdUnreadMessageCount = "kRefreshdUnreadMessageCount";
 }

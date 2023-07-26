@@ -94,7 +94,8 @@ class SCWorkBenchController extends GetxController{
 
   /// 待办——key
   List todoKeyList = [];
-
+//未读消息
+  RxInt unreadMegNum = 0.obs;
   @override
   onInit() {
     super.onInit();
@@ -571,6 +572,7 @@ class SCWorkBenchController extends GetxController{
         success: (value) {
           if (value is int) {
             SCScaffoldManager.instance.unreadMessageCount = value;
+            unreadMegNum.value = value;
             var params = {"key" : SCKey.kReloadUnreadMessageCount};
             SCScaffoldManager.instance.eventBus.fire(params);
           }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -101,6 +102,19 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Column(
         children: [
+          rightItem(),
+          workBenchView()
+        ],
+      ),
+    );
+  }
+
+  ///导航栏
+  Widget rightItem() {
+    return GetBuilder<SCWorkBenchController>(
+      init: workBenchController, // 初始化控制器
+      builder: (controller) {
+        return 
           SCWorkBenchSearch(
             unreadNum: SCScaffoldManager.instance.unreadMessageCount,
             searchAction: () {
@@ -112,10 +126,9 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
             messageAction: () {
               messageAction();
             },
-          ),
-          workBenchView()
-        ],
-      ),
+          )
+        ; // 将你想要包裹的 Widget 放在 builder 函数中返回
+      },
     );
   }
 
@@ -289,35 +302,55 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   }
 
   /// 扫一扫
-  scanAction() async{
+  scanAction() async {
     var data = await SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
     print("扫码结果===$data=======");
-    Map<String,dynamic> map = json.decode(data);
+    Map<String, dynamic> map = json.decode(data);
     ScanResultModel model = ScanResultModel.fromJson(map);
     //TODO 待优化
-    switch(model.code){
+    switch (model.code) {
       case "100001":
         String token = SCScaffoldManager.instance.user.token ?? '';
         var url = "${model.url}&Authorization=$token";
-        var params = {'title' : "访客管理", 'url' : SCUtils.getWebViewUrl(url: url, title: "访客管理", needJointParams: true),'removeLoginCheck' : true};
+        var params = {
+          'title': "访客管理",
+          'url': SCUtils.getWebViewUrl(
+              url: url, title: "访客管理", needJointParams: true),
+          'removeLoginCheck': true
+        };
         SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
         break;
       case "100002":
         String token = SCScaffoldManager.instance.user.token ?? '';
         var url = "${model.url}&Authorization=$token";
-        var params = {'title' : "物品出门", 'url' : SCUtils.getWebViewUrl(url: url, title: "物品出门", needJointParams: true),'removeLoginCheck' : true};
+        var params = {
+          'title': "物品出门",
+          'url': SCUtils.getWebViewUrl(
+              url: url, title: "物品出门", needJointParams: true),
+          'removeLoginCheck': true
+        };
         SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
         break;
       case "100003":
         String token = SCScaffoldManager.instance.user.token ?? '';
         var url = "${model.url}&Authorization=$token";
-        var params = {'title' : "物品借用", 'url' : SCUtils.getWebViewUrl(url: url, title: "物品借用", needJointParams: true),'removeLoginCheck' : true};
+        var params = {
+          'title': "物品借用",
+          'url': SCUtils.getWebViewUrl(
+              url: url, title: "物品借用", needJointParams: true),
+          'removeLoginCheck': true
+        };
         SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
         break;
       case "100004":
         String token = SCScaffoldManager.instance.user.token ?? '';
         var url = "${model.url}&Authorization=$token";
-        var params = {'title' : "物品寄存", 'url' : SCUtils.getWebViewUrl(url: url, title: "物品寄存", needJointParams: true),'removeLoginCheck' : true};
+        var params = {
+          'title': "物品寄存",
+          'url': SCUtils.getWebViewUrl(
+              url: url, title: "物品寄存", needJointParams: true),
+          'removeLoginCheck': true
+        };
         SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
         break;
     }
@@ -413,6 +446,9 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
         workBenchController.loadData(loadAllToDo: true);
       } else if (key == SCKey.kReloadUnreadMessageCount) {
         workBenchController.update();
+      } else if (key == SCKey.kRefreshdUnreadMessageCount) {
+        log("调用唯独消息接口");
+        workBenchController.loadUnreadMessageCount();
       }
     });
   }
