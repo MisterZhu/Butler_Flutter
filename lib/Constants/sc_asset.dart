@@ -36,6 +36,8 @@ class SCAsset {
   /// 用户-默认头像
   static const String iconUserDefault = "images/common/icon_user_default.png";
 
+  static const String launcherBackground = 'images/common/launcher_bg.png';
+
 
   /// 用户-详情
   static const String iconArrowRight = "images/common/icon_arrow_right.png";

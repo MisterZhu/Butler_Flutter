@@ -10,6 +10,8 @@ import 'package:smartcommunity/Utils/JPush/sc_jpush.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 
+import '../../../../Constants/sc_asset.dart';
+
 /// 用户协议与隐私政策弹窗-page
 class SCPrivacyAlertPage extends StatelessWidget {
   SCBasePrivacyController state = Get.put(SCBasePrivacyController());
@@ -21,11 +23,19 @@ class SCPrivacyAlertPage extends StatelessWidget {
     );
   }
 
-
   /// body
   Widget body() {
     return Stack(
-      children: [maskItem(), privacyAlertItem()],
+      children: [
+        Image.asset(
+          SCAsset.launcherBackground,
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.cover,
+        ),
+        maskItem(),
+        privacyAlertItem()
+      ],
     );
   }
 
@@ -50,7 +60,8 @@ class SCPrivacyAlertPage extends StatelessWidget {
         },
         sureAction: () async {
           if (state.isAgree == true) {
-            SharedPreferences preference = await SharedPreferences.getInstance();
+            SharedPreferences preference =
+                await SharedPreferences.getInstance();
             preference.setBool(SCKey.isShowPrivacyAlert, false);
             SCJPush.initJPush();
             SCRouterHelper.pathOffAllPage(SCRouterPath.loginPath, null);

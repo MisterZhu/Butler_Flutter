@@ -14,17 +14,17 @@ import 'package:smartcommunity/Utils/sc_utils.dart';
 /// 用户协议和隐私政策弹窗
 
 class SCBasicPrivacyAlert extends StatelessWidget {
-  SCBasicPrivacyAlert(
-      {Key? key,
-      this.isAgree = false,
-      this.titleString = '',
-      this.contentString = '',
-      this.descriptionString = '',
-      this.cancelAction,
-      this.sureAction,
-      this.agreementDetailAction,
-      this.agreeAction,
-     }) : super(key: key);
+  SCBasicPrivacyAlert({
+    Key? key,
+    this.isAgree = false,
+    this.titleString = '',
+    this.contentString = '',
+    this.descriptionString = '',
+    this.cancelAction,
+    this.sureAction,
+    this.agreementDetailAction,
+    this.agreeAction,
+  }) : super(key: key);
 
   /// 是否同意用户协议和隐私政策
   final bool isAgree;
@@ -55,20 +55,21 @@ class SCBasicPrivacyAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     initData();
-    return body();
+    return body(context);
   }
 
   /// body
-  Widget body() {
+  Widget body(BuildContext context) {
     /// 弹窗宽度
-    double width = 200;
-
-    if (SCUtils().getScreenWidth() > SCDefaultValue.defaultScreenWidth) {
-      width = 311.0;
-    } else {
-      width = SCUtils().getScreenWidth() - 64.0;
+    double width = 311;
+    var getScreenWidth = MediaQuery.of(context).size.width;
+    if (getScreenWidth != 0) {
+      if (getScreenWidth > SCDefaultValue.defaultScreenWidth) {
+        width = 311.0;
+      } else {
+        width = SCUtils().getScreenWidth() - 64.0;
+      }
     }
-
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
