@@ -1,3 +1,4 @@
+/// locationShow : "" 货位
 /// barCode : ""
 /// classifyId : "" 物资分类ID
 /// classifyName : "" 物资分类名称
@@ -22,6 +23,7 @@
 class SCMaterialListModel {
   SCMaterialListModel({
     String? barCode,
+    String? locationShow,
     String? classifyId,
     String? classifyName,
     String? code,
@@ -77,6 +79,7 @@ class SCMaterialListModel {
     double? maintenancePrice,// 维保费用
   }) {
     _barCode = barCode;
+    _locationShow = locationShow;
     _classifyId = classifyId;
     _classifyName = classifyName;
     _code = code;
@@ -134,6 +137,7 @@ class SCMaterialListModel {
 
   SCMaterialListModel.fromJson(dynamic json) {
     _barCode = json['barCode'];
+    _locationShow = json['locationShow'];
     _classifyId = json['classifyId'];
     _classifyName = json['classifyName'];
     _code = json['code'];
@@ -191,6 +195,7 @@ class SCMaterialListModel {
     _maintenancePrice = json['maintenancePrice'];
   }
   String? _barCode;
+  String? _locationShow;
   String? _classifyId;
   String? _classifyName;
   String? _code;
@@ -245,6 +250,7 @@ class SCMaterialListModel {
   String? _maintenanceContent;
   double? _maintenancePrice;
   SCMaterialListModel copyWith({
+    String? locationShow,
     String? barCode,
     String? classifyId,
     String? classifyName,
@@ -302,6 +308,7 @@ class SCMaterialListModel {
   }) =>
       SCMaterialListModel(
         barCode: barCode ?? _barCode,
+        locationShow: locationShow ?? _locationShow,
         classifyId: classifyId ?? _classifyId,
         classifyName: classifyName ?? _classifyName,
         code: code ?? _code,
@@ -357,6 +364,7 @@ class SCMaterialListModel {
         maintenancePrice: maintenancePrice ?? _maintenancePrice,
       );
   String? get barCode => _barCode;
+  String? get locationShow => _locationShow;
   String? get classifyId => _classifyId;
   String? get classifyName => _classifyName;
   String? get code => _code;
@@ -500,6 +508,7 @@ class SCMaterialListModel {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['barCode'] = _barCode;
+    map['locationShow'] = _locationShow;
     map['classifyId'] = _classifyId;
     map['classifyName'] = _classifyName;
     map['code'] = _code;
