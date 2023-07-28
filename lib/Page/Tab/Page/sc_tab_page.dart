@@ -188,7 +188,7 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
               var urls = url.contains(SCH5.quickReportUrl) ? '$url?fromQw=false':url;
               print("url:$urls");
                 debugPrint('The answer url: ${SCUtils.getWebViewUrl(url: urls, title: text, needJointParams: true)}');
-                SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title": text, "url": SCUtils.getWebViewUrl(url: url, title: text, needJointParams: true)});
+                SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title": text, "url": SCUtils.getWebViewUrl(url: urls, title: text, needJointParams: true)});
               // }
             },
           ));
