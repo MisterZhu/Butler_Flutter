@@ -137,7 +137,7 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
 
   /// 刷新工作台
   updateWorkBench() {
-    var params = {"key" : SCKey.kSwitchEnterprise};
+    var params = {"key": SCKey.kSwitchEnterprise};
     SCScaffoldManager.instance.eventBus.fire(params);
   }
 
@@ -170,7 +170,9 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
         testList.map((e) => SCMenuItemModel.fromJson(e)).toList();
 
     /// todo 亚运村项目临时修改
-    if (SCConfig.yycTenantId() == (SCScaffoldManager.instance.defaultConfigModel?.tenantId ?? '') && SCScaffoldManager.instance.user.mobileNum != '13695805827') {
+    if (SCConfig.yycTenantId() ==
+            (SCScaffoldManager.instance.defaultConfigModel?.tenantId ?? '') &&
+        SCScaffoldManager.instance.user.mobileNum != '13695805827') {
       list = [];
     }
 
@@ -185,10 +187,14 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
               //   Navigator.of(context).pop();
               //   SCRouterHelper.pathPage(SCRouterPath.applicationPath, null);
               // } else {
-              var urls = url.contains(SCH5.quickReportUrl) ? '$url?fromQw=false':url;
-              print("url:$urls");
-                debugPrint('The answer url: ${SCUtils.getWebViewUrl(url: urls, title: text, needJointParams: true)}');
-                SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title": text, "url": SCUtils.getWebViewUrl(url: urls, title: text, needJointParams: true)});
+
+              debugPrint(
+                  'The answer url: ${SCUtils.getWebViewUrl(url: url, title: text, needJointParams: true)}');
+              SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+                "title": text,
+                "url": SCUtils.getWebViewUrl(
+                    url: url, title: text, needJointParams: true)
+              });
               // }
             },
           ));
