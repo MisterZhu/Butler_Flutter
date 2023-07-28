@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +9,7 @@ import 'package:smartcommunity/Constants/sc_default_value.dart';
 import 'package:smartcommunity/Constants/sc_h5.dart';
 import 'package:smartcommunity/Constants/sc_key.dart';
 import 'package:smartcommunity/Network/sc_config.dart';
+import 'package:smartcommunity/Network/sc_url.dart';
 import 'package:smartcommunity/Page/AddressBook/Home/Page/sc_addressbook_page.dart';
 import 'package:smartcommunity/Page/Application/Home/Page/sc_application_page.dart';
 import 'package:smartcommunity/Page/Mine/Home/Page/sc_mine_page.dart';
@@ -182,7 +185,9 @@ class SCTabState extends State<SCTabPage> with TickerProviderStateMixin {
               //   Navigator.of(context).pop();
               //   SCRouterHelper.pathPage(SCRouterPath.applicationPath, null);
               // } else {
-                debugPrint('The answer url: ${SCUtils.getWebViewUrl(url: url, title: text, needJointParams: true)}');
+              var urls = url.contains(SCH5.quickReportUrl) ? '$url?fromQw=false':url;
+              print("url:$urls");
+                debugPrint('The answer url: ${SCUtils.getWebViewUrl(url: urls, title: text, needJointParams: true)}');
                 SCRouterHelper.pathPage(SCRouterPath.webViewPath, {"title": text, "url": SCUtils.getWebViewUrl(url: url, title: text, needJointParams: true)});
               // }
             },

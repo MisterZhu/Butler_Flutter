@@ -174,6 +174,8 @@ class SCMessageController extends GetxController {
         success: (value) {
           SCLoadingUtils.hide();
           reloadData();
+          SCScaffoldManager.instance.eventBus
+              .fire({'key': SCKey.kRefreshdUnreadMessageCount});
         },
         failure: (value) {
           SCToast.showTip(value['message']);
