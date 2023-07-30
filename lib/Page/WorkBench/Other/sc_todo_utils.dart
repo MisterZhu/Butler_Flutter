@@ -108,45 +108,48 @@ class SCToDoUtils {
     int firstDollarIndex = model.taskId?.indexOf('\$') ?? 0;
     if (model.operationList?[0] == '接收') {
       handleTaskMeterReadingAccecp(model);
-    } else {
+    } else if (model.operationList?[0] == '处理') {
       // var scanData = await SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
 
-      SCPermissionUtils.scanCodeReadWithPrivacyAlert(completionHandler: (value) {
+      SCPermissionUtils.scanCodeReadWithPrivacyAlert(
+          completionHandler: (value) {
         var scanData = value;
         print("扫码结果222===$scanData=======");
-        SCHttpManager.instance.get(
-            url: SCUrl.handleMeterTaskDetail,
-            params: {"procInstId": model.taskId},
-            success: (detailsInfo) {
-              if (detailsInfo.toString().isEmpty) {
-                SCLoadingUtils.hide();
-                SCToast.showTip('未获取到详情信息');
-                return;
-              }
-              Map<String, dynamic> record = detailsInfo;
-              if (record['formData']['isClockIn']) {
-                showDealAlert(model);
-              } else {
-                var params = {
-                  'deviceId': scanData['data']['result'] ?? '',
-                  'procInstId': model.taskId?.substring(0, firstDollarIndex),
-                  'taskId': model.code
-                };
-                SCHttpManager.instance.post(
-                    url: SCUrl.handleQrcodeMeterReading,
-                    params:params,
-                    success: (detailsInfo) {
-                      print("12345xxs===>$detailsInfo");
-                      showDealAlert(model);
-                    });
-              }
-            },
-            failure: (err) {
-              SCLoadingUtils.hide();
-              SCToast.showTip(err['message']);
-            });
-      });
 
+        if (scanData['data']['result']) {
+          SCHttpManager.instance.get(
+              url: SCUrl.handleMeterTaskDetail,
+              params: {"procInstId": model.taskId},
+              success: (detailsInfo) {
+                if (detailsInfo.toString().isEmpty) {
+                  SCLoadingUtils.hide();
+                  SCToast.showTip('未获取到详情信息');
+                  return;
+                }
+                Map<String, dynamic> record = detailsInfo;
+                if (record['formData']['isClockIn']) {
+                  showDealAlert(model);
+                } else {
+                  var params = {
+                    'deviceId': scanData['data']['result'] ?? '',
+                    'procInstId': model.taskId?.substring(0, firstDollarIndex),
+                    'taskId': model.code
+                  };
+                  SCHttpManager.instance.post(
+                      url: SCUrl.handleQrcodeMeterReading,
+                      params: params,
+                      success: (detailsInfo) {
+                        print("12345xxs===>$detailsInfo");
+                        showDealAlert(model);
+                      });
+                }
+              },
+              failure: (err) {
+                SCLoadingUtils.hide();
+                SCToast.showTip(err['message']);
+              });
+        }
+      });
     }
   }
 
