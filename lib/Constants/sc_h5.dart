@@ -40,5 +40,7 @@ class SCH5 {
   static const String checkDetailsUrl = "/h5Manage/#/qualityInspection/qualityInspectionDetails";
   /// 任务整改
   static const String editDetailsUrl = "/h5Manage/#/qualityInspection/qualityInspectionitemAask";
+  /// 抄表详情
+  static const String readingTaskMeterDetailUrl = "/h5Manage/#/meterReadingTask/meterReadingTaskDetail";
 
 }

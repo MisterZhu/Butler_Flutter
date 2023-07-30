@@ -19,6 +19,37 @@ import '../Router/sc_router_path.dart';
 /// 权限管理工具
 
 class SCPermissionUtils {
+  /// 使用扫一扫 抄表-隐私权限提示
+  static scanCodeReadWithPrivacyAlert(
+      {Function(dynamic result)? completionHandler}) async {
+    Future.delayed(const Duration(seconds: 0), () async {
+      SCUtils.getCurrentContext(completionHandler: (context) async {
+        bool isShowAlert = SCSpUtil.getBool(SCKey.kIsShowScanCodeAlert);
+        if (!isShowAlert) {
+          SCDialogUtils.instance.showMiddleDialog(
+            context: context,
+            title: "温馨提示",
+            content: SCDefaultValue.scanAlertMessage,
+            customWidgetButtons: [
+              defaultCustomButton(context,
+                  text: '取消',
+                  textColor: SCColors.color_1B1C33,
+                  fontWeight: FontWeight.w400),
+              defaultCustomButton(context,
+                  text: '确定',
+                  textColor: SCColors.color_1B1C33,
+                  fontWeight: FontWeight.w400, onTap: () async {
+                    SCSpUtil.setBool(SCKey.kIsShowScanCodeAlert, true);
+                    scanCodeRead(completionHandler);
+                  }),
+            ],
+          );
+        } else {
+          scanCodeRead(completionHandler);
+        }
+      });
+    });
+  }
   /// 使用扫一扫-隐私权限提示
   static scanCodeWithPrivacyAlert(
       {Function(dynamic result)? completionHandler}) async {
@@ -50,7 +81,25 @@ class SCPermissionUtils {
       });
     });
   }
-
+  /// 使用扫一扫-无隐私权限提示
+  static scanCodeRead(Function(dynamic result)? completionHandler) async {
+    PermissionStatus permissionStatus = await Permission.camera.request();
+    if (permissionStatus == PermissionStatus.granted) {
+      var result = await SCRouterHelper.pathPage(SCRouterPath.scanPathMeterReading, null);
+      var params = {
+        "status": 1, // 0-权限无法确定，1-成功，2-相机权限被拒绝
+        "data": {"result": result}
+      };
+      completionHandler?.call(params);
+    } else {
+      var params = {
+        "status": 2, // 0-权限无法确定，1-成功，2-相机权限被拒绝
+        "data": {"result": ''}
+      };
+      completionHandler?.call(params);
+      noPermissionAlert(SCDefaultValue.noCameraPermissionMessage);
+    }
+  }
   /// 使用扫一扫-无隐私权限提示
   static scanCode(Function(dynamic result)? completionHandler) async {
     PermissionStatus permissionStatus = await Permission.camera.request();

@@ -23,6 +23,9 @@ class SCRouterPath {
   static String workBenchPath = "/lib/Page/WorkBench/Home/Page/sc_workbench_page";
   /// 扫一扫
   static String scanPath = "/lib/Page/Home/Home/Page/sc_scan_page";
+
+  static String scanPathMeterReading = "/lib/Page/Home/Home/Page/sc_scan_page_read";
+
   /// 详情
   static String workBenchDetailPath = "/lib/Page/WorkBench/Home/Page/sc_workbench_detail_page";
 

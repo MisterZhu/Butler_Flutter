@@ -13,12 +13,14 @@ import '../../../Network/sc_http_manager.dart';
 import '../../../Network/sc_url.dart';
 import '../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../Utils/Date/sc_date_utils.dart';
+import '../../../Utils/Permission/sc_permission_utils.dart';
 import '../../../Utils/Router/sc_router_helper.dart';
 import '../../../Utils/Router/sc_router_path.dart';
 import '../../../Utils/sc_utils.dart';
 import '../../ApplicationModule/Patrol/Model/sc_patrol_detail_model.dart';
 import '../../ApplicationModule/Patrol/Other/sc_patrol_utils.dart';
 import '../Home/Model/sc_todo_model.dart';
+import './meterReadingModule/meterReadingAlert.dart';
 
 /// 点击待办处理
 class SCToDoUtils {
@@ -40,12 +42,13 @@ class SCToDoUtils {
         /// 品质督查
         debugPrint("点击品质督查");
         checkDetail(model);
-
-      }else if (model.type == "RECTIFICATION") {
+      } else if (model.type == "RECTIFICATION") {
         /// 整改任务
         debugPrint("点击  整改任务");
         editDetail(model);
-
+      } else if (model.type == "METER_READING") {
+        /// 抄表任务
+        handleMeterReadingTaskDetail(model);
       } else {
         /// 未知
         SCToast.showTip(SCDefaultValue.developingTip);
@@ -61,8 +64,7 @@ class SCToDoUtils {
 
   /// 点击卡片-处理
   dealAction(SCToDoModel model, String btnText) {
-
-    debugPrint("点击卡片按钮");
+    debugPrint("点击卡片按钮${model.type}");
 
     if (model.appName == "TASK") {
       /// 三巡一保
@@ -74,8 +76,11 @@ class SCToDoUtils {
       } else if (model.type == "SAFE_PROD") {
         /// 安全生产
         dealPatrolTask(model, btnText);
-      }else if (model.type == "QUALITY_REGULATION" ||
-                model.type == "RECTIFICATION") {
+      } else if (model.type == "METER_READING") {
+        /// 抄表任务
+        handleMeterReadingTask(model);
+      } else if (model.type == "QUALITY_REGULATION" ||
+          model.type == "RECTIFICATION") {
         /// 品质督查  整改任务
         dealPatrolTask(model, btnText);
       } else {
@@ -89,6 +94,216 @@ class SCToDoUtils {
       /// 未知
       SCToast.showTip('未知错误');
     }
+  }
+
+  /// 编号
+  String procInstId = "";
+
+  /// 任务ID
+  String taskId = "";
+
+  /// 抄表任务
+  handleMeterReadingTask(SCToDoModel model) async {
+    int lastDollarIndex = model.taskId?.lastIndexOf('\$') ?? 0;
+    int firstDollarIndex = model.taskId?.indexOf('\$') ?? 0;
+    if (model.operationList?[0] == '接收') {
+      handleTaskMeterReadingAccecp(model);
+    } else {
+      // var scanData = await SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
+
+      SCPermissionUtils.scanCodeReadWithPrivacyAlert(completionHandler: (value) {
+        var scanData = value;
+        print("扫码结果222===$scanData=======");
+        SCHttpManager.instance.get(
+            url: SCUrl.handleMeterTaskDetail,
+            params: {"procInstId": model.taskId},
+            success: (detailsInfo) {
+              if (detailsInfo.toString().isEmpty) {
+                SCLoadingUtils.hide();
+                SCToast.showTip('未获取到详情信息');
+                return;
+              }
+              Map<String, dynamic> record = detailsInfo;
+              if (record['formData']['isClockIn']) {
+                showDealAlert(model);
+              } else {
+                var params = {
+                  'deviceId': scanData['data']['result'] ?? '',
+                  'procInstId': model.taskId?.substring(0, firstDollarIndex),
+                  'taskId': model.code
+                };
+                SCHttpManager.instance.post(
+                    url: SCUrl.handleQrcodeMeterReading,
+                    params:params,
+                    success: (detailsInfo) {
+                      print("12345xxs===>$detailsInfo");
+                      showDealAlert(model);
+                    });
+              }
+            },
+            failure: (err) {
+              SCLoadingUtils.hide();
+              SCToast.showTip(err['message']);
+            });
+      });
+
+    }
+  }
+
+  handleMeterReadingTaskDetail(SCToDoModel model) {
+    int lastDollarIndex = model.taskId?.lastIndexOf('\$') ?? 0;
+    int firstDollarIndex = model.taskId?.indexOf('\$') ?? 0;
+    String url =
+        '${SCUtils.getWebViewUrl(url: SCH5.readingTaskMeterDetailUrl, title: '抄表任务', needJointParams: true)}&nodeId=${model.taskId?.substring(lastDollarIndex)}&procInstId=${model.taskId?.substring(0, firstDollarIndex)}&taskId=${model.code}';
+    // 跳到详情
+    SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+      "title": model.subTypeDesc ?? '',
+      "url": SCConfig.getH5Url(url),
+      "needJointParams": true
+    })?.then((value) {
+      SCScaffoldManager.instance.eventBus
+          .fire({"key": SCKey.kRefreshWorkBenchPage});
+    });
+  }
+
+  /// 抄表接受任务
+  handleTaskMeterReadingAccecp(SCToDoModel model) {
+    SCLoadingUtils.show();
+    int lastDollarIndex = model.taskId?.indexOf('\$') ?? 0;
+    SCHttpManager.instance.post(
+        url: SCUrl.handleMeterTask,
+        params: {
+          "action": 'accept',
+          "instanceId": model.taskId?.substring(0, lastDollarIndex),
+          "taskId": model.code,
+        },
+        success: (res) {
+          SCToast.showTip('操作成功');
+          SCLoadingUtils.hide();
+          SCScaffoldManager.instance.eventBus
+              .fire({"key": SCKey.kRefreshWorkBenchPage});
+        },
+        failure: (err) {
+          SCLoadingUtils.hide();
+          SCToast.showTip(err['message']);
+          SCScaffoldManager.instance.eventBus
+              .fire({"key": SCKey.kRefreshWorkBenchPage});
+        });
+  }
+
+  showDealAlert(SCToDoModel model) {
+    SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+      SCDialogUtils().showCustomBottomDialog(
+          isDismissible: true,
+          context: context,
+          widget: MeterReadingAlert(
+            title: '处理',
+            resultDes: '',
+            readingNumber: '本期读数',
+            reasonDes: '备注',
+            isRequired: true,
+            tagList: [],
+            hiddenTags: true,
+            showNode: false,
+            model: model,
+            sureAction: (int index, String currentReading, String text,
+                List attachments) {},
+          ));
+    });
+  }
+
+  /// 图片转换
+  List transferImage(List imageList) {
+    List list = [];
+    for (var params in imageList) {
+      var newParams = {
+        "id": SCDateUtils.timestamp(),
+        "isImage": true,
+        "name": params['name'],
+        "fileKey": params['fileKey']
+      };
+      list.add(newParams);
+    }
+    return list;
+  }
+
+  handleGetMeterTaskHandle(
+      context, String taskId, Map<String, dynamic> comment) {
+    var isTurn = 0;
+    var previousReading = 0.0;
+    var maximumReading = 0.0;
+    SCHttpManager.instance.get(
+        url: SCUrl.handleMeterTaskDetail,
+        params: {"procInstId": taskId},
+        success: (detailsInfo) {
+          Map<String, dynamic> res = detailsInfo;
+
+          previousReading = res['formData']['previousReading'] ?? 0;
+          maximumReading = res['formData']['maximumReading'] ?? 0;
+
+          print(99991);
+          print(comment['currentReading']);
+          print(res['formData']['previousReading']);
+          print(previousReading);
+          print(maximumReading);
+          print(99991);
+          if (double.parse(comment['currentReading']) < previousReading) {
+            isTurn = 1;
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text(''),
+                    content: const Text('本期读数小于上期读数，请确认仪表读数是否已回程。'),
+                    actions: <Widget>[
+                      TextButton(onPressed: () {}, child: Text('取消')),
+                      TextButton(
+                          onPressed: () {
+                            SCHttpManager.instance.post(
+                                url: SCUrl.handleMeterTask,
+                                params: {
+                                  "action": 'handle',
+                                  "description": comment['text'],
+                                  "photo": comment['attachments']?[0],
+                                  "currentReading": comment['currentReading'],
+                                  "deviceId": res['formData']['deviceId'],
+                                  "instanceId": res['formData']['procInstId'],
+                                  "isTurn": 0,
+                                  "taskId":
+                                      '377c386e-1fea-11ee-8bd9-baab767e558f',
+                                },
+                                success: (res) {
+                                  SCLoadingUtils.hide();
+                                  print(res);
+                                },
+                                failure: (err) {
+                                  SCLoadingUtils.hide();
+                                  SCToast.showTip(err['message']);
+                                });
+                          },
+                          child: const Text('确认'))
+                    ],
+                  );
+                });
+          }
+          if (double.parse(comment['currentReading']) > maximumReading) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text(''),
+                    content: const Text('当前表读数大于最大表读数，请重新输入正确的表读数。'),
+                    actions: <Widget>[
+                      TextButton(onPressed: () {}, child: const Text('确认'))
+                    ],
+                  );
+                });
+          }
+        },
+        failure: (err) {
+          SCLoadingUtils.hide();
+          SCToast.showTip(err['message']);
+        });
   }
 
   //抢单处理
@@ -122,7 +337,7 @@ class SCToDoUtils {
       return;
     }
     String realUrl =
-    SCUtils.getWebViewUrl(url: url, title: '', needJointParams: true);
+        SCUtils.getWebViewUrl(url: url, title: '', needJointParams: true);
     debugPrint("web url = $realUrl");
 
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
@@ -134,19 +349,20 @@ class SCToDoUtils {
           .fire({"key": SCKey.kRefreshWorkBenchPage});
     });
   }
+
   /// 任务整改
   editDetail(SCToDoModel model) {
     List<String>? title = model.taskId?.split("\$\_\$");
     String url = '';
     if ((title ?? []).isNotEmpty && title?.length == 2) {
       url =
-      "${SCConfig.BASE_URL}${SCH5.editDetailsUrl}?id=${title?[0]}&nodeId=${title?[1]}&from=app";
+          "${SCConfig.BASE_URL}${SCH5.editDetailsUrl}?id=${title?[0]}&nodeId=${title?[1]}&from=app";
     } else {
       SCToast.showTip('未知错误');
       return;
     }
     String realUrl =
-    SCUtils.getWebViewUrl(url: url, title: '', needJointParams: true);
+        SCUtils.getWebViewUrl(url: url, title: '', needJointParams: true);
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
       "title": model.subTypeDesc ?? '',
       "url": realUrl,

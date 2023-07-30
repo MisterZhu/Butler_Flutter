@@ -68,6 +68,7 @@ import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_add_property_frmLos
 import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_property_frmLoss_detail_page.dart';
 import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_property_frmLoss_page.dart';
 import '../../Page/ApplicationModule/WarningCenter/Page/sc_warning_detail_page.dart';
+import '../../Page/Base/Scan/Page/sc_scan_read_page.dart';
 import '../../Page/Login/Privacy/Page/sc_privacy_alert_new_page.dart';
 import '../../Page/Message/Page/sc_message_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
@@ -96,6 +97,8 @@ class SCRouterPages {
     GetPage(name: SCRouterPath.minePath, page: () => SCMinePage()),
     /*扫一扫*/
     GetPage(name: SCRouterPath.scanPath, page: () => SCScanPage()),
+    /*扫一扫*/
+    GetPage(name: SCRouterPath.scanPathMeterReading, page: () => SCScanReadPage()),
     /*webView*/
     GetPage(name: SCRouterPath.webViewPath, page: () => SCWebViewPage()),
     /*工作台详情*/

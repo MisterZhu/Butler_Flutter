@@ -300,6 +300,7 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
   ///  扫码-channel
   JavascriptChannel scanChannel(BuildContext context) => JavascriptChannel(
       name: SCH5FlutterKey.scan,
+
       onMessageReceived: (JavascriptMessage message) {
         SCPermissionUtils.scanCodeWithPrivacyAlert(completionHandler: (value) {
           var params = {

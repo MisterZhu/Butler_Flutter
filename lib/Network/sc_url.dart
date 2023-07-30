@@ -437,4 +437,14 @@ class SCUrl {
 
   /// 维保详情
   static const String kPropertyMaintenanceDetailUrl = "/api/warehouse/manage/wareHouseMaintain/detail";
+
+  /************************* 抄表任务 *************************/
+  /// 处理抄表任务
+  static const String handleMeterTask = "/api/device/meterReading/task/handle";
+  static const String handleMeterTaskDetail = "/api/device/meterReading/task/detail";
+  static const String handleUploadProductImg = "/api/device/upload/productImg";
+  static const String handleQrcodeMeterReading =  "/api/device/meterReading/qr/comparison";
+
+
+
 }
