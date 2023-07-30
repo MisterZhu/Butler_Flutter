@@ -154,19 +154,23 @@ class SCToDoUtils {
   }
 
   handleMeterReadingTaskDetail(SCToDoModel model) {
-    int lastDollarIndex = model.taskId?.lastIndexOf('\$') ?? 0;
-    int firstDollarIndex = model.taskId?.indexOf('\$') ?? 0;
-    String url =
-        '${SCUtils.getWebViewUrl(url: SCH5.readingTaskMeterDetailUrl, title: '抄表任务', needJointParams: true)}&nodeId=${model.taskId?.substring(lastDollarIndex)}&procInstId=${model.taskId?.substring(0, firstDollarIndex)}&taskId=${model.code}';
-    // 跳到详情
-    SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
-      "title": model.subTypeDesc ?? '',
-      "url": SCConfig.getH5Url(url),
-      "needJointParams": true
-    })?.then((value) {
-      SCScaffoldManager.instance.eventBus
-          .fire({"key": SCKey.kRefreshWorkBenchPage});
-    });
+    ///我经办的任务列表没有包含$_$nodeid,导致跳转失败！！！
+    if(model.taskId?.indexOf('\$')!= -1) {
+      int lastDollarIndex = model.taskId?.lastIndexOf('\$') ?? 0;
+      int firstDollarIndex = model.taskId?.indexOf('\$') ?? 0;
+      String url =
+          '${SCUtils.getWebViewUrl(url: SCH5.readingTaskMeterDetailUrl, title: '抄表任务', needJointParams: true)}&nodeId=${model.taskId?.substring(lastDollarIndex)}&procInstId=${model.taskId?.substring(0, firstDollarIndex)}&taskId=${model.code}';
+      // 跳到详情
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+        "title": model.subTypeDesc ?? '',
+        "url": SCConfig.getH5Url(url),
+        "needJointParams": true
+      })?.then((value) {
+        SCScaffoldManager.instance.eventBus
+            .fire({"key": SCKey.kRefreshWorkBenchPage});
+      });
+    }
+
   }
 
   /// 抄表接受任务
