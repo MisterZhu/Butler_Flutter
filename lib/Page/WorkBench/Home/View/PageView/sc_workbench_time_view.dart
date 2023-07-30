@@ -86,7 +86,12 @@ class SCWorkBenchTimeView extends StatelessWidget {
     if (type == 1) {
       return '$timeStr$dayString$hourString小时$minuteString分钟$secondString秒';
     } else {
-      return {"day" : "$day", "hour" : "$hour", "minute" : "$minute", "second" : "$second"};
+      return {
+        "day": "$day",
+        "hour": "$hour",
+        "minute": "$minute",
+        "second": "$second"
+      };
     }
     //return {'day': day, 'hour': hourString, 'minute': minuteString, 'second': secondString};
   }
@@ -107,7 +112,7 @@ class SCWorkBenchTimeView extends StatelessWidget {
           timeView(timeMap['second']),
         ],
       );
-    } else if(time == 0) {
+    } else if (time == 0) {
       return const SizedBox();
     } else {
       return timeItem(getTimeData(type: 1));
@@ -129,7 +134,9 @@ class SCWorkBenchTimeView extends StatelessWidget {
   /// item
   Widget timeView(String text) {
     return Container(
-      width: 18.0,
+      constraints: const BoxConstraints(
+        minWidth: 18.0, // 设置最小宽度为100
+      ),
       height: 18.0,
       alignment: Alignment.center,
       decoration: BoxDecoration(
