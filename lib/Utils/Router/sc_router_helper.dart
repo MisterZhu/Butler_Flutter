@@ -71,19 +71,19 @@ class SCRouterHelper {
     }
 
     /// webView
-    if (path == SCRouterPath.webViewPath) {
-      if (Platform.isAndroid) {
-        /// 调用Android WebView
-        var channel = SCScaffoldManager.flutterToNative;
-        var result = await channel.invokeMethod(SCScaffoldManager.android_webview, params);
-        /// todo 刷新控制台数据
-        print("-------$result-------");
-        return result;
-      } else if (Platform.isIOS) {
-        /// 调用iOS WebView
-        return SCScaffoldManager.instance.flutterToNativeAction(SCFlutterKey.kIOSNativeWebView, params);
-      }
-    }
+    // if (path == SCRouterPath.webViewPath) {
+    //   if (Platform.isAndroid) {
+    //     /// 调用Android WebView
+    //     var channel = SCScaffoldManager.flutterToNative;
+    //     var result = await channel.invokeMethod(SCScaffoldManager.android_webview, params);
+    //     /// todo 刷新控制台数据
+    //     print("-------$result-------");
+    //     return result;
+    //   } else if (Platform.isIOS) {
+    //     /// 调用iOS WebView
+    //     return SCScaffoldManager.instance.flutterToNativeAction(SCFlutterKey.kIOSNativeWebView, params);
+    //   }
+    // }
 
     return Get.toNamed(path, arguments: params);
   }

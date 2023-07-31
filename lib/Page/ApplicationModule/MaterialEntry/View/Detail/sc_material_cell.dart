@@ -776,7 +776,7 @@ class SCMaterialCellState extends State<SCMaterialCell> {
     }
     if (widget.check == true) {
       text =
-          '单位:${widget.model?.unitName ?? ''} 条形码:${widget.model?.barCode ?? ''}\n规格:${widget.model?.norms ?? ''}\n账面库存:${widget.model?.number}\n货位:${widget.model?.locationShow}';
+          '单位:${widget.model?.unitName ?? ''} 条形码:${widget.model?.barCode ?? ''}\n规格:${widget.model?.norms ?? ''}\n账面库存:${widget.model?.number}\n货位:${widget.model?.locationShow ?? ''}';
     }
     return Text(
       SCStrings.autoLineString(text),

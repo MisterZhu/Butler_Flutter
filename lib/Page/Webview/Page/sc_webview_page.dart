@@ -231,6 +231,8 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
   /// webView创建
   void _onWebViewCreated(WebViewController controller) async {
     webViewController = controller;
+
+    print("webViewController====>$webViewController");
     if (_isLocalUrl) {
       await _loadHtmlFromAssets();
     }
@@ -302,11 +304,8 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
       name: SCH5FlutterKey.scan,
 
       onMessageReceived: (JavascriptMessage message) {
-        SCPermissionUtils.scanCodeWithPrivacyAlert(completionHandler: (value) {
-          var params = {
-            "status": 1,
-            "data": {"result": value}
-          };
+        SCPermissionUtils.scanCodeReadWithPrivacyAlert(completionHandler: (value) {
+          var params =value;
           webViewController?.runJavascript(SCUtils()
               .flutterCallH5(h5Name: SCFlutterH5Key.scan, params: params));
         });
