@@ -164,7 +164,7 @@ class SCToDoUtils {
       SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
         "title": model.subTypeDesc ?? '',
         "url": SCConfig.getH5Url(url),
-        "needJointParams": true
+        "needJointParams": false
       })?.then((value) {
         SCScaffoldManager.instance.eventBus
             .fire({"key": SCKey.kRefreshWorkBenchPage});
