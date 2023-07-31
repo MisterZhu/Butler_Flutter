@@ -116,7 +116,7 @@ class SCToDoUtils {
         var scanData = value;
         print("扫码结果222===$scanData=======");
 
-        if (scanData['data']['result']) {
+        if (scanData['data']['result'].toString().isNotEmpty) {
           SCHttpManager.instance.get(
               url: SCUrl.handleMeterTaskDetail,
               params: {"procInstId": model.taskId},
