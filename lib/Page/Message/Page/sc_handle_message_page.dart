@@ -22,10 +22,18 @@ class _SCHandleMessagePage extends State<SCHandleMessagePage> {
   late SCHandleMessageController controller;
 
   String controllerTag = '';
+  dynamic taskMsg;
+  String content = '';
 
   @override
   initState() {
     super.initState();
+    var args = Get.arguments();
+    taskMsg = args.taskMsg;
+    content = args.content;
+    print("222221==>$args");
+    print("222222==>$content");
+    print("222223==>$taskMsg");
     controllerTag = SCScaffoldManager.instance
         .getXControllerTag((SCHandleMessagePage).toString());
     controller = Get.put(SCHandleMessageController(), tag: controllerTag);
@@ -63,8 +71,8 @@ class _SCHandleMessagePage extends State<SCHandleMessagePage> {
         return Column(
           children: [
             title(),
-            // time(state:state),
-            // contextItem(state:state),
+            time(),
+            contextItem(),
           ],
         );
       },
@@ -78,43 +86,41 @@ class _SCHandleMessagePage extends State<SCHandleMessagePage> {
       children: [
         Text('待办通知',
             style: TextStyle(
-              fontSize: SCFonts.f14,
-              fontWeight: FontWeight.w500,
+              fontSize: SCFonts.f50,
+              fontWeight: FontWeight.w800,
             ))
       ],
     );
   }
 
-  Widget time(state) {
+  Widget time() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(state.content,
+        Text(content,
             style: TextStyle(
-              fontSize: SCFonts.f14,
-              fontWeight: FontWeight.w500,
+              fontSize: SCFonts.f10,
+              fontWeight: FontWeight.w200,
             ))
       ],
     );
   }
 
   Widget contextItem() {
-
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [Text('ttttttttt')],
+    return Container(
+      margin: EdgeInsets.fromLTRB(0, 20.0, 0, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(content,
+              style: TextStyle(
+                fontSize: SCFonts.f14,
+                fontWeight: FontWeight.w600,
+              ))
+        ],
+      ),
     );
-  }
-
-  /// 刷新tabList
-  updateTabList() {
-    if (SCScaffoldManager.instance.unreadMessageCount > 0) {
-      return ['全部', '未读(${SCScaffoldManager.instance.unreadMessageCount})'];
-    } else {
-      return ['全部', '未读'];
-    }
   }
 }
