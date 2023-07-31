@@ -159,7 +159,7 @@ class SCToDoUtils {
       int lastDollarIndex = model.taskId?.lastIndexOf('\$') ?? 0;
       int firstDollarIndex = model.taskId?.indexOf('\$') ?? 0;
       String url =
-          '${SCUtils.getWebViewUrl(url: SCH5.readingTaskMeterDetailUrl, title: '抄表任务', needJointParams: true)}&nodeId=${model.taskId?.substring(lastDollarIndex)}&procInstId=${model.taskId?.substring(0, firstDollarIndex)}&taskId=${model.code}';
+          '${SCUtils.getWebViewUrl(url: SCH5.readingTaskMeterDetailUrl, title: '抄表任务', needJointParams: true)}&nodeId=${model.taskId?.substring(lastDollarIndex+1)}&procInstId=${model.taskId?.substring(0, firstDollarIndex)}&taskId=${model.code}';
       // 跳到详情
       SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
         "title": model.subTypeDesc ?? '',
