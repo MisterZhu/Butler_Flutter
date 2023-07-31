@@ -76,7 +76,7 @@ class SCPatrolController extends GetxController {
         } else if (pageType == 2) {
           // 巡检
           appCode = "POLICED_DEVICE";
-          if(params.containsKey("deviceCode")){
+          if (params.containsKey("deviceCode")) {
             deviceCode = params['deviceCode'];
           }
         } else if (pageType == 3) {
@@ -85,9 +85,9 @@ class SCPatrolController extends GetxController {
       }
     }
     getTypeData();
-    if(deviceCode.isNotEmpty){
+    if (deviceCode.isNotEmpty) {
       loadScanData(isMore: false);
-    }else{
+    } else {
       loadData(isMore: false);
     }
   }
@@ -106,9 +106,9 @@ class SCPatrolController extends GetxController {
     pageNum = 1;
 
     /// 重新获取数据
-    if(deviceCode.isNotEmpty){
+    if (deviceCode.isNotEmpty) {
       loadScanData(isMore: false);
-    }else{
+    } else {
       loadData(isMore: false);
     }
   }
@@ -119,9 +119,9 @@ class SCPatrolController extends GetxController {
     pageNum = 1;
 
     /// 重新获取数据
-    if(deviceCode.isNotEmpty){
+    if (deviceCode.isNotEmpty) {
       loadScanData(isMore: false);
-    }else{
+    } else {
       loadData(isMore: false);
     }
   }
@@ -169,7 +169,9 @@ class SCPatrolController extends GetxController {
         "map": {},
         "method": 1,
         "name": "wf.name",
-        "value": model.name
+        // TODO ---【临时代码】待数据看板9月份上线 注释----
+        "value": (statusList[selectStatusIndex].name?.length ?? 0) >= 3
+            && pageType == 2 ? model.name?.substring(0, 3) : model.name
       };
       fields.add(dic);
     }
@@ -186,7 +188,7 @@ class SCPatrolController extends GetxController {
     fields.add(dic1);
     var params = {
       "conditions": {"fields": fields},
-      "count": false,
+      "count": true,
       "last": false,
       "orderBy": [
         {"asc": sort, "field": "wt.gmtModify"}
@@ -215,6 +217,14 @@ class SCPatrolController extends GetxController {
               dataList = [];
             }
           }
+          // TODO ---【临时代码】待数据看板9月份上线 项目侧：只处理目前5种状态 注释----
+          if (selectStatusIndex != 0 && pageType == 2) {
+            var total = value['total'].toString();
+            statusList[selectStatusIndex].name =
+                (statusList[selectStatusIndex].name!.substring(0, 3) + total)
+                    .toString();
+          }
+          // TODO ---【临时代码】待数据看板9月份上线 注释----
           update();
           bool last = false;
           if (isLoadMore) {
