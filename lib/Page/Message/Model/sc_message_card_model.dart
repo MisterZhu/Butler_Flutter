@@ -16,7 +16,8 @@ class SCMessageCardModel {
       this.noticeCardType, 
       this.noticeCardTypeName, 
       this.noticeId, 
-      this.noticeTime, 
+      this.noticeTime,
+    this.taskMsg,
       this.title,});
 
   SCMessageCardModel.fromJson(dynamic json) {
@@ -42,6 +43,7 @@ class SCMessageCardModel {
     noticeCardTypeName = json['noticeCardTypeName'];
     noticeId = json['noticeId'];
     noticeTime = json['noticeTime'];
+    taskMsg = json['taskMsg'];
     title = json['title'];
   }
   String? cardCode;
@@ -61,6 +63,7 @@ class SCMessageCardModel {
   String? noticeCardTypeName;
   String? noticeId;
   String? noticeTime;
+  dynamic? taskMsg;
   String? title;
 
   Map<String, dynamic> toJson() {
@@ -88,6 +91,7 @@ class SCMessageCardModel {
     map['noticeCardTypeName'] = noticeCardTypeName;
     map['noticeId'] = noticeId;
     map['noticeTime'] = noticeTime;
+    map['taskMsg'] = taskMsg;
     map['title'] = title;
     return map;
   }

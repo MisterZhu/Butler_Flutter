@@ -70,6 +70,7 @@ import '../../Page/ApplicationModule/PropertyFrmLoss/Page/sc_property_frmLoss_pa
 import '../../Page/ApplicationModule/WarningCenter/Page/sc_warning_detail_page.dart';
 import '../../Page/Base/Scan/Page/sc_scan_read_page.dart';
 import '../../Page/Login/Privacy/Page/sc_privacy_alert_new_page.dart';
+import '../../Page/Message/Page/sc_handle_message_page.dart';
 import '../../Page/Message/Page/sc_message_page.dart';
 import '../../Page/Mine/Home/Page/sc_personal_info_page.dart';
 import '../../Page/Mine/Home/Page/sc_proxy_page.dart';
@@ -228,7 +229,9 @@ class SCRouterPages {
 
     GetPage(name: SCRouterPath.patrolCheckCellDetailPage, page: () =>  SCCheckCellDetailPage()),
 
-    GetPage(name: SCRouterPath.patrolRoutePage, page: () => const ScPatrolRoutePage(),binding:PatrolRouteBinding() )
+    GetPage(name: SCRouterPath.patrolRoutePage, page: () => const ScPatrolRoutePage(),binding:PatrolRouteBinding() ),
+
+    GetPage(name: SCRouterPath.messageNeedHandlePage, page: () => SCHandleMessagePage()),
 
   ];
 

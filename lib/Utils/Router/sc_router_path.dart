@@ -262,4 +262,8 @@ class SCRouterPath {
   static String electronicPatrolPage = "/lib/Page/ElectronicPatrol/Page/sc_electronic_patrol_page";
 
 
+  /// 待办通知
+  static String messageNeedHandlePage = "/lib/Page/Message/Page/sc_handle_message_page";
+
+
 }
