@@ -59,11 +59,6 @@ class SCPatrolController extends GetxController {
   String appCode = "POLICED_POINT";
   String deviceCode = "";
 
-  @override
-  onInit() {
-    super.onInit();
-    getTaskStatusData();
-  }
 
   /// 初始化
   initParams(Map<String, dynamic> params) {
@@ -84,6 +79,7 @@ class SCPatrolController extends GetxController {
         }
       }
     }
+    getTaskStatusData();
     getTypeData();
     if (deviceCode.isNotEmpty) {
       loadScanData(isMore: false);
@@ -170,8 +166,10 @@ class SCPatrolController extends GetxController {
         "method": 1,
         "name": "wf.name",
         // TODO ---【临时代码】待数据看板9月份上线 注释----
-        "value": (statusList[selectStatusIndex].name?.length ?? 0) >= 3
-            && pageType == 2 ? model.name?.substring(0, 3) : model.name
+        "value": (statusList[selectStatusIndex].name?.length ?? 0) >= 3 &&
+                pageType == 2
+            ? model.name?.substring(0, 3)
+            : model.name
       };
       fields.add(dic);
     }
@@ -308,9 +306,13 @@ class SCPatrolController extends GetxController {
 
   /// 任务状态
   getTaskStatusData() {
+    var dictionaryCode = 'CUSTOM_STATUS';
+    if (pageType == 2) {
+      dictionaryCode = 'PATROL_INS';
+    }
     SCHttpManager.instance.get(
         url: SCUrl.kConfigDictionaryPidCodeUrl,
-        params: {'dictionaryCode': 'CUSTOM_STATUS'},
+        params: {'dictionaryCode': dictionaryCode},
         success: (value) {
           List<SCWarningDealResultModel> list =
               List<SCWarningDealResultModel>.from(value
