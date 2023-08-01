@@ -2,6 +2,8 @@
 class SCH5 {
   /// 工单h5
   static const String workOrderUrl = "/h5Manage-order/#/workOrder/orderDetailProcess";
+  /// 工单h5详情
+  static const String workOrderDetailUrl = "/h5Manage-order/#/workOrder/orderDetail";
   /// 积分h5
   static const String integralUrl = "https://saasprod.4001113900.com:10020/h5new/newUser/index.html#/home/integral";
   /// 园区缴费

@@ -81,7 +81,7 @@ class SCMessageListView extends StatelessWidget {
               }
             }
           }
-          if(model.noticeCardType == 1 && model.category == '待办通知'){
+          if (model.noticeCardType == 1 && model.category == '待办通知') {
             // head = firstItem.head ?? '';
             cardType == 1;
             content = model.content ?? '';
@@ -102,13 +102,12 @@ class SCMessageListView extends StatelessWidget {
                 : SCAsset.iconMessageContentDefault,
             bottomContentList: list,
             detailTapAction: () {
-              if(model.noticeCardType == 1 && model.category == '待办通知'){
+              if (model.noticeCardType == 1 && model.category == '待办通知') {
                 print('123待办通知待办通知待办通知待办通知未开发！！');
                 debugPrint('1111=====${model}');
-                // SCRouterHelper.pathPage(SCRouterPath.messageNeedHandlePage, {
-                //   "taskMsg": model?.taskMsg,
-                //   "content": model.content,
-                // });
+                SCRouterHelper.pathPage(SCRouterPath.messageNeedHandlePage, {
+                  "model": model,
+                });
                 return;
               }
               if (model.ext != '""') {
