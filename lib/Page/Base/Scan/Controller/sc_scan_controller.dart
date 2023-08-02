@@ -20,6 +20,8 @@ class SCScanController extends GetxController {
 
   deviceBasic(var id) {
     SCLoadingUtils.show();
+    print("id ======  $id");
+
     SCHttpManager.instance.get(
         url: SCUrl.deviceBasicUrl+id,
         success: (value) {
@@ -29,10 +31,10 @@ class SCScanController extends GetxController {
               {"pageType": 2, "deviceCode": device.deviceCode});
         },
         failure: (value) {
-          if (value['message'] != null) {
-            String message = value['message'];
-            SCToast.showTip(message);
-          }
+          // if (value['message'] != null) {
+          //   String message = value['message'];
+          //   SCToast.showTip(message);
+          // }
         });
   }
 }
