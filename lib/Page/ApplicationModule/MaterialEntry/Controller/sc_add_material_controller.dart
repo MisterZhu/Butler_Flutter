@@ -78,20 +78,22 @@ class SCAddMaterialController extends GetxController {
       SCLoadingUtils.show();
     }
     var params = {
-      "conditions": {
-        "classifyId": classifyId,
-
-        /// 分类id
-        "deleted": false,
-        "enabled": true,
-        "fields": [],
-        "wareHouseId": wareHouseId,
-        "outType": outType,
-        /// 仓库ID
-      },
-      "count": false,
-      "last": false,
-      "orderBy": [],
+      "classifyId" : classifyId,
+      "materialName" : ''
+      // "conditions": {
+      //   "classifyId": classifyId,
+      //
+      //   /// 分类id
+      //   "deleted": false,
+      //   "enabled": true,
+      //   "fields": [],
+      //   "wareHouseId": wareHouseId,
+      //   "outType": outType,
+      //   /// 仓库ID
+      // },
+      // "count": false,
+      // "last": false,
+      // "orderBy": [],
     };
     String url = '';
     if (materialType == SCWarehouseManageType.entry) {
