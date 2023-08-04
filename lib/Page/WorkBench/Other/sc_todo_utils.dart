@@ -89,7 +89,7 @@ class SCToDoUtils {
       }
     } else if (model.appName == "WORK_ORDER") {
       ///  工单
-      workOrderDetail(model);
+      workOrderDeal(model);
     } else {
       /// 未知
       SCToast.showTip('未知错误');
@@ -383,10 +383,29 @@ class SCToDoUtils {
   workOrderDetail(SCToDoModel model) {
     int status = (model.statusValue ?? '0').cnToInt();
     String title = SCUtils.getWorkOrderButtonText(status);
+    var url =
+        '${SCH5.workOrderDetailUrl}?source=my&orderId=${model.taskId}&source=workbench';
+    // String url =
+    //     "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=$status&orderId=${model.taskId}&source=workbench";
+    String realUrl =
+        SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
+    SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
+      "title": model.subTypeDesc ?? '',
+      "url": realUrl,
+      "needJointParams": false
+    })?.then((value) {
+      SCScaffoldManager.instance.eventBus
+          .fire({"key": SCKey.kRefreshWorkBenchPage});
+    });
+  }
+
+  workOrderDeal(SCToDoModel model) {
+    int status = (model.statusValue ?? '0').cnToInt();
+    String title = SCUtils.getWorkOrderButtonText(status);
     String url =
         "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=$status&orderId=${model.taskId}&source=workbench";
     String realUrl =
-        SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
+    SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
       "title": model.subTypeDesc ?? '',
       "url": realUrl,
