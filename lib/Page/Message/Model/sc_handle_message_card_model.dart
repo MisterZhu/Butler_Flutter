@@ -132,7 +132,7 @@ class TaskMsg {
   String? type;
   String? typeDesc;
   String? subType;
-  Null? subTypeDesc;
+  String? subTypeDesc;
   String? statusName;
   String? statusValue;
   String? code;

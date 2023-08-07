@@ -19,4 +19,6 @@ class SCH5FlutterKey {
   static const String albumAlert = "sc_app_album_alert";
   /// 刷新工作台
   static const String reloadWorkBench = "sc_app_workbench_reload";
+  /// 返回原生页面
+  static const String goback  = 'sc_app_back';
 }

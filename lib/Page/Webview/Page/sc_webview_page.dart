@@ -190,6 +190,7 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
         cameraChannel(context),
         photosChannel(context),
         phoneChannel(context),
+        gobackNativeChannel(context),
         // albumAlertChannel(context),
         reloadWorkBenchChannel(context),
       },
@@ -359,6 +360,12 @@ class _SCWebViewPageState extends State<SCWebViewPage> {
           webViewController?.runJavascript(SCUtils()
               .flutterCallH5(h5Name: SCFlutterH5Key.photos, params: params));
         });
+      });
+  /// 返回原生页面
+  JavascriptChannel gobackNativeChannel(BuildContext context) => JavascriptChannel(
+      name: SCH5FlutterKey.goback,
+      onMessageReceived: (JavascriptMessage message) {
+        SCRouterHelper.back(null);
       });
 
   //  打电话-channel

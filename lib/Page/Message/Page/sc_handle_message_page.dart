@@ -158,6 +158,7 @@ class _SCHandleMessagePage extends State<SCHandleMessagePage> {
             taskContent = taskDetail?.content.toString() ??'';
             taskTime = taskDetail?.noticeTime??'';
             taskCode = taskDetail?.taskMsg?.serialNumber??'';
+            print(15132132);
           });
         },
         failure: (err) {});

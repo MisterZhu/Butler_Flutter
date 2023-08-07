@@ -384,7 +384,7 @@ class SCToDoUtils {
     int status = (model.statusValue ?? '0').cnToInt();
     String title = SCUtils.getWorkOrderButtonText(status);
     var url =
-        '${SCH5.workOrderDetailUrl}?source=my&orderId=${model.taskId}&source=workbench';
+        '${SCConfig.BASE_URL}${SCH5.workOrderDetailUrl}?source=my&orderId=${model.taskId}';
     // String url =
     //     "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=$status&orderId=${model.taskId}&source=workbench";
     String realUrl =
@@ -403,7 +403,7 @@ class SCToDoUtils {
     int status = (model.statusValue ?? '0').cnToInt();
     String title = SCUtils.getWorkOrderButtonText(status);
     String url =
-        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=$status&orderId=${model.taskId}&source=workbench";
+        "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=$status&orderId=${model.taskId}&source=workbench&openSource=appWorkbench";
     String realUrl =
     SCUtils.getWebViewUrl(url: url, title: title, needJointParams: true);
     SCRouterHelper.pathPage(SCRouterPath.webViewPath, {
