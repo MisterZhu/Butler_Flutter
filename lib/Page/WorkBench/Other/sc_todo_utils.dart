@@ -384,7 +384,7 @@ class SCToDoUtils {
     int status = (model.statusValue ?? '0').cnToInt();
     String title = SCUtils.getWorkOrderButtonText(status);
     var url =
-        '${SCConfig.BASE_URL}${SCH5.workOrderDetailUrl}?source=my&orderId=${model.taskId}';
+        '${SCConfig.BASE_URL}${SCH5.workOrderDetailUrl}?source=my&orderId=${model.taskId}&openSource=appWorkbench';
     // String url =
     //     "${SCConfig.BASE_URL}${SCH5.workOrderUrl}?isFromWorkBench=1&status=$status&orderId=${model.taskId}&source=workbench";
     String realUrl =
