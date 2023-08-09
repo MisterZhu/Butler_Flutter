@@ -181,12 +181,15 @@ class CheckCellAlertState extends State<CheckCellAlert> {
   Widget checkName() {
     return Container(
         padding: const EdgeInsets.all(12.0),
+        constraints: const BoxConstraints(
+          maxHeight: double.infinity, // 设置高度约束为无限制
+        ),
         decoration: BoxDecoration(
             color: SCColors.color_FFFFFF,
             borderRadius: BorderRadius.circular(4.0)),
         child: Text(
           widget.checkName ?? '',
-          overflow: TextOverflow.ellipsis,
+          // overflow: TextOverflow.ellipsis,
           style: const TextStyle(
               fontSize: SCFonts.f16,
               fontWeight: FontWeight.w500,
