@@ -245,7 +245,7 @@ class SCPatrolUtils {
       if (result == true) {
         // 扫码
         var data = await SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
-        print("扫码结果===$data========");
+        print("扫码结果444===$data========");
         if (data != null && data != '') {// 有扫描结果
           // 校验二维码是否正确
           checkQrcode(qrCode: data, result: (status) {

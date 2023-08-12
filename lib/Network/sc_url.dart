@@ -372,6 +372,9 @@ class SCUrl {
 
   static const String deviceBasicUrl = "/api/device/deviceBasic/detail/";
 
+  /// 二维码类型查询
+  static const String qrCodeTypeUrl = "/api/external/qrCode/getByQrCode";
+
   /************************* 预警中心 *************************/
   /// 预警列表
   static const String kWarningCenterListUrl = "/api/alert/alert/getAlertsPage";

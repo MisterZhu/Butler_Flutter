@@ -643,3 +643,37 @@ class CellDetailList {
     return data;
   }
 }
+class DeviceTypeModel {
+  final int id;
+  final String qrCode;
+  final String type;
+  final String bizId;
+  final String creator;
+  final String operator;
+  final String gmtCreate;
+  final String gmtModify;
+
+  DeviceTypeModel({
+    required this.id,
+    required this.qrCode,
+    required this.type,
+    required this.bizId,
+    required this.creator,
+    required this.operator,
+    required this.gmtCreate,
+    required this.gmtModify,
+  });
+
+  factory DeviceTypeModel.fromJson(Map<String, dynamic> json) {
+    return DeviceTypeModel(
+      id: json['id'],
+      qrCode: json['qrCode'],
+      type: json['type'],
+      bizId: json['bizId'],
+      creator: json['creator'],
+      operator: json['operator'],
+      gmtCreate: json['gmtCreate'],
+      gmtModify: json['gmtModify'],
+    );
+  }
+}
