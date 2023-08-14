@@ -100,7 +100,7 @@ class SCScanState extends State<SCScanPage> {
       SCRouterHelper.back(scanData.code);
       //TODO 20230704 项目需要 产品要求统一写死
       if (scanData.code?.isNotEmpty ?? false) {
-        state.deviceBasic(scanData.code);
+        state.qrcodeCheck(scanData.code);
       }
     });
   }
