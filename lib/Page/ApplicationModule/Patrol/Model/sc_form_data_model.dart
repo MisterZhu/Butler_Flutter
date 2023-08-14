@@ -30,6 +30,8 @@ class CheckObject {
   Device? device;
   String? bizTag;
   String? type;
+  String? execWay;//新增字段-签到方式显示
+  String? planPolicedType;//新增字段 1:巡查点 2：巡查组
 
   CheckObject(
       {this.route,
@@ -38,6 +40,8 @@ class CheckObject {
       this.bizTag,
       this.device,
       this.type,
+      this.execWay,
+      this.planPolicedType,
       this.place});
 
   CheckObject.fromJson(Map<String, dynamic> json) {
@@ -58,6 +62,8 @@ class CheckObject {
     device = json['device'] != null ? Device.fromJson(json['device']) : null;
     bizTag = json['bizTag'];
     type = json['type'];
+    execWay = json['execWay'];
+    execWay = json['planPolicedType'];
   }
 
   Map<String, dynamic> toJson() {
@@ -79,6 +85,8 @@ class CheckObject {
     }
     data['bizTag'] = bizTag;
     data['type'] = type;
+    data['execWay'] = execWay;
+    data['planPolicedType'] = planPolicedType;
     return data;
   }
 }

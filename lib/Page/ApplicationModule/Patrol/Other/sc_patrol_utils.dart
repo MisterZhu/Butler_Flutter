@@ -32,7 +32,7 @@ class SCPatrolUtils {
   List nodeNameList = [];
 
   /// 任务操作
-  taskAction({required String name, bool? isDetailPage}) async {
+  taskAction({required String name, bool? isDetailPage, bool? checkHide}) async {
     print('任务操作========$name');
     if (name == '添加日志') {
       addLog();
@@ -46,7 +46,7 @@ class SCPatrolUtils {
     } else if (name == '关闭') {
       close(isDetailPage: isDetailPage);
     } else if (name == '处理') {
-      deal(isDetailPage: isDetailPage);
+      deal(isDetailPage: isDetailPage, checkHide: checkHide);
     } else if (name == '转派') {
       var data = await SCRouterHelper.pathPage(SCRouterPath.patrolTransferPage, null);
       if (data != null) {
@@ -97,7 +97,8 @@ class SCPatrolUtils {
     var params = {
       "action": "accept",
       "instanceId": nodeId,
-      "taskId": taskId
+      "taskId": taskId,
+      // 'procInstId': procInstId
     };
     SCHttpManager.instance.post(
         url: SCUrl.kPatrolGetOrder,
@@ -239,13 +240,13 @@ class SCPatrolUtils {
   }
 
   /// 处理操作
-  deal({bool? isDetailPage}) {
+  deal({bool? isDetailPage, bool? checkHide}) {
     // 先判断要不要扫码，再处理任务
     needScan(result: (result) async {
-      if (result == true) {
+      if (result == true && (!(checkHide??false))) {
         // 扫码
         var data = await SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
-        print("扫码结果444===$data========");
+        print("扫码结果===$data========");
         if (data != null && data != '') {// 有扫描结果
           // 校验二维码是否正确
           checkQrcode(qrCode: data, result: (status) {
@@ -450,6 +451,8 @@ class SCPatrolUtils {
     }
     return list;
   }
+
+  ///检查项目是否必检检查
 
   /// 处理状态文本颜色
   static Color getStatusColor(int status) {

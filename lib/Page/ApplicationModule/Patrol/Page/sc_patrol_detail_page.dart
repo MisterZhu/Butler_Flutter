@@ -17,6 +17,7 @@ import '../../MaterialEntry/View/Detail/sc_material_bottom_view.dart';
 import '../Controller/sc_patrol_detail_controller.dart';
 import '../View/Alert/sc_deal_alert.dart';
 import '../View/Alert/sc_more_button_dialog.dart';
+import '../View/Detail/sc_patrol_detail_v2_view.dart';
 
 /// 巡查详情page
 
@@ -47,7 +48,15 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
     patrolUtils = SCPatrolUtils();
     patrolUtils.taskId = controller.model.taskId ?? '';
     patrolUtils.procInstId = controller.procInstId;
+    // tabController = TabController(
+    //     length: 3, vsync: this);//controller.tabTitleList.length
+    // tabController.addListener(() {
+    //   // if (controller.currentWorkOrderIndex != tabController.index) {
+    //   //   controller.updateCurrentWorkOrderIndex(tabController.index);
+    //   // }
+    // });
     addNotification();
+
   }
 
   @override
@@ -109,10 +118,20 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
   }
 
   Widget getPatrolView(state){
+    //todo for v2 developing
     if(controller.type == "POLICED_WATCH"){
      return Expanded(child: PatrolDetailNewView(state:state));
     }else{
-     return Expanded(child: SCPatrolDetailView(state: state,));
+      return Expanded(child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return GetBuilder<SCPatrolDetailController>(
+                tag: controllerTag,
+                init: controller,
+                builder: (value) {
+                  return SCPatrolDetailV2View(state:state, height: constraints.maxHeight);
+                });
+          }));
+     // return Expanded(child: SCPatrolDetailView(state: state,));
     }
   }
 
@@ -141,7 +160,7 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
     patrolUtils.taskId = controller.model.taskId ?? '';
     patrolUtils.procInstId = controller.procInstId;
     patrolUtils.nodeId = controller.nodeId;
-    patrolUtils.taskAction(name: name, isDetailPage: true);
+    patrolUtils.taskAction(name: name, isDetailPage: true, checkHide: controller.model.nodeBizCfg!["POLICED_POINT"]["checkHide"]);//新增检查项非必要填写控制checkHide
   }
 
   /// pageName
@@ -159,7 +178,4 @@ class SCPatrolDetailPageState extends State<SCPatrolDetailPage> {
       }
     });
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

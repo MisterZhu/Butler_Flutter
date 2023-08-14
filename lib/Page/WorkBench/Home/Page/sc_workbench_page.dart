@@ -304,7 +304,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
   /// 扫一扫
   scanAction() async {
     var data = await SCRouterHelper.pathPage(SCRouterPath.scanPath, null);
-    print("扫码结果333===$data=======");
+    print("扫码结果===$data=======");
     Map<String, dynamic> map = json.decode(data);
     ScanResultModel model = ScanResultModel.fromJson(map);
     //TODO 待优化

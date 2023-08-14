@@ -23,6 +23,7 @@ class SCPatrolDetailModel {
       this.formData,
       this.isScanCode,
       this.assigneeName,
+      this.nodeBizCfg,
   });
 
   SCPatrolDetailModel.fromJson(dynamic json) {
@@ -47,6 +48,7 @@ class SCPatrolDetailModel {
     formData = json['formData'] != null ? FormDataModel.fromJson(json['formData']) : null;
     isScanCode = json['isScanCode'];
     assigneeName = json['assigneeName'];
+    nodeBizCfg = json['nodeBizCfg'];
   }
   String? procInstId;
   String? procInstName;
@@ -69,6 +71,7 @@ class SCPatrolDetailModel {
   bool? isScanCode;
   String? assigneeName;
   String? communityId;
+  Map? nodeBizCfg;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -95,6 +98,7 @@ class SCPatrolDetailModel {
     }
     map['isScanCode'] = isScanCode;
     map['assigneeName'] = assigneeName;
+    map['nodeBizCfg'] = nodeBizCfg;
     return map;
   }
 

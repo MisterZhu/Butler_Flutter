@@ -33,6 +33,7 @@ allprojects {
         maven {
             url 'https://jitpack.io'
         }
+        maven { url 'https://download.flutter.io' }
     }
 }
 

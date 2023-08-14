@@ -4,11 +4,8 @@ import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 
-import '../../../../Constants/sc_h5.dart';
-import '../../../../Network/sc_config.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
-import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../Utils/Router/sc_router_path.dart';
 import '../../../../Utils/sc_utils.dart';
@@ -27,7 +24,7 @@ class SCScanController extends GetxController {
 
   deviceBasic(var id) {
     SCLoadingUtils.show();
-    print("id ==111====  $id");
+    print("id ======  $id");
 
     SCHttpManager.instance.get(
         url: SCUrl.deviceBasicUrl + id,
@@ -38,8 +35,6 @@ class SCScanController extends GetxController {
               {"pageType": 2, "deviceCode": device.deviceCode});
         },
         failure: (value) {
-          SCLoadingUtils.hide();
-
           // if (value['message'] != null) {
           //   String message = value['message'];
           //   SCToast.showTip(message);
@@ -47,64 +42,56 @@ class SCScanController extends GetxController {
         });
   }
 
-  ///查询二维码类型
   qrcodeCheck(var id) {
-    SCLoadingUtils.show();
+    print("id ======  $id");
 
-    print("id ===222===  $id");
     SCHttpManager.instance.get(
         url: "${SCUrl.qrCodeTypeUrl}?qrCode=$id",
         success: (value) {
-          SCLoadingUtils.hide();
-          // List<dynamic> jsonData = json.decode(value);
-          // List<Map<String, dynamic>> jsonData = List<Map<String, dynamic>>.from(json.decode(value));
+          List<dynamic> jsonData = json.decode(value);
           List<DeviceTypeModel> items = [];
-          for (var itemJson in value) {
+          for (var itemJson in jsonData) {
             DeviceTypeModel item = DeviceTypeModel.fromJson(itemJson);
             items.add(item);
           }
           if (items.length == 1) {
             DeviceTypeModel fistModel = items[0];
-
-            deviceOrVisitor(fistModel);
+            if (fistModel.type == 'DEVICE') {
+              //设备
+              deviceBasic(id);
+            } else if (fistModel.type == 'VISITOR') {
+              ///访客
+            }
           } else if (items.length == 2) {
             DeviceTypeModel fistModel = items[0];
             DeviceTypeModel lastModel = items[1];
             if (fistModel.type == lastModel.type) {
-              deviceOrVisitor(fistModel);
-            } else {
+              if (fistModel.type == 'DEVICE') {
+                //设备
+                deviceBasic(id);
+              } else if (fistModel.type == 'VISITOR') {
+                ///访客
+
+              }
+            }else{
               //弹框处理
               popHandle(items);
             }
           }
         },
-        failure: (value) {
-          SCLoadingUtils.hide();
-        });
+        failure: (value) {});
   }
-
   popHandle(List<DeviceTypeModel> items) {
     DeviceTypeModel fistModel = items[0];
     DeviceTypeModel lastModel = items[1];
-    var name = "";
-    var name1 = "";
-    if (fistModel.type == 'DEVICE') {
-      //设备
-      name = "巡检设备";
-      name1 = "访客设备";
-    } else if (fistModel.type == 'VISITOR') {
-      ///访客
-      name = "访客设备";
-      name1 = "巡检设备";
-    }
     List<SCBottomSheetModel> dataList = [
       SCBottomSheetModel(
-          title: name,
+          title: "巡检设备",
           color: SCColors.color_1B1C33,
           fontSize: SCFonts.f16,
           fontWeight: FontWeight.w400),
       SCBottomSheetModel(
-          title: name1,
+          title: '访客设备',
           color: SCColors.color_1B1C33,
           fontSize: SCFonts.f16,
           fontWeight: FontWeight.w400)
@@ -115,28 +102,13 @@ class SCScanController extends GetxController {
           dataList: dataList,
           onTap: (index, context) {
             if (index == 0) {
-              deviceOrVisitor(fistModel);
+              // 相机
+
             } else {
-              deviceOrVisitor(lastModel);
+              // 相册
+
             }
           });
     });
-  }
-
-  deviceOrVisitor(DeviceTypeModel item) {
-    if (item.type == 'DEVICE') {
-      //设备
-      deviceBasic(item.qrCode);
-    } else if (item.type == 'VISITOR') {
-      ///访客
-      String token = SCScaffoldManager.instance.user.token ?? '';
-      var url = "${SCConfig.getH5Url(SCH5.qrcodeVisitorUrl)}${item.qrCode}&Authorization=$token";
-      var params = {
-        'title': "访客管理",
-        'url': SCUtils.getWebViewUrl(
-            url: url, title: "访客管理", needJointParams: false)
-      };
-      SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
-    }
   }
 }

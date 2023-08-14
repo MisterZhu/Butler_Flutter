@@ -408,6 +408,9 @@ class SCUrl {
   /// 巡查详情
   static const String kPatrolDetailUrl = "/api/quality/safetyProduction/task/getById?procInstId=";
 
+  /// 巡查详情-新
+  static const String kPatrolInstAndCurTaskDetail = "/api/quality-jho/safetyProduction/task/getProcInstAndCurTaskDetail";
+
   //获取评分接口
   static const String kPatrolScoreUrl = "/api/quality/process/task/checkStat";
 
