@@ -4,8 +4,11 @@ import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:sc_uikit/sc_uikit.dart';
 
+import '../../../../Constants/sc_h5.dart';
+import '../../../../Network/sc_config.dart';
 import '../../../../Network/sc_http_manager.dart';
 import '../../../../Network/sc_url.dart';
+import '../../../../Skin/Tools/sc_scaffold_manager.dart';
 import '../../../../Utils/Router/sc_router_helper.dart';
 import '../../../../Utils/Router/sc_router_path.dart';
 import '../../../../Utils/sc_utils.dart';
@@ -61,11 +64,9 @@ class SCScanController extends GetxController {
             items.add(item);
           }
           if (items.length == 1) {
-            // DeviceTypeModel fistModel = items[0];
-            //
-            // deviceOrVisitor(fistModel);
-            popHandle(items);
+            DeviceTypeModel fistModel = items[0];
 
+            deviceOrVisitor(fistModel);
           } else if (items.length == 2) {
             DeviceTypeModel fistModel = items[0];
             DeviceTypeModel lastModel = items[1];
@@ -84,7 +85,7 @@ class SCScanController extends GetxController {
 
   popHandle(List<DeviceTypeModel> items) {
     DeviceTypeModel fistModel = items[0];
-    DeviceTypeModel lastModel = items[0];
+    DeviceTypeModel lastModel = items[1];
     var name = "";
     var name1 = "";
     if (fistModel.type == 'DEVICE') {
@@ -128,7 +129,14 @@ class SCScanController extends GetxController {
       deviceBasic(item.qrCode);
     } else if (item.type == 'VISITOR') {
       ///访客
-
+      String token = SCScaffoldManager.instance.user.token ?? '';
+      var url = "${SCConfig.getH5Url(SCH5.qrcodeVisitorUrl)}${item.qrCode}&Authorization=$token";
+      var params = {
+        'title': "访客管理",
+        'url': SCUtils.getWebViewUrl(
+            url: url, title: "访客管理", needJointParams: false)
+      };
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
     }
   }
 }
