@@ -316,6 +316,12 @@ class SCWorkBenchController extends GetxController{
     update();
   }
 
+  /// 更新选中的时间类型
+  updateTimeTypeSelectList(List list){
+    selectTimeTypeList = list;
+    update();
+  }
+
   /// 更新当前工单index
   updateCurrentWorkOrderIndex(int value) {
     currentWorkOrderIndex = value;

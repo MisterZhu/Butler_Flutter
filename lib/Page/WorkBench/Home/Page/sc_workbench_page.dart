@@ -414,10 +414,11 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
                 workBenchController.loadData();
               },
               sureAction: (selectTimeTypeList) {
-                //print(selectTimeTypeList);
-                Navigator.of(context).pop();
-                workBenchController.selectTimeTypeList = selectTimeTypeList;
+                // print("111111111111111");
+                // print(selectTimeTypeList);
+                workBenchController.updateTimeTypeSelectList(selectTimeTypeList);
                 workBenchController.getTaskCount();
+                Navigator.of(context).pop();
               }));
     });
   }
