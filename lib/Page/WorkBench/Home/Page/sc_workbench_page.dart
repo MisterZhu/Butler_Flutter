@@ -387,7 +387,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
       }
 
       String token = SCScaffoldManager.instance.user.token ?? '';
-      var url = "${SCConfig.getH5Url(SCH5.gongdanUrl)}$unitCode&Authorization=$token";
+      var url = "${SCConfig.getH5Url(SCH5.homeWorkOrderUrl)}$unitCode&Authorization=$token";
       var params = {
         'title': "工单",
         'url': SCUtils.getWebViewUrl(
@@ -395,7 +395,6 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
       };
       SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
     }
-
   }
 
   /// 卡片时间筛选

@@ -46,7 +46,7 @@ class SCH5 {
   static const String readingTaskMeterDetailUrl = "/h5Manage/#/meterReadingTask/meterReadingTaskDetail";
   /// 访客设备扫码
   static const String qrcodeVisitorUrl = "/h5Manage/#/visitorInvitation/detail?code=";
-  /// 工单
-  static const String gongdanUrl = "/h5Manage/#/dataBords/dataIndex?dataCode=";
+  /// 首页工单
+  static const String homeWorkOrderUrl = "/h5Manage/#/dataBords/dataIndex?dataCode=";
 
 }

@@ -362,7 +362,7 @@ class SCWorkBenchController extends GetxController{
       if (value == true) {
         getUserInfo().then((subValue) {
           if (subValue == true) {
-            getWorkOrderNumber();
+            //getWorkOrderNumber();
             getTaskCount();
             if (loadAllToDo == true) {
               getToDoData();
@@ -488,14 +488,14 @@ class SCWorkBenchController extends GetxController{
     var params = {
       "unitCode": unitCode,
     };
-    //print("1111111${unitCode}");
     SCHttpManager.instance.post(url: SCUrl.kWorkBenchTaskCountUrl, params: params, success: (value) {
       orderNum = value['hallCount'] ?? 0;
       workOrderNum = value['workOrderCount'] ?? 0;
       // taskNum = value['todayTaskCount'] ?? 0;
       // collectionRate = (value['collectionRate'] ?? 0) * 100;
       // serviceNum = value['todayServiceBusinessCount'] ?? 0;
-      update();
+      //update();
+      updateNumData();
     }, failure: (value) {
 
     });
