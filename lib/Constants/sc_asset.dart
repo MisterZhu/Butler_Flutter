@@ -96,6 +96,8 @@ class SCAsset {
 
   /// 首页-酒店icon
   static const String iconHotel = "images/home/icon_hotel.png";
+  /// 首页-下拉框
+  static const String iconDown = "images/home/icon_home_down.png";
 
   /*********************** 登录 ************************/
   /// 清除icon

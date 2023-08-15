@@ -122,11 +122,14 @@ dependencies:
 #  file_picker: 5.2.6
   # 私有UI库
 #  sc_uikit:
-#    path: E:\dev\sc_uikit
+##    path: E:\dev\sc_uikit
+#  sc_uikit:
+##    path: plugins/sc_uikit
+#    git:
+#      url: http://10.100.10.22/jizuo-flutter/flutter_library/sc_uikit.git
+
   sc_uikit:
-#    path: plugins/sc_uikit
-    git:
-      url: http://10.100.10.22/jizuo-flutter/flutter_library/sc_uikit.git
+    path: ./plugins/sc_uikit
 
 
 dev_dependencies:

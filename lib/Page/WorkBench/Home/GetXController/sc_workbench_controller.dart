@@ -33,17 +33,26 @@ class SCWorkBenchController extends GetxController{
 
   String tag = '';
 
-  /// 抢单大厅数量
+  /// 抢单数量
   int orderNum = 0;
 
+  /// 工单数量
+  int workOrderNum = 0;
+
   /// 今日任务数量
-  int taskNum = 0;
+  //int taskNum = 0;
 
   /// 收缴率
-  num collectionRate = 0;
+  //num collectionRate = 0;
 
   /// 今日服务业主数量
-  int serviceNum = 0;
+  //int serviceNum = 0;
+
+  /// 时间类型
+  List timeTypeDataList = [];
+
+  /// 当前选中时间类型
+  List selectTimeTypeList = [];
 
   List numDataList = [];
 
@@ -116,6 +125,7 @@ class SCWorkBenchController extends GetxController{
 
   /// 初始化tabData
   initTabData(List list) {
+    timeTypeDataList = [];
     tabDataList = list;
     tabTitleList = [];
     todoKeyList = [];
@@ -127,23 +137,65 @@ class SCWorkBenchController extends GetxController{
       todoKeyList.add(params['key']);
     }
 
+    timeTypeDataList = [
+      {
+        "title": "今日",
+        "key": "",
+        "value": "1"
+      },
+      {
+        "title": "本周",
+        "key": "",
+        "value": "4"
+      },
+      {
+        "title": "下周",
+        "key": "",
+        "value": "6"
+      },
+      {
+        "title": "上周",
+        "key": "",
+        "value": "5"
+      },
+      {
+        "title": "本月",
+        "key": "",
+        "value": "2"
+      },
+      {
+        "title": "上月",
+        "key": "TASK",
+        "value": "7"
+      },
+      {
+        "title": "下月",
+        "key": "TASK",
+        "value": "8"
+      },
+    ];
+
+    selectTimeTypeList = ["今日"];
+
     taskTypeDataList = [
       {
         "title": "全部",
         "key": "",
-        "value": ""
+        "value": "",
+        "isSelect":"0"
       },
       {
         "title": "工单服务",
         "key": "WORK_ORDER",
-        "value": ""
+        "value": "",
       },
       {
         "title": "巡查任务",
         "key": "TASK",
-        "value": "POLICED_POINT"
+        "value": "POLICED_POINT",
       },
     ];
+
     for (var params in taskTypeDataList) {
       taskTypeList.add(params['title']);
       taskTypeKeyList.add(params['key']);
@@ -275,21 +327,25 @@ class SCWorkBenchController extends GetxController{
     numDataList = [
       {
         'number': orderNum,
-        'description': '抢单大厅',
+        'description': '抢单',
       },
       {
-        'number': taskNum,
-        'description': '今日任务',
+        'number': workOrderNum,
+        'description': '工单',
       },
-      {
-        'number': collectionRate,
-        'description': '收缴率',
-        'richText': '%'
-      },
-      {
-        'number': serviceNum,
-        'description': '今日服务业主',
-      }
+      // {
+      //   'number': taskNum,
+      //   'description': '今日任务',
+      // },
+      // {
+      //   'number': collectionRate,
+      //   'description': '收缴率',
+      //   'richText': '%'
+      // },
+      // {
+      //   'number': serviceNum,
+      //   'description': '今日服务业主',
+      // }
     ];
     update();
   }
@@ -406,11 +462,33 @@ class SCWorkBenchController extends GetxController{
 
   /// 获取卡片数量
   getTaskCount() {
-    SCHttpManager.instance.post(url: SCUrl.kWorkBenchTaskCountUrl, params: null, success: (value) {
+    String timeTitle = selectTimeTypeList.first;
+    int unitCode = 1;
+    if(timeTitle == "今日"){
+      unitCode = 1;
+    }else if(timeTitle == "本周"){
+      unitCode = 4;
+    }else if(timeTitle == "下周"){
+      unitCode = 6;
+    }else if(timeTitle == "上周"){
+      unitCode = 5;
+    }else if(timeTitle == "本月"){
+      unitCode = 2;
+    }else if(timeTitle == "上月"){
+      unitCode = 7;
+    }else if(timeTitle == "下月"){
+      unitCode = 8;
+    }
+    var params = {
+      "unitCode": unitCode,
+    };
+    //print("1111111${unitCode}");
+    SCHttpManager.instance.post(url: SCUrl.kWorkBenchTaskCountUrl, params: params, success: (value) {
       orderNum = value['hallCount'] ?? 0;
-      taskNum = value['todayTaskCount'] ?? 0;
-      collectionRate = (value['collectionRate'] ?? 0) * 100;
-      serviceNum = value['todayServiceBusinessCount'] ?? 0;
+      workOrderNum = value['workOrderCount'] ?? 0;
+      // taskNum = value['todayTaskCount'] ?? 0;
+      // collectionRate = (value['collectionRate'] ?? 0) * 100;
+      // serviceNum = value['todayServiceBusinessCount'] ?? 0;
       update();
     }, failure: (value) {
 

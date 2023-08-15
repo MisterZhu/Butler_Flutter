@@ -26,6 +26,7 @@ class SCWorkBenchView extends StatelessWidget {
     this.tagAction,
     this.menuTap,
     this.detailAction,
+    this.cardTimeAction,
     this.verificationDetailAction,
     this.hotelOrderDetailAction,
     this.showSpaceAlert,
@@ -76,6 +77,9 @@ class SCWorkBenchView extends StatelessWidget {
   /// 卡片详情
   final Function(int index)? cardDetailAction;
 
+  /// 卡片时间筛选
+  final Function()? cardTimeAction;
+
   /// 点击头像
   final Function? headerAction;
 
@@ -110,8 +114,13 @@ class SCWorkBenchView extends StatelessWidget {
     return SliverToBoxAdapter(
       child: SCWorkBenchCard(
         data: state.numDataList,
+        timeTypeTitle: state.selectTimeTypeList.first,
         onTap: (int index) {
           cardDetailAction?.call(index);
+        },
+        /// 卡片时间筛选
+        downOnTap: (){
+          cardTimeAction?.call();
         },
       ),
     );

@@ -22,6 +22,7 @@ import 'package:smartcommunity/Utils/Router/sc_router_helper.dart';
 import 'package:smartcommunity/Utils/Router/sc_router_path.dart';
 import '../../../../Utils/sc_utils.dart';
 import '../Model/sc_scan_result_model.dart';
+import '../View/Alert/sc_card_time_filtrate_alert.dart';
 import '../View/Alert/sc_task_sift_alert.dart';
 import '../View/AppBar/sc_workbench_search.dart';
 
@@ -101,10 +102,7 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
       color: SCColors.color_F2F3F5,
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Column(
-        children: [
-          rightItem(),
-          workBenchView()
-        ],
+        children: [rightItem(), workBenchView()],
       ),
     );
   }
@@ -114,20 +112,18 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     return GetBuilder<SCWorkBenchController>(
       init: workBenchController, // 初始化控制器
       builder: (controller) {
-        return 
-          SCWorkBenchSearch(
-            unreadNum: SCScaffoldManager.instance.unreadMessageCount,
-            searchAction: () {
-              searchAction();
-            },
-            scanAction: () {
-              scanAction();
-            },
-            messageAction: () {
-              messageAction();
-            },
-          )
-        ; // 将你想要包裹的 Widget 放在 builder 函数中返回
+        return SCWorkBenchSearch(
+          unreadNum: SCScaffoldManager.instance.unreadMessageCount,
+          searchAction: () {
+            searchAction();
+          },
+          scanAction: () {
+            scanAction();
+          },
+          messageAction: () {
+            messageAction();
+          },
+        ); // 将你想要包裹的 Widget 放在 builder 函数中返回
       },
     );
   }
@@ -161,6 +157,10 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
                 },
                 cardDetailAction: (int index) {
                   cardDetailAction(index);
+                },
+                cardTimeAction: () {
+                  // 卡片时间筛选
+                  cardTimeAction();
                 },
                 headerAction: () {
                   userInfoAction();
@@ -363,8 +363,64 @@ class SCWorkBenchPageState extends State<SCWorkBenchPage>
     });
   }
 
-  /// 卡片详情
-  cardDetailAction(int index) {}
+  /// 卡片详情点击
+  cardDetailAction(int index) {
+
+    if(index == 1){
+      ///工单
+      String timeTitle = workBenchController.selectTimeTypeList.first;
+      int unitCode = 1;
+      if(timeTitle == "今日"){
+        unitCode = 1;
+      }else if(timeTitle == "本周"){
+        unitCode = 4;
+      }else if(timeTitle == "下周"){
+        unitCode = 6;
+      }else if(timeTitle == "上周"){
+        unitCode = 5;
+      }else if(timeTitle == "本月"){
+        unitCode = 2;
+      }else if(timeTitle == "上月"){
+        unitCode = 7;
+      }else if(timeTitle == "下月"){
+        unitCode = 8;
+      }
+
+      String token = SCScaffoldManager.instance.user.token ?? '';
+      var url = "${SCConfig.getH5Url(SCH5.gongdanUrl)}$unitCode&Authorization=$token";
+      var params = {
+        'title': "工单",
+        'url': SCUtils.getWebViewUrl(
+            url: url, title: "工单", needJointParams: false)
+      };
+      SCRouterHelper.pathPage(SCRouterPath.webViewPath, params);
+    }
+
+  }
+
+  /// 卡片时间筛选
+  cardTimeAction() {
+    SCUtils.getCurrentContext(completionHandler: (BuildContext context) {
+      SCDialogUtils().showCustomBottomDialog(
+          isDismissible: true,
+          context: context,
+          widget: SCCardTimeFiltrateAlert(
+              timeList: workBenchController.timeTypeDataList,
+              selectTimeTypeList: workBenchController.selectTimeTypeList,
+              resetAction: () {
+                workBenchController.initFilterData();
+                Navigator.of(context).pop();
+                tabController.animateTo(0);
+                workBenchController.loadData();
+              },
+              sureAction: (selectTimeTypeList) {
+                //print(selectTimeTypeList);
+                Navigator.of(context).pop();
+                workBenchController.selectTimeTypeList = selectTimeTypeList;
+                workBenchController.getTaskCount();
+              }));
+    });
+  }
 
   /// 用户信息
   userInfoAction() {

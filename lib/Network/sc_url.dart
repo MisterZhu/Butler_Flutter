@@ -34,7 +34,7 @@ class SCUrl {
   static const String kSearchTaskUrl = '/api/search/task/page';
 
   /// 卡片数量
-  static const String kWorkBenchTaskCountUrl = '/api/search/task/app/count';
+  static const String kWorkBenchTaskCountUrl = '/api/search-zhounan/task/app/count';
 
   /// 工作台-搜索
   static const String kWorkBenchSearchUrl = '/api/search/task/app/page';
