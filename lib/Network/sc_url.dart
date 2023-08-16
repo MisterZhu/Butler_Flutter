@@ -400,7 +400,7 @@ class SCUrl {
 
   /************************* 巡查 *************************/
   /// 巡查任务列表
-  static const String kPatrolListUrl = "/api/quality/safetyProduction/task/frontPolicedPage";
+  static const String kPatrolListUrl = "/api/quality/safetyProduction/task/procInstAndCurTaskPage";//"/api/quality/safetyProduction/task/frontPolicedPage";
   /// 巡查分类
   static const String kPatrolTypeUrl = "/api/quality/safetyProduction/task/fullTree";
 
@@ -409,7 +409,9 @@ class SCUrl {
   static const String kPatrolDetailUrl = "/api/quality/safetyProduction/task/getById?procInstId=";
 
   /// 巡查详情-新
-  static const String kPatrolInstAndCurTaskDetail = "/api/quality-jho/safetyProduction/task/getProcInstAndCurTaskDetail";
+  static const String kPatrolInstAndCurTaskDetail = "/api/quality/safetyProduction/task/getProcInstAndCurTaskDetail";//"/api/quality-jho/safetyProduction/task/getProcInstAndCurTaskDetail";
+  /// 巡查详情-工单列表
+  static const String  kPatrolFrontPage = '/api/quality/task/report/frontPage';
 
   //获取评分接口
   static const String kPatrolScoreUrl = "/api/quality/process/task/checkStat";

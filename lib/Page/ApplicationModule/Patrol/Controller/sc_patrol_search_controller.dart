@@ -58,7 +58,7 @@ class SCSearchPatrolController extends GetxController {
       pageNum = 1;
       SCLoadingUtils.show();
     }
-    List fields = [{"map": {}, "method": 1, "name": "wt.appCode", "value": appCode}];
+    List fields = [{"map": {}, "method": 1, "name": "appCode", "value": appCode}];
     var dic1 = {
       "map": {"wt.procInstName":searchString,"procName":searchString},
       "method": 1,

@@ -187,7 +187,7 @@ class SCPatrolDetailController extends GetxController {
   getDetailData() {
     SCLoadingUtils.show();
     SCHttpManager.instance.get(
-        url: '${SCUrl.kPatrolInstAndCurTaskDetail}?procInstId=b6b3e7dd-38ba-11ee-9336-96e30b26cb95',
+        url: '${SCUrl.kPatrolInstAndCurTaskDetail}?procInstId=$procInstId',
       params: null,
       success: (value) {
           log('巡查详情===$value');
@@ -549,22 +549,22 @@ class SCPatrolDetailController extends GetxController {
         {
           "type": 7,
           "title": '巡查位置',
-          "content": '待定字段',
+          "content": model.formData?.checkObject?.spaceName,
         },
         {
           "type": 7,
           "title": '所属项目',
-          "content": '待定字段',
+          "content": model.formData?.checkObject?.place?.projectName,
         },
         {
           "type": 7,
           "title": '要求完成时间',
-          "content": '待定字段',
+          "content": model.formData?.checkObject?.field_custom_procDealExpTime,
         },
         {
           "type": 7,
           "title": '当前执行人',
-          "content": '待定字段',
+          "content": model.assigneeName,
         },
         {
           "type": 7,

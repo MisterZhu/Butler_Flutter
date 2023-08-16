@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sc_uikit/sc_uikit.dart';
-import 'package:smartcommunity/Page/WorkBench/Home/View/AppBar/sc_workbench_card.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/AppBar/sc_workbench_search.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/AppBar/sc_workbench_switchspace_view.dart';
 import 'package:smartcommunity/Page/WorkBench/Home/View/AppBar/sc_workbench_tabbar.dart';

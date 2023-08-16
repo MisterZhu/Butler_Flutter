@@ -211,7 +211,7 @@ class SCWorkBenchController extends GetxController{
     for (int i = 0; i < tabTitleList.length; i++) {
       String controllerTag = "SCWorkBenchToDoController_$i";
       SCWorkBenchToDoController todoController =
-          Get.put(SCWorkBenchToDoController(), tag: controllerTag);
+      Get.put(SCWorkBenchToDoController(), tag: controllerTag);
       todoController.key = todoKeyList[i];
       Widget view = GetBuilder<SCWorkBenchToDoController>(
           tag: controllerTag,
@@ -411,7 +411,7 @@ class SCWorkBenchController extends GetxController{
               SCDefaultConfigModel model = SCDefaultConfigModel.fromJson(value);
               SCScaffoldManager.instance.defaultConfigModel = model;
               SCChangeSpaceController controller =
-                  Get.find<SCChangeSpaceController>();
+              Get.find<SCChangeSpaceController>();
               controller.initBase(success: (String spaceNameValue) {
                 spaceName = spaceNameValue;
                 update();
@@ -439,10 +439,10 @@ class SCWorkBenchController extends GetxController{
                 "jsonValue": jsonEncode([model])
               };
               SCDefaultConfigModel defModel =
-                  SCDefaultConfigModel.fromJson(params);
+              SCDefaultConfigModel.fromJson(params);
               SCScaffoldManager.instance.defaultConfigModel = defModel;
               SCChangeSpaceController controller =
-                  Get.find<SCChangeSpaceController>();
+              Get.find<SCChangeSpaceController>();
               controller.initBase(success: (String spaceNameValue) {
                 spaceName = spaceNameValue;
                 update();

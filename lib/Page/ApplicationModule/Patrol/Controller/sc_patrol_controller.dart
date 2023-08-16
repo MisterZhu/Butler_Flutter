@@ -182,14 +182,14 @@ class SCPatrolController extends GetxController {
       };
       fields.add(dic);
     }
-    var dic1 = {"map": {}, "method": 1, "name": "wt.appCode", "value": appCode};
+    var dic1 = {"map": {}, "method": 1, "name": "appCode", "value": appCode};
     fields.add(dic1);
     var params = {
       "conditions": {"fields": fields},
       "count": true,
       "last": false,
       "orderBy": [
-        {"asc": sort, "field": "wt.gmtModify"}
+        {"asc": sort, "field": "gmtModify"}
       ],
       // 排序，正序是 true，倒序是 false
       "pageNum": pageNum,
@@ -250,7 +250,7 @@ class SCPatrolController extends GetxController {
       SCLoadingUtils.show();
     }
     List fields = [
-      {"map": {}, "method": 1, "name": "wt.appCode", "value": appCode}
+      {"map": {}, "method": 1, "name": "appCode", "value": appCode}
     ];
     var dic1 = {
       "map": {"wt.procInstName": deviceCode, "procName": deviceCode},

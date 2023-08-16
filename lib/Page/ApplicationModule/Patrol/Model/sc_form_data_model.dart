@@ -32,6 +32,8 @@ class CheckObject {
   String? type;
   String? execWay;//新增字段-签到方式显示
   String? planPolicedType;//新增字段 1:巡查点 2：巡查组
+  String? spaceName;
+  String? field_custom_procDealExpTime;
 
   CheckObject(
       {this.route,
@@ -42,7 +44,9 @@ class CheckObject {
       this.type,
       this.execWay,
       this.planPolicedType,
-      this.place});
+      this.place,
+      this.spaceName,
+      this.field_custom_procDealExpTime});
 
   CheckObject.fromJson(Map<String, dynamic> json) {
     route = json['route'] != null ? Route.fromJson(json['route']) : null;
@@ -62,8 +66,10 @@ class CheckObject {
     device = json['device'] != null ? Device.fromJson(json['device']) : null;
     bizTag = json['bizTag'];
     type = json['type'];
+    spaceName=json['spaceName'];
+    field_custom_procDealExpTime=json['field_custom_procDealExpTime'];
     execWay = json['execWay'];
-    execWay = json['planPolicedType'];
+    planPolicedType = json['planPolicedType'];
   }
 
   Map<String, dynamic> toJson() {
@@ -484,6 +490,8 @@ class Place {
   String? orgName;
   int? spaceId;
   String? bizTag;
+  String? field_custom_procDealExpTime;
+  String? assigneeName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -507,6 +515,8 @@ class Place {
     map['orgName'] = orgName;
     map['spaceId'] = spaceId;
     map['bizTag'] = bizTag;
+    map['field_custom_procDealExpTime']=field_custom_procDealExpTime;
+    map['assigneeName']=assigneeName;
     return map;
   }
 }
@@ -536,6 +546,7 @@ class Device {
   String? deviceCode;
   String? spaceName;
   String? deviceLocation;
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

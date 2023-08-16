@@ -57,7 +57,7 @@ class SCDetailCell extends StatelessWidget {
     return ListView.separated(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        padding: padding ?? const EdgeInsets.symmetric(vertical: 12.0),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: 8.0),
         itemBuilder: (BuildContext context, int index) {
           return getCell(index);
         },

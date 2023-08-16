@@ -142,7 +142,7 @@ class SCElectronicPatrolController extends GetxController {
     var dic1 = {
       "map": {},
       "method": 1,
-      "name": "wt.appCode",
+      "name": "appCode",
       "value": "POLICED_POINT"
     };
     fields.add(dic1);
@@ -150,7 +150,7 @@ class SCElectronicPatrolController extends GetxController {
       "conditions": {"fields": fields},
       "count": false,
       "last": false,
-      "orderBy": [{"asc": sort, "field": "wt.gmtModify"}],// 排序，正序是 true，倒序是 false
+      "orderBy": [{"asc": sort, "field": "gmtModify"}],// 排序，正序是 true，倒序是 false
       "pageNum": pageNum,
       "pageSize": 20
     };

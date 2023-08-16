@@ -21,7 +21,7 @@ import '../../../../WorkBench/Other/sc_todo_utils.dart';
 import '../../Controller/sc_patrol_detail_controller.dart';
 import '../../Model/sc_form_data_model.dart';
 import '../widgets/sc_patrol_detail_tabbar.dart';
-import 'package:sc_uikit/src/constant/sc_cell_type.dart';
+import '../widgets/sc_task_front_page_view.dart';
 
 /// 巡查详情view
 
@@ -179,7 +179,10 @@ class SCPatrolDetailV2ViewState extends State<SCPatrolDetailV2View> with TickerP
       tabBarViewList.add(getCell(type: SCTypeDefine.SC_PATROL_TYPE_INFO, list: widget.state.tabBarData['详细信息'] as List));
     }
     if (widget.state.tabBarData.containsKey("工单")) {
-      tabBarViewList.add(scToDoModelCellListView(widget.state.tabBarData['工单'] as List));
+      // SCTaskFrontPageView
+      // SCTaskFrontPageView.add
+      tabBarViewList.add(SCTaskFrontPageView(bizId: widget.state.procInstId,));
+      // tabBarViewList.add(scToDoModelCellListView(widget.state.tabBarData['工单'] as List));
     }
     if (widget.state.tabBarData.containsKey("日志")) {
       tabBarViewList.add(getCell(type: SCTypeDefine.SC_PATROL_TYPE_LOG, list: widget.state.tabBarData['日志'] as List));

@@ -96,7 +96,7 @@ class SCPatrolUtils {
     SCLoadingUtils.show();
     var params = {
       "action": "accept",
-      "instanceId": nodeId,
+      "instanceId": procInstId,
       "taskId": taskId,
       // 'procInstId': procInstId
     };
